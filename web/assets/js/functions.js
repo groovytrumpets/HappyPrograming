@@ -1,7 +1,7 @@
 /*
 ***
 ***
-Name: 			functions.js
+Name: 			Theme Library
 Written by: 	ThemeTrade 
 Theme Version:	1.0.0
 ***
@@ -18,7 +18,7 @@ Theme Version:	1.0.0
 				};
 				
 				var setCourseCarousel = function() {
-					if(!checkSelectorExistence('.courses-carousel')){return;}
+					checkSelectorExistence('.courses-carousel');
 					jQuery('.courses-carousel').owlCarousel({
 						loop:true,
 						autoplay:true,
@@ -44,7 +44,7 @@ Theme Version:	1.0.0
 				}
 				
 				var setUpcomingEventCarousel = function() {
-					if(!checkSelectorExistence('.upcoming-event-carousel')){return;}
+					checkSelectorExistence('.upcoming-event-carousel');
 					jQuery('.upcoming-event-carousel').owlCarousel({
 						center: true,
 						autoplay:true,
@@ -76,7 +76,7 @@ Theme Version:	1.0.0
 				}
 				
 				var setRecentNewsCarousel = function() {
-					if(!checkSelectorExistence('.recent-news-carousel')){return;}
+					checkSelectorExistence('.recent-news-carousel');
 					jQuery('.recent-news-carousel').owlCarousel({
 						loop:true,
 						autoplay:true,
@@ -102,7 +102,7 @@ Theme Version:	1.0.0
 				}
 				
 				var setTestimonialCarousel = function() {
-					if(!checkSelectorExistence('.testimonial-carousel')){return;}
+					checkSelectorExistence('.testimonial-carousel');
 					jQuery('.testimonial-carousel').owlCarousel({
 						loop:true,
 						autoplay:true,
@@ -179,16 +179,34 @@ Theme Version:	1.0.0
 					$('.header').css({ 'height': getActualHeaderRecentHeight }).animate({ 'height': getActualHeaderFullHeight }, 200);
 				}
 				
+				/* Load File ============ */
+				var controlLeftSideMenu = function(){
+					 /******  Remove This Function and Set double logo in html or remove logo from left side menu******/
+					 if(windowSize < 991)
+					{
+						if($('.rs-nav .menu-links').children('div').length == 0){
+							var logoData = jQuery('<div>').append($('.rs-nav .logo-header').clone()).html();
+							jQuery('.rs-nav .menu-links').prepend(logoData);
+							jQuery('.rs-nav .menu-links .logo-header > a > img').attr('src','images/logo.png');
+							jQuery('.rs-nav.lw .menu-links .logo-header > a > img').attr('src','images/logo-white.png');
+						}
+					}else{
+						jQuery('.rs-nav .menu-links div').remove();
+						jQuery('.rs-nav.lw .menu-links div').remove();
+					}
+					/******  Remove This Function and Set double logo in html or remove logo from left side menu******/
+				}
+				
 				/* Magnific Popup ============ */
 				var magnificPopupImageView = function(){
 						
 					/* magnificPopup function */
-					if(checkSelectorExistence('.magnific-image')) {
-						jQuery('.magnific-image').magnificPopup({ 
-							delegate: '.magnific-anchor', 
+					if(checkSelectorExistence('.mfp-gallery')) {
+						jQuery('.mfp-gallery').magnificPopup({ /* mfp-gallery to  magnific-image*/
+							delegate: '.mfp-link', /* magnific-anchor to  magnific-anchor*/
 							type: 'image',
 							tLoading: 'Loading image #%curr%...',
-							mainClass: 'magnific-img-mobile', 
+							mainClass: 'mfp-img-mobile', /* mfp-img-mobile to  magnific-img-mobile*/
 							gallery: {
 								enabled: true,
 								navigateByImgClick: true,
@@ -204,9 +222,9 @@ Theme Version:	1.0.0
 					}
 					/* magnificPopup function end */
 					
-					/* magnificPopup for video function */
+					/* magnificPopup for paly video function */
 					if(checkSelectorExistence('.video')) {
-						jQuery('.video').magnificPopup({ 
+						jQuery('.video').magnificPopup({ /* video to  magnific-video*/
 							type: 'iframe',
 							iframe: {
 								markup: '<div class="mfp-iframe-scaler">'+
@@ -223,7 +241,7 @@ Theme Version:	1.0.0
 						});
 					}
 					/* magnificPopup for paly video function end*/
-					if(checkSelectorExistence('.popup-youtube, .popup-vimeo, .popup-gmaps')) {
+					if(checkSelectorExistence('.popup-youtube, .popup-vimeo, .popup-gmaps')) { /* popup-youtube to  magnific-yv (y : youtube and v : video)*/
 						$('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
 							disableOn: 700,
 							type: 'iframe',
@@ -240,7 +258,7 @@ Theme Version:	1.0.0
 				/* Page Scroll To Top ============ */
 				var pageScrollToTop = function (){
 					/* page scroll top on click function */	
-					jQuery("button.back-to-top").on('click',function() { 
+					jQuery("button.back-to-top").on('click',function() { /* change back-to-top to scrollToTop*/
 						jQuery('html').animate({ scrollTop: 0 }, 500);
 						return false;
 					})
@@ -284,7 +302,7 @@ Theme Version:	1.0.0
 				}
 				
 				/* Set Footer Height  */
-				var setFooterHeight = function() { 
+				var setFooterHeight = function() { /* change site-footer to theme-footer*/
 					if(!checkSelectorExistence('.site-footer')){return;}
 					jQuery('.site-footer').css(['display:block','height:auto']);
 					var footerHeight = jQuery('.site-footer').outerHeight();
@@ -309,6 +327,10 @@ Theme Version:	1.0.0
 				
 				/* Set Masonry Layout */
 				var masonryLayout = function(){
+					/*change masonry to masonry-container
+					  change action-card to masonry-item
+					  change filters to filter-item-container
+					*/
 					if(!checkSelectorExistence('#masonry')){return;}
 					var self = $("#masonry");
 					if(jQuery('.action-card').length)
@@ -338,6 +360,7 @@ Theme Version:	1.0.0
 				
 				/* Set Counter Up Function */
 				var setCounterUp = function(){
+					/* change counter to counter-up*/
 					if(!checkSelectorExistence('.counter')){return;}
 					 jQuery('.counter').counterUp({
 						delay: 10,
@@ -369,6 +392,7 @@ Theme Version:	1.0.0
 				
 				/* Stylish Scroll */
 				var setStylishScroll = function(){
+					/*change content-scroll to custom-scroll*/
 					if(!checkSelectorExistence('.content-scroll')){return;}
 					$(".content-scroll").mCustomScrollbar({
 						setWidth:false,
@@ -405,10 +429,17 @@ Theme Version:	1.0.0
 				
 				/* Left Side Menu */
 				var manageLeftSideMenu = function(){
+					/*change menuicon to nav-icon */
 					jQuery('.menuicon').unbind().on('click',function(){
 						$(this).toggleClass('open');
 					});
 					
+					/* if(windowSize <= 991 ){
+						jQuery('.navbar-nav > li > a, .sub-menu > li > a').unbind().on('click', function(e){
+							jQuery(this).parent().toggleClass('open');
+							jQuery(this).parent().parent().find('li').toggleClass('open');
+						});
+					} */
 					if(windowSize <= 991 ){
 						jQuery('.navbar-nav > li > a, .sub-menu > li > a').unbind().on('click', function(e){
 								//e.preventDefault();
@@ -427,6 +458,7 @@ Theme Version:	1.0.0
 				
 				var managePlaceholderStyle = function()
 				{
+					/*change placeani to placeholder-style*/
 					if(!checkSelectorExistence('.placeani')){return;}
 					$('.placeani input, .placeani textarea').focus(function(){
 					  $(this).parents('.form-group').addClass('focused');
@@ -449,35 +481,12 @@ Theme Version:	1.0.0
 					}, 0);
 				}
 				
-				var codeSecurity = function() {
-					document.onkeydown = function(e) {
-                        if (e.keyCode === 123 || (e.ctrlKey && 
-                            (e.keyCode === 67 || 
-                             e.keyCode === 115 ||
-                             e.keyCode === 99 ||
-                             e.keyCode === 85 || 
-                             e.keyCode === 117))) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    };
-                	
-                	document.addEventListener("contextmenu", function(e){
-                      e.preventDefault();
-                    }, false);
-                    
-                    $(document).keypress("u",function(e) {
-                      if(e.ctrlKey){return false;}
-                      else {return true;}
-                    });
-				}
-				
 				/* Function ============ */
 				return {
 					initialHelper:function(){
 						wowAnimation();
 						scrollPageLayout();
+						controlLeftSideMenu();
 						setHeaderHeight();
 						searchBar();
 						magnificPopupImageView();
@@ -488,12 +497,11 @@ Theme Version:	1.0.0
 						setCountDown();
 						setStylishScroll();
 						manageLeftSideMenu();
-						codeSecurity();
 					},
 					
 					afterLoadThePage:function(){
 						setBootstrapDropDown();
-						setDivSameHeight('.equal-height-container .equal-height-container-item');
+						setDivSameHeight('.equal-wraper .equal-col');
 						setCounterUp();
 						masonryLayout();
 						manageLoader();
@@ -501,6 +509,7 @@ Theme Version:	1.0.0
 					
 					changeTheScreen:function(){
 						setWindowSizeVar();
+						controlLeftSideMenu();
 						manageLeftSideMenu();
 						setHeaderHeight();
 					}
