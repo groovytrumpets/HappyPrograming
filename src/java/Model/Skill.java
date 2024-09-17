@@ -17,16 +17,18 @@ public class Skill {
     private Date createDate;
     private String description;
     private String status;
+    private String img;
 
     // Constructors
     public Skill() {}
 
-    public Skill(int skillId, String skillName, Date createDate, String description, String status) {
+    public Skill(int skillId, String skillName, Date createDate, String description, String status, String img) {
         this.skillId = skillId;
         this.skillName = skillName;
         this.createDate = createDate;
         this.description = description;
         this.status = status;
+        this.img = img;
     }
 
     // Getters and Setters
@@ -70,6 +72,14 @@ public class Skill {
         this.status = status;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     // Optionally, override toString() method to represent the object as a string
     @Override
     public String toString() {
@@ -79,6 +89,7 @@ public class Skill {
                 ", createDate=" + createDate +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }
