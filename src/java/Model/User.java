@@ -29,6 +29,17 @@ public class User {
     // Constructors
     public User() {}
 
+    public User(int userId, String username, String email, String phone, String address, Date dateOfBirth, String fullName, String gender) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.fullName = fullName;
+        this.gender = gender;
+    }
+    
     public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
                 String email, String password, String phone, String address, Date dateOfBirth, 
                 String fullName, String gender) {

@@ -5,6 +5,9 @@
 
 package controller;
 
+import DAO.CVDAO;
+import Model.CV;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +15,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -55,8 +60,22 @@ public class CVUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        int id;
+        CVDAO cvd = new CVDAO();
+        try {
+            id = Integer.parseInt(id_raw);
+            User mentor = cvd.getUserByID(id);
+            CV cv = cvd.getCVbyMentor(mentor.getUserId());
+            request.setAttribute("uFound", mentor);
+            request.setAttribute("cvFound", cv);
+            //System.out.println(mentor.getFullName());
         request.getRequestDispatcher("updateCV.jsp").forward(request, response);
-    } 
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -68,7 +87,42 @@ public class CVUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String userId_raw = request.getParameter("userId");
+        String fullname = request.getParameter("fullname");
+        String username = request.getParameter("username");
+        String dob_raw = request.getParameter("dob");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        //System.out.println(fullname);
+        String profession = request.getParameter("profession");
+        String framework = request.getParameter("framework");
+        String education = request.getParameter("education");
+        String yearxp_raw = request.getParameter("yearxp");
+        String activity = request.getParameter("activity");
+        String professionIntroduction = request.getParameter("professionIntroduction");
+        String serviceDescription = request.getParameter("serviceDescription");
+        String experience = request.getParameter("experience");
+        Date dob;
+        int userid,yearxp;
+        try {
+            userid=Integer.parseInt(userId_raw);
+            yearxp=Integer.parseInt(yearxp_raw);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dob=dateFormat.parse(dob_raw);
+            
+            CVDAO cvdao = new CVDAO();
+            User newUser = new User(userid,username, email, phone, address, dob, fullname, gender);
+            CV newCv = new CV(userid,education, experience, activity, professionIntroduction, profession, yearxp, serviceDescription, framework);
+            cvdao.updateUser(newUser);
+            cvdao.updateCV(newCv);
+        request.getRequestDispatcher("updateCV.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
     }
 
     /** 

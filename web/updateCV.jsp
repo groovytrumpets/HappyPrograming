@@ -359,54 +359,60 @@
                                 <h4>Teacher Profile</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30">
+                                <form class="edit-profile m-b30" action="cvupdate" method="post">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
                                                 <h3>1. Personal Details</h3>
                                             </div>
                                         </div>
+                                       
+                                            
+                                            <div>
+                                                <input class="form-control" type="hidden" name="userId" value="${requestScope.uFound.userId}" >
+                                            </div>
+                                        
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Full Name</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" name="fullname" value="${requestScope.uFound.fullName}" >
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Username</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Date of Birth</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="date" name="dob" value="${requestScope.uFound.dateOfBirth}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Email</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" name="email" value="${requestScope.uFound.email}">
                                                 <span class="help">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Phone No.</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" name="phone" value="${requestScope.uFound.phone}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Gender</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" name="gender" value="${requestScope.uFound.gender}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Address</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="address" value="${requestScope.uFound.address}">
                                             </div>
                                         </div>
 
@@ -420,44 +426,44 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Job/Profession</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="profession" value="${requestScope.cvFound.jobProfession}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Framework</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="framework" value="${requestScope.cvFound.framework}">
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
                                             <label class="col-form-label">Education</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="education" value="${requestScope.cvFound.education}">
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
                                             <label class="col-form-label">Year of experience</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="yearxp" value="${requestScope.cvFound.yearOfExperience}">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Activity</label>
                                             <div>
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" name="activity" value="${requestScope.cvFound.activity}">
                                             </div>
                                         </div>
 
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Profession Introduction</label>
                                             <div>
-                                                <textarea class="form-control"> </textarea>
+                                                <textarea class="form-control" name="professionIntroduction" >${requestScope.cvFound.professionIntroduction} </textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Service description</label>
                                             <div>
-                                                <textarea class="form-control"> </textarea>
+                                                <textarea class="form-control" name="serviceDescription">${requestScope.cvFound.serviceDescription} </textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -488,45 +494,16 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Archivement description/Experience</label>
                                             <div>
-                                                <textarea class="form-control"> </textarea>
+                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience} </textarea>
                                             </div>
                                         </div>
 
 
                                         <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
 
-                                        <div class="col-12 m-t20">
-                                            <div class="ml-auto">
-                                                <h3 class="m-form__section">3. Social Links</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Linkedin</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.linkedin.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Facebook</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.facebook.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Twitter</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.twitter.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Instagram</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.instagram.com">
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-12">
-                                            <button type="reset" class="btn">Save changes</button>
+                                            <button type="submit" class="btn">Save changes</button>
                                             <button type="reset" class="btn-secondry">Cancel</button>
                                         </div>
                                     </div>
