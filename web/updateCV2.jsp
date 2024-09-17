@@ -1,6 +1,6 @@
 <%-- 
-    Document   : updateCV
-    Created on : 17 thg 9, 2024, 12:33:22
+    Document   : updateCV2
+    Created on : 17 thg 9, 2024, 19:21:40
     Author     : ADMIN
 --%>
 
@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
     <head>
 
         <!-- META ============================================= -->
@@ -345,10 +345,10 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Teacher Profile</h4>
+                    <h4 class="breadcrumb-title">Add listing</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Teacher Profile</li>
+                        <li>Add listing</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -356,186 +356,62 @@
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Teacher Profile</h4>
+                                <h4>Add listing</h4>
                             </div>
                             <div class="widget-inner">
                                 <form class="edit-profile m-b30">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
-                                                <h3>1. Personal Details</h3>
+                                                <h3>1. Basic info</h3>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Full Name</label>
+                                            <label class="col-form-label">Course title</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Username</label>
+                                            <label class="col-form-label">Course title</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Date of Birth</label>
+                                            <label class="col-form-label">Course start</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Email</label>
+                                            <label class="col-form-label">Course expire</label>
                                             <div>
-                                                <input class="form-control" type="text" >
-                                                <span class="help">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
+                                                <input class="form-control" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Phone No.</label>
+                                            <label class="col-form-label">Teacher name</label>
                                             <div>
-                                                <input class="form-control" type="text" >
+                                                <input class="form-control" type="text" value="">
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Gender</label>
-                                            <div>
-                                                <input class="form-control" type="text" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Address</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-
                                         <div class="seperator"></div>
 
                                         <div class="col-12 m-t20">
                                             <div class="ml-auto m-b5">
-                                                <h3>2. CV detail</h3>
+                                                <h3>2. Description</h3>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Job/Profession</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Framework</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Education</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Year of experience</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Activity</label>
-                                            <div>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Profession Introduction</label>
+                                        <div class="form-group col-12">
+                                            <label class="col-form-label">Course description</label>
                                             <div>
                                                 <textarea class="form-control"> </textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Service description</label>
-                                            <div>
-                                                <textarea class="form-control"> </textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Select Skills</label>
-                                            <div>
-                                                <ul class="category" style="list-style-type: none;">
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="Tops" name="Tops">
-                                                            <label class="col-form-label" for="Tops">Skill 1</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="Dresses" name="Dresses">
-                                                            <label class="col-form-label" for="Dresses">Skill 2</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="SS" name="SS">
-                                                            <label class="col-form-label" for="SS">Skill 3</label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Archivement description/Experience</label>
-                                            <div>
-                                                <textarea class="form-control"> </textarea>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
-
                                         <div class="col-12 m-t20">
                                             <div class="ml-auto">
-                                                <h3 class="m-form__section">3. Social Links</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Linkedin</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.linkedin.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Facebook</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.facebook.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Twitter</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.twitter.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Instagram</label>
-                                            <div>
-                                                <input class="form-control" type="text" value="www.instagram.com">
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="reset" class="btn">Save changes</button>
-                                            <button type="reset" class="btn-secondry">Cancel</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <form class="edit-profile">
-                                    <div class="row">
-                                        <div class="col-12 m-t20">
-                                            <div class="ml-auto">
-                                                <h3 class="m-form__section">4. Add Item</h3>
+                                                <h3 class="m-form__section">3. Add Item</h3>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -604,9 +480,9 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
+        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-            // Pricing add
+        // Pricing add
             function newMenuItem() {
                 var newElem = $('tr.list-item').first().clone();
                 newElem.find('input').val('');
@@ -625,5 +501,5 @@
         </script>
     </body>
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>
