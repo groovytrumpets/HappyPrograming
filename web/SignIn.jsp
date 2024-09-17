@@ -69,7 +69,7 @@
 					<h2 class="title-head">Login to your <span>Account</span></h2>
 					<p>Don't have an account? <a href="register.html">Create one here</a></p>
 				</div>	
-				<form class="contact-bx">
+				<form class="contact-bx" method="post" action="login">
 					<div class="row placeani">
 						<div class="col-lg-12">
 							<div class="form-group">
