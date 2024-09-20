@@ -5,6 +5,7 @@
 
 package controller;
 
+import DAO.HomeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -56,9 +57,11 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String u=request.getParameter("search");
-        System.out.println(u);
+        HomeDAO hd = new HomeDAO();
+        request.setAttribute("mentorNum", hd.countMentor());
+        request.setAttribute("userNum", hd.countUsers());
         request.getRequestDispatcher("home.jsp").forward(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.

@@ -7,6 +7,8 @@ package controller;
 
 import DAO.CVDAO;
 import Model.CV;
+import Model.Mentor;
+import Model.Skill;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +17,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -65,14 +70,23 @@ public class CVUpdateServlet extends HttpServlet {
         CVDAO cvd = new CVDAO();
         try {
             id = Integer.parseInt(id_raw);
-            User mentor = cvd.getUserByID(id);
-            CV cv = cvd.getCVbyMentor(mentor.getUserId());
+            
+            List<Skill> mentorSkillList = cvd.getMentorSkillList(id);
+            List<Skill> skillList = cvd.getSkillList(id);
+            //System.out.println(mentorSkillList.get(0).getSkillName());
+            request.setAttribute("skillMentor", mentorSkillList);
+            request.setAttribute("skillList", skillList);
+            
+            Mentor mentor = cvd.getMentorByID(id);
+            CV cv = cvd.getCVbyMentor(mentor.getMentorId());
             request.setAttribute("uFound", mentor);
             request.setAttribute("cvFound", cv);
+            
             //System.out.println(mentor.getFullName());
         request.getRequestDispatcher("updateCV.jsp").forward(request, response);
         } catch (Exception e) {
-            System.err.println(e);
+            System.out.println(e);
+            response.sendRedirect("404.jsp");
         }
         
     }
@@ -87,7 +101,11 @@ public class CVUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String userId_raw = request.getParameter("userId");
+        //getParameterValues khac getParameter
+        String[] deleteSkills = request.getParameterValues("deleteSkills");
+        String[] addSkills = request.getParameterValues("addSkills");
+        
+        String userId_raw = request.getParameter("mentorId");
         String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
         String dob_raw = request.getParameter("dob");
@@ -104,20 +122,37 @@ public class CVUpdateServlet extends HttpServlet {
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
+        String avatar = request.getParameter("avatar");
+        
         Date dob;
         int userid,yearxp;
         try {
+            
+           
             userid=Integer.parseInt(userId_raw);
             yearxp=Integer.parseInt(yearxp_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob=dateFormat.parse(dob_raw);
             
             CVDAO cvdao = new CVDAO();
-            User newUser = new User(userid,username, email, phone, address, dob, fullname, gender);
-            CV newCv = new CV(userid,education, experience, activity, professionIntroduction, profession, yearxp, serviceDescription, framework);
-            cvdao.updateUser(newUser);
+            Mentor newMentor = new Mentor(userid,username, email, phone, address, dob, fullname, gender);
+            CV newCv = new CV(userid,education, experience, activity, professionIntroduction, profession, yearxp, serviceDescription, framework,avatar);
+            cvdao.updateMentor(newMentor);
             cvdao.updateCV(newCv);
-        request.getRequestDispatcher("updateCV.jsp").forward(request, response);
+            
+            if (deleteSkills!=null) {
+                cvdao.deleteMentorSkills(userid, deleteSkills);
+                //System.out.println("Del !null");
+            }
+            
+            if (addSkills!=null) {
+                cvdao.insertMentorSkills(userid, addSkills);
+                //System.out.println("Add !null");
+            }
+            
+            
+            //DEMO URL!
+            response.sendRedirect("cvupdate?id="+userid);
         } catch (Exception e) {
             System.out.println(e);
         }

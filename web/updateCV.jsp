@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -366,53 +367,66 @@
                                                 <h3>1. Personal Details</h3>
                                             </div>
                                         </div>
-                                       
-                                            
-                                            <div>
-                                                <input class="form-control" type="hidden" name="userId" value="${requestScope.uFound.userId}" >
+
+
+                                        <div>
+                                            <input class="form-control" type="hidden" name="mentorId" value="${requestScope.uFound.mentorId}" >
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <div class=" text-center">
+
+                                                <img id="userAvatar" src="${requestScope.cvFound.avatar}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
+                                                <div id="Imgstatus"></div>
                                             </div>
-                                        
+                                            <div>
+                                                <label class="col-form-label">Avatar link:</label><input class="form-control" type="text" name="avatar" value="${requestScope.cvFound.avatar}" >
+                                            </div>
+                                        </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Full Name</label>
                                             <div>
-                                                <input class="form-control" type="text" name="fullname" value="${requestScope.uFound.fullName}" >
+                                                <input class="form-control" type="text" name="fullname" value="${requestScope.uFound.fullName}" required >
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Username</label>
                                             <div>
-                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}">
+                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}"required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Date of Birth</label>
                                             <div>
-                                                <input class="form-control" type="date" name="dob" value="${requestScope.uFound.dateOfBirth}">
+                                                <input class="form-control" type="date" name="dob" value="${requestScope.uFound.dateOfBirth}"required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Email</label>
                                             <div>
-                                                <input class="form-control" type="text" name="email" value="${requestScope.uFound.email}">
-                                                <span class="help">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
+                                                <input class="form-control" type="email" name="email" value="${requestScope.uFound.email}">
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-3">
                                             <label class="col-form-label">Phone No.</label>
                                             <div>
-                                                <input class="form-control" type="text" name="phone" value="${requestScope.uFound.phone}">
+                                                <input class="form-control" type="number" name="phone" value="${requestScope.uFound.phone}">
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-3">
                                             <label class="col-form-label">Gender</label>
                                             <div>
-                                                <input class="form-control" type="text" name="gender" value="${requestScope.uFound.gender}">
+                                                <select name="gender" class="">
+                                                    <option value="Male"<c:if test="${requestScope.uFound.gender == 'Male'}">selected</c:if>>Male</option>
+                                                    <option value="Female"<c:if test="${requestScope.uFound.gender == 'Female'}">selected</c:if>>Female</option>
+                                                    <option value="Other"<c:if test="${requestScope.uFound.gender == 'Other'}">selected</c:if>>Other</option>
+                                                    </select>
+
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Address</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="address" value="${requestScope.uFound.address}">
+                                            <div class="form-group col-6">
+                                                <label class="col-form-label">Address</label>
+                                                <div>
+                                                    <input class="form-control" type="text" name="address" value="${requestScope.uFound.address}">
                                             </div>
                                         </div>
 
@@ -444,7 +458,7 @@
                                         <div class="form-group col-3">
                                             <label class="col-form-label">Year of experience</label>
                                             <div>
-                                                <input class="form-control" type="text" name="yearxp" value="${requestScope.cvFound.yearOfExperience}">
+                                                <input class="form-control" type="text" name="yearxp" value="${requestScope.cvFound.yearOfExperience}"required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -466,28 +480,35 @@
                                                 <textarea class="form-control" name="serviceDescription">${requestScope.cvFound.serviceDescription} </textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Select Skills</label>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Delete Your Skills</label>
                                             <div>
                                                 <ul class="category" style="list-style-type: none;">
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="Tops" name="Tops">
-                                                            <label class="col-form-label" for="Tops">Skill 1</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="Dresses" name="Dresses">
-                                                            <label class="col-form-label" for="Dresses">Skill 2</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="check-box">
-                                                            <input type="checkbox" class="checkbox" id="SS" name="SS">
-                                                            <label class="col-form-label" for="SS">Skill 3</label>
-                                                        </div>
-                                                    </li>
+                                                    <c:forEach items="${requestScope.skillMentor}" var="c">
+                                                        <li>
+                                                            <div class="check-box">
+                                                                <label class="col-form-label">
+                                                                    <input type="checkbox" class="checkbox" name="deleteSkills" value="${c.skillId}">
+                                                                    ${c.skillName} </label>
+                                                            </div>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Add Skills</label>
+                                            <div>
+                                                <ul class="category" style="list-style-type: none;">
+                                                    <c:forEach items="${requestScope.skillList}" var="c">
+                                                        <li>
+                                                            <div class="check-box">
+                                                                <label class="col-form-label">
+                                                                    <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
+                                                                    ${c.skillName}</label>
+                                                            </div>
+                                                        </li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
@@ -501,60 +522,14 @@
 
                                         <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
 
-                                        
+
                                         <div class="col-12">
                                             <button type="submit" class="btn">Save changes</button>
                                             <button type="reset" class="btn-secondry">Cancel</button>
                                         </div>
                                     </div>
                                 </form>
-                                <form class="edit-profile">
-                                    <div class="row">
-                                        <div class="col-12 m-t20">
-                                            <div class="ml-auto">
-                                                <h3 class="m-form__section">4. Add Item</h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <table id="item-add" style="width:100%;">
-                                                <tr class="list-item">
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label class="col-form-label">Course Name</label>
-                                                                <div>
-                                                                    <input class="form-control" type="text" value="">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label class="col-form-label">Course Category</label>
-                                                                <div>
-                                                                    <input class="form-control" type="text" value="">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label class="col-form-label">Course Category</label>
-                                                                <div>
-                                                                    <input class="form-control" type="text" value="">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label class="col-form-label">Close</label>
-                                                                <div class="form-group">
-                                                                    <a class="delete" href="#"><i class="fa fa-close"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="button" class="btn-secondry add-item m-r5"><i class="fa fa-fw fa-plus-circle"></i>Add Item</button>
-                                            <button type="reset" class="btn">Save changes</button>
-                                        </div>
-                                    </div>
-                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -582,6 +557,20 @@
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
+        <script>
+            const img = document.getElementById('userAvatar');
+            const statusDiv = document.getElementById('Imgstatus');
+
+            img.onload = function () {
+                statusDiv.innerHTML = "Image uploaded successfully!";
+                statusDiv.style.color = "green";
+            };
+
+            img.onerror = function () {
+                statusDiv.innerHTML = "Unable to load image!";
+                statusDiv.style.color = "red";
+            };
+        </script>
         <script>
             // Pricing add
             function newMenuItem() {

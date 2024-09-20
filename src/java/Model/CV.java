@@ -25,11 +25,12 @@ public class CV {
     private String serviceDescription;
     private String status;
     private String framework;
+    private String avatar;
 
     public CV() {
     }
 
-    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework) {
+    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, String avatar) {
         this.mentorId = mentorId;
         this.education = education;
         this.experience = experience;
@@ -39,10 +40,12 @@ public class CV {
         this.yearOfExperience = yearOfExperience;
         this.serviceDescription = serviceDescription;
         this.framework = framework;
+        this.avatar = avatar;
     }
     
-
-    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework) {
+    
+    
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, String avatar) {
         this.cvId = cvId;
         this.mentorId = mentorId;
         this.education = education;
@@ -56,6 +59,16 @@ public class CV {
         this.serviceDescription = serviceDescription;
         this.status = status;
         this.framework = framework;
+        this.avatar = avatar;
+    }
+
+    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public int getCvId() {

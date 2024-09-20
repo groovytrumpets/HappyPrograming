@@ -12,20 +12,19 @@ public class SkillList {
 
     private int id;
     private int skillId;
-    private int userId;
+    private int mentorId;
     private int rating;
 
-    // Constructors
-    public SkillList() {}
+    public SkillList() {
+    }
 
-    public SkillList(int id, int skillId, int userId, int rating) {
+    public SkillList(int id, int skillId, int mentorId, int rating) {
         this.id = id;
         this.skillId = skillId;
-        this.userId = userId;
+        this.mentorId = mentorId;
         this.rating = rating;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -42,12 +41,12 @@ public class SkillList {
         this.skillId = skillId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getMentorId() {
+        return mentorId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setMentorId(int mentorId) {
+        this.mentorId = mentorId;
     }
 
     public int getRating() {
@@ -58,15 +57,6 @@ public class SkillList {
         this.rating = rating;
     }
 
-    // Optionally, override toString() method to represent the object as a string
-    @Override
-    public String toString() {
-        return "SkillList{" +
-                "id=" + id +
-                ", skillId=" + skillId +
-                ", userId=" + userId +
-                ", rating=" + rating +
-                '}';
-    }
+    
+    
 }
-

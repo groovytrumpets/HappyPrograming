@@ -4,49 +4,53 @@
  */
 package Model;
 
-/**
- *
- * @author nhhag
- */
 import java.util.Date;
 
-public class User {
-    private String username;
+/**
+ *
+ * @author ADMIN
+ */
+public class Mentee {
+    private int menteeId;
     private int roleId;
-    private String status;
+    private String avatar;
+    private String username;
     private Date createDate;
     private String email;
-    private String password;
     private String phone;
     private String address;
     private Date dateOfBirth;
     private String fullName;
     private String gender;
+    private String status;
 
-    // Constructors
-    public User() {}
+    public Mentee() {
+    }
 
-    public User(String username, int roleId, String status, Date createDate, String email, String password, String phone, String address, Date dateOfBirth, String fullName, String gender) {
-        this.username = username;
+    public Mentee(int menteeId, int roleId, String avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+        this.menteeId = menteeId;
         this.roleId = roleId;
-        this.status = status;
+        this.avatar = avatar;
+        this.username = username;
         this.createDate = createDate;
         this.email = email;
-        this.password = password;
         this.phone = phone;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.fullName = fullName;
         this.gender = gender;
+        this.status = status;
     }
 
-    public String getUsername() {
-        return username;
+    public int getMenteeId() {
+        return menteeId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMenteeId(int menteeId) {
+        this.menteeId = menteeId;
     }
+
+    
 
     public int getRoleId() {
         return roleId;
@@ -56,12 +60,20 @@ public class User {
         this.roleId = roleId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getCreateDate() {
@@ -78,14 +90,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {
@@ -127,11 +131,13 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
 }
-
-    // Optionally, override toString() method to represent the object as a string
-    
-
