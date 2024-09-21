@@ -4,48 +4,54 @@
  */
 package Model;
 
-/**
- *
- * @author nhhag
- */
 import java.util.Date;
 
-public class User {
-
+/**
+ *
+ * @author ADMIN
+ */
+public class Mentee {
+    private int menteeId;
     private int roleId;
+    private String avatar;
     private String username;
-    private int roleId;
-    private String status;
     private Date createDate;
     private String email;
-    private String password;
     private String phone;
     private String address;
     private Date dateOfBirth;
     private String fullName;
     private String gender;
+    private String status;
 
-    // Constructors
-    public User() {}
+    public Mentee() {
+    }
 
-    public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
-                String email, String password, String phone, String address, Date dateOfBirth, 
-                String fullName, String gender) {
+    public Mentee(int menteeId, int roleId, String avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+        this.menteeId = menteeId;
         this.roleId = roleId;
+        this.avatar = avatar;
         this.username = username;
-        this.roleId = roleId;
-        this.status = status;
         this.createDate = createDate;
         this.email = email;
-        this.password = password;
         this.phone = phone;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.fullName = fullName;
         this.gender = gender;
+        this.status = status;
     }
 
-    // Getters and Setters
+    public int getMenteeId() {
+        return menteeId;
+    }
+
+    public void setMenteeId(int menteeId) {
+        this.menteeId = menteeId;
+    }
+
+    
+
     public int getRoleId() {
         return roleId;
     }
@@ -54,20 +60,20 @@ public class User {
         this.roleId = roleId;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Date getCreateDate() {
@@ -84,14 +90,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {
@@ -134,13 +132,12 @@ public class User {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "roleId=" + roleId  + ", username=" + username + ", status=" + status + ", createDate=" + createDate + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + '}';
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }
-
-    // Optionally, override toString() method to represent the object as a string
-    
-

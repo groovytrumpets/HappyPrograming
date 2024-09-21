@@ -4,48 +4,64 @@
  */
 package Model;
 
-/**
- *
- * @author nhhag
- */
 import java.util.Date;
 
-public class User {
-
+/**
+ *
+ * @author ADMIN
+ */
+public class Mentor {
+    private int mentorId;
     private int roleId;
     private String username;
-    private int roleId;
-    private String status;
     private Date createDate;
     private String email;
-    private String password;
     private String phone;
     private String address;
     private Date dateOfBirth;
     private String fullName;
     private String gender;
+    private String status;
 
-    // Constructors
-    public User() {}
+    public Mentor() {
+    }
 
-    public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
-                String email, String password, String phone, String address, Date dateOfBirth, 
-                String fullName, String gender) {
+    public Mentor(int mentorId, int roleId, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+        this.mentorId = mentorId;
         this.roleId = roleId;
         this.username = username;
-        this.roleId = roleId;
-        this.status = status;
         this.createDate = createDate;
         this.email = email;
-        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.status = status;
+    }
+
+    public Mentor(int mentorId, String username, String email, String phone, String address, Date dateOfBirth, String fullName, String gender) {
+        this.mentorId = mentorId;
+        this.username = username;
+        this.email = email;
         this.phone = phone;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.fullName = fullName;
         this.gender = gender;
     }
+    
+    
 
-    // Getters and Setters
+    public int getMentorId() {
+        return mentorId;
+    }
+
+    public void setMentorId(int mentorId) {
+        this.mentorId = mentorId;
+    }
+    
+
     public int getRoleId() {
         return roleId;
     }
@@ -62,14 +78,6 @@ public class User {
         this.username = username;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -84,14 +92,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {
@@ -134,13 +134,12 @@ public class User {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "roleId=" + roleId  + ", username=" + username + ", status=" + status + ", createDate=" + createDate + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + '}';
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }
-
-    // Optionally, override toString() method to represent the object as a string
-    
-

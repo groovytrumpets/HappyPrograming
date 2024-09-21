@@ -24,13 +24,28 @@ public class CV {
     private int yearOfExperience; // Changed to INT for year representation
     private String serviceDescription;
     private String status;
+    private String framework;
+    private String avatar;
 
-    // Constructors
-    public CV() {}
+    public CV() {
+    }
 
-    public CV(int cvId, int mentorId, String education, String experience, String activity,
-              String professionIntroduction, String certificate, Date createDate, String jobProfession,
-              int yearOfExperience, String serviceDescription, String status) {
+    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, String avatar) {
+        this.mentorId = mentorId;
+        this.education = education;
+        this.experience = experience;
+        this.activity = activity;
+        this.professionIntroduction = professionIntroduction;
+        this.jobProfession = jobProfession;
+        this.yearOfExperience = yearOfExperience;
+        this.serviceDescription = serviceDescription;
+        this.framework = framework;
+        this.avatar = avatar;
+    }
+    
+    
+    
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, String avatar) {
         this.cvId = cvId;
         this.mentorId = mentorId;
         this.education = education;
@@ -43,9 +58,19 @@ public class CV {
         this.yearOfExperience = yearOfExperience;
         this.serviceDescription = serviceDescription;
         this.status = status;
+        this.framework = framework;
+        this.avatar = avatar;
     }
 
-    // Getters and Setters
+    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public int getCvId() {
         return cvId;
     }
@@ -142,23 +167,16 @@ public class CV {
         this.status = status;
     }
 
-    // Optionally, override toString() method to represent the object as a string
-    @Override
-    public String toString() {
-        return "CV{" +
-                "cvId=" + cvId +
-                ", mentorId=" + mentorId +
-                ", education='" + education + '\'' +
-                ", experience='" + experience + '\'' +
-                ", activity='" + activity + '\'' +
-                ", professionIntroduction='" + professionIntroduction + '\'' +
-                ", certificate='" + certificate + '\'' +
-                ", createDate=" + createDate +
-                ", jobProfession='" + jobProfession + '\'' +
-                ", yearOfExperience=" + yearOfExperience +
-                ", serviceDescription='" + serviceDescription + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+    public String getFramework() {
+        return framework;
     }
+
+    public void setFramework(String framework) {
+        this.framework = framework;
+    }
+    
+    
+
+  
 }
 

@@ -15,7 +15,6 @@
     margin: 0;
     list-style: none;
     padding: 0;
-	border: 0;
 }
 /* widget link*/
 .widget-link ul{
@@ -199,14 +198,13 @@
     font-style: normal;
 }
 .widget .post-title {
-    line-height: 20px;
+    line-height: 16px;
     margin-bottom: 5px;
 	margin-top:0;
 	text-transform: capitalize;
 	font-size: 15px;
 	color: #404040;
 	font-weight: 500;
-	font-family: roboto;
 }
 .widget .post-title a{
 	color:#000;
