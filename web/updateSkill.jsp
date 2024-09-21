@@ -257,20 +257,28 @@
                         <li>
                             <a href="index.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
+                                <span class="ttr-label">Dashboard</span>
                             </a>
                         </li>
                         <li>
                             <a href="courses.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-book"></i></span>
                                 <span class="ttr-label">User</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
+                            <ul>
+                                <li>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor</span></a>
+                                </li>
+                                <li>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee</span></a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="SkillList" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-email"></i></span>
                                 <span class="ttr-label">Skill</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
 
                         </li>
@@ -320,6 +328,7 @@
                     <h4 class="breadcrumb-title">Skill</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="SkillList">Skill</a></li>
                         <li>Update Skill</li>
                     </ul>
                 </div>	
@@ -328,7 +337,7 @@
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Add Skill</h4>
+                                <h4>Update Skill</h4>
                             </div>
                             <div class="widget-inner">
                                 <form class="edit-profile m-b30" method="post" action="updateSkill">

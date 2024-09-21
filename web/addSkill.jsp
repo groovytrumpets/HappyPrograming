@@ -237,7 +237,7 @@
         </header>
         <!-- header end -->
         <!-- Left sidebar menu start -->
-         <div class="ttr-sidebar">
+        <div class="ttr-sidebar">
             <div class="ttr-sidebar-wrapper content-scroll">
                 <!-- side menu logo start -->
                 <div class="ttr-sidebar-logo">
@@ -257,20 +257,28 @@
                         <li>
                             <a href="index.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
+                                <span class="ttr-label">Dashboard</span>
                             </a>
                         </li>
                         <li>
                             <a href="courses.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-book"></i></span>
                                 <span class="ttr-label">User</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
+                            <ul>
+                                <li>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor</span></a>
+                                </li>
+                                <li>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee</span></a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="SkillList" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-email"></i></span>
                                 <span class="ttr-label">Skill</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
 
                         </li>
@@ -320,6 +328,7 @@
                     <h4 class="breadcrumb-title">Add Skill</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="SkillList">Skill</a></li>
                         <li>Add Skill</li>
                     </ul>
                 </div>	

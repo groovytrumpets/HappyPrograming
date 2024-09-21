@@ -258,20 +258,28 @@
                         <li>
                             <a href="index.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
+                                <span class="ttr-label">Dashboard</span>
                             </a>
                         </li>
                         <li>
                             <a href="courses.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-book"></i></span>
                                 <span class="ttr-label">User</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
+                            <ul>
+                                <li>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor</span></a>
+                                </li>
+                                <li>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee</span></a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="SkillList" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-email"></i></span>
                                 <span class="ttr-label">Skill</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
 
                         </li>
@@ -422,22 +430,22 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-            // Pricing add
-            function newMenuItem() {
-                var newElem = $('tr.list-item').first().clone();
-                newElem.find('input').val('');
-                newElem.appendTo('table#item-add');
-            }
-            if ($("table#item-add").is('*')) {
-                $('.add-item').on('click', function (e) {
-                    e.preventDefault();
-                    newMenuItem();
-                });
-                $(document).on("click", "#item-add .delete", function (e) {
-                    e.preventDefault();
-                    $(this).parent().parent().parent().parent().remove();
-                });
-            }
+                                                // Pricing add
+                                                function newMenuItem() {
+                                                    var newElem = $('tr.list-item').first().clone();
+                                                    newElem.find('input').val('');
+                                                    newElem.appendTo('table#item-add');
+                                                }
+                                                if ($("table#item-add").is('*')) {
+                                                    $('.add-item').on('click', function (e) {
+                                                        e.preventDefault();
+                                                        newMenuItem();
+                                                    });
+                                                    $(document).on("click", "#item-add .delete", function (e) {
+                                                        e.preventDefault();
+                                                        $(this).parent().parent().parent().parent().remove();
+                                                    });
+                                                }
 
         </script>
         <script type="text/javascript">
