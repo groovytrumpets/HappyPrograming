@@ -385,9 +385,9 @@
                                             <form action="adminSearchSkill?search=${requestScope.search}" method="get">
                                                 <input type="hidden" name="search" value="${requestScope.search}">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
-                                                    <option value="1" ${numDis == 1 ? 'selected' : ''}>1</option>
-                                                    <option value="2" ${numDis == 2 ? 'selected' : ''}>2</option>
-                                                    <option value="4" ${numDis == 4 ? 'selected' : ''}>4</option>
+                                                    <option value="5" ${numDis == 5 ? 'selected' : ''}>5</option>
+                                                    <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
+                                                    <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
                                                 </select>
 
                                                 <noscript><input type="submit" value="Submit"></noscript>

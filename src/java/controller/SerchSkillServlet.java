@@ -72,7 +72,7 @@ public class SerchSkillServlet extends HttpServlet {
         if (numDis_raw != null) {
             numDis = Integer.parseInt(numDis_raw);
         } else {
-            numDis = 1;
+            numDis = 5;
         }
         
         String searchName = request.getParameter("search");
