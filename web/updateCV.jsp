@@ -481,7 +481,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label class="col-form-label">Delete Your Skills</label>
+                                            <label class="col-form-label">Your Skills</label><br/>
+                                            <label class="col-form-label"><i>Delete Your Skills</i></label>
                                             <div>
                                                 <ul class="category" style="list-style-type: none;">
                                                     <c:forEach items="${requestScope.skillMentor}" var="c">
@@ -497,7 +498,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label class="col-form-label">Add Skills</label>
+                                            <br/>
+                                            <label class="col-form-label"><i>Add Skills</i></label>
                                             <div>
                                                 <ul class="category" style="list-style-type: none;">
                                                     <c:forEach items="${requestScope.skillList}" var="c">

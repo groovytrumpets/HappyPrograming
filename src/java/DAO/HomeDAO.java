@@ -112,45 +112,4 @@ public class HomeDAO extends DBContext {
         }
 
     }
-
-    /*
-    public void insertCompany(Company c) {
-        String sql = "INSERT INTO [dbo].[Company]\n"
-                + "           ([CompanyCode]\n"
-                + "           ,[CompanyName])\n"
-                + "     VALUES\n"
-                + "           (?,?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, c.getCompanyCode());
-            st.setString(2, c.getCompanyName());
-            st.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-
-    public void update(Job c) {
-        String sql = "UPDATE [dbo].[Job]\n"
-                + "   SET [JobTitle] = ?\n"
-                + "      ,[CompanyCode] = ?\n"
-                + "      ,[YearExp] = ?\n"
-                + "      ,[Description] = ?\n"
-                + " WHERE ID=?;";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, c.getJobTitle());
-            st.setString(2, c.getCompanyCode());
-            st.setInt(3, c.getYearExp());
-            st.setString(4, c.getDescription());
-            st.setInt(5, c.getId());
-            st.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-    }
-     */
 }
