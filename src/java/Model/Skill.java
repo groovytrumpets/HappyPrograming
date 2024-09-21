@@ -17,16 +17,35 @@ public class Skill {
     private Date createDate;
     private String description;
     private String status;
+    private String img;
 
     // Constructors
     public Skill() {}
 
-    public Skill(int skillId, String skillName, Date createDate, String description, String status) {
+    public Skill(int skillId, String skillName, Date createDate, String description, String status, String img) {
         this.skillId = skillId;
         this.skillName = skillName;
         this.createDate = createDate;
         this.description = description;
         this.status = status;
+        this.img = img;
+    }
+
+    public Skill(int skillId, String skillName) {
+        this.skillId = skillId;
+        this.skillName = skillName;
+    }
+    
+    
+
+
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     // Getters and Setters

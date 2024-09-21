@@ -11,11 +11,8 @@ package Model;
 import java.util.Date;
 
 public class User {
-
-    private int userId;
-    private int roleId;
-    private String avatar;  // Changed from byte[] to String
     private String username;
+    private int roleId;
     private String status;
     private Date createDate;
     private String email;
@@ -29,13 +26,9 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
-                String email, String password, String phone, String address, Date dateOfBirth, 
-                String fullName, String gender) {
-        this.userId = userId;
-        this.roleId = roleId;
-        this.avatar = avatar;
+    public User(String username, int roleId, String status, Date createDate, String email, String password, String phone, String address, Date dateOfBirth, String fullName, String gender) {
         this.username = username;
+        this.roleId = roleId;
         this.status = status;
         this.createDate = createDate;
         this.email = email;
@@ -47,13 +40,12 @@ public class User {
         this.gender = gender;
     }
 
-    // Getters and Setters
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getRoleId() {
@@ -62,22 +54,6 @@ public class User {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getStatus() {
@@ -151,6 +127,9 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    
+    
+    
 }
 
     // Optionally, override toString() method to represent the object as a string
