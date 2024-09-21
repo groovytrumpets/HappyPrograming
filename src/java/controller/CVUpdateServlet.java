@@ -155,6 +155,7 @@ public class CVUpdateServlet extends HttpServlet {
             response.sendRedirect("cvupdate?id="+userid);
         } catch (Exception e) {
             System.out.println(e);
+            response.sendRedirect("404.jsp");
         }
         
         
