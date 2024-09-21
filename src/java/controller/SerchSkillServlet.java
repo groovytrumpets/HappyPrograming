@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import DAO.DaoSkill;
@@ -14,43 +13,45 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author tuong
  */
-@WebServlet(name="addSkillServlet", urlPatterns={"/addSkill"})
-public class addSkillServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "SerchSkillServlet", urlPatterns = {"/adminSearchSkill"})
+public class SerchSkillServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet addSkillServlet</title>");  
+            out.println("<title>Servlet SerchSkillServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet addSkillServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SerchSkillServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,12 +59,38 @@ public class addSkillServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-       request.getRequestDispatcher("addSkill.jsp").forward(request, response);
-    } 
+            throws ServletException, IOException {
+        DaoSkill act = new DaoSkill();
+        String page_raw = request.getParameter("page");
+        String numDis_raw = request.getParameter("numDis");
+        int page, numDis;
+        if (page_raw != null) {
+            page = Integer.parseInt(page_raw);
+        } else {
+            page = 1;
+        }
+        if (numDis_raw != null) {
+            numDis = Integer.parseInt(numDis_raw);
+        } else {
+            numDis = 1;
+        }
+        
+        String searchName = request.getParameter("search");
+        List<Skill> listAllSkill = act.getListOfSkillByName(searchName);
+        int numSkill = listAllSkill.size();
+        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
+        request.setAttribute("numOfPage", numOfPage);
+        request.setAttribute("indexPage", page);
+        request.setAttribute("numDis", numDis);
+        listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
+        request.setAttribute("search", searchName);
+        request.setAttribute("list", listAllSkill);
+        request.getRequestDispatcher("adminSearchSkill.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -71,20 +98,13 @@ public class addSkillServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String img = request.getParameter("img");
-        String status = request.getParameter("status");
-        String description = request.getParameter("description");
-        Date date = new Date();
-        Skill newSkill = new Skill(0, name, date, description, status, img);
-        DaoSkill dao = new DaoSkill();
-        dao.insertNewSkill(newSkill);
-        response.sendRedirect("addSkill");
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

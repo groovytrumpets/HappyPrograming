@@ -7,9 +7,13 @@ package DAO;
 import Model.Skill;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
+import java.util.List;
 
 /**
  *
@@ -17,7 +21,7 @@ import java.util.Date;
  */
 public class DaoSkill extends DBContext {
 
-    public void insertSkill(Skill newSkill) {
+    public void insertNewSkill(Skill newSkill) {
         String sql = "INSERT INTO [dbo].[Skill]\n"
                 + "           ([SkillName]\n"
                 + "           ,[CreateDate]\n"
@@ -41,10 +45,215 @@ public class DaoSkill extends DBContext {
         }
     }
 
+    public List<Skill> getListOfAllSkill() {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[img]\n"
+                + "  FROM [dbo].[Skill]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillPaging(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill]\n"
+                + "  order by Skill.SkillID asc\n"
+                + "offset ? rows\n"
+                + "fetch next ? row only";
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public void deleteSkillById(int skillId) {
+        String sql = "DELETE FROM [dbo].[Skill]\n"
+                + "      WHERE SkillID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, skillId);
+            st.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public Skill getSkillById(int skillId) {
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill]\n"
+                + "  where SkillID=?";
+        Skill curSkill = new Skill();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, skillId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                curSkill.setSkillId(Integer.parseInt(id_raw));
+                curSkill.setSkillName(rs.getString("SkillName"));
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(rs.getString("Description"));
+                curSkill.setStatus(rs.getString("Status"));
+                curSkill.setImg(rs.getString("img"));
+            }
+        } catch (Exception e) {
+        }
+        return curSkill;
+    }
+
+    public void updateSkillInfo(Skill updateSkill) {
+        String sql = "UPDATE [dbo].[Skill]\n"
+                + "   SET [SkillName] =?\n"
+                + "      ,[CreateDate] = ?\n"
+                + "      ,[Description] = ?\n"
+                + "      ,[Status] =?\n"
+                + "      ,[Img] = ?\n"
+                + " WHERE SkillID=?";
+        try {
+            PreparedStatement rs = connection.prepareStatement(sql);
+            rs.setString(1, updateSkill.getSkillName());
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            String curTime = dtf.format(now);
+            rs.setString(2, curTime);
+            rs.setString(3, updateSkill.getDescription());
+            rs.setString(4, updateSkill.getStatus());
+            rs.setString(5, updateSkill.getImg());
+            rs.setInt(6, updateSkill.getSkillId());
+            rs.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public List<Skill> getListOfSkillByName(String skillName) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill]\n"
+                + "  WHERE [SkillName] LIKE '%' + ? + '%' \n"
+                + "  order by SkillID asc\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+            
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByNamePagination(int page, int numShow, String skillName) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill]\n"
+                + "  WHERE [SkillName] LIKE '%' + ? + '%' \n"
+                + "  order by SkillID asc\n"
+                + "  offset ? row \n"
+                + "  fetch next ? row only";
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+            st.setInt(2, start);
+            st.setInt(3, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
     public static void main(String[] args) {
         DaoSkill act = new DaoSkill();
-        Date now = new Date();
-        Skill curSkill = new Skill(0, "skillName", now, "description", "status", "img");
-        act.insertSkill(curSkill);
+        List<Skill> list = act.getListOfSkillByNamePagination(2, 2, "#");
+        System.out.println(list.get(1).getSkillName());
+
     }
 }

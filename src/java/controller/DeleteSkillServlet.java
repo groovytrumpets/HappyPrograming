@@ -14,15 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author tuong
  */
-@WebServlet(name="addSkillServlet", urlPatterns={"/addSkill"})
-public class addSkillServlet extends HttpServlet {
+@WebServlet(name="DeleteSkillServlet", urlPatterns={"/deleteSkill"})
+public class DeleteSkillServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +38,10 @@ public class addSkillServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet addSkillServlet</title>");  
+            out.println("<title>Servlet DeleteSkillServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet addSkillServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteSkillServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,9 +57,35 @@ public class addSkillServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-       request.getRequestDispatcher("addSkill.jsp").forward(request, response);
-    } 
+            throws ServletException, IOException {
+        DaoSkill act = new DaoSkill();
+        List<Skill> listAllSkill = act.getListOfAllSkill();
+        String page_raw = request.getParameter("page");
+        String numDis_raw = request.getParameter("numDis");
+        String deleteID_raw = request.getParameter("id");
+        int deleteId = Integer.parseInt(deleteID_raw);
+        act.deleteSkillById(deleteId);
+        int page, numDis;
+        if (page_raw != null) {
+            page = Integer.parseInt(page_raw);
+        } else {
+            page = 1;
+        }
+        if (numDis_raw != null) {
+            numDis = Integer.parseInt(numDis_raw);
+        } else {
+            numDis = 10;
+        }
+        int numSkill = listAllSkill.size();
+        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
+        request.setAttribute("numOfPage", numOfPage);
+        listAllSkill = act.getListOfSkillPaging(page, numDis);
+        request.setAttribute("indexPage", page);
+        request.setAttribute("numDis", numDis);
+
+        request.setAttribute("list", listAllSkill);
+        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -72,15 +97,7 @@ public class addSkillServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String img = request.getParameter("img");
-        String status = request.getParameter("status");
-        String description = request.getParameter("description");
-        Date date = new Date();
-        Skill newSkill = new Skill(0, name, date, description, status, img);
-        DaoSkill dao = new DaoSkill();
-        dao.insertNewSkill(newSkill);
-        response.sendRedirect("addSkill");
+        processRequest(request, response);
     }
 
     /** 

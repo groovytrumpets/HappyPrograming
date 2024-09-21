@@ -1,6 +1,6 @@
 <%-- 
-    Document   : addSkill
-    Created on : Sep 17, 2024, 8:57:46 AM
+    Document   : updateSkill
+    Created on : Sep 20, 2024, 11:49:40 PM
     Author     : tuong
 --%>
 
@@ -237,7 +237,7 @@
         </header>
         <!-- header end -->
         <!-- Left sidebar menu start -->
-         <div class="ttr-sidebar">
+        <div class="ttr-sidebar">
             <div class="ttr-sidebar-wrapper content-scroll">
                 <!-- side menu logo start -->
                 <div class="ttr-sidebar-logo">
@@ -317,10 +317,10 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Add Skill</h4>
+                    <h4 class="breadcrumb-title">Skill</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Add Skill</li>
+                        <li>Update Skill</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -331,31 +331,44 @@
                                 <h4>Add Skill</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" method="post" action="addSkill">
+                                <form class="edit-profile m-b30" method="post" action="updateSkill">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
-                                                <h3>1. Input info</h3>
+                                                <h3>1. Skill info</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Skill ID</label>
+                                            <div>
+                                                <input class="form-control" type="text"  name="id" value="${requestScope.id}" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Name</label>
                                             <div>
-                                                <input class="form-control" type="text"  name="name" required="">
+                                                <input class="form-control" type="text"  name="name" value="${requestScope.name}" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Skill Status</label>
+                                            <div>
+                                                <select name="status" >
+                                                    <option value="Active" ${requestScope.status =='Active'?'selected':''} style="color: black">Active</option>
+                                                    <option value="Inactive" ${requestScope.status =='Inactive'?'selected':''}  style="color: black">Inactive</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
                                             <div>
-                                                <input class="form-control" type="text"  placeholder="input link here" name="img" required>
+                                                <input class="form-control" type="text" value="${requestScope.img}" name="img" required>
                                             </div>
                                         </div>
 
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Skill Status</label>
-                                            <div>
-                                                <input type="radio"name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
-                                            </div>
+                                        <div>
+                                            <div><label>Image:</label></div>
+                                            <img src="${requestScope.img}" class="img-fluid">
                                         </div>
                                         <div class="seperator"></div>
 
@@ -367,12 +380,12 @@
                                         <div class="form-group col-12">
                                             <label class="col-form-label">Skill description</label>
                                             <div>
-                                                <textarea class="form-control" name="description" style="border: 1px solid black" required> </textarea>
+                                                <textarea class="form-control" name="description" required>${requestScope.description}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="col-12">
-                                            <button type="submit" class="btn-secondry add-item m-r5" value="Add Skill"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</button>
+                                            <button type="submit" class="btn-secondry add-item m-r5" value="Update Skill"><i class="fa fa-fw fa-plus-circle"></i>Update Skill</button>
 
                                         </div>
                                     </div>
