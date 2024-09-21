@@ -11,6 +11,8 @@ package Model;
 import java.util.Date;
 
 public class User {
+
+    private int roleId;
     private String username;
     private int roleId;
     private String status;
@@ -26,7 +28,10 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(String username, int roleId, String status, Date createDate, String email, String password, String phone, String address, Date dateOfBirth, String fullName, String gender) {
+    public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
+                String email, String password, String phone, String address, Date dateOfBirth, 
+                String fullName, String gender) {
+        this.roleId = roleId;
         this.username = username;
         this.roleId = roleId;
         this.status = status;
@@ -40,20 +45,21 @@ public class User {
         this.gender = gender;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    // Getters and Setters
     public int getRoleId() {
         return roleId;
     }
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStatus() {
@@ -127,8 +133,11 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "User{" + "roleId=" + roleId  + ", username=" + username + ", status=" + status + ", createDate=" + createDate + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + '}';
+    }
     
 }
 
