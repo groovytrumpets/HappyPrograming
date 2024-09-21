@@ -12,9 +12,7 @@ import java.util.Date;
 
 public class User {
 
-    private int userId;
     private int roleId;
-    private String avatar;  // Changed from byte[] to String
     private String username;
     private String status;
     private Date createDate;
@@ -32,9 +30,7 @@ public class User {
     public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
                 String email, String password, String phone, String address, Date dateOfBirth, 
                 String fullName, String gender) {
-        this.userId = userId;
         this.roleId = roleId;
-        this.avatar = avatar;
         this.username = username;
         this.status = status;
         this.createDate = createDate;
@@ -48,28 +44,12 @@ public class User {
     }
 
     // Getters and Setters
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getRoleId() {
         return roleId;
     }
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -151,6 +131,12 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "roleId=" + roleId  + ", username=" + username + ", status=" + status + ", createDate=" + createDate + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + '}';
+    }
+    
 }
 
     // Optionally, override toString() method to represent the object as a string
