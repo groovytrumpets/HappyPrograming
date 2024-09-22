@@ -160,6 +160,55 @@ public class UserDAO extends DBContext {
         return user;  // Return the user object or null if not found
     }
 
+    //change password
+    public boolean validateUser(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM [User] WHERE [Email] = ? AND [Password] = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // returns true if user exists
+        }
+    }
+
+    public boolean updatePassword(String email, String newPassword) throws SQLException {
+        String sql = "UPDATE [User] SET [Password] = ? WHERE [Email] = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, newPassword);  // Update to the new password
+            stmt.setString(2, email);        // Where the email matches
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;          // Return true if at least one row was updated
+        }
+    }
+    
+    //forgot password and send reset link
+    public String getUserEmailByEmail(String email) {
+        String userEmail = null;
+        String query = "SELECT Email FROM [User] WHERE Email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                userEmail = rs.getString("Email");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userEmail;
+    }
+
+    public boolean updateUserPassword(String email, String newPassword) {
+        String query = "UPDATE [User] SET [Password] = ? WHERE Email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newPassword);
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Main method for testing
     public static void main(String[] args) {
         UserDAO u = new UserDAO();
@@ -191,7 +240,7 @@ public class UserDAO extends DBContext {
         newUser.setCreateDate(new java.util.Date()); // Current date
         newUser.setStatus("inactive"); // Status set to inactive until confirmation
         u.insertUser(newUser);*/
-        System.out.println(u.findUserPass("tuonghuymai","Hoanganhgp2"));
+        System.out.println(u.findUserPass("tuonghuymai", "Hoanganhgp2"));
     }
 
 }
