@@ -112,7 +112,7 @@ public class SignInSV extends HttpServlet {
                         response.addCookie(usernameCookie);
                         response.addCookie(passwordCookie);
                     }
-                    response.sendRedirect("Home.jsp");
+                    response.sendRedirect("home.jsp");
                 } else if (a != null && a.getStatus().equals("inactive")) {
                     request.setAttribute("notify", "Your account is not active, please active by link in your email");
                     request.getRequestDispatcher("SignIn.jsp").forward(request, response);
