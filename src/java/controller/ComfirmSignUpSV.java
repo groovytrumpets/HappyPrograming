@@ -4,6 +4,8 @@
  */
 package controller;
 
+import DAO.MenteeDAO;
+import DAO.MentorDAO;
 import DAO.UserDAO;
 import Model.User;
 import java.io.IOException;
@@ -13,6 +15,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -60,46 +64,64 @@ public class ComfirmSignUpSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = request.getParameter("email");
+        try {
+            if (email != null && !email.isEmpty()) {
+                UserDAO userDAO = new UserDAO();
+                User user = userDAO.findUserByEmail(email);
 
-        if (email != null && !email.isEmpty()) {
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.findUserByEmail(email);
+                if (user != null && "inactive".equals(user.getStatus())) {
+                    user.setStatus("active");
+                    userDAO.updateUser(user);
 
-            if (user != null && "inactive".equals(user.getStatus())) {
-                user.setStatus("active");
-                userDAO.updateUser(user);
-                request.setAttribute("message", "Your email has been confirmed. You can now log in.");
+                    java.util.Date utilDateOfBirth = user.getDateOfBirth();
+                    java.sql.Date dob = new java.sql.Date(utilDateOfBirth.getTime());
+                    java.util.Date utilCurrentDate = user.getCreateDate();
+                    java.sql.Date current = new java.sql.Date(utilCurrentDate.getTime());
+
+                    if (user.getRoleId() == 2) {
+                        MenteeDAO menteeDAO = new MenteeDAO();
+                        menteeDAO.insertMentee(user.getRoleId(), null, user.getUsername(), current, user.getEmail(),
+                                user.getPhone(), user.getAddress(), dob, user.getFullName(), user.getGender(), user.getStatus());
+                    } else {
+                        MentorDAO mentorDAO = new MentorDAO();
+                        mentorDAO.insertMentor(user.getRoleId(), user.getUsername(), current, user.getEmail(),
+                                user.getPhone(), user.getAddress(), dob, user.getFullName(), user.getGender(), user.getStatus());
+                    }
+                    request.setAttribute("message", "Your email has been confirmed. You can now log in.");
+                } else {
+                    request.setAttribute("message", "Invalid confirmation link.");
+                }
             } else {
-                request.setAttribute("message", "Invalid or expired confirmation link.");
+                request.setAttribute("message", "Invalid request.");
             }
-        } else {
-            request.setAttribute("message", "Invalid request.");
+            request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("message", "Error");
+            request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("SignIn.jsp").forward(request, response);
     }
 
-
-
-/**
- * Handles the HTTP <code>POST</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
-public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

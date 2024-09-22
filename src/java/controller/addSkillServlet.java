@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,12 +83,14 @@ public class addSkillServlet extends HttpServlet {
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
         }
+
         boolean checkDup = checkDupSkill(name);
         if (checkDup == true) {
             request.setAttribute("error", "Skill name already exist!");
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
         }
+
         String img = request.getParameter("img");
         String status = request.getParameter("status");
         String description = request.getParameter("description");
@@ -106,6 +109,7 @@ public class addSkillServlet extends HttpServlet {
             return true;
         }
         return false;
+
     }
 
     /**
