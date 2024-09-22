@@ -60,7 +60,7 @@ public class HomeServlet extends HttpServlet {
         HomeDAO hd = new HomeDAO();
         request.setAttribute("mentorNum", hd.countMentor());
         request.setAttribute("userNum", hd.countUsers());
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("Home.jsp").forward(request, response);
     }
 
     /** 

@@ -20,6 +20,8 @@ public class Email {
         props.put("mail.smtp.port", "587"); // TLS port
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true"); // Enable TLS
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
 
         // Create Authenticator
         Authenticator auth = new Authenticator() {

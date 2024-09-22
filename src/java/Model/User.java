@@ -14,7 +14,6 @@ public class User {
 
     private int roleId;
     private String username;
-    private int roleId;
     private String status;
     private Date createDate;
     private String email;

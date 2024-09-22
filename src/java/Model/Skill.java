@@ -20,7 +20,8 @@ public class Skill {
     private String img;
 
     // Constructors
-    public Skill() {}
+    public Skill() {
+    }
 
     public Skill(int skillId, String skillName, Date createDate, String description, String status, String img) {
         this.skillId = skillId;
@@ -29,23 +30,12 @@ public class Skill {
         this.description = description;
         this.status = status;
         this.img = img;
+
     }
 
     public Skill(int skillId, String skillName) {
         this.skillId = skillId;
         this.skillName = skillName;
-    }
-    
-    
-
-
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 
     // Getters and Setters
@@ -89,16 +79,24 @@ public class Skill {
         this.status = status;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     // Optionally, override toString() method to represent the object as a string
     @Override
     public String toString() {
-        return "Skill{" +
-                "skillId=" + skillId +
-                ", skillName='" + skillName + '\'' +
-                ", createDate=" + createDate +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return "Skill{"
+                + "skillId=" + skillId
+                + ", skillName='" + skillName + '\''
+                + ", createDate=" + createDate
+                + ", description='" + description + '\''
+                + ", status='" + status + '\''
+                + ", img='" + img + '\''
+                + '}';
     }
 }
-
