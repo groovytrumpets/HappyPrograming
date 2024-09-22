@@ -83,8 +83,8 @@
                                             <option data-icon="flag flag-us">English US</option>
                                         </select>
                                     </li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="signin">Login</a></li>
+                                    <li><a href="signup">Register</a></li>
                                 </ul>
                             </div>
                         </div>

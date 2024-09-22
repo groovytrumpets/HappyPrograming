@@ -89,16 +89,16 @@ public class UserDAO extends DBContext {
             st.setString(1, user.getUsername());
             st.setInt(2, user.getRoleId());
             st.setString(3, user.getStatus());
-            st.setDate(4, new java.sql.Date(user.getCreateDate().getTime())); // java.util.Date to java.sql.Date
+            st.setDate(4, new java.sql.Date(user.getCreateDate().getTime()));
             st.setString(5, user.getEmail());
             st.setString(6, user.getPassword());
             st.setString(7, user.getPhone());
             st.setString(8, user.getAddress());
-            st.setDate(9, new java.sql.Date(user.getDateOfBirth().getTime())); // java.util.Date to java.sql.Date
+            st.setDate(9, new java.sql.Date(user.getDateOfBirth().getTime())); 
             st.setString(10, user.getFullName());
             st.setString(11, user.getGender());
 
-            st.executeUpdate();  // Execute the insert statement
+            st.executeUpdate();  
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +163,7 @@ public class UserDAO extends DBContext {
     // Main method for testing
     public static void main(String[] args) {
         UserDAO u = new UserDAO();
-        /*String username = "johndoe";
+        String username = "johndoe";
         String password = "securepassword123"; // Ensure this is hashed in practice
         String email = "johndoe@example.com";
         String fullName = "John Doe";
@@ -172,9 +172,9 @@ public class UserDAO extends DBContext {
         String gender = "Male";
         String address = "123 Elm Street, Springfield, IL";
         int role = 1;
-
+        System.out.println(dob_raw);
         // Parse the date of birth
-        LocalDate localDob = LocalDate.parse(dob_raw);
+        /*LocalDate localDob = LocalDate.parse(dob_raw);
         Date dob = Date.valueOf(localDob);
 
         // Create and set up the new user
@@ -190,8 +190,8 @@ public class UserDAO extends DBContext {
         newUser.setRoleId(role);
         newUser.setCreateDate(new java.util.Date()); // Current date
         newUser.setStatus("inactive"); // Status set to inactive until confirmation
-        u.insertUser(newUser);*/
-        System.out.println(u.findUserPass("tuonghuymai","Hoanganhgp2"));
+        u.insertUser(newUser);
+        System.out.println(u.findUserPass("tuonghuymai","Hoanganhgp2"));*/
     }
 
 }
