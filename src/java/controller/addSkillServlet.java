@@ -73,6 +73,11 @@ public class addSkillServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String name = request.getParameter("name");
+        if(name.trim().isEmpty() || name.isEmpty()){
+            request.setAttribute("error", "You must not leave this field empty!");
+            request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+            return;
+        }
         String img = request.getParameter("img");
         String status = request.getParameter("status");
         String description = request.getParameter("description");

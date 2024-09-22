@@ -352,6 +352,7 @@
                                             <div>
                                                 <input class="form-control" type="text"  name="name" required="">
                                             </div>
+                                            <div><p style="color: red">${requestScope.error}</p></div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
