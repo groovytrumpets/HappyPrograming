@@ -72,21 +72,6 @@ public class ComfirmSignUpSV extends HttpServlet {
                 if (user != null && "inactive".equals(user.getStatus())) {
                     user.setStatus("active");
                     userDAO.updateUser(user);
-
-                    java.util.Date utilDateOfBirth = user.getDateOfBirth();
-                    java.sql.Date dob = new java.sql.Date(utilDateOfBirth.getTime());
-                    java.util.Date utilCurrentDate = user.getCreateDate();
-                    java.sql.Date current = new java.sql.Date(utilCurrentDate.getTime());
-
-                    if (user.getRoleId() == 2) {
-                        MenteeDAO menteeDAO = new MenteeDAO();
-                        menteeDAO.insertMentee(user.getRoleId(), null, user.getUsername(), current, user.getEmail(),
-                                user.getPhone(), user.getAddress(), dob, user.getFullName(), user.getGender(), user.getStatus());
-                    } else {
-                        MentorDAO mentorDAO = new MentorDAO();
-                        mentorDAO.insertMentor(user.getRoleId(), user.getUsername(), current, user.getEmail(),
-                                user.getPhone(), user.getAddress(), dob, user.getFullName(), user.getGender(), user.getStatus());
-                    }
                     request.setAttribute("message", "Your email has been confirmed. You can now log in.");
                 } else {
                     request.setAttribute("message", "Invalid confirmation link.");

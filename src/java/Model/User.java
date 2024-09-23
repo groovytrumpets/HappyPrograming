@@ -27,10 +27,9 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(int userId, int roleId, String avatar, String username, String status, Date createDate, 
+    public User(int roleId, String avatar, String username, String status, Date createDate, 
                 String email, String password, String phone, String address, Date dateOfBirth, 
                 String fullName, String gender) {
-        this.roleId = roleId;
         this.username = username;
         this.roleId = roleId;
         this.status = status;
