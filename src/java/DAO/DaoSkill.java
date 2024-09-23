@@ -185,18 +185,51 @@ public class DaoSkill extends DBContext {
 
     public List<Skill> getListOfSkillByName(String skillName) {
         List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID], \n"
+                + "       [SkillName], \n"
+                + "       [CreateDate], \n"
+                + "       [Description], \n"
+                + "       [Status], \n"
+                + "       [Img]\n"
+                + "FROM [dbo].[Skill]\n"
+                + "WHERE [SkillName] = ?\n"
+                + "ORDER BY [SkillID] ASC;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByNameDifID(String skillName, int skillID) {
+        List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"
                 + "      ,[SkillName]\n"
                 + "      ,[CreateDate]\n"
                 + "      ,[Description]\n"
                 + "      ,[Status]\n"
                 + "      ,[Img]\n"
-                + "  FROM [dbo].[Skill]\n"
-                + "  WHERE [SkillName] LIKE '%' + ? + '%' \n"
-                + "  order by SkillID asc\n";
+                + "  FROM [dbo].[Skill] where SkillName = ?  and SkillID !=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, skillName);
+            st.setInt(2, skillID);
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

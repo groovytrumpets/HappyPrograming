@@ -105,7 +105,7 @@ public class UpdateSkillServlet extends HttpServlet {
             return;
         }
 
-        boolean checkDup = checkDupSkill(name);
+        boolean checkDup = checkDupSkill(name,id);
         if (checkDup == true) {
             String error = "Skill name already exist!";
             request.setAttribute("error", "Skill name already exist!");
@@ -127,9 +127,9 @@ public class UpdateSkillServlet extends HttpServlet {
         response.sendRedirect("updateSkill?updateId=" + id);
     }
 
-    public boolean checkDupSkill(String skillName) {
+    public boolean checkDupSkill(String skillName, int id) {
         DaoSkill act = new DaoSkill();
-        List<Skill> list = act.getListOfSkillByName(skillName);
+        List<Skill> list = act.getListOfSkillByNameDifID(skillName, id);
         if (!list.isEmpty()) {
             return true;
         }
