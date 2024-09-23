@@ -106,7 +106,7 @@ public class SignUpSV extends HttpServlet {
             }
 
             if (!checkValidPass(pass, repass)) {
-                request.setAttribute("perror1", "Password requirements (6-18 characters, containing a number, uppercase letter)");
+                request.setAttribute("perror1", "Password do not meet requirement");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
                 return;  
             }

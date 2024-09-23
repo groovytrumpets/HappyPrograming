@@ -31,7 +31,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programming</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,7 +87,6 @@
                                         <div class="input-group">
                                             <label for="user-mail">Email address</label>
                                             <input name="email" type="email" id="user-mail" class="form-control"  required>
-                                            <small id="emailHelp" class="form-text text-muted"></small>
                                             <small style="color: red">${eerror}</small>
                                         </div>
                                     </div>
@@ -97,6 +96,7 @@
                                         <div class="input-group">
                                             <label for="user-pass">Password</label>
                                             <input name="pass" type="password" class="form-control" required>
+                                            <small>Password requirements (6-18 characters, containing a number, uppercase letter)</small>
                                             <small style="color: red">${perror1}</small>
                                             
                                         </div>
@@ -196,22 +196,6 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
-        <script>
-            document.getElementById('signupForm').addEventListener('submit', function (event) {
-                var emailInput = document.getElementById('user-mail');
-                var email = emailInput.value;
-                var emailHelp = document.getElementById('emailHelp');
-                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-                if (!emailPattern.test(email)) {
-                    emailHelp.textContent = "Please enter a valid email address.";
-                    emailHelp.style.color = "red";
-                    event.preventDefault(); // Prevent form submission
-                } else {
-                    emailHelp.textContent = "";
-                }
-            });
-        </script>
     </body>
 
 </html>
