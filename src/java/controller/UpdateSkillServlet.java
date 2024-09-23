@@ -119,7 +119,11 @@ public class UpdateSkillServlet extends HttpServlet {
         Date date = new Date();
         Skill updateSkill = new Skill(id, name, date, description, status, img);
         DaoSkill act = new DaoSkill();
-        act.updateSkillInfo(updateSkill);
+        boolean checkUpdate = act.updateSkillInfo(updateSkill);
+        if (checkUpdate == false) {
+            response.sendRedirect("500.jsp");
+            return;
+        }
         response.sendRedirect("updateSkill?updateId=" + id);
     }
 

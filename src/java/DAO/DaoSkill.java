@@ -7,6 +7,7 @@ package DAO;
 import Model.Skill;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class DaoSkill extends DBContext {
 
-    public void insertNewSkill(Skill newSkill) {
+    public boolean insertNewSkill(Skill newSkill) {
         String sql = "INSERT INTO [dbo].[Skill]\n"
                 + "           ([SkillName]\n"
                 + "           ,[CreateDate]\n"
@@ -40,8 +41,10 @@ public class DaoSkill extends DBContext {
             rs.setString(4, newSkill.getStatus());
             rs.setString(5, newSkill.getImg());
             rs.executeUpdate();
-
-        } catch (Exception e) {
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
         }
     }
 
@@ -154,7 +157,7 @@ public class DaoSkill extends DBContext {
         return curSkill;
     }
 
-    public void updateSkillInfo(Skill updateSkill) {
+    public boolean updateSkillInfo(Skill updateSkill) {
         String sql = "UPDATE [dbo].[Skill]\n"
                 + "   SET [SkillName] =?\n"
                 + "      ,[CreateDate] = ?\n"
@@ -174,7 +177,9 @@ public class DaoSkill extends DBContext {
             rs.setString(5, updateSkill.getImg());
             rs.setInt(6, updateSkill.getSkillId());
             rs.executeUpdate();
+            return true;
         } catch (Exception e) {
+            return false;
         }
     }
 
@@ -192,7 +197,7 @@ public class DaoSkill extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, skillName);
-            
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 String id_raw = rs.getString("SkillID");
