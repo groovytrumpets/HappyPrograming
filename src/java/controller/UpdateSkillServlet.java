@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -67,6 +68,10 @@ public class UpdateSkillServlet extends HttpServlet {
         String id_raw = request.getParameter("updateId");
         int id = Integer.parseInt(id_raw);
         Skill curSkill = act.getSkillById(id);
+        String error = request.getParameter("error");
+        if (error != null && !error.isEmpty()) {
+            request.setAttribute("error", error);
+        }
         request.setAttribute("id", id);
         request.setAttribute("name", curSkill.getSkillName());
         request.setAttribute("img", curSkill.getImg());
@@ -87,17 +92,45 @@ public class UpdateSkillServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        int id = Integer.parseInt(id_raw);
         String name = request.getParameter("name");
+        if (name.trim().isEmpty() || name.isEmpty()) {
+            String error = "You must not leave this field empty!";
+            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            return;
+        } else if (name.length() > 50) {
+            String error = "Please enter name no longger than 50 character!";
+            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            return;
+        }
+
+        boolean checkDup = checkDupSkill(name);
+        if (checkDup == true) {
+            String error = "Skill name already exist!";
+            request.setAttribute("error", "Skill name already exist!");
+            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            return;
+        }
         String img = request.getParameter("img");
         String status = request.getParameter("status");
         String description = request.getParameter("description");
-        String id_raw = request.getParameter("id");
-        int id = Integer.parseInt(id_raw);
+
         Date date = new Date();
         Skill updateSkill = new Skill(id, name, date, description, status, img);
         DaoSkill act = new DaoSkill();
         act.updateSkillInfo(updateSkill);
-        response.sendRedirect("updateSkill?updateId="+id);
+        response.sendRedirect("updateSkill?updateId=" + id);
+    }
+
+    public boolean checkDupSkill(String skillName) {
+        DaoSkill act = new DaoSkill();
+        List<Skill> list = act.getListOfSkillByName(skillName);
+        if (!list.isEmpty()) {
+            return true;
+        }
+        return false;
+
     }
 
     /**

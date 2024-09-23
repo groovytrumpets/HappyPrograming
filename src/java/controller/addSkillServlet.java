@@ -82,6 +82,9 @@ public class addSkillServlet extends HttpServlet {
             request.setAttribute("error", "You must not leave this field empty!");
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
+        } else if (name.length() > 50) {
+            request.setAttribute("error", "Please enter name no longger than 50 character!");
+            request.getRequestDispatcher("addSkill.jsp").forward(request, response);
         }
 
         boolean checkDup = checkDupSkill(name);
