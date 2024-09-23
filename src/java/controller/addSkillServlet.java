@@ -83,9 +83,10 @@ public class addSkillServlet extends HttpServlet {
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
         }
-        boolean checkDupSkillName = checkDupNameSkill(name);
-        if (checkDupSkillName == true) {
-            request.setAttribute("error", "Skill name already exist in database");
+
+        boolean checkDup = checkDupSkill(name);
+        if (checkDup == true) {
+            request.setAttribute("error", "Skill name already exist!");
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
         }
@@ -97,20 +98,18 @@ public class addSkillServlet extends HttpServlet {
         Skill newSkill = new Skill(0, name, date, description, status, img);
         DaoSkill dao = new DaoSkill();
         dao.insertNewSkill(newSkill);
-        request.setAttribute("successNoti", "Add Skill Successfully");
+        request.setAttribute("successAdd", "Add new skill successfully");
         request.getRequestDispatcher("addSkill.jsp").forward(request, response);
     }
 
-    public boolean checkDupNameSkill(String skillName) {
+    public boolean checkDupSkill(String skillName) {
         DaoSkill act = new DaoSkill();
-        List<Skill> list = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getSkillName().equalsIgnoreCase(skillName)) {
-
-                return false;
-            }
+        List<Skill> list = act.getListOfSkillByName(skillName);
+        if (!list.isEmpty()) {
+            return true;
         }
-        return true;
+        return false;
+
     }
 
     /**

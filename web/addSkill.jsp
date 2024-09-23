@@ -384,7 +384,9 @@
                                         <div class="col-12">
                                             <button type="submit" class="btn-secondry add-item m-r5" value="Add Skill"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</button>
                                         </div>
-                                        <div><p style="color: green">${requestScope.successNoti}</p></div>
+
+                                        <div><p style="color: green">${requestScope.successAdd}</p></div>
+
                                     </div>
                                 </form>
                             </div>
