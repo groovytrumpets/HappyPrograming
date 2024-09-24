@@ -56,10 +56,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String u=request.getParameter("search");
-        HomeDAO hd = new HomeDAO();
-        request.setAttribute("mentorNum", hd.countMentor());
-        request.setAttribute("userNum", hd.countUsers());
+
         request.getRequestDispatcher("Home.jsp").forward(request, response);
     }
 

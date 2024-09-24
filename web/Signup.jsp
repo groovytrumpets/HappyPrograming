@@ -107,7 +107,7 @@
                                         <div class="input-group">
                                             <label for="user-repeatpass">Repeat Password</label>
                                             <input name="repass" type="password"  class="form-control"  required>
-                                            <small style="color: red">${perror2}</small>
+                                           
                                         </div>
                                     </div>
                                 </div>

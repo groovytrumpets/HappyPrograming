@@ -96,6 +96,7 @@ public class SignUpSV extends HttpServlet {
 
             LocalDate localDob = LocalDate.parse(dob_raw);
             java.sql.Date dob = java.sql.Date.valueOf(localDob);
+            
             int role = Integer.parseInt(role_raw);
 
           
