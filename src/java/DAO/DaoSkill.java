@@ -7,6 +7,7 @@ package DAO;
 import Model.Skill;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class DaoSkill extends DBContext {
 
-    public void insertNewSkill(Skill newSkill) {
+    public boolean insertNewSkill(Skill newSkill) {
         String sql = "INSERT INTO [dbo].[Skill]\n"
                 + "           ([SkillName]\n"
                 + "           ,[CreateDate]\n"
@@ -40,8 +41,10 @@ public class DaoSkill extends DBContext {
             rs.setString(4, newSkill.getStatus());
             rs.setString(5, newSkill.getImg());
             rs.executeUpdate();
-
-        } catch (Exception e) {
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
         }
     }
 
@@ -154,7 +157,7 @@ public class DaoSkill extends DBContext {
         return curSkill;
     }
 
-    public void updateSkillInfo(Skill updateSkill) {
+    public boolean updateSkillInfo(Skill updateSkill) {
         String sql = "UPDATE [dbo].[Skill]\n"
                 + "   SET [SkillName] =?\n"
                 + "      ,[CreateDate] = ?\n"
@@ -174,11 +177,47 @@ public class DaoSkill extends DBContext {
             rs.setString(5, updateSkill.getImg());
             rs.setInt(6, updateSkill.getSkillId());
             rs.executeUpdate();
+            return true;
         } catch (Exception e) {
+            return false;
         }
     }
 
     public List<Skill> getListOfSkillByName(String skillName) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID], \n"
+                + "       [SkillName], \n"
+                + "       [CreateDate], \n"
+                + "       [Description], \n"
+                + "       [Status], \n"
+                + "       [Img]\n"
+                + "FROM [dbo].[Skill]\n"
+                + "WHERE [SkillName] = ?\n"
+                + "ORDER BY [SkillID] ASC;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                String img = rs.getString("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByNameDifID(String skillName, int skillID) {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"
                 + "      ,[SkillName]\n"
@@ -186,13 +225,12 @@ public class DaoSkill extends DBContext {
                 + "      ,[Description]\n"
                 + "      ,[Status]\n"
                 + "      ,[Img]\n"
-                + "  FROM [dbo].[Skill]\n"
-                + "  WHERE [SkillName] LIKE '%' + ? + '%' \n"
-                + "  order by SkillID asc\n";
+                + "  FROM [dbo].[Skill] where SkillName = ?  and SkillID !=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, skillName);
-            
+            st.setInt(2, skillID);
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 String id_raw = rs.getString("SkillID");
