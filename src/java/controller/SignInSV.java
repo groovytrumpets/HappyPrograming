@@ -82,7 +82,7 @@ public class SignInSV extends HttpServlet {
         User a = u.findUserPass(username, pass);
         try {
 
-            if (a == null && a.getStatus().equals("inactive")) {
+            if (a == null ) {
                 request.setAttribute("notify", "Wrong username or password");
                 request.getRequestDispatcher("SignIn.jsp").forward(request, response);
             } else {
@@ -96,7 +96,7 @@ public class SignInSV extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            request.setAttribute("notify", "Wrong username or password");
+            request.setAttribute("notify", "Error occured ");
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }

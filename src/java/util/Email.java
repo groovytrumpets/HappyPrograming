@@ -45,16 +45,13 @@ public class Email {
 
             // Send the email
             Transport.send(msg);
-            System.out.println("Email sent successfully");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Email sending failed");
             return false;
         }
     }
 
     public static void main(String[] args) {
-        Email.sendEmail("nhhagp2@gmail.com", "hehe", "hehe");
     }
 }

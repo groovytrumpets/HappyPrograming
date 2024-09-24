@@ -1,4 +1,5 @@
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- 
     Document   : Home
     Created on : 11 thg 9, 2024, 10:41:32
@@ -82,9 +83,14 @@
                                             <option data-icon="flag flag-uk">English UK</option>
                                             <option data-icon="flag flag-us">English US</option>
                                         </select>
-                                    </li>
-                                    <li><a href="signin">Login</a></li>
-                                    <li><a href="signup">Register</a></li>
+                                    </li>   
+                                    <c:if test="${sessionScope.acc == null}"> 
+                                        <li><a href="signin">Sign In</a></li>
+                                        <li><a href="signup">Sign Up</a></li>
+                                    </c:if>
+                                     <c:if test="${sessionScope.acc != null}"> 
+                                     <li>Welcome user ${sessionScope.acc.fullName}</li>
+                                    </c:if>   
                                 </ul>
                             </div>
                         </div>
@@ -129,7 +135,7 @@
                                     <a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt=""></a>
                                 </div>
                                 <ul class="nav navbar-nav">	
-                                    <li class="active"><a href="home;">Home</i></a>
+                                    <li class="active"><a href="home;">Home</a>
 
                                     </li>
                                     <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
@@ -539,7 +545,7 @@
                                 </div>
                             </div>
                             <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                
+
                                 <div class="item">
                                     <div class="testimonial-bx">
                                         <div class="testimonial-thumb">
@@ -554,7 +560,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="item">
                                     <div class="testimonial-bx">
                                         <div class="testimonial-thumb">
