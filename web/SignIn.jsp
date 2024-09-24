@@ -32,7 +32,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 	
 	<!-- PAGE TITLE HERE ============================================= -->
-	<title>EduChamp : Education HTML Template </title>
+	<title>Happy Programming</title>
 	
 	<!-- MOBILE SPECIFIC ============================================= -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,7 +61,7 @@
 	<div id="loading-icon-bx"></div>
 	<div class="account-form">
 		<div class="account-head" style="background-image:url(assets/images/background/bg2.jpg);">
-			<a href="index.html"><img src="assets/images/logo-white-2.png" alt=""></a>
+			<a href="home"><img src="assets/images/logo-white-2.png" alt=""></a>
 		</div>
 		<div class="account-form-inner">
 			<div class="account-container">
@@ -95,7 +95,9 @@
 									<input type="checkbox" name="rememberMe" class="custom-control-input" id="customControlAutosizing">
 									<label class="custom-control-label" for="customControlAutosizing">Remember me</label>
 								</div>
+
 								<a href="passwordreset" class="ml-auto">Forgot Password?</a>
+
 							</div>
 						</div>
 						<div class="col-lg-12 m-b30">

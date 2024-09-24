@@ -358,6 +358,7 @@
                                             <div>
                                                 <input class="form-control" type="text"  name="name" value="${requestScope.name}" required>
                                             </div>
+                                                <div><p style="color: red">${requestScope.error}</p></div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Status</label>
@@ -377,7 +378,7 @@
 
                                         <div>
                                             <div><label>Image:</label></div>
-                                            <img src="${requestScope.img}" class="img-fluid">
+                                            <img src="${requestScope.img}" class="img-fluid" style="height: 200px">
                                         </div>
                                         <div class="seperator"></div>
 

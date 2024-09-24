@@ -352,6 +352,7 @@
                                             <div>
                                                 <input class="form-control" type="text"  name="name" required="">
                                             </div>
+                                            <div><p style="color: red">${requestScope.error}</p></div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
@@ -382,8 +383,10 @@
 
                                         <div class="col-12">
                                             <button type="submit" class="btn-secondry add-item m-r5" value="Add Skill"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</button>
-
                                         </div>
+
+                                        <div><p style="color: green">${requestScope.successAdd}</p></div>
+
                                     </div>
                                 </form>
                             </div>

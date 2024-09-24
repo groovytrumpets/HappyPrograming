@@ -91,46 +91,59 @@ public class SignUpSV extends HttpServlet {
         String role_raw = request.getParameter("role");
 
         UserDAO userDAO = new UserDAO();
+
         try {
+
             LocalDate localDob = LocalDate.parse(dob_raw);
             java.sql.Date dob = java.sql.Date.valueOf(localDob);
+            
             int role = Integer.parseInt(role_raw);
 
-            if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(email) == null) {
-                if (checkValidPass(pass, repass) == true) {
-                    User newUser = new User();
-                    newUser.setUsername(username);
-                    newUser.setPassword(pass);
-                    newUser.setEmail(email);
-                    newUser.setFullName(fname);
-                    newUser.setPhone(phone);
-                    newUser.setRoleId(role);
-                    newUser.setDateOfBirth(dob);
-                    newUser.setGender(sex);
-                    newUser.setAddress(address);
-                    newUser.setCreateDate(new Date());
-                    newUser.setStatus("inactive");
-                    userDAO.insertUser(newUser);
+          
+            if (!pass.equals(repass)) {
+                request.setAttribute("perror1", "Passwords do not match.");
+                request.getRequestDispatcher("Signup.jsp").forward(request, response);
+                return;  
+            }
 
-                    String subject = "Confirm Your Signup";
-                    String content = "Dear " + fname + ",\n\n"
-                            + "Thank you for signing up. Please review the information below and click the link to confirm your email address:\n\n"
-                            + "Full Name: " + fname + "\n"
-                            + "Email: " + email + "\n"
-                            + "Phone: " + phone + "\n"
-                            + "Date of Birth: " + dob_raw + "\n"
-                            + "Gender: " + sex + "\n"
-                            + "Address: " + address + "\n\n"
-                            + "Please click the link below to confirm your email address:\n"
-                            + "http://localhost:9999/happy_programming/confirm?email=" + email + "\n\n"
-                            + "If you did not sign up for this account, please ignore this email.\n\n";
-                    Email.sendEmail(email, subject, content);
-                    request.getRequestDispatcher("success.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("perror", "Password requirements (6-18 characters, containing a number, uppercase letter)");
-                    request.getRequestDispatcher("Signup.jsp").forward(request, response);
-                }
-                
+            if (!checkValidPass(pass, repass)) {
+                request.setAttribute("perror1", "Password do not meet requirement");
+                request.getRequestDispatcher("Signup.jsp").forward(request, response);
+                return;  
+            }
+
+            if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(email) == null) {
+                User newUser = new User();
+                newUser.setUsername(username);
+                newUser.setPassword(pass);
+                newUser.setEmail(email);
+                newUser.setFullName(fname);
+                newUser.setPhone(phone);
+                newUser.setRoleId(role);
+                newUser.setDateOfBirth(dob);
+                newUser.setGender(sex);
+                newUser.setAddress(address);
+                newUser.setCreateDate(new Date());
+                newUser.setStatus("inactive");
+
+                userDAO.insertUser(newUser);
+
+                String subject = "Confirm Your Signup";
+                String content = "Dear " + fname + ",\n\n"
+                        + "Thank you for signing up. Please review the information below and click the link to confirm your email address:\n\n"
+                        + "Full Name: " + fname + "\n"
+                        + "Email: " + email + "\n"
+                        + "Phone: " + phone + "\n"
+                        + "Date of Birth: " + dob_raw + "\n"
+                        + "Gender: " + sex + "\n"
+                        + "Address: " + address + "\n\n"
+                        + "Please click the link below to confirm your email address:\n"
+                        + "http://localhost:9999/happy_programming/confirm?email=" + email + "\n\n"
+                        + "If you did not sign up for this account, please ignore this email.\n\n";
+                Email.sendEmail(email, subject, content);
+
+                request.getRequestDispatcher("success.jsp").forward(request, response);
+
             } else {
                 if (userDAO.findUserByUsername(username) != null) {
                     request.setAttribute("uerror", "User already exists.");
@@ -138,17 +151,15 @@ public class SignUpSV extends HttpServlet {
                 if (userDAO.findUserByEmail(email) != null) {
                     request.setAttribute("eerror", "Email already exists.");
                 }
-                if (!pass.equals(repass)) {
-                    request.setAttribute("perror", "Password does not match");
-                }
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("notify", "An error occurred during registration.");
             request.getRequestDispatcher("Signup.jsp").forward(request, response);
         }
+
     }
 
     private boolean checkValidPass(String pass, String repass) {
@@ -157,16 +168,13 @@ public class SignUpSV extends HttpServlet {
         if (pass.length() < 6 || pass.length() > 18) {
             return false;
         }
-        if (pass.equals(repass)) {
-            for (int i = 0; i < pass.length(); i++) {
-                if (Character.isDigit(pass.charAt(i))) {
-                    hasNumber = true;
-                }
-                if (Character.isUpperCase(pass.charAt(i))) {
-                    hasUpperCase = true;
-                }
+        for (int i = 0; i < pass.length(); i++) {
+            if (Character.isDigit(pass.charAt(i))) {
+                hasNumber = true;
             }
-
+            if (Character.isUpperCase(pass.charAt(i))) {
+                hasUpperCase = true;
+            }
         }
         if (hasNumber == true && hasUpperCase == true) {
             return true;
