@@ -10,7 +10,7 @@
                     <file>${file.reference.Happy_Programming-lib}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.activation-1.1.jar}</file>
+                    <file>${file.reference.activation-1.1.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -27,6 +27,7 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.mail-1.5.0-b01.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.sqljdbc42.jar-1}</file>
