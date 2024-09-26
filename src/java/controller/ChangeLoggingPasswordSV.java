@@ -5,13 +5,16 @@
 package controller;
 
 import DAO.UserDAO;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import javax.mail.Session;
 
 /**
  *
@@ -48,6 +51,7 @@ public class ChangeLoggingPasswordSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
     }
     
@@ -57,26 +61,27 @@ public class ChangeLoggingPasswordSV extends HttpServlet {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
-        String username = (String) request.getSession().getAttribute("username");
+        HttpSession session = request.getSession();
+        User curUser = (User)session.getAttribute("acc");
 
         if (newPassword.equals(confirmPassword)) {
             try {
                 UserDAO userDAO = new UserDAO();
-                if (userDAO.validateUser(username, oldPassword)) {
-                    if (userDAO.updatePassword(username, newPassword)) {
+                if (userDAO.validateUser(curUser.getUsername(), oldPassword)) {
+                    if (userDAO.updatePassword(curUser.getUsername(), newPassword)) {
                         request.setAttribute("message", "Password changed successfully!");
                     } else {
-                        request.setAttribute("message", "Password change failed.");
+                        request.setAttribute("error", "Password change failed.");
                     }
                 } else {
-                    request.setAttribute("message", "Invalid old password.");
+                    request.setAttribute("error", "Invalid old password.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                request.setAttribute("message", "Database error.");
+                request.setAttribute("error", "Database error.");
             }
         } else {
-            request.setAttribute("message", "New passwords do not match.");
+            request.setAttribute("error", "New passwords do not match.");
         }
 
         request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);

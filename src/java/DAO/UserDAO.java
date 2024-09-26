@@ -210,7 +210,7 @@ public class UserDAO extends DBContext {
     }
 
     // Main method for testing
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         UserDAO u = new UserDAO();
         String username = "johndoe";
         String password = "securepassword123"; // Ensure this is hashed in practice
@@ -221,7 +221,6 @@ public class UserDAO extends DBContext {
         String gender = "Male";
         String address = "123 Elm Street, Springfield, IL";
         int role = 1;
-        System.out.println(dob_raw);
         // Parse the date of birth
         /*LocalDate localDob = LocalDate.parse(dob_raw);
         Date dob = Date.valueOf(localDob);
@@ -241,7 +240,7 @@ public class UserDAO extends DBContext {
         newUser.setStatus("inactive"); // Status set to inactive until confirmation
 
         u.insertUser(newUser);*/
-        System.out.println(u.findUserPass("tuonghuymai", "Hoanganhgp2"));
+        System.out.println(u.validateUser("tuonghuymai2310@gmail.com", "Tuonghuymai2310"));
 
        
 

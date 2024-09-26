@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -80,6 +81,7 @@
 
         <form action="changeloggingpassword" method="post">
             <h2>Change Your Password</h2>
+            <p>${sessionScope.acc.username}</p>
 
             <label for="oldPassword">Old Password</label>
             <input type="password" id="oldPassword" name="oldPassword" required/>
@@ -92,7 +94,8 @@
 
             <input type="submit" value="Change Password"/>
 
-            <p class="message"><%= request.getAttribute("message") %></p>
+            <p style="color: green">${requestScope.message}</p>
+            <p style="color: red">${requestScope.error}</p>
         </form>
 
     </body>
