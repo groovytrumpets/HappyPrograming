@@ -7,6 +7,7 @@ package controller;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.UserDAO;
+import Model.Mentor;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,7 +69,6 @@ public class ComfirmSignUpSV extends HttpServlet {
             if (email != null && !email.isEmpty()) {
                 UserDAO userDAO = new UserDAO();
                 User user = userDAO.findUserByEmail(email);
-
                 if (user != null && "inactive".equals(user.getStatus())) {
                     user.setStatus("active");
                     userDAO.updateUser(user);

@@ -36,6 +36,32 @@ public class MenteeDAO extends DBContext {
             System.out.println(e);
         }
     }
+
+    public void updateMentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate,
+            String email, String phone, String address, Date dateOfBirth,
+            String fullName, String gender, String status) throws SQLException {
+        String sql = "UPDATE Mentee SET RoleID = ?, Avatar = ?, Username = ?, CreateDate = ?, "
+                + "Email = ?, Phone = ?, Address = ?, DateOfBirth = ?, FullName = ?, Gender = ?, "
+                + "Status = ? WHERE username = ?"; // Assuming MenteeID is the unique identifier
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, roleId);
+            st.setBytes(2, avatar);
+            st.setString(3, username);
+            st.setDate(4, new java.sql.Date(createDate.getTime()));
+            st.setString(5, email);
+            st.setString(6, phone);
+            st.setString(7, address);
+            st.setDate(8, new java.sql.Date(dateOfBirth.getTime()));
+            st.setString(9, fullName);
+            st.setString(10, gender);
+            st.setString(11, status);
+            st.setString(12, username);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
 }
-
-
