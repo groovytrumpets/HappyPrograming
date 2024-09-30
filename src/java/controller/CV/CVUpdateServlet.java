@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.CV;
 
 import DAO.CVDAO;
 import Model.CV;
@@ -66,6 +66,8 @@ public class CVUpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        
         int id;
         CVDAO cvd = new CVDAO();
         try {
@@ -79,6 +81,9 @@ public class CVUpdateServlet extends HttpServlet {
             
             Mentor mentor = cvd.getMentorByID(id);
             CV cv = cvd.getCVbyMentor(mentor.getMentorId());
+            String email = cvd.getUserEmail(id);
+            request.setAttribute("error", error);
+            request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);
             request.setAttribute("cvFound", cv);
             
@@ -128,6 +133,7 @@ public class CVUpdateServlet extends HttpServlet {
         int userid,yearxp;
         try {
             
+            
            
             userid=Integer.parseInt(userId_raw);
             yearxp=Integer.parseInt(yearxp_raw);
@@ -135,8 +141,21 @@ public class CVUpdateServlet extends HttpServlet {
             dob=dateFormat.parse(dob_raw);
             
             CVDAO cvdao = new CVDAO();
-            Mentor newMentor = new Mentor(userid,username, email, phone, address, dob, fullname, gender);
+            String nameId = cvdao.getMentorByID(userid).getUsername();
+            
+            //check email exist
+            if (cvdao.checkDuplicateEmail(email,nameId)) {
+                System.out.println("true");
+                email="error";
+                response.sendRedirect("cvupdate?id="+userid+"&error=email_exists");
+                return;
+            }
+
+           
+            Mentor newMentor = new Mentor(userid,username, phone, address, dob, fullname, gender);
             CV newCv = new CV(userid,education, experience, activity, professionIntroduction, profession, yearxp, serviceDescription, framework,avatar);
+            //System.out.println(nameId+" and "+email);
+            cvdao.updateUser(nameId,username,email);
             cvdao.updateMentor(newMentor);
             cvdao.updateCV(newCv);
             
