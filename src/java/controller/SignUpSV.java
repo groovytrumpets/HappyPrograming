@@ -117,15 +117,9 @@ public class SignUpSV extends HttpServlet {
                 newUser.setUsername(username);
                 newUser.setPassword(pass);
                 newUser.setEmail(email);
-                newUser.setFullName(fname);
-                newUser.setPhone(phone);
                 newUser.setRoleId(role);
-                newUser.setDateOfBirth(dob);
-                newUser.setGender(sex);
-                newUser.setAddress(address);
                 newUser.setCreateDate(new Date());
                 newUser.setStatus("inactive");
-
                 userDAO.insertUser(newUser);
 
                 String subject = "Confirm Your Signup";
