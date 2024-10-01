@@ -166,7 +166,7 @@ public class UserDAO extends DBContext {
     }
 
     // Main method for testing
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         UserDAO u = new UserDAO();
         /*User newUser = new User();
         newUser.setRoleId(1);
