@@ -94,7 +94,7 @@ public class ComfirmSignUpSV extends HttpServlet {
             }
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("message", "Error");
+            request.setAttribute("message", e);
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }
