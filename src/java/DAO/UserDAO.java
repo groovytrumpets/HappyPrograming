@@ -63,7 +63,7 @@ public class UserDAO extends DBContext {
         String sql = "INSERT INTO [dbo].[User] ([RoleID], [Username], [Status], [CreateDate], "
                 + "[Email], [Password]) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-        try  {
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, user.getRoleId());
             st.setString(2, user.getUsername());
@@ -83,10 +83,10 @@ public class UserDAO extends DBContext {
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, user.getRoleId());
             st.setString(2, user.getStatus());
-            st.setDate(3, new java.sql.Date(user.getCreateDate().getTime())); 
+            st.setDate(3, new java.sql.Date(user.getCreateDate().getTime()));
             st.setString(4, user.getEmail());
             st.setString(5, user.getPassword());
-            st.setString(6, user.getUsername()); 
+            st.setString(6, user.getUsername());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,52 +116,89 @@ public class UserDAO extends DBContext {
         return null;
     }
 
-    //change password
-    public boolean validateUser(String email, String password) throws SQLException {
-        String sql = "SELECT * FROM [User] WHERE [Email] = ? AND [Password] = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next(); // returns true if user exists
-        }
-    }
-
-    public boolean updatePassword(String email, String newPassword) throws SQLException {
-        String sql = "UPDATE [User] SET [Password] = ? WHERE [Email] = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, newPassword);  // Update to the new password
-            stmt.setString(2, email);        // Where the email matches
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;          // Return true if at least one row was updated
-        }
-    }
-
-    //forgot password and send reset link
-    public String getUserEmailByEmail(String email) {
-        String userEmail = null;
-        String query = "SELECT Email FROM [User] WHERE Email = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
+    //change password lam lai
+    public User getUserByUsername(String username) {
+        String query = "SELECT * FROM [User] WHERE Username = ?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                userEmail = rs.getString("Email");
+                User user = new User();
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("Password"));
+                user.setEmail(rs.getString("Email"));
+                // Map other fields as needed
+                return user;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return userEmail;
+        return null;
     }
 
-    public boolean updateUserPassword(String email, String newPassword) {
-        String query = "UPDATE [User] SET [Password] = ? WHERE Email = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, newPassword);
-            stmt.setString(2, email);
-            return stmt.executeUpdate() > 0;
+    //update user's password
+    public boolean updatePassword(String username, String newPassword) {
+        String query = "UPDATE [User] SET [Password] = ? WHERE Username = ?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, newPassword);
+            ps.setString(2, username);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;  // return true if update is successful
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+        }
+        return false;
+    }
+
+    //Updatev1.1 - thay doi thanh mk tam thoi
+    // Get user by email and account (username)
+    public User getUserByEmailAndAccount(String email, String account) {
+        String sql = "SELECT * FROM [User] WHERE Email = ? AND Username = ?";
+        try (
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, account);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setUsername(rs.getString("Username"));
+                user.setRoleId(rs.getInt("RoleID"));
+                user.setStatus(rs.getString("Status"));
+                user.setCreateDate(rs.getDate("CreateDate"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("Password"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // User not found
+    }
+
+    // Save temporary password in PasswordReset table
+    public void createNewPass(String username, String tempPassword) {
+        String sql = "BEGIN TRANSACTION;\n"
+                + "\n"
+                + "UPDATE PasswordReset\n"
+                + "SET TemporaryPassword = ?\n"
+                + "WHERE Username = ?;\n"
+                + "\n"
+                + "UPDATE [User]\n"
+                + "SET Password = ?\n"
+                + "WHERE Username = ?;\n"
+                + "\n"
+                + "COMMIT TRANSACTION;";
+        try (
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, tempPassword);
+            stmt.setString(2, username);
+            stmt.setString(3, tempPassword);
+            stmt.setString(4, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -179,7 +216,7 @@ public class UserDAO extends DBContext {
         newUser.setPassword("securepassword");
         System.out.println(newUser);
         u.updateUser(newUser);*/
-        System.out.println(u.findUserByEmail("anhnhhhe187162@fpt.edu.vn"));
+        System.out.println(u.findUserPass("user1", "123"));
     }
 
 }

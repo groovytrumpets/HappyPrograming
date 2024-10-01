@@ -6,76 +6,91 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Password Reset</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Request Password Reset</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f4f4f4;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
                 margin: 0;
-            }
-            h2 {
-                color: #333;
+                padding: 20px;
             }
             .container {
+                max-width: 400px;
+                margin: auto;
                 background: white;
                 padding: 20px;
-                border-radius: 8px;
+                border-radius: 5px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                width: 300px;
-                text-align: center;
             }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            label {
+                display: block;
+                margin: 10px 0 5px;
+            }
+            input[type="text"],
             input[type="email"] {
-                width: 90%;
+                width: 100%;
                 padding: 10px;
-                margin: 10px 0;
+                margin: 5px 0 20px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
+                box-sizing: border-box;
             }
-            button {
-                background-color: #28a745;
+            input[type="submit"] {
+                background-color: #4CAF50;
                 color: white;
-                border: none;
                 padding: 10px;
+                border: none;
                 border-radius: 4px;
                 cursor: pointer;
                 width: 100%;
             }
-            button:hover {
-                background-color: #218838;
+            input[type="submit"]:hover {
+                background-color: #45a049;
             }
             .message {
+                text-align: center;
+                margin-top: 10px;
+            }
+            .error {
                 color: red;
             }
             .success {
                 color: green;
             }
+            .info {
+                text-align: left;
+                margin-bottom: 20px;
+                color: #555;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <h2>Request Password Reset</h2>
+            <h2>Reset Password</h2>
+            <p class="info">If you've forgotten your password, enter your account and email</p>
             <form action="passwordreset" method="post">
-                <input type="email" name="email" placeholder="Enter your registered email" required />
-                <button type="submit">Request Reset</button>
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="account" name="account" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <input type="submit" value="Submit">
             </form>
 
-            <%
-                String message = (String) request.getAttribute("message");
-                if (message != null) {
-                    String messageType = (String) request.getAttribute("messageType");
-                    String messageClass = messageType != null && messageType.equals("success") ? "success" : "message";
-            %>
-            <p class="<%= messageClass %>"><%= message %></p>
-            <%
-                }
-            %>
+            <!-- Display success or error messages -->
+            <div class="message">
+                <p class="error">${requestScope.error}</p>
+                <p class="success">${requestScope.message}</p>
+            </div>
         </div>
     </body>
 </html>

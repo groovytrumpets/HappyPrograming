@@ -46,6 +46,7 @@
                 display: block;
             }
 
+            input[type="text"],
             input[type="password"] {
                 width: 95%;
                 padding: 10px;
@@ -75,6 +76,12 @@
                 color: #d9534f;
                 text-align: center;
             }
+
+            .info {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #555;
+            }
         </style>
     </head>
     <body>
@@ -82,6 +89,10 @@
         <form action="changeloggingpassword" method="post">
             <h2>Change Your Password</h2>
             <p>${sessionScope.acc.username}</p>
+            <p class="info">------ Please enter your username and password ------</p>
+            
+            <label for="username">Account Name</label>
+            <input type="text" id="username" name="username" required/>
 
             <label for="oldPassword">Old Password</label>
             <input type="password" id="oldPassword" name="oldPassword" required/>
@@ -92,7 +103,7 @@
             <label for="confirmPassword">Confirm New Password</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required/>
 
-            <input type="submit" value="Change Password"/>
+            <input type="submit" value="Enter"/>
 
             <p style="color: green">${requestScope.message}</p>
             <p style="color: red">${requestScope.error}</p>

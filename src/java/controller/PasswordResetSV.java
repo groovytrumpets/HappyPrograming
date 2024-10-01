@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.UserDAO;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
-import java.util.Base64;
 import util.Email;
 
 /**
@@ -22,14 +22,29 @@ import util.Email;
  */
 public class PasswordResetSV extends HttpServlet {
 
-    private UserDAO userDAO; // Assume you set this up in your servlet's init method
-
-    @Override
-    public void init() throws ServletException {
-        // Initialize UserDAO
-        userDAO = new UserDAO();
+    // Generate a random temporary password
+    private String generateTemporaryPassword() {
+        SecureRandom random = new SecureRandom();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder temporaryPassword = new StringBuilder(8); // Length of 8 characters
+        for (int i = 0; i < 8; i++) {
+            temporaryPassword.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return temporaryPassword.toString();
     }
-     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+
+    private String encrypt(String password) {
+        StringBuilder encrypted = new StringBuilder();
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            encrypted.append((char) (c + 5)); // Shift character by key
+        }
+
+        return encrypted.toString();
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -37,7 +52,7 @@ public class PasswordResetSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
+            out.println("<title>Servlet NewServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
@@ -61,54 +76,46 @@ public class PasswordResetSV extends HttpServlet {
         request.getRequestDispatcher("requestreset.jsp").forward(request, response);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
-        String message;
-        String messageType;
+        String account = request.getParameter("account");
 
-        String userEmail = userDAO.getUserEmailByEmail(email);
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserByEmailAndAccount(email, account);
 
-        if (userEmail != null) {
-            String token = generateToken(); // Implement token generation
-            long expiryTime = System.currentTimeMillis() + (15 * 60 * 1000); // 15 minutes
-            HttpSession session = request.getSession();
-            session.setAttribute("resetToken", token);
-            session.setAttribute("expiryTime", expiryTime);
-            session.setAttribute("userEmail", email); // Store user email
+        if (user != null) {
+            // Step 1: Generate temporary password
+            String temporaryPassword = generateTemporaryPassword();
 
-            // Construct the reset link
-            String resetLink = "http://localhost:8080/happy_programming/passwordchange?token=" + token + "&email=" + email;
-            boolean emailSent = Email.sendEmail(email, "Password Reset", "Click the link to reset your password: " + resetLink);
+            // Step 2: Encrypt the temporary password
+            String encryptedPassword = encrypt(temporaryPassword);
 
+            // Step 3: Save encrypted password in PasswordReset table
+            userDAO.createNewPass(user.getUsername(), encryptedPassword);
+
+            // Step 4: Send reset password email
+            String emailContent = "Hi " + user.getUsername() + ",<br>"
+                    + "You have requested a password reset. Use the following temporary password to log in: <b>" + temporaryPassword + "</b>.<br>";
+
+            boolean emailSent = Email.sendEmail(user.getEmail(), "Password Reset Request", emailContent);
+
+            // Step 4: Notify user whether email was sent successfully
             if (emailSent) {
-                message = "A password reset link has been sent to your email.";
-                messageType = "success";
+                request.setAttribute("message", "Password reset link has been sent to your email.");
             } else {
-                message = "Failed to send email. Please try again.";
-                messageType = "error";
+                request.setAttribute("error", "There was an error sending the reset email. Please try again.");
             }
+
         } else {
-            message = "Email not registered. Please check and try again.";
-            messageType = "error";
+            // No user found with the given email and account
+            request.setAttribute("error", "No account found with the provided email and username.");
         }
 
-        request.setAttribute("message", message);
-        request.setAttribute("messageType", messageType);
+        // Forward back to the password reset request page
         request.getRequestDispatcher("requestreset.jsp").forward(request, response);
     }
 
-    private String generateToken() {
-        // Create a secure random number generator
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] tokenBytes = new byte[24]; // 24 bytes for a 192-bit token
-        secureRandom.nextBytes(tokenBytes);
-
-        // Encode the byte array to a Base64 string
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
-    }
-    
     @Override
     public String getServletInfo() {
         return "Short description";
