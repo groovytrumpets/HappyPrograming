@@ -8,6 +8,7 @@ import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.UserDAO;
 import Model.Mentor;
+import Model.Mentee;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,10 +69,22 @@ public class ComfirmSignUpSV extends HttpServlet {
         try {
             if (email != null && !email.isEmpty()) {
                 UserDAO userDAO = new UserDAO();
+                MentorDAO mentorDAO = new MentorDAO();
+                MenteeDAO menteeDAO = new MenteeDAO();
                 User user = userDAO.findUserByEmail(email);
                 if (user != null && "inactive".equals(user.getStatus())) {
                     user.setStatus("active");
                     userDAO.updateUser(user);
+                    if (user.getRoleId() == 1) {
+                       Mentor mentor = mentorDAO.findMentorByUsername(user.getUsername());
+                        mentor.setStatus("active");
+                        mentorDAO.updateMentor(mentor);
+                    }
+                    else{
+                        Mentee mentee = menteeDAO.findMenteeByUsername(user.getUsername());
+                        mentee.setStatus("active");
+                        menteeDAO.updateMentee(mentee);
+                    }
                     request.setAttribute("message", "Your email has been confirmed. You can now log in.");
                 } else {
                     request.setAttribute("message", "Invalid confirmation link.");

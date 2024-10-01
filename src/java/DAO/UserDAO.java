@@ -83,10 +83,10 @@ public class UserDAO extends DBContext {
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, user.getRoleId());
             st.setString(2, user.getStatus());
-            st.setDate(3, new java.sql.Date(user.getCreateDate().getTime())); // Convert java.util.Date to java.sql.Date
+            st.setDate(3, new java.sql.Date(user.getCreateDate().getTime())); 
             st.setString(4, user.getEmail());
             st.setString(5, user.getPassword());
-            st.setString(6, user.getUsername()); // Update by username
+            st.setString(6, user.getUsername()); 
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,7 +168,7 @@ public class UserDAO extends DBContext {
     // Main method for testing
     public static void main(String[] args) {
         UserDAO u = new UserDAO();
-        User newUser = new User();
+        /*User newUser = new User();
         newUser.setRoleId(1);
         newUser.setUsername("hoanganhgp2");
         newUser.setStatus("active");
@@ -178,8 +178,8 @@ public class UserDAO extends DBContext {
         newUser.setEmail("john.doe@example.com");
         newUser.setPassword("securepassword");
         System.out.println(newUser);
-        u.updateUser(newUser);
-
+        u.updateUser(newUser);*/
+        System.out.println(u.findUserByEmail("anhnhhhe187162@fpt.edu.vn"));
     }
 
 }
