@@ -89,7 +89,7 @@
                                         <li><a href="signup">Sign Up</a></li>
                                     </c:if>
                                      <c:if test="${sessionScope.acc != null}"> 
-                                     <li>Welcome user ${sessionScope.acc.fullName}</li>
+                                     <li>Welcome user ${sessionScope.acc.username}</li>
                                     </c:if>   
                                 </ul>
                             </div>

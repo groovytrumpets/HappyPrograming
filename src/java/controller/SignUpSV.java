@@ -118,7 +118,8 @@ public class SignUpSV extends HttpServlet {
             if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(mail) == null) {
                 User newUser = new User();
                 newUser.setUsername(username);
-                newUser.setPassword(pass);
+                String enpass = encrypt(pass);
+                newUser.setPassword(enpass);
                 newUser.setEmail(mail);
                 newUser.setRoleId(role);
                 newUser.setCreateDate(new Date());
@@ -159,7 +160,7 @@ public class SignUpSV extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("notify", "An error occurred during registration.");
+            request.setAttribute("notify", e);
             request.getRequestDispatcher("Signup.jsp").forward(request, response);
         }
 
@@ -185,7 +186,19 @@ public class SignUpSV extends HttpServlet {
 
         return false;
     }
+    
+    private String encrypt(String password) {
+        StringBuilder encrypted = new StringBuilder();
 
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            encrypted.append((char) (c + 5)); // Shift character by key
+        }
+
+        return encrypted.toString();
+    }
+
+    
     /**
      * Returns a short description of the servlet.
      *
