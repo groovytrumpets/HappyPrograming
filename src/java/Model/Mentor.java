@@ -141,5 +141,10 @@ public class Mentor {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Mentor{" + "mentorId=" + mentorId + ", roleId=" + roleId + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
+    }
     
 }

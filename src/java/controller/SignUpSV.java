@@ -4,7 +4,11 @@
  */
 package controller;
 
+import DAO.MenteeDAO;
+import DAO.MentorDAO;
 import DAO.UserDAO;
+import Model.Mentee;
+import Model.Mentor;
 import util.Email;
 import Model.User;
 import java.io.IOException;
@@ -82,65 +86,64 @@ public class SignUpSV extends HttpServlet {
         String username = request.getParameter("username");
         String pass = request.getParameter("pass");
         String repass = request.getParameter("repass");
-        String email = request.getParameter("email");
+        String mail = request.getParameter("email");
         String fname = request.getParameter("fullname");
         String phone = request.getParameter("phone");
         String dob_raw = request.getParameter("dob");
         String sex = request.getParameter("sex");
         String address = request.getParameter("address");
         String role_raw = request.getParameter("role");
-
         UserDAO userDAO = new UserDAO();
-
+        MentorDAO mentorDAO = new MentorDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
         try {
 
             LocalDate localDob = LocalDate.parse(dob_raw);
             java.sql.Date dob = java.sql.Date.valueOf(localDob);
-            
+
             int role = Integer.parseInt(role_raw);
 
-          
             if (!pass.equals(repass)) {
                 request.setAttribute("perror1", "Passwords do not match.");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
-                return;  
+                return;
             }
 
             if (!checkValidPass(pass, repass)) {
                 request.setAttribute("perror1", "Password do not meet requirement");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
-                return;  
+                return;
             }
 
-            if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(email) == null) {
+            if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(mail) == null) {
                 User newUser = new User();
                 newUser.setUsername(username);
                 newUser.setPassword(pass);
-                newUser.setEmail(email);
-                newUser.setFullName(fname);
-                newUser.setPhone(phone);
+                newUser.setEmail(mail);
                 newUser.setRoleId(role);
-                newUser.setDateOfBirth(dob);
-                newUser.setGender(sex);
-                newUser.setAddress(address);
                 newUser.setCreateDate(new Date());
                 newUser.setStatus("inactive");
-
                 userDAO.insertUser(newUser);
+
+                if (role == 1) {
+                    mentorDAO.insertMentor(role, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                } else {
+                    menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                }
 
                 String subject = "Confirm Your Signup";
                 String content = "Dear " + fname + ",\n\n"
                         + "Thank you for signing up. Please review the information below and click the link to confirm your email address:\n\n"
                         + "Full Name: " + fname + "\n"
-                        + "Email: " + email + "\n"
+                        + "Email: " + mail + "\n"
                         + "Phone: " + phone + "\n"
                         + "Date of Birth: " + dob_raw + "\n"
                         + "Gender: " + sex + "\n"
                         + "Address: " + address + "\n\n"
                         + "Please click the link below to confirm your email address:\n"
-                        + "http://localhost:9999/happy_programming/confirm?email=" + email + "\n\n"
+                        + "http://localhost:9999/happy_programming/confirm?email=" + mail + "\n\n"
                         + "If you did not sign up for this account, please ignore this email.\n\n";
-                Email.sendEmail(email, subject, content);
+                Email.sendEmail(mail, subject, content);
 
                 request.getRequestDispatcher("success.jsp").forward(request, response);
 
@@ -148,7 +151,7 @@ public class SignUpSV extends HttpServlet {
                 if (userDAO.findUserByUsername(username) != null) {
                     request.setAttribute("uerror", "User already exists.");
                 }
-                if (userDAO.findUserByEmail(email) != null) {
+                if (userDAO.findUserByEmail(mail) != null) {
                     request.setAttribute("eerror", "Email already exists.");
                 }
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
