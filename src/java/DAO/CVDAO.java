@@ -90,11 +90,9 @@ public class CVDAO extends DBContext {
             st.setString(5, c.getGender());
             st.setInt(6, c.getMentorId());
             st.executeUpdate();
-
         } catch (SQLException e) {
             System.out.println(e);
         }
-
     }
 
     public void updateCV(CV c) {
