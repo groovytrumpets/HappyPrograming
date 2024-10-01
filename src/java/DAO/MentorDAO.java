@@ -42,7 +42,6 @@ public class MentorDAO extends DBContext {
             st.setInt(1, mentor.getRoleId());
             st.setString(2, mentor.getUsername());
             st.setDate(3, new java.sql.Date(mentor.getCreateDate().getTime()));
-            st.setString(4, mentor.getEmail());
             st.setString(5, mentor.getPhone());
             st.setString(6, mentor.getPhone());
             st.setDate(7, new java.sql.Date(mentor.getDateOfBirth().getTime()));
@@ -81,7 +80,6 @@ public class MentorDAO extends DBContext {
                 mentor.setRoleId(rs.getInt("RoleID"));
                 mentor.setUsername(rs.getString("Username"));
                 mentor.setCreateDate(rs.getDate("CreateDate"));
-                mentor.setEmail(rs.getString("Email"));
                 mentor.setPhone(rs.getString("Phone"));
                 mentor.setAddress(rs.getString("Address"));
                 mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
