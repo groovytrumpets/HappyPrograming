@@ -77,18 +77,18 @@ public class SignInSV extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String pass = request.getParameter("pass");
-
+        String enpass = encrypt(pass);
         UserDAO u = new UserDAO();
-        User a = u.findUserPass(username, pass);
+        User a = u.findUserPass(username, enpass);
         try {
 
-            if (a == null ) {
+            if (a == null) {
                 request.setAttribute("notify", "Wrong username or password");
                 request.getRequestDispatcher("SignIn.jsp").forward(request, response);
             } else {
                 if (a != null && a.getStatus().equals("active")) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("acc", a); 
+                    session.setAttribute("acc", a);
                     response.sendRedirect("Home.jsp");
                 } else if (a != null && a.getStatus().equals("inactive")) {
                     request.setAttribute("notify", "Your account is not active, please active by link in your email");
@@ -99,6 +99,17 @@ public class SignInSV extends HttpServlet {
             request.setAttribute("notify", "Error occured ");
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
+    }
+
+    private String encrypt(String password) {
+        StringBuilder encrypted = new StringBuilder();
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            encrypted.append((char) (c + 5)); // Shift character by key
+        }
+
+        return encrypted.toString();
     }
 
     /**
