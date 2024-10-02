@@ -192,11 +192,11 @@ public class SkillDAO extends DBContext {
                 + "       [Status], \n"
                 + "       [Img]\n"
                 + "FROM [dbo].[Skill]\n"
-                + "WHERE [SkillName] = ?\n"
+                + "WHERE [SkillName] Like ?\n"
                 + "ORDER BY [SkillID] ASC;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, skillName);
+            st.setString(1, "%" +skillName + "%");
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -216,7 +216,36 @@ public class SkillDAO extends DBContext {
         }
         return listSkill;
     }
-
+    public List<Skill> getListOfSkillByDate() {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT Top 3 [SkillID], \n"
+                + "       [SkillName], \n"
+                + "       [CreateDate], \n"
+                + "       [Description], \n"
+                + "       [Status], \n"
+                + "       [Img]\n"
+                + "FROM [dbo].[Skill]\n"
+                + "ORDER BY [CreateDate] Desc;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
     public List<Skill> getListOfSkillByNameDifID(String skillName, int skillID) {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"
@@ -248,6 +277,37 @@ public class SkillDAO extends DBContext {
         } catch (Exception e) {
         }
         return listSkill;
+    }
+    public Skill getSkillByNameID(String skillName, int skillID) {
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill] where SkillName = ?  and SkillID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+            st.setInt(2, skillID);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                return curSkill;
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public List<Skill> getListOfSkillByNamePagination(int page, int numShow, String skillName) {
@@ -290,8 +350,8 @@ public class SkillDAO extends DBContext {
 
     public static void main(String[] args) {
         SkillDAO act = new SkillDAO();
-        List<Skill> list = act.getListOfSkillByNamePagination(2, 2, "#");
+        List<Skill> list = act.getListOfSkillByName("a");
         System.out.println(list.get(1).getSkillName());
-
+        
     }
 }
