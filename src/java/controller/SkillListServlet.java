@@ -4,7 +4,7 @@
  */
 package controller;
 
-import DAO.DaoSkill;
+import DAO.SkillDAO;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,7 +60,7 @@ public class SkillListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DaoSkill act = new DaoSkill();
+        SkillDAO act = new SkillDAO();
         List<Skill> listAllSkill = act.getListOfAllSkill();
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
@@ -75,6 +75,8 @@ public class SkillListServlet extends HttpServlet {
         } else {
             numDis = 5;
         }
+         int stt = (page - 1) * numDis;
+        request.setAttribute("stt", stt);
         int numSkill = listAllSkill.size();
         int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
@@ -97,7 +99,46 @@ public class SkillListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        SkillDAO act = new SkillDAO();
+        String id_raw = request.getParameter("id");
+        int id = Integer.parseInt(id_raw);
+        Skill curSkill = act.getSkillById(id);
+        String curStatus = curSkill.getStatus();
+        if (curStatus.equalsIgnoreCase("active")) {
+            curSkill.setStatus("Inactive");
+        } else {
+            curSkill.setStatus("Active");
+        }
+        boolean checkUpdateSkill = act.updateSkillInfo(curSkill);
+        if (checkUpdateSkill == false) {
+            response.sendRedirect("500.jsp");
+            return;
+        }
+        List<Skill> listAllSkill = act.getListOfAllSkill();
+        String page_raw = request.getParameter("page");
+        String numDis_raw = request.getParameter("numDis");
+        int page, numDis;
+        if (page_raw != null) {
+            page = Integer.parseInt(page_raw);
+        } else {
+            page = 1;
+        }
+        if (numDis_raw != null) {
+            numDis = Integer.parseInt(numDis_raw);
+        } else {
+            numDis = 5;
+        }
+        int stt = (page - 1) * numDis;
+        request.setAttribute("stt", stt);
+        int numSkill = listAllSkill.size();
+        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
+        request.setAttribute("numOfPage", numOfPage);
+        listAllSkill = act.getListOfSkillPaging(page, numDis);
+        request.setAttribute("indexPage", page);
+        request.setAttribute("numDis", numDis);
+
+        request.setAttribute("list", listAllSkill);
+        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
     }
 
     /**

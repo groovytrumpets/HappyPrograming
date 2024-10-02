@@ -358,6 +358,7 @@
                             <div class="widget-inner">
                                 <table class="table-bordered">
                                     <tr>
+                                        <th>STT</th>
                                         <th>Skill ID</th>
                                         <th>Skill Image</th>
                                         <th>Skill Name</th>
@@ -365,40 +366,59 @@
                                         <th>Status</th>
                                         <th style="text-align: center">Edit</th>
                                     </tr>
+                                    <c:set value="${requestScope.stt}" var="stt"></c:set>
                                     <c:forEach items="${requestScope.list}" var="c">
-                                        <tr>
-                                            <td>${c.skillId}</td>
-                                            <td><img src="${c.img}" width="100px"></td>
+                                        <form action="adminSearchSkill" method="post">
+                                            <input type="hidden" name="page" value="${requestScope.indexPage}">
+                                            <input type="hidden" name="numDis" value="${requestScope.numDis}">
+                                            <input type="hidden" name="search" value="${requestScope.search}">
+                                            <tr>
+                                                <c:set var="stt" value="${stt + 1}" />
+                                                <td>${stt}</td>
+                                                <td>${c.skillId}</td>
+                                            <input type="hidden" name="id" value="${c.skillId}">
+                                            <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
                                             <td>${c.skillName}</td>
                                             <td>${c.createDate}</td>
-                                            <td>${c.status}</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${c.status eq 'Active'}">
+                                                        <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
+                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise >
+                                                        <div class="btn-secondry add-item m-r5">
+                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;">${c.status}</button>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
                                             <td style="text-align: center">
                                                 <a href="updateSkill?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
                                                 <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
-                                        </tr>
+                                            </tr>
+                                        </form>
+
                                     </c:forEach>
                                 </table>
                                 <c:set var="page" value="${requestScope.indexPage}"/>
                                 <div class="pagination" style="display: flex">
                                     <div class="col-md-6" >
                                         <div class="col-md-4">
-                                            <form action="adminSearchSkill?search=${requestScope.search}" method="get">
-                                                <input type="hidden" name="search" value="${requestScope.search}">
+                                            <form action="SkillList" method="get">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
                                                     <option value="5" ${numDis == 5 ? 'selected' : ''}>5</option>
                                                     <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
                                                     <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
                                                 </select>
-
                                                 <noscript><input type="submit" value="Submit"></noscript>
                                             </form>
                                         </div>
                                     </div>
                                     <div class="col-md-6" style="text-align: right">
-                                        <c:forEach begin="1" end="${requestScope.numOfPage}" var="i">
-                                            <a href="#" onclick="window.location.href = 'adminSearchSkill?search=' + encodeURIComponent('${requestScope.search}') + '&page=${i}&numDis=${requestScope.numDis}'">
-                                                ${i}
-                                            </a>
+                                        <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
+                                            <a href="SkillList?page=${i}&numDis=${numDis}">${i}</a>
                                         </c:forEach>
                                     </div>
                                 </div>
@@ -430,22 +450,22 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-                                                // Pricing add
-                                                function newMenuItem() {
-                                                    var newElem = $('tr.list-item').first().clone();
-                                                    newElem.find('input').val('');
-                                                    newElem.appendTo('table#item-add');
-                                                }
-                                                if ($("table#item-add").is('*')) {
-                                                    $('.add-item').on('click', function (e) {
-                                                        e.preventDefault();
-                                                        newMenuItem();
-                                                    });
-                                                    $(document).on("click", "#item-add .delete", function (e) {
-                                                        e.preventDefault();
-                                                        $(this).parent().parent().parent().parent().remove();
-                                                    });
-                                                }
+                                                    // Pricing add
+                                                    function newMenuItem() {
+                                                        var newElem = $('tr.list-item').first().clone();
+                                                        newElem.find('input').val('');
+                                                        newElem.appendTo('table#item-add');
+                                                    }
+                                                    if ($("table#item-add").is('*')) {
+                                                        $('.add-item').on('click', function (e) {
+                                                            e.preventDefault();
+                                                            newMenuItem();
+                                                        });
+                                                        $(document).on("click", "#item-add .delete", function (e) {
+                                                            e.preventDefault();
+                                                            $(this).parent().parent().parent().parent().remove();
+                                                        });
+                                                    }
 
         </script>
         <script type="text/javascript">
