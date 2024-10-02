@@ -30,7 +30,7 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"), 
+                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"),
                         rs.getString("username"),
                         rs.getDate("createDate"),
                         rs.getString("phone"), rs.getString("address"),
@@ -198,7 +198,7 @@ public class CVDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             for (String addSkill : addSkills) {
-
+                
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
                 st.executeUpdate();
@@ -228,7 +228,7 @@ public class CVDAO extends DBContext {
         return null;
     }
 
-    public boolean checkDuplicateEmail(String email,String username) {
+    public boolean checkDuplicateEmail(String email, String username) {
         String sql = "select Status,Username,Email from [User] where Email = ?";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -236,10 +236,10 @@ public class CVDAO extends DBContext {
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-               if ((!username.equalsIgnoreCase(rs.getString("Username"))
-                       &&!email.isEmpty()&&rs.getString("Status").equalsIgnoreCase("inactive"))) {
-                return true; // email exsist
-            }
+                if ((!username.equalsIgnoreCase(rs.getString("Username"))
+                        && !email.isEmpty() && rs.getString("Status").equalsIgnoreCase("inactive"))) {
+                    return true; // email exsist
+                }
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -248,6 +248,41 @@ public class CVDAO extends DBContext {
         return false;
     }
 
-    
+    public void createCV(CV cv) {
+        String sql = "INSERT INTO [dbo].[CV]\n"
+                + "           ([MentorID]\n"
+                + "           ,[Education]\n"
+                + "           ,[Experience]\n"
+                + "           ,[Activity]\n"
+                + "           ,[ProfessionIntroduction]\n"
+                + "           ,[Certificate]\n"
+                + "           ,[CreateDate]\n"
+                + "           ,[JobProfession]\n"
+                + "           ,[YearOfExperience]\n"
+                + "           ,[ServiceDescription]\n"
+                + "           ,[Status]\n"
+                + "           ,[Framework]\n"
+                + "           ,[Avatar])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?,GETDATE(),?,?,?,'active',?,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cv.getMentorId());
+            st.setString(2, cv.getEducation());
+            st.setString(3, cv.getExperience());
+            st.setString(4, cv.getActivity());
+            st.setString(5, cv.getProfessionIntroduction());
+            st.setString(6, cv.getCertificate());
+            st.setString(7, cv.getJobProfession());
+            st.setInt(8, cv.getYearOfExperience());
+            st.setString(9, cv.getServiceDescription());
+            st.setString(10, cv.getFramework());
+            st.setString(11, cv.getAvatar());
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
 }

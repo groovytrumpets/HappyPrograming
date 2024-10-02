@@ -9,7 +9,6 @@ import DAO.CVDAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Skill;
-import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,8 +16,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +24,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="CVUpdateServlet", urlPatterns={"/cvupdate"})
-public class CVUpdateServlet extends HttpServlet {
+@WebServlet(name="CVCreateServlet", urlPatterns={"/cvcreate"})
+public class CVCreateServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -45,14 +42,14 @@ public class CVUpdateServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CVUpdateServlet</title>");  
+            out.println("<title>Servlet CVCreateServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CVUpdateServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CVCreateServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -66,35 +63,26 @@ public class CVUpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        String error = request.getParameter("error");
         
+        String error = request.getParameter("error");
         int id;
         CVDAO cvd = new CVDAO();
         try {
             id = Integer.parseInt(id_raw);
-            
-            List<Skill> mentorSkillList = cvd.getMentorSkillList(id);
             List<Skill> skillList = cvd.getSkillList(id);
-            //System.out.println(mentorSkillList.get(0).getSkillName());
-            request.setAttribute("skillMentor", mentorSkillList);
             request.setAttribute("skillList", skillList);
-            
             Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentor(mentor.getMentorId());
             String email = cvd.getUserEmail(id);
-            request.setAttribute("error", error);
             request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);
-            request.setAttribute("cvFound", cv);
             
-            //System.out.println(mentor.getFullName());
-        request.getRequestDispatcher("updateCV.jsp").forward(request, response);
+            
+            request.getRequestDispatcher("createCV.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
-            response.sendRedirect("404.jsp");
+            System.out.println("here");
         }
-        
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -106,19 +94,10 @@ public class CVUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        //getParameterValues khac getParameter
-        String[] deleteSkills = request.getParameterValues("deleteSkills");
         String[] addSkills = request.getParameterValues("addSkills");
         
         String userId_raw = request.getParameter("mentorId");
-        String fullname = request.getParameter("fullname");
-        String username = request.getParameter("username");
-        String dob_raw = request.getParameter("dob");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-        //System.out.println(fullname);
+        
         String profession = request.getParameter("profession");
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
@@ -128,57 +107,28 @@ public class CVUpdateServlet extends HttpServlet {
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
         String avatar = request.getParameter("avatar");
-        
-        Date dob;
+
         int userid,yearxp;
         try {
-            
-            
-           
             userid=Integer.parseInt(userId_raw);
             yearxp=Integer.parseInt(yearxp_raw);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dob=dateFormat.parse(dob_raw);
-            
-            CVDAO cvdao = new CVDAO();
-            String nameId = cvdao.getMentorByID(userid).getUsername();
-            
-            //check email exist
-            if (cvdao.checkDuplicateEmail(email,nameId)) {
-                System.out.println("true");
-                email="error";
-                response.sendRedirect("cvupdate?id="+userid+"&error=email_exists");
-                return;
-            }
-
-           
-            Mentor newMentor = new Mentor(userid,username, phone, address,
-                    dob, fullname, gender);
-            CV newCv = new CV(userid,education, experience, activity, 
+             CVDAO cvdao = new CVDAO();
+              CV newCv = new CV(userid,education, experience, activity, 
                     professionIntroduction, profession, 
                     yearxp, serviceDescription, framework,avatar);
-            //System.out.println(nameId+" and "+email);
-            cvdao.updateUser(nameId,username,email);
-            cvdao.updateMentor(newMentor);
-            cvdao.updateCV(newCv);
+             cvdao.createCV(newCv);
             
-            if (deleteSkills!=null) {
-                cvdao.deleteMentorSkills(userid, deleteSkills);
-                //System.out.println("Del !null");
-            }
-            
-            if (addSkills!=null) {
+             
+             //add skills
+             if (addSkills!=null) {
                 cvdao.insertMentorSkills(userid, addSkills);
                 //System.out.println("Add !null");
             }
-            
-            
-            //DEMO URL!
-            response.sendRedirect("cvupdate?id="+userid);
+             response.sendRedirect("cvupdate?id="+userid);
         } catch (Exception e) {
             System.out.println(e);
+            
         }
-        
         
     }
 
@@ -190,5 +140,4 @@ public class CVUpdateServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
