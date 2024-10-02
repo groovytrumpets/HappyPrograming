@@ -4,25 +4,29 @@
  */
 package controller;
 
-import DAO.DaoSkill;
+import DAO.SkillDAO;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.io.InputStream;
 
 /**
  *
  * @author tuong
  */
 @WebServlet(name = "addSkillServlet", urlPatterns = {"/addSkill"})
+@MultipartConfig
 public class addSkillServlet extends HttpServlet {
 
     /**
@@ -94,15 +98,17 @@ public class addSkillServlet extends HttpServlet {
             request.getRequestDispatcher("addSkill.jsp").forward(request, response);
             return;
         }
-
-        String img = request.getParameter("img");
+        //Skill image doing
+        Part filePart = request.getPart("img");
+        InputStream fileRead = filePart.getInputStream();
+        byte[] image = fileRead.readAllBytes();
         String status = request.getParameter("status");
         String description = request.getParameter("description");
         Date date = new Date();
-        Skill newSkill = new Skill(0, name, date, description, status, img);
-        DaoSkill dao = new DaoSkill();
+        Skill newSkill = new Skill(0, name, date, description, status, image);
+        SkillDAO dao = new SkillDAO();
         boolean checkDao = dao.insertNewSkill(newSkill);
-        if(checkDao==false){
+        if (checkDao == false) {
             response.sendRedirect("500.jsp");
             return;
         }
@@ -111,7 +117,7 @@ public class addSkillServlet extends HttpServlet {
     }
 
     public boolean checkDupSkill(String skillName) {
-        DaoSkill act = new DaoSkill();
+        SkillDAO act = new SkillDAO();
         List<Skill> list = act.getListOfSkillByName(skillName);
         if (!list.isEmpty()) {
             return true;

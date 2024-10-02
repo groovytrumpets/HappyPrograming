@@ -5,7 +5,7 @@
 
 package controller;
 
-import DAO.DaoSkill;
+import DAO.SkillDAO;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,7 +58,7 @@ public class DeleteSkillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DaoSkill act = new DaoSkill();
+        SkillDAO act = new SkillDAO();
         List<Skill> listAllSkill = act.getListOfAllSkill();
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
@@ -74,7 +74,7 @@ public class DeleteSkillServlet extends HttpServlet {
         if (numDis_raw != null) {
             numDis = Integer.parseInt(numDis_raw);
         } else {
-            numDis = 10;
+            numDis = 5;
         }
         int numSkill = listAllSkill.size();
         int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
