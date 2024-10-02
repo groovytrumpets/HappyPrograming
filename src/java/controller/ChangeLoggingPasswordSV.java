@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
-import javax.mail.Session;
+
 
 /**
  *
@@ -67,8 +67,8 @@ public class ChangeLoggingPasswordSV extends HttpServlet {
         if (newPassword.equals(confirmPassword)) {
             try {
                 UserDAO userDAO = new UserDAO();
-                if (userDAO.validateUser(curUser.getUsername(), oldPassword)) {
-                    if (userDAO.updatePassword(curUser.getUsername(), newPassword)) {
+                if (oldPassword.equals(curUser.getPassword())) {
+                    if (userDAO.updatePassword(curUser.getEmail(), newPassword)) {
                         request.setAttribute("message", "Password changed successfully!");
                     } else {
                         request.setAttribute("error", "Password change failed.");

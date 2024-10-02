@@ -78,19 +78,20 @@
                             </div>
                             <div class="topbar-right">
                                 <ul>
+
                                     <li>
                                         <select class="header-lang-bx">
                                             <option data-icon="flag flag-uk">English UK</option>
                                             <option data-icon="flag flag-us">English US</option>
                                         </select>
-                                    </li>   
-                                    <c:if test="${sessionScope.acc == null}"> 
+                                    </li>
+                                    <c:if test="${sessionScope.acc == null}">
                                         <li><a href="signin">Sign In</a></li>
                                         <li><a href="signup">Sign Up</a></li>
+                                        </c:if>
+                                        <c:if test="${sessionScope.acc != null}">
+                                        <li>Welcome ${sessionScope.acc.username} !</li>
                                     </c:if>
-                                     <c:if test="${sessionScope.acc != null}"> 
-                                     <li>Welcome user ${sessionScope.acc.fullName}</li>
-                                    </c:if>   
                                 </ul>
                             </div>
                         </div>
@@ -113,11 +114,35 @@
                             <div class="secondary-menu">
                                 <div class="secondary-inner">
                                     <ul>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-                                        <!-- Search Button ==== -->
-                                        <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+                                        <c:if test="${sessionScope.acc == null}">
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+                                            <!-- Search Button ==== -->
+                                            <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.acc != null}">
+                                            <li>
+                                                
+                                                    <div data-toggle="dropdown" aria-expanded="false">
+                                                        
+                                                        <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets/images/testimonials/pic3.jpg" width="45" height="45"></span>
+                                                        
+                                                    &nbsp;&nbsp;<span>${sessionScope.acc.username}</span>
+                                                    </div>
+                                                    
+                                                    <div class="dropdown-menu">
+                                                        
+                                                            <a class="dropdown-item" href="user-profile.html">My profile</a>
+                                                            <a class="dropdown-item" href="list-view-calendar.html">Change Password</a>
+                                                            <a class="dropdown-item" href="mailbox.html">Messages</a>
+                                                            <a class="dropdown-item" href="logout">Logout</a>
+                                                        
+                                                    </div>
+                                                
+                                            </li>
+                                        </c:if>
+
                                     </ul>
                                 </div>
                             </div>

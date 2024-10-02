@@ -30,8 +30,9 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"), rs.getString("username"),
-                        rs.getDate("createDate"), rs.getString("email"),
+                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"),
+                        rs.getString("username"),
+                        rs.getDate("createDate"),
                         rs.getString("phone"), rs.getString("address"),
                         rs.getDate("dateOfBirth"), rs.getString("fullName"),
                         rs.getString("gender"), rs.getString("status"));
@@ -73,9 +74,7 @@ public class CVDAO extends DBContext {
 
     public void updateMentor(Mentor c) {
         String sql = "UPDATE [dbo].[Mentor]\n"
-                + "   SET [Username] =?\n"
-                + "      ,[Email] = ?\n"
-                + "      ,[Phone] = ?\n"
+                + "   SET [Phone] = ?\n"
                 + "      ,[Address] = ?\n"
                 + "      ,[DateOfBirth] = ?\n"
                 + "      ,[FullName] = ?\n"
@@ -83,21 +82,17 @@ public class CVDAO extends DBContext {
                 + " WHERE MentorID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, c.getUsername());
-            st.setString(2, c.getEmail());
-            st.setString(3, c.getPhone());
-            st.setString(4, c.getAddress());
+            st.setString(1, c.getPhone());
+            st.setString(2, c.getAddress());
             java.sql.Date sqlDob = new java.sql.Date(c.getDateOfBirth().getTime());
-            st.setDate(5, sqlDob);
-            st.setString(6, c.getFullName());
-            st.setString(7, c.getGender());
-            st.setInt(8, c.getMentorId());
+            st.setDate(3, sqlDob);
+            st.setString(4, c.getFullName());
+            st.setString(5, c.getGender());
+            st.setInt(6, c.getMentorId());
             st.executeUpdate();
-
         } catch (SQLException e) {
             System.out.println(e);
         }
-
     }
 
     public void updateCV(CV c) {
@@ -128,6 +123,20 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
 
+    }
+
+    public void updateUser(String userid, String username, String email) {
+        String sql = "update [User] set Username=?,Email=? where Username=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, email);
+            st.setString(3, userid);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     public List<Skill> getMentorSkillList(int id) {
@@ -200,4 +209,80 @@ public class CVDAO extends DBContext {
         }
 
     }
+
+    public String getUserEmail(int MentorId) {
+        String sql = "select * from [User] u join Mentor m on u.Username=m.Username where MentorID = ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, MentorId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Email");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public boolean checkDuplicateEmail(String email, String username) {
+        String sql = "select Status,Username,Email from [User] where Email = ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                if ((!username.equalsIgnoreCase(rs.getString("Username"))
+                        && !email.isEmpty() && rs.getString("Status").equalsIgnoreCase("inactive"))) {
+                    return true; // email exsist
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return false;
+    }
+
+    public void createCV(CV cv) {
+        String sql = "INSERT INTO [dbo].[CV]\n"
+                + "           ([MentorID]\n"
+                + "           ,[Education]\n"
+                + "           ,[Experience]\n"
+                + "           ,[Activity]\n"
+                + "           ,[ProfessionIntroduction]\n"
+                + "           ,[Certificate]\n"
+                + "           ,[CreateDate]\n"
+                + "           ,[JobProfession]\n"
+                + "           ,[YearOfExperience]\n"
+                + "           ,[ServiceDescription]\n"
+                + "           ,[Status]\n"
+                + "           ,[Framework]\n"
+                + "           ,[Avatar])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?,GETDATE(),?,?,?,'active',?,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cv.getMentorId());
+            st.setString(2, cv.getEducation());
+            st.setString(3, cv.getExperience());
+            st.setString(4, cv.getActivity());
+            st.setString(5, cv.getProfessionIntroduction());
+            st.setString(6, cv.getCertificate());
+            st.setString(7, cv.getJobProfession());
+            st.setInt(8, cv.getYearOfExperience());
+            st.setString(9, cv.getServiceDescription());
+            st.setString(10, cv.getFramework());
+            st.setString(11, cv.getAvatar());
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
 }
