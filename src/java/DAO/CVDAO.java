@@ -284,5 +284,9 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
+    public static void main(String[] args) {
+          CVDAO c = new CVDAO();
+          System.out.println(c.getCVbyMentor(7));
+    }
 
 }

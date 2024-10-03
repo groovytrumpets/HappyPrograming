@@ -4,6 +4,7 @@
     Author     : nhhag
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -238,7 +239,7 @@
                 <div class="breadcrumb-row">
                     <div class="container">
                         <ul class="list-inline">
-                           
+
                         </ul>
                     </div>
                 </div>
@@ -250,7 +251,7 @@
                         <div class="container">
                             <div class="row d-flex flex-row-reverse">
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
-                                    
+
                                 </div>
 
                                 <div class="col-lg-9 col-md-8 col-sm-12">
@@ -267,26 +268,34 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                                                        <div class="" id="instructor">
+
+                                    <div class="" id="instructor">
                                         <h4>Mentor</h4>
-                                        <div class="instructor-bx">
-                                            <div class="instructor-author">
-                                                <img src="assets/images/testimonials/pic1.jpg" alt="">
-                                            </div>
-                                            <div class="instructor-info">
-                                                <h6>Keny White </h6>
-                                                <span>Professor</span>
-                                                <ul class="list-inline m-tb10">
-                                                    <li><a href="#" class="btn sharp-sm facebook"><i class="fa fa-facebook"></i></a></li>
-                                                    <li><a href="#" class="btn sharp-sm twitter"><i class="fa fa-twitter"></i></a></li>
-                                                    <li><a href="#" class="btn sharp-sm linkedin"><i class="fa fa-linkedin"></i></a></li>
-                                                    <li><a href="#" class="btn sharp-sm google-plus"><i class="fa fa-google-plus"></i></a></li>
-                                                </ul>
-                                                <p class="m-b0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</p>
-                                            </div>
-                                        </div>
-                                        
+                                        <c:forEach items="${mentor}" var="mentors">
+                                            <c:forEach items="${cv}" var="cvs">
+                                                <c:if test="${mentors.mentorId == cvs.mentorId}">
+                                                    <div class="instructor-bx">
+                                                        <div class="instructor-author">
+                                                            <img src="assets/images/testimonials/pic1.jpg" alt="">
+                                                        </div>
+                                                        <div class="instructor-info">
+                                                            <h6>${mentors.fullName} </h6>
+                                                            <span>Mentor</span>
+                                                            <ul class="list-inline m-tb10">
+                                                                <li><a href="#" class="btn sharp-sm facebook"><i class="fa fa-facebook"></i></a></li>
+                                                                <li><a href="#" class="btn sharp-sm twitter"><i class="fa fa-twitter"></i></a></li>
+                                                                <li><a href="#" class="btn sharp-sm linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                                                <li><a href="#" class="btn sharp-sm google-plus"><i class="fa fa-google-plus"></i></a></li>
+                                                            </ul>
+                                                            <p class="m-b0">
+                                                                ${cvs.serviceDescription}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:forEach>
+
                                     </div>
                                     <div class="" id="reviews">
                                         <h4>Reviews</h4>

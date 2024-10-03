@@ -299,7 +299,7 @@
                                                     </div>
                                                     <div class="info-bx text-center">
                                                         <h5><a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}">
-                                                                ${((pageIndex - 1) * 9) + stt}. ${skill.skillName}
+                                                                ${((pageIndex - 1) * 9) + stt}. ${skill.skillName},${skill.skillId}
                                                             </a></h5>
                                                             <c:set var="stt" value="${stt + 1}"/>
                                                         <span class="description" style=" display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em; ">

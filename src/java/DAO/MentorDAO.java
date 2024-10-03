@@ -95,7 +95,6 @@ public class MentorDAO extends DBContext {
 
     public static void main(String[] args) {
         MentorDAO u = new MentorDAO();
-        Mentor m = u.findMentorByUsername("khanhnnhe181337s");
-        System.out.println(m);
+    
     }
 }
