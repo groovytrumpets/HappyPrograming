@@ -271,7 +271,7 @@
                                         <div class="widget-post-bx">
                                             <c:forEach items="${list2}" var="list2">
                                                 <div class="widget-post clearfix">
-                                                    <div class="ttr-post-media"> <img src="assets/images/blog/recent-blog/pic3.jpg" width="200" height="160" alt=""> </div>
+                                                    <div class="ttr-post-media"> <img src="data:image/jpeg;base64,${list2.base64ImageFile}" width="200" height="160" alt=""> </div>
                                                     <div class="ttr-post-info">
                                                         <div class="ttr-post-header">
                                                             <h6 class="post-title"><a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">${list2.skillName}</a></h6>
@@ -294,12 +294,12 @@
                                             <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
                                                 <div class="cours-bx">
                                                     <div class="action-box">
-                                                        <img src="https://imageio.forbes.com/specials-images/imageserve/5e7cdb76281468000685c675/0x0.jpg?format=jpg&crop=640,360,x0,y60,safe&height=900&width=1600&fit=bounds" alt="${skill.skillName}">
+                                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}">
 
                                                     </div>
                                                     <div class="info-bx text-center">
                                                         <h5><a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}">
-                                                                ${((pageIndex - 1) * 9) + stt}. ${skill.skillName},${skill.skillId}
+                                                                ${((pageIndex - 1) * 9) + stt}. ${skill.skillName}
                                                             </a></h5>
                                                             <c:set var="stt" value="${stt + 1}"/>
                                                         <span class="description" style=" display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em; ">
@@ -309,7 +309,7 @@
                                                     <div class="cours-more-info">
                                                         <div class="review">
                                                             <span style="text-transform: capitalize">Number mentor</span>
-                                                            <span>5</span>
+                                                            <span>${number[stt - 2]}</span>
                                                         </div>
                                                         <div style="display: flex; align-items: center; padding-left: 10px">
                                                             <a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}" class="btn">Read More</a>
