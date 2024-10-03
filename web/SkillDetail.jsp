@@ -276,7 +276,7 @@
                                                 <c:if test="${mentors.mentorId == cvs.mentorId}">
                                                     <div class="instructor-bx">
                                                         <div class="instructor-author">
-                                                            <img src="assets/images/testimonials/pic1.jpg" alt="">
+                                                            <img src="${cvs.avatar}}" alt="">
                                                         </div>
                                                         <div class="instructor-info">
                                                             <h6>${mentors.fullName} </h6>
@@ -288,7 +288,13 @@
                                                                 <li><a href="#" class="btn sharp-sm google-plus"><i class="fa fa-google-plus"></i></a></li>
                                                             </ul>
                                                             <p class="m-b0">
-                                                                ${cvs.serviceDescription}
+                                                                ${cvs.education}
+                                                            </p>
+                                                            <p class="m-b0">
+                                                                ${cvs.professionIntroduction}
+                                                            </p>
+                                                            <p class="m-b0">
+                                                                ${cvs.yearOfExperience} years
                                                             </p>
                                                         </div>
                                                     </div>
