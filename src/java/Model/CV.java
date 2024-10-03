@@ -62,6 +62,11 @@ public class CV {
         this.avatar = avatar;
     }
 
+    @Override
+    public String toString() {
+        return "CV{" + "cvId=" + cvId + ", mentorId=" + mentorId + ", education=" + education + ", experience=" + experience + ", activity=" + activity + ", professionIntroduction=" + professionIntroduction + ", certificate=" + certificate + ", createDate=" + createDate + ", jobProfession=" + jobProfession + ", yearOfExperience=" + yearOfExperience + ", serviceDescription=" + serviceDescription + ", status=" + status + ", framework=" + framework + ", avatar=" + avatar + '}';
+    }
+
     
     public String getAvatar() {
         return avatar;

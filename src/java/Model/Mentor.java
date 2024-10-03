@@ -59,6 +59,11 @@ public class Mentor {
     public void setMentorId(int mentorId) {
         this.mentorId = mentorId;
     }
+
+    @Override
+    public String toString() {
+        return "Mentor{" + "mentorId=" + mentorId + ", roleId=" + roleId + ", username=" + username + ", createDate=" + createDate + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
+    }
     
 
     public int getRoleId() {
