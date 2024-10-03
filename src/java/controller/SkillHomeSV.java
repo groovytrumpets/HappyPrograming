@@ -5,7 +5,9 @@
 package controller;
 
 import DAO.SkillDAO;
+import DAO.SkillListDAO;
 import Model.Skill;
+import com.oracle.wls.shaded.org.apache.bcel.verifier.statics.IntList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -61,7 +63,7 @@ public class SkillHomeSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String index_raw = request.getParameter("index");
-
+        SkillListDAO skilllistDAO = new SkillListDAO();
         SkillDAO skillDAO = new SkillDAO();
         List<Skill> listSkill = skillDAO.getListOfAllSkill();
         int index = 1;
@@ -77,14 +79,20 @@ public class SkillHomeSV extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e);
         }
+
         List<Skill> list = skillDAO.getListOfSkillPaging(index, 9);
         List<Skill> list2 = skillDAO.getListOfSkillByDate();
-        request.setAttribute("list2", list2);
+        int number[] = new int[10];
+        for (int i = 0; i < list.size(); i++) {
+            number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
+        }
+        request.setAttribute("number", number);
+         request.setAttribute("list2", list2);
         request.setAttribute("pageIndex", index);
         request.setAttribute("endP", page);
         request.setAttribute("list", list);
         request.getRequestDispatcher("SkillList.jsp").forward(request, response);
-    }   
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.

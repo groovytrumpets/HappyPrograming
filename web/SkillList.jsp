@@ -309,7 +309,7 @@
                                                     <div class="cours-more-info">
                                                         <div class="review">
                                                             <span style="text-transform: capitalize">Number mentor</span>
-                                                            <span>5</span>
+                                                            <span>${number[stt - 2]}</span>
                                                         </div>
                                                         <div style="display: flex; align-items: center; padding-left: 10px">
                                                             <a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}" class="btn">Read More</a>
