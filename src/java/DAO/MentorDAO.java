@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.time.LocalDate;
 import Model.Mentor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MentorDAO extends DBContext {
 
@@ -93,8 +95,48 @@ public class MentorDAO extends DBContext {
         return mentor; // Return the retrieved Mentor object or null if not found
     }
 
+    public List<Mentor> getAllMentor() {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT [MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Email]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentor]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (Exception e) {
+        }
+
+        return listMentor;
+    }
+
     public static void main(String[] args) {
-        MentorDAO u = new MentorDAO();
-    
+        MentorDAO act = new MentorDAO();
+                List<Mentor> listMentor = act.getAllMentor();
+                System.out.println(listMentor.get(0).getMentorId());
+
+
     }
 }
