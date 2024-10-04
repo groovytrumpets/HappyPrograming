@@ -356,6 +356,7 @@
 
                             <div class="widget-inner">
                                 <table class="table-bordered">
+
                                     <tr>
                                         <th>STT</th>
                                         <th>Skill ID</th>
@@ -370,6 +371,7 @@
                                         <form action="SkillList" method="post">
                                             <input type="hidden" name="page" value="${requestScope.indexPage}">
                                             <input type="hidden" name="numDis" value="${requestScope.numDis}">
+
                                             <tr>
                                                 <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
@@ -391,8 +393,6 @@
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
-
-
                                             </td>
                                             <td style="text-align: center">
                                                 <a href="updateSkill?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
