@@ -14,12 +14,12 @@ public class Rate {
     /*[MentorID] [int] NULL,
 	[MenteeID] [int] NULL,
 	[CreateDate] [date] NULL,
-	[Status] [nvarchar](20) NULL,
+	[status] [nvarchar](20) NULL,
 	[Comment] [varchar](max) NULL,
 	[Rate] [int] NULL*/
     private int mentorId,menteeId;
     private Date createDate;
-    private String Status,comment;
+    private String status,comment;
     private int rate;
 
     public Rate() {
@@ -29,7 +29,7 @@ public class Rate {
         this.mentorId = mentorId;
         this.menteeId = menteeId;
         this.createDate = createDate;
-        this.Status = Status;
+        this.status = Status;
         this.comment = comment;
         this.rate = rate;
     }
@@ -59,11 +59,11 @@ public class Rate {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String Status) {
-        this.Status = Status;
+        this.status = Status;
     }
 
     public String getComment() {

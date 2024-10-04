@@ -360,7 +360,7 @@
                                 <h4>Update CV of mentor</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="cvupdate" method="post">
+                                <form class="edit-profile m-b30" action="cvupdate" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -375,11 +375,15 @@
                                         <div class="form-group col-12">
                                             <div class=" text-center">
 
-                                                <img id="userAvatar" src="${requestScope.cvFound.avatar}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
+                                                <img id="userAvatar" src="getimage?id=${requestScope.uFound.mentorId}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
                                                 <div id="Imgstatus"></div>
                                             </div>
                                             <div>
-                                                <label class="col-form-label">Avatar link:</label><input class="form-control" type="text" name="avatar" value="${requestScope.cvFound.avatar}" >
+                                                <div style="text-align: center">
+                                                <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                <span id="file-path"></span>
+                                                <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" hidden>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -597,6 +601,14 @@
                     $(this).parent().parent().parent().parent().remove();
                 });
             }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
+
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
         </script>
     </body>
 

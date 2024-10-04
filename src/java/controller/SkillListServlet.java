@@ -83,7 +83,7 @@ public class SkillListServlet extends HttpServlet {
         listAllSkill = act.getListOfSkillPaging(page, numDis);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
-
+        
         request.setAttribute("list", listAllSkill);
         request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
     }

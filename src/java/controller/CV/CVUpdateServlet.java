@@ -13,10 +13,13 @@ import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,10 @@ import java.util.List;
  * @author ADMIN
  */
 @WebServlet(name="CVUpdateServlet", urlPatterns={"/cvupdate"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
+    maxFileSize = 1024 * 1024 * 5,   // 5 MB
+    maxRequestSize = 1024 * 1024 * 10 // 10 MB
+)
 public class CVUpdateServlet extends HttpServlet {
    
     /** 
@@ -80,7 +87,7 @@ public class CVUpdateServlet extends HttpServlet {
             request.setAttribute("skillList", skillList);
             
             Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentor(mentor.getMentorId());
+            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             String email = cvd.getUserEmail(id);
             request.setAttribute("error", error);
             request.setAttribute("email", email);
@@ -127,7 +134,7 @@ public class CVUpdateServlet extends HttpServlet {
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
-        String avatar = request.getParameter("avatar");
+        Part filePart = request.getPart("avatar");
         
         Date dob;
         int userid,yearxp;
@@ -142,6 +149,16 @@ public class CVUpdateServlet extends HttpServlet {
             
             CVDAO cvdao = new CVDAO();
             String nameId = cvdao.getMentorByID(userid).getUsername();
+            CV cv = cvdao.getCVbyMentorId(userid);
+            //img processing
+            byte[] avatar=null;
+            //check user update avatar
+            if (filePart.getSize()>0) {
+            InputStream fileRead = filePart.getInputStream();
+                avatar = fileRead.readAllBytes();
+            }else{
+                avatar = cv.getAvatar();
+            }
             
             //check email exist
             if (cvdao.checkDuplicateEmail(email,nameId)) {

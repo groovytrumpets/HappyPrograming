@@ -6,6 +6,7 @@ package DAO;
 
 import Model.CV;
 import Model.Mentor;
+import Model.Rate;
 import Model.Skill;
 import Model.SkillList;
 import Model.User;
@@ -46,9 +47,9 @@ public class CVDAO extends DBContext {
         return null;
     }
 
-    public CV getCVbyMentor(int id) {
+    public CV getCVbyMentorId(int id) {
         //lenh sql select * from categories cach 1:
-        String sql = "select*from [dbo].[CV] where MentorID =?;";
+        String sql = "select*from [dbo].[CV] where MentorID =? and Status='active';";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -61,7 +62,7 @@ public class CVDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getString("avatar"));
+                        rs.getString("framework"), rs.getBytes("avatar"));
                 return cv;
 
             }
@@ -105,7 +106,7 @@ public class CVDAO extends DBContext {
                 + "      ,[YearOfExperience] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?\n"
-                + " WHERE [MentorID] = ?";
+                + " WHERE [MentorID] = ? and Status='active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getEducation());
@@ -116,7 +117,7 @@ public class CVDAO extends DBContext {
             st.setInt(6, c.getYearOfExperience());
             st.setString(7, c.getServiceDescription());
             st.setString(8, c.getFramework());
-            st.setString(9, c.getAvatar());
+            st.setBytes(9, c.getAvatar());
             st.setInt(10, c.getMentorId());
             st.executeUpdate();
         } catch (SQLException e) {
@@ -264,7 +265,7 @@ public class CVDAO extends DBContext {
                 + "           ,[Framework]\n"
                 + "           ,[Avatar])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,GETDATE(),?,?,?,'active',?,?)";
+                + "           (?,?,?,?,?,?,GETDATE(),?,?,?,'inactive',?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, cv.getMentorId());
@@ -277,7 +278,7 @@ public class CVDAO extends DBContext {
             st.setInt(8, cv.getYearOfExperience());
             st.setString(9, cv.getServiceDescription());
             st.setString(10, cv.getFramework());
-            st.setString(11, cv.getAvatar());
+            st.setBytes(11, cv.getAvatar());
             st.executeUpdate();
 
         } catch (SQLException e) {
@@ -286,7 +287,26 @@ public class CVDAO extends DBContext {
     }
     public static void main(String[] args) {
           CVDAO c = new CVDAO();
-          System.out.println(c.getCVbyMentor(7));
+          System.out.println(c.getCVbyMentorId(7));
+    }
+
+    public List<Rate> getMentorRateList(int id) {
+        List<Rate> list = new ArrayList<>();
+        String sql = "select * from Rate where MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"), 
+                        rs.getDate("createDate"), rs.getString("status"), 
+                        rs.getString("comment"), rs.getInt("rate"));
+                list.add(rate);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print the exception for debugging
+        }
+        return list;
     }
 
 }
