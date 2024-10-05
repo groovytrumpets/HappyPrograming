@@ -3,10 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.CV;
 
-import DAO.SkillDAO;
+import DAO.CVDAO;
+import Model.CV;
+import Model.Mentor;
+import Model.Rate;
 import Model.Skill;
+import Model.StatisticSkills;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,10 +22,10 @@ import java.util.List;
 
 /**
  *
- * @author tuong
+ * @author ADMIN
  */
-@WebServlet(name="DeleteSkillServlet", urlPatterns={"/deleteSkill"})
-public class DeleteSkillServlet extends HttpServlet {
+@WebServlet(name="ViewProfileCVServlet", urlPatterns={"/viewprofilecv"})
+public class ViewProfileCVServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +42,10 @@ public class DeleteSkillServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteSkillServlet</title>");  
+            out.println("<title>Servlet ViewProfileCVServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteSkillServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewProfileCVServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,35 +61,39 @@ public class DeleteSkillServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        List<Skill> listAllSkill = act.getListOfAllSkill();
-        String page_raw = request.getParameter("page");
-        String numDis_raw = request.getParameter("numDis");
-        String deleteID_raw = request.getParameter("id");
-        int deleteId = Integer.parseInt(deleteID_raw);
-        act.deleteSkillById(deleteId);
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
+    throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        
+        
+        int id;
+        CVDAO cvd = new CVDAO();
+        try {
+            id = Integer.parseInt(id_raw);
+            Mentor mentor = cvd.getMentorByID(id);
+            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
+            String email = cvd.getUserEmail(id);
+            List<Rate> rateList = cvd.getMentorRateList(id);
+            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
+            int rateAve = cvd.getAveRatebyId(id);
+            request.setAttribute("skillMentor", mentorSkillList);
+            
+            
+            
+            request.setAttribute("error", error);
+            request.setAttribute("email", email);
+            request.setAttribute("uFound", mentor);
+            request.setAttribute("cvFound", cv);
+            request.setAttribute("rate", rateList);
+            
+            request.setAttribute("rateAve", rateAve);
+            
+            
+            request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 5;
-        }
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
-        request.setAttribute("numOfPage", numOfPage);
-        listAllSkill = act.getListOfSkillPaging(page, numDis);
-        request.setAttribute("indexPage", page);
-        request.setAttribute("numDis", numDis);
-
-        request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.

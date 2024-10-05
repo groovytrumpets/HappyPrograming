@@ -4,8 +4,14 @@
  */
 package controller;
 
-import DAO.SkillDAO;
-import Model.Skill;
+import DAO.CVDAO;
+import DAO.MentorDAO;
+import DAO.RateDAO;
+import DAO.RequestDAO;
+import Model.CV;
+import Model.Mentor;
+import Model.Rate;
+import Model.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +25,8 @@ import java.util.List;
  *
  * @author tuong
  */
-@WebServlet(name = "SkillListServlet", urlPatterns = {"/SkillList"})
-public class SkillListServlet extends HttpServlet {
+@WebServlet(name = "MentorListAdMinServlet", urlPatterns = {"/mentorListAdmin"})
+public class MentorListAdMinServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +45,10 @@ public class SkillListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SkillListServlet</title>");
+            out.println("<title>Servlet MentorListAdMinServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SkillListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MentorListAdMinServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,8 +66,11 @@ public class SkillListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        List<Skill> listAllSkill = act.getListOfAllSkill();
+        MentorDAO actMent = new MentorDAO();
+        CVDAO actCV = new CVDAO();
+        RateDAO actRate = new RateDAO();
+        RequestDAO actRequest = new RequestDAO();
+        List<Mentor> mentorList = actMent.getAllMentor();
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
         int page, numDis;
@@ -73,19 +82,31 @@ public class SkillListServlet extends HttpServlet {
         if (numDis_raw != null) {
             numDis = Integer.parseInt(numDis_raw);
         } else {
-            numDis = 5;
+            numDis = 10;
         }
-         int stt = (page - 1) * numDis;
+        int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
+        int numMent = mentorList.size();
+        int numOfPage = (numMent % numDis == 0 ? numMent/numDis : (numMent / numDis +1));
         request.setAttribute("numOfPage", numOfPage);
-        listAllSkill = act.getListOfSkillPaging(page, numDis);
+        mentorList = actMent.getListMentorPagiantion(page, numDis);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
-        
-        request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
+        request.setAttribute("listMent", mentorList);
+        List<CV> listCV = actCV.getMostEficientCV();
+        request.setAttribute("listCV", listCV);
+        //Manage request Accepted
+        List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
+        request.setAttribute("requestAccList", curAcceptRequestt);
+        List<Request> allRequest = actRequest.getAllRequest();
+        request.setAttribute("requestList", allRequest);
+        List<Request> curFinishRequest = actRequest.getAllRequestByStatus("Completed");
+        request.setAttribute("requestComList", curFinishRequest);
+        PrintWriter out = response.getWriter();
+        //Handle rate
+        List<Rate> listRate = actRate.getAllRate();
+        request.setAttribute("listRate", listRate);
+        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
     }
 
     /**
@@ -99,22 +120,23 @@ public class SkillListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        String id_raw = request.getParameter("id");
+         RequestDAO actRequest = new RequestDAO();
+        MentorDAO actMent = new MentorDAO();
+        CVDAO actCV = new CVDAO();
+          RateDAO actRate = new RateDAO();
+        List<Mentor> mentorList = actMent.getAllMentor();
+        String id_raw = request.getParameter("mentorId");
         int id = Integer.parseInt(id_raw);
-        Skill curSkill = act.getSkillById(id);
-        String curStatus = curSkill.getStatus();
-        if (curStatus.equalsIgnoreCase("active")) {
-            curSkill.setStatus("Inactive");
-        } else {
-            curSkill.setStatus("Active");
-        }
-        boolean checkUpdateSkill = act.updateSkillInfo(curSkill);
-        if (checkUpdateSkill == false) {
-            response.sendRedirect("500.jsp");
-            return;
-        }
-        List<Skill> listAllSkill = act.getListOfAllSkill();
+        String status = request.getParameter("status");
+        if(status!= null){
+            if(status.equalsIgnoreCase("inactive")){
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Active");
+            }else{
+                 boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+            }
+        }else{
+                 boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+            }
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
         int page, numDis;
@@ -126,19 +148,31 @@ public class SkillListServlet extends HttpServlet {
         if (numDis_raw != null) {
             numDis = Integer.parseInt(numDis_raw);
         } else {
-            numDis = 5;
+            numDis = 10;
         }
+        
         int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
+        int numMent = mentorList.size();
+        int numOfPage = (numMent % numDis == 0 ? numMent/numDis : (numMent / numDis +1));
         request.setAttribute("numOfPage", numOfPage);
-        listAllSkill = act.getListOfSkillPaging(page, numDis);
+        mentorList = actMent.getListMentorPagiantion(page, numDis);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
-
-        request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
+        request.setAttribute("listMent", mentorList);
+        List<CV> listCV = actCV.getMostEficientCV();
+        request.setAttribute("listCV", listCV);
+         List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
+        request.setAttribute("requestAccList", curAcceptRequestt);
+        List<Request> allRequest = actRequest.getAllRequest();
+        request.setAttribute("requestList", allRequest);
+        List<Request> curFinishRequest = actRequest.getAllRequestByStatus("Completed");
+        request.setAttribute("requestComList", curFinishRequest);
+        PrintWriter out = response.getWriter();
+        //Handle rate
+        List<Rate> listRate = actRate.getAllRate();
+        request.setAttribute("listRate", listRate);
+        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
     }
 
     /**

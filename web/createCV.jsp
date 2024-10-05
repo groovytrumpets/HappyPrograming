@@ -1,15 +1,15 @@
 <%-- 
-    Document   : adminSearchSkill
-    Created on : Sep 21, 2024, 2:02:53 AM
-    Author     : tuong
+    Document   : updateCV
+    Created on : 17 thg 9, 2024, 12:33:22
+    Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
     <head>
 
         <!-- META ============================================= -->
@@ -33,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Create CV of mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -180,7 +180,7 @@
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-                            <div class="ttr-header-submenu">
+                            <div class="ttr-header-submenu">src="assets/images/testimonials/pic3.jpg
                                 <ul>
                                     <li><a href="user-profile.html">My profile</a></li>
                                     <li><a href="list-view-calendar.html">Activity</a></li>
@@ -258,35 +258,37 @@
                         <li>
                             <a href="index.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashboard</span>
+                                <span class="ttr-label">Dashborad</span>
                             </a>
                         </li>
                         <li>
                             <a href="courses.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-book"></i></span>
-                                <span class="ttr-label">User</span>
+                                <span class="ttr-label">Courses</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-email"></i></span>
+                                <span class="ttr-label">Mailbox</span>
                                 <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor</span></a>
+                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
                                 </li>
                                 <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee</span></a>
+                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="SkillList" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-email"></i></span>
-                                <span class="ttr-label">Skill</span>
-                            </a>
-
-                        </li>
-                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Đơn từ</span>
+                                <span class="ttr-label">Calendar</span>
                                 <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul>
@@ -299,6 +301,24 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="bookmark.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                <span class="ttr-label">Bookmarks</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="review.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-comments"></i></span>
+                                <span class="ttr-label">Review</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="add-listing.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+                                <span class="ttr-label">Add listing</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-user"></i></span>
                                 <span class="ttr-label">My Profile</span>
@@ -309,7 +329,7 @@
                                     <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
                                 </li>
                                 <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
+                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Create CV of mentor</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -326,102 +346,185 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Skill</h4>
+                    <h4 class="breadcrumb-title">Create CV of mentor</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>View Skill</li>
+                        <li>Create CV of mentor</li>
                     </ul>
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
-                        <div class="widget-box" >
-                            <div class="wc-title" style="display: flex">
-                                <div class="col-md-4">
-                                    <h4>View Skill</h4>
-                                </div>
-                                <div class="mail-search-bar col-md-4">
-                                    <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
-                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
-                                    </form>
-                                </div>
-                                <div class="col-md-4" style="text-align: right">
-                                    <div class="btn-secondry add-item m-r5">
-                                        <a href="addSkill" style="text-decoration: none; color: inherit;"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</a>
-                                    </div>
-                                </div>
-
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>Create CV of mentor</h4>
                             </div>
-
                             <div class="widget-inner">
-                                <table class="table-bordered">
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Skill ID</th>
-                                        <th>Skill Image</th>
-                                        <th>Skill Name</th>
-                                        <th>Create date</th>
-                                        <th>Status</th>
-                                        <th style="text-align: center">Edit</th>
-                                    </tr>
-                                    <c:set value="${requestScope.stt}" var="stt"></c:set>
-                                    <c:forEach items="${requestScope.list}" var="c">
-                                        <form action="adminSearchSkill" method="post">
-                                            <input type="hidden" name="page" value="${requestScope.indexPage}">
-                                            <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                            <input type="hidden" name="search" value="${requestScope.search}">
-                                            <tr>
-                                                <c:set var="stt" value="${stt + 1}" />
-                                                <td>${stt}</td>
-                                                <td>${c.skillId}</td>
-                                            <input type="hidden" name="id" value="${c.skillId}">
-                                            <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
-                                            <td>${c.skillName}</td>
-                                            <td>${c.createDate}</td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${c.status eq 'Active'}">
-                                                        <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
-                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise >
-                                                        <div class="btn-secondry add-item m-r5">
-                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;">${c.status}</button>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <a href="updateSkill?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
-                                                <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
-                                            </tr>
-                                        </form>
+                                <form class="edit-profile m-b30" action="cvcreate" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="ml-auto">
+                                                <h3>1. Personal Details</h3>
+                                            </div>
+                                        </div>
 
-                                    </c:forEach>
-                                </table>
-                                <c:set var="page" value="${requestScope.indexPage}"/>
-                                <div class="pagination" style="display: flex">
-                                    <div class="col-md-6" >
-                                        <div class="col-md-4">
-                                            <form action="SkillList" method="get">
-                                                <select name="numDis" id="numDis" onchange="this.form.submit()">
-                                                    <option value="5" ${numDis == 5 ? 'selected' : ''}>5</option>
-                                                    <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
-                                                    <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
-                                                </select>
-                                                <noscript><input type="submit" value="Submit"></noscript>
-                                            </form>
+
+                                        <div>
+                                            <input class="form-control" type="hidden" name="mentorId" value="${requestScope.uFound.mentorId}" >
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <div class=" text-center">
+
+                                                <img id="userAvatar" src="assets/images/userprofile.png" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
+                                                <div id="Imgstatus"></div>
+                                            </div>
+                                                <div style="text-align: center">
+                                                <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                <span id="file-path"></span>
+                                                <input id="avatar" class="form-control" type="file" name="avatar" accept=".jpg, .jpeg, .png, .gif" hidden>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Full Name</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="fullname" value="${requestScope.uFound.fullName}"disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Account name</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}"disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Date of Birth</label>
+                                            <div>
+                                                <input class="form-control" type="date" name="dob" value="${requestScope.uFound.dateOfBirth}"disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Email</label>
+                                            <div>
+                                                <c:if test="${requestScope.error==null}">
+                                                    <input class="form-control" type="email" name="email" value="${requestScope.email}"disabled>
+                                                </c:if>
+                                                <c:if test="${requestScope.error!=null}">
+                                                    <input class="form-control" type="email" name="email" value="">
+                                                    <span class="help" style="color: red">Your email used by another user !</span>
+
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Phone No.</label>
+                                            <div>
+                                                <input class="form-control" type="number" name="phone" value="${requestScope.uFound.phone}"disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Sex</label>
+                                            <div>
+                                                <select name="gender" class="" disabled>
+                                                    <option value="Male"<c:if test="${requestScope.uFound.gender == 'Male'}">selected</c:if>>Male</option>
+                                                    <option value="Female"<c:if test="${requestScope.uFound.gender == 'Female'}">selected</c:if>>Female</option>
+                                                    <option value="Other"<c:if test="${requestScope.uFound.gender == 'Other'}">selected</c:if>>Other</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label class="col-form-label">Address</label>
+                                                <div>
+                                                    <input class="form-control" type="text" name="address" value="${requestScope.uFound.address}"disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="seperator"></div>
+
+                                        <div class="col-12 m-t20">
+                                            <div class="ml-auto m-b5">
+                                                <h3>2. CV detail</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Profession</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="profession" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Framework</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="framework" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Education</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="education" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Year of experience</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="yearxp" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Activity</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="activity" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Profession Introduction</label>
+                                            <div>
+                                                <textarea class="form-control" name="professionIntroduction" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Service description</label>
+                                            <div>
+                                                <textarea class="form-control" name="serviceDescription" required> </textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Select skills</label><br/>
+                                            <br/>
+                                            <div>
+                                                <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
+                                                    <c:forEach items="${requestScope.skillList}" var="c">
+                                                        <li>
+                                                            <div class="check-box">
+                                                                <label class="col-form-label">
+                                                                    <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
+                                                                    ${c.skillName}</label>
+                                                            </div>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Archivement description</label>
+                                            <div>
+                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience} </textarea>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+
+                                        <div class="col-12">
+                                            <button type="submit" class="btn">Save changes</button>
+                                            <button type="reset" class="btn-secondry">Cancel</button>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="text-align: right">
-                                        <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                            <a href="SkillList?page=${i}&numDis=${numDis}">${i}</a>
-                                        </c:forEach>
-                                    </div>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -448,34 +551,49 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
+        <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
-                                                    // Pricing add
-                                                    function newMenuItem() {
-                                                        var newElem = $('tr.list-item').first().clone();
-                                                        newElem.find('input').val('');
-                                                        newElem.appendTo('table#item-add');
-                                                    }
-                                                    if ($("table#item-add").is('*')) {
-                                                        $('.add-item').on('click', function (e) {
-                                                            e.preventDefault();
-                                                            newMenuItem();
-                                                        });
-                                                        $(document).on("click", "#item-add .delete", function (e) {
-                                                            e.preventDefault();
-                                                            $(this).parent().parent().parent().parent().remove();
-                                                        });
-                                                    }
+            const img = document.getElementById('userAvatar');
+            const statusDiv = document.getElementById('Imgstatus');
 
+            img.onload = function () {
+                statusDiv.innerHTML = "Image uploaded successfully!";
+                statusDiv.style.color = "green";
+            };
+
+            img.onerror = function () {
+                statusDiv.innerHTML = "Unable to load image!";
+                statusDiv.style.color = "red";
+            };
         </script>
-        <script type="text/javascript">
-            function doDelete(id) {
-                if (confirm("Are you sure want to delete skill with ID = " + id)) {
-                    window.location = "deleteSkill?id=" + id;
-                }
+        <script>
+            // Pricing add
+            function newMenuItem() {
+                var newElem = $('tr.list-item').first().clone();
+                newElem.find('input').val('');
+                newElem.appendTo('table#item-add');
             }
+            if ($("table#item-add").is('*')) {
+                $('.add-item').on('click', function (e) {
+                    e.preventDefault();
+                    newMenuItem();
+                });
+                $(document).on("click", "#item-add .delete", function (e) {
+                    e.preventDefault();
+                    $(this).parent().parent().parent().parent().remove();
+                });
+            }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
+
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
+
         </script>
     </body>
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>

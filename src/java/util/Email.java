@@ -53,5 +53,6 @@ public class Email {
     }
 
     public static void main(String[] args) {
+        sendEmail("nguyennamkhanhnnk@gmail.com", "Hola", "Nhu ");
     }
 }

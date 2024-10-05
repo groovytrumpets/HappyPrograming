@@ -15,7 +15,6 @@ public class Mentor {
     private int roleId;
     private String username;
     private Date createDate;
-    private String email;
     private String phone;
     private String address;
     private Date dateOfBirth;
@@ -26,12 +25,13 @@ public class Mentor {
     public Mentor() {
     }
 
-    public Mentor(int mentorId, int roleId, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+    
+    
+    public Mentor(int mentorId, int roleId, String username, Date createDate, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
         this.mentorId = mentorId;
         this.roleId = roleId;
         this.username = username;
         this.createDate = createDate;
-        this.email = email;
         this.phone = phone;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
@@ -40,10 +40,9 @@ public class Mentor {
         this.status = status;
     }
 
-    public Mentor(int mentorId, String username, String email, String phone, String address, Date dateOfBirth, String fullName, String gender) {
+    public Mentor(int mentorId, String username, String phone, String address, Date dateOfBirth, String fullName, String gender) {
         this.mentorId = mentorId;
         this.username = username;
-        this.email = email;
         this.phone = phone;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
@@ -59,6 +58,11 @@ public class Mentor {
 
     public void setMentorId(int mentorId) {
         this.mentorId = mentorId;
+    }
+
+    @Override
+    public String toString() {
+        return "Mentor{" + "mentorId=" + mentorId + ", roleId=" + roleId + ", username=" + username + ", createDate=" + createDate + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
     }
     
 
@@ -84,14 +88,6 @@ public class Mentor {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
@@ -140,11 +136,6 @@ public class Mentor {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Mentor{" + "mentorId=" + mentorId + ", roleId=" + roleId + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
     }
     
 }

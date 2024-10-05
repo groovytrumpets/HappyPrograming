@@ -340,7 +340,7 @@
                                 <h4>Update Skill</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" method="post" action="updateSkill">
+                                <form class="edit-profile m-b30" method="post" action="updateSkill" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -372,13 +372,13 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
                                             <div>
-                                                <input class="form-control" type="text" value="${requestScope.img}" name="img" required>
+                                                <input class="form-control" type="file" name="img" >
                                             </div>
                                         </div>
 
                                         <div>
                                             <div><label>Image:</label></div>
-                                            <img src="${requestScope.img}" class="img-fluid" style="height: 200px">
+                                            <img src="data:image/jpeg;base64,${requestScope.img}" class="img-fluid" style="max-height: 200px; max-width: 200px">
                                         </div>
                                         <div class="seperator"></div>
 

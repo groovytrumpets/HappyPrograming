@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.CV;
 
-import DAO.SkillDAO;
-import Model.Skill;
+import DAO.CVDAO;
+import Model.CV;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.io.OutputStream;
 
 /**
  *
- * @author tuong
+ * @author ADMIN
  */
-@WebServlet(name="DeleteSkillServlet", urlPatterns={"/deleteSkill"})
-public class DeleteSkillServlet extends HttpServlet {
+@WebServlet(name="ImageServlet", urlPatterns={"/getimage"})
+public class ImageServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +38,10 @@ public class DeleteSkillServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteSkillServlet</title>");  
+            out.println("<title>Servlet ImageServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteSkillServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ImageServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,35 +57,24 @@ public class DeleteSkillServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        List<Skill> listAllSkill = act.getListOfAllSkill();
-        String page_raw = request.getParameter("page");
-        String numDis_raw = request.getParameter("numDis");
-        String deleteID_raw = request.getParameter("id");
-        int deleteId = Integer.parseInt(deleteID_raw);
-        act.deleteSkillById(deleteId);
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
+    throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(id_raw);
+            CVDAO cvd = new CVDAO();
+            CV cv = cvd.getCVbyMentorId(id);
+            byte[] imgData = cv.getAvatar();
+            
+            if (imgData != null) {
+            response.setContentType("image/jpeg");  // Đặt loại MIME tương ứng
+            OutputStream out = response.getOutputStream();
+            out.write(imgData);
+            out.close();
         }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 5;
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
-        request.setAttribute("numOfPage", numOfPage);
-        listAllSkill = act.getListOfSkillPaging(page, numDis);
-        request.setAttribute("indexPage", page);
-        request.setAttribute("numDis", numDis);
-
-        request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.

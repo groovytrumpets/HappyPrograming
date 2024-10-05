@@ -8,6 +8,7 @@ import Model.Skill;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,7 @@ import java.util.List;
  *
  * @author tuong
  */
-public class DaoSkill extends DBContext {
+public class SkillDAO extends DBContext {
 
     public boolean insertNewSkill(Skill newSkill) {
         String sql = "INSERT INTO [dbo].[Skill]\n"
@@ -39,7 +40,7 @@ public class DaoSkill extends DBContext {
             rs.setString(2, curTime);
             rs.setString(3, newSkill.getDescription());
             rs.setString(4, newSkill.getStatus());
-            rs.setString(5, newSkill.getImg());
+            rs.setBytes(5, newSkill.getImg());
             rs.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -69,8 +70,16 @@ public class DaoSkill extends DBContext {
                 Date date = formater.parse(date_raw);
                 String description = rs.getString("Description");
                 String status = rs.getString("Status");
-                String img = rs.getString("img");
-                Skill curSkill = new Skill(id, name, date, description, status, img);
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
@@ -106,8 +115,16 @@ public class DaoSkill extends DBContext {
                 Date date = formater.parse(date_raw);
                 String description = rs.getString("Description");
                 String status = rs.getString("Status");
-                String img = rs.getString("img");
-                Skill curSkill = new Skill(id, name, date, description, status, img);
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
@@ -150,7 +167,7 @@ public class DaoSkill extends DBContext {
                 curSkill.setCreateDate(date);
                 curSkill.setDescription(rs.getString("Description"));
                 curSkill.setStatus(rs.getString("Status"));
-                curSkill.setImg(rs.getString("img"));
+                curSkill.setImg(rs.getBytes("Img"));
             }
         } catch (Exception e) {
         }
@@ -174,7 +191,7 @@ public class DaoSkill extends DBContext {
             rs.setString(2, curTime);
             rs.setString(3, updateSkill.getDescription());
             rs.setString(4, updateSkill.getStatus());
-            rs.setString(5, updateSkill.getImg());
+            rs.setBytes(5, updateSkill.getImg());
             rs.setInt(6, updateSkill.getSkillId());
             rs.executeUpdate();
             return true;
@@ -192,12 +209,11 @@ public class DaoSkill extends DBContext {
                 + "       [Status], \n"
                 + "       [Img]\n"
                 + "FROM [dbo].[Skill]\n"
-                + "WHERE [SkillName] = ?\n"
+                + "WHERE [SkillName] Like ?\n"
                 + "ORDER BY [SkillID] ASC;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, skillName);
-
+            st.setString(1, "%" + skillName + "%");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 String id_raw = rs.getString("SkillID");
@@ -208,11 +224,58 @@ public class DaoSkill extends DBContext {
                 Date date = formater.parse(date_raw);
                 String description = rs.getString("Description");
                 String status = rs.getString("Status");
-                String img = rs.getString("img");
-                Skill curSkill = new Skill(id, name, date, description, status, img);
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByDate() {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT Top 3 [SkillID], \n"
+                + "       [SkillName], \n"
+                + "       [CreateDate], \n"
+                + "       [Description], \n"
+                + "       [Status], \n"
+                + "       [Img]\n"
+                + "FROM [dbo].[Skill]\n"
+                + "ORDER BY [CreateDate] asc;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (NumberFormatException | SQLException | ParseException e) {
         }
         return listSkill;
     }
@@ -241,13 +304,53 @@ public class DaoSkill extends DBContext {
                 Date date = formater.parse(date_raw);
                 String description = rs.getString("Description");
                 String status = rs.getString("Status");
-                String img = rs.getString("img");
-                Skill curSkill = new Skill(id, name, date, description, status, img);
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
         }
         return listSkill;
+    }
+
+    public Skill getSkillByNameID(String skillName, int skillID) {
+        String sql = "SELECT [SkillID]\n"
+                + "      ,[SkillName]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Description]\n"
+                + "      ,[Status]\n"
+                + "      ,[Img]\n"
+                + "  FROM [dbo].[Skill] where SkillName = ?  and SkillID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, skillName);
+            st.setInt(2, skillID);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                return curSkill;
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public List<Skill> getListOfSkillByNamePagination(int page, int numShow, String skillName) {
@@ -279,8 +382,16 @@ public class DaoSkill extends DBContext {
                 Date date = formater.parse(date_raw);
                 String description = rs.getString("Description");
                 String status = rs.getString("Status");
-                String img = rs.getString("img");
-                Skill curSkill = new Skill(id, name, date, description, status, img);
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
@@ -289,9 +400,9 @@ public class DaoSkill extends DBContext {
     }
 
     public static void main(String[] args) {
-        DaoSkill act = new DaoSkill();
-        List<Skill> list = act.getListOfSkillByNamePagination(2, 2, "#");
-        System.out.println(list.get(1).getSkillName());
+        SkillDAO act = new SkillDAO();
+        List<Skill> list = act.getListOfSkillByName("py");
+        System.out.println(list.size());
 
     }
 }

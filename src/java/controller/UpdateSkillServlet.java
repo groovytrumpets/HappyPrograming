@@ -4,15 +4,18 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import DAO.DaoSkill;
+import DAO.SkillDAO;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +27,7 @@ import java.util.List;
  * @author tuong
  */
 @WebServlet(urlPatterns = {"/updateSkill"})
+@MultipartConfig
 public class UpdateSkillServlet extends HttpServlet {
 
     /**
@@ -64,7 +68,7 @@ public class UpdateSkillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DaoSkill act = new DaoSkill();
+        SkillDAO act = new SkillDAO();
         String id_raw = request.getParameter("updateId");
         int id = Integer.parseInt(id_raw);
         Skill curSkill = act.getSkillById(id);
@@ -74,7 +78,7 @@ public class UpdateSkillServlet extends HttpServlet {
         }
         request.setAttribute("id", id);
         request.setAttribute("name", curSkill.getSkillName());
-        request.setAttribute("img", curSkill.getImg());
+        request.setAttribute("img", curSkill.getBase64ImageFile());
         request.setAttribute("createDate", curSkill.getCreateDate());
         request.setAttribute("status", curSkill.getStatus());
         request.setAttribute("description", curSkill.getDescription());
@@ -92,8 +96,10 @@ public class UpdateSkillServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        SkillDAO act = new SkillDAO();
         String id_raw = request.getParameter("id");
         int id = Integer.parseInt(id_raw);
+        Skill curSkill = act.getSkillById(id);
         String name = request.getParameter("name");
         if (name.trim().isEmpty() || name.isEmpty()) {
             String error = "You must not leave this field empty!";
@@ -105,21 +111,31 @@ public class UpdateSkillServlet extends HttpServlet {
             return;
         }
 
-        boolean checkDup = checkDupSkill(name,id);
+        boolean checkDup = checkDupSkill(name, id);
         if (checkDup == true) {
             String error = "Skill name already exist!";
             request.setAttribute("error", "Skill name already exist!");
             response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
             return;
         }
-        String img = request.getParameter("img");
+        //Get image file
+        Part filePart = request.getPart("img");
+        if (filePart != null && filePart.getSize() > 0) {
+            InputStream fileRead = filePart.getInputStream();
+            byte[] image = fileRead.readAllBytes();
+            curSkill.setImg(image);
+        }
+
         String status = request.getParameter("status");
+        curSkill.setStatus(status);
         String description = request.getParameter("description");
+        curSkill.setDescription(description);
+        curSkill.setSkillName(name);
 
         Date date = new Date();
-        Skill updateSkill = new Skill(id, name, date, description, status, img);
-        DaoSkill act = new DaoSkill();
-        boolean checkUpdate = act.updateSkillInfo(updateSkill);
+        curSkill.setCreateDate(date);
+        
+        boolean checkUpdate = act.updateSkillInfo(curSkill);
         if (checkUpdate == false) {
             response.sendRedirect("500.jsp");
             return;
@@ -128,7 +144,7 @@ public class UpdateSkillServlet extends HttpServlet {
     }
 
     public boolean checkDupSkill(String skillName, int id) {
-        DaoSkill act = new DaoSkill();
+        SkillDAO act = new SkillDAO();
         List<Skill> list = act.getListOfSkillByNameDifID(skillName, id);
         if (!list.isEmpty()) {
             return true;

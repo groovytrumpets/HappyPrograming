@@ -340,7 +340,7 @@
                                 <h4>Add Skill</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" method="post" action="addSkill">
+                                <form class="edit-profile m-b30" method="post" action="addSkill" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -357,7 +357,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
                                             <div>
-                                                <input class="form-control" type="text"  placeholder="input link here" name="img" required>
+                                                <input class="form-control" type="file"   name="img" required>
                                             </div>
                                         </div>
 

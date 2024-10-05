@@ -8,6 +8,7 @@ package Model;
  *
  * @author nhhag
  */
+import java.util.Base64;
 import java.util.Date;
 
 public class Skill {
@@ -17,20 +18,21 @@ public class Skill {
     private Date createDate;
     private String description;
     private String status;
-    private String img;
+    private byte[] img;
+    private transient String base64ImageFile;
 
     // Constructors
     public Skill() {
     }
 
-    public Skill(int skillId, String skillName, Date createDate, String description, String status, String img) {
+    public Skill(int skillId, String skillName, Date createDate, String description, String status, byte[] img) {
         this.skillId = skillId;
         this.skillName = skillName;
         this.createDate = createDate;
         this.description = description;
         this.status = status;
         this.img = img;
-
+        this.base64ImageFile = Base64.getEncoder().encodeToString(img);
     }
 
     public Skill(int skillId, String skillName) {
@@ -38,7 +40,6 @@ public class Skill {
         this.skillName = skillName;
     }
 
-    // Getters and Setters
     public int getSkillId() {
         return skillId;
     }
@@ -79,24 +80,25 @@ public class Skill {
         this.status = status;
     }
 
-    public String getImg() {
+    public byte[] getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(byte[] img) {
         this.img = img;
+        this.base64ImageFile = Base64.getEncoder().encodeToString(img);
     }
 
-    // Optionally, override toString() method to represent the object as a string
-    @Override
-    public String toString() {
-        return "Skill{"
-                + "skillId=" + skillId
-                + ", skillName='" + skillName + '\''
-                + ", createDate=" + createDate
-                + ", description='" + description + '\''
-                + ", status='" + status + '\''
-                + ", img='" + img + '\''
-                + '}';
+    public String getBase64ImageFile() {
+        return base64ImageFile;
     }
+
+    public void setBase64ImageFile(String base64ImageFile) {
+        this.base64ImageFile = base64ImageFile;
+    }
+    public void setBase64ImageFile(byte[] img) {
+        this.base64ImageFile = Base64.getEncoder().encodeToString(img);
+    }
+    
+
 }

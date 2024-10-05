@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.time.LocalDate;
 import Model.Mentor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MentorDAO extends DBContext {
 
@@ -42,7 +44,6 @@ public class MentorDAO extends DBContext {
             st.setInt(1, mentor.getRoleId());
             st.setString(2, mentor.getUsername());
             st.setDate(3, new java.sql.Date(mentor.getCreateDate().getTime()));
-            st.setString(4, mentor.getEmail());
             st.setString(5, mentor.getPhone());
             st.setString(6, mentor.getPhone());
             st.setDate(7, new java.sql.Date(mentor.getDateOfBirth().getTime()));
@@ -63,7 +64,6 @@ public class MentorDAO extends DBContext {
                 + "      ,[RoleID]\n"
                 + "      ,[Username]\n"
                 + "      ,[CreateDate]\n"
-                + "      ,[Email]\n"
                 + "      ,[Phone]\n"
                 + "      ,[Address]\n"
                 + "      ,[DateOfBirth]\n"
@@ -81,7 +81,6 @@ public class MentorDAO extends DBContext {
                 mentor.setRoleId(rs.getInt("RoleID"));
                 mentor.setUsername(rs.getString("Username"));
                 mentor.setCreateDate(rs.getDate("CreateDate"));
-                mentor.setEmail(rs.getString("Email"));
                 mentor.setPhone(rs.getString("Phone"));
                 mentor.setAddress(rs.getString("Address"));
                 mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
@@ -96,9 +95,222 @@ public class MentorDAO extends DBContext {
         return mentor; // Return the retrieved Mentor object or null if not found
     }
 
+    public List<Mentor> getAllMentor() {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT [MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Email]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentor]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (Exception e) {
+        }
+
+        return listMentor;
+    }
+
+    public List<Mentor> getListMentorPagiantion(int page, int numDis) {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT [MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Email]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentor]\n"
+                + "Order by Mentor.MentorID\n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROW ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int numOffSet = (page - 1) * numDis;
+            st.setInt(1, numOffSet);
+            st.setInt(2, numDis);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (Exception e) {
+        }
+
+        return listMentor;
+    }
+
+    public boolean changeStatusMentorById(int mentorId, String status) {
+        String sql = "UPDATE [dbo].[Mentor]\n"
+                + "   SET [Status] = ?\n"
+                + " WHERE Mentor.MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, status);
+            st.setInt(2, mentorId);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Mentor> searchListMentorPagiantion(String search, int page, int numDis) {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT DISTINCT Mentor.[MentorID],\n"
+                + "       [RoleID],\n"
+                + "       [Username],\n"
+                + "       Mentor.[CreateDate],\n"
+                + "       [Email],\n"
+                + "       [Phone],\n"
+                + "       [Address],\n"
+                + "       [DateOfBirth],\n"
+                + "       [FullName],\n"
+                + "       [Gender],\n"
+                + "       Mentor.[Status]\n"
+                + "FROM [dbo].[Mentor]\n"
+                + "LEFT JOIN CV ON Mentor.MentorID = CV.MentorID\n"
+                + "WHERE Mentor.MentorID = ? OR\n"
+                + "      Mentor.Username LIKE ? OR\n"
+                + "      Mentor.FullName LIKE ? OR\n"
+                + "      CV.JobProfession LIKE ?\n"
+                + "ORDER BY Mentor.[MentorID]\n"
+                + "OFFSET ? ROWS\n"
+                + "FETCH NEXT ? ROWS ONLY;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            st.setString(4, searchPattern);
+            int numOffSet = (page - 1) * numDis;
+            st.setInt(5, numOffSet);
+            st.setInt(6, numDis);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (Exception e) {
+        }
+
+        return listMentor;
+    }
+
+    public boolean converSearch(String search) {
+        try {
+            int id = Integer.parseInt(search);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public List<Mentor> searchAllMentor(String search) {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT DISTINCT Mentor.[MentorID],\n"
+                + "       [RoleID],\n"
+                + "       [Username],\n"
+                + "       Mentor.[CreateDate],\n"
+                + "       [Email],\n"
+                + "       [Phone],\n"
+                + "       [Address],\n"
+                + "       [DateOfBirth],\n"
+                + "       [FullName],\n"
+                + "       [Gender],\n"
+                + "       Mentor.[Status]\n"
+                + "FROM [dbo].[Mentor]\n"
+                + "LEFT JOIN CV ON Mentor.MentorID = CV.MentorID\n"
+                + "WHERE Mentor.MentorID = ? OR\n"
+                + "      Mentor.Username LIKE ? OR\n"
+                + "      Mentor.FullName LIKE ? OR\n"
+                + "      CV.JobProfession LIKE ?\n"
+                + "ORDER BY Mentor.[MentorID]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            st.setString(4, searchPattern);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (Exception e) {
+        }
+
+        return listMentor;
+    }
+
     public static void main(String[] args) {
-        MentorDAO u = new MentorDAO();
-        Mentor m = u.findMentorByUsername("hoanganhgp2");
-        System.out.println(m);
+        MentorDAO act = new MentorDAO();
+        List<Mentor> listMentor = act.getListMentorPagiantion(0, 10);
+        System.out.println(listMentor.get(0).getMentorId());
+
     }
 }

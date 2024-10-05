@@ -25,12 +25,12 @@ public class CV {
     private String serviceDescription;
     private String status;
     private String framework;
-    private String avatar;
+    private byte[] avatar;
 
     public CV() {
     }
 
-    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, String avatar) {
+    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, byte[] avatar) {
         this.mentorId = mentorId;
         this.education = education;
         this.experience = experience;
@@ -45,7 +45,7 @@ public class CV {
     
     
     
-    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, String avatar) {
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar) {
         this.cvId = cvId;
         this.mentorId = mentorId;
         this.education = education;
@@ -62,12 +62,17 @@ public class CV {
         this.avatar = avatar;
     }
 
+    @Override
+    public String toString() {
+        return "CV{" + "cvId=" + cvId + ", mentorId=" + mentorId + ", education=" + education + ", experience=" + experience + ", activity=" + activity + ", professionIntroduction=" + professionIntroduction + ", certificate=" + certificate + ", createDate=" + createDate + ", jobProfession=" + jobProfession + ", yearOfExperience=" + yearOfExperience + ", serviceDescription=" + serviceDescription + ", status=" + status + ", framework=" + framework + ", avatar=" + avatar + '}';
+    }
+
     
-    public String getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 

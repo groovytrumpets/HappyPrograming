@@ -78,19 +78,20 @@
                             </div>
                             <div class="topbar-right">
                                 <ul>
+
                                     <li>
                                         <select class="header-lang-bx">
                                             <option data-icon="flag flag-uk">English UK</option>
                                             <option data-icon="flag flag-us">English US</option>
                                         </select>
-                                    </li>   
-                                    <c:if test="${sessionScope.acc == null}"> 
+                                    </li>
+                                    <c:if test="${sessionScope.acc == null}">
                                         <li><a href="signin">Sign In</a></li>
                                         <li><a href="signup">Sign Up</a></li>
+                                        </c:if>
+                                        <c:if test="${sessionScope.acc != null}">
+                                        <li>Welcome ${sessionScope.acc.username} !</li>
                                     </c:if>
-                                     <c:if test="${sessionScope.acc != null}"> 
-                                     <li>Welcome user ${sessionScope.acc.username}</li>
-                                    </c:if>   
                                 </ul>
                             </div>
                         </div>
@@ -113,11 +114,35 @@
                             <div class="secondary-menu">
                                 <div class="secondary-inner">
                                     <ul>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                        <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-                                        <!-- Search Button ==== -->
-                                        <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+                                        <c:if test="${sessionScope.acc == null}">
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+                                            <!-- Search Button ==== -->
+                                            <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.acc != null}">
+                                            <li>
+                                                
+                                                    <div data-toggle="dropdown" aria-expanded="false">
+                                                        
+                                                        <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets/images/testimonials/pic3.jpg" width="45" height="45"></span>
+                                                        
+                                                    &nbsp;&nbsp;<span>${sessionScope.acc.username}</span>
+                                                    </div>
+                                                    
+                                                    <div class="dropdown-menu">
+                                                        
+                                                            <a class="dropdown-item" href="user-profile.html">My profile</a>
+                                                            <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
+                                                            <a class="dropdown-item" href="mailbox.html">Messages</a>
+                                                            <a class="dropdown-item" href="logout">Logout</a>
+                                                        
+                                                    </div>
+                                                
+                                            </li>
+                                        </c:if>
+
                                     </ul>
                                 </div>
                             </div>
@@ -170,12 +195,12 @@
                                             <li><a href="error-404.html">404 Page</a></li>
                                         </ul>
                                     </li>
-                                    <li class="add-mega-menu"><a href="javascript:;">Our Mentor <i class="fa fa-chevron-down"></i></a>
+                                    <li class="add-mega-menu"><a href="javascript:;">Our Course <i class="fa fa-chevron-down"></i></a>
                                         <ul class="sub-menu add-menu">
                                             <li class="add-menu-left">
-                                                <h5 class="menu-adv-title">Our Mentor</h5>
+                                                <h5 class="menu-adv-title">Our COurses</h5>
                                                 <ul>
-                                                    <li><a href="courses.html">Courses </a></li>
+                                                    <li><a href="skillhome">Courses </a></li>
                                                     <li><a href="courses-details.html">Courses Details</a></li>
                                                     <li><a href="profile.html">Instructor Profile</a></li>
                                                     <li><a href="event.html">Upcoming Event</a></li>
@@ -199,6 +224,7 @@
                                     <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                         <ul class="sub-menu">
                                             <li><a href="admin/index.html">Dashboard</a></li>
+                                            <li><a href="admin/add-listing.html">Add Listing</a></li>
                                             <li><a href="admin/add-listing.html">Add Listing</a></li>
                                             <li><a href="admin/bookmark.html">Bookmark</a></li>
                                             <li><a href="admin/courses.html">Courses</a></li>
@@ -296,7 +322,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 heading-bx left">
-                                    <h2 class="title-head">Top Hiring <span>Mentor</span></h2>
+                                    <h2 class="title-head">Top <span>Course</span></h2>
                                     <p>Get mentored by industry-leading Hiring experts to mentor you towards your Hiring skill goals.</p>
                                 </div>
                             </div>
