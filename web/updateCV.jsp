@@ -360,7 +360,7 @@
                                 <h4>Update CV of mentor</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="cvupdate" method="post">
+                                <form class="edit-profile m-b30" action="cvupdate" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -374,12 +374,20 @@
                                         </div>
                                         <div class="form-group col-12">
                                             <div class=" text-center">
-
-                                                <img id="userAvatar" src="${requestScope.cvFound.avatar}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
-                                                <div id="Imgstatus"></div>
+                                                
+                                                <img id="userAvatar" src="getimage?id=${requestScope.uFound.mentorId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
                                             </div>
                                             <div>
-                                                <label class="col-form-label">Avatar link:</label><input class="form-control" type="text" name="avatar" value="${requestScope.cvFound.avatar}" >
+                                                <div style="text-align: center">
+                                                <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                <span id="file-path"></span>
+                                                <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" accept=".jpg, .jpeg, .png, .gif" hidden>
+                                                <c:if test="${requestScope.error2!=null}">
+                                                    <span class="help" style="color: red">Your file is too big, please choose file smaller than 5MB.</span>
+                                                </c:if>
+                                                    
+                                                 
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -403,13 +411,12 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Email</label>
                                             <div>
-                                                <c:if test="${requestScope.error==null}">
-                                                <input class="form-control" type="email" name="email" value="${requestScope.email}">
+                                                <c:if test="${requestScope.error==email_exists}">
+                                                <input class="form-control" type="email" name="email" value="${requestScope.email}" required>
                                                 </c:if>
-                                                <c:if test="${requestScope.error!=null}">
-                                                <input class="form-control" type="email" name="email" value="">
+                                                <c:if test="${requestScope.error!=email_exists}">
+                                                    <input class="form-control" type="email" name="email" value="" required>
                                                 <span class="help" style="color: red">Your email used by another user !</span>
-                                                    
                                                 </c:if>
                                             </div>
                                         </div>
@@ -491,7 +498,7 @@
                                             <label class="col-form-label">Select skills</label><br/>
                                             <label class="col-form-label"><i>Delete Your Skills</i></label>
                                             <div>
-                                                <ul class="category" style="list-style-type: none;">
+                                                <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
                                                     <c:forEach items="${requestScope.skillMentor}" var="c">
                                                         <li>
                                                             <div class="check-box">
@@ -508,7 +515,7 @@
                                             <br/>
                                             <label class="col-form-label"><i>Add Skills</i></label>
                                             <div>
-                                                <ul class="category" style="list-style-type: none;">
+                                                <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
                                                     <c:forEach items="${requestScope.skillList}" var="c">
                                                         <li>
                                                             <div class="check-box">
@@ -567,20 +574,6 @@
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
-            const img = document.getElementById('userAvatar');
-            const statusDiv = document.getElementById('Imgstatus');
-
-            img.onload = function () {
-                statusDiv.innerHTML = "Image uploaded successfully!";
-                statusDiv.style.color = "green";
-            };
-
-            img.onerror = function () {
-                statusDiv.innerHTML = "Unable to load image!";
-                statusDiv.style.color = "red";
-            };
-        </script>
-        <script>
             // Pricing add
             function newMenuItem() {
                 var newElem = $('tr.list-item').first().clone();
@@ -597,6 +590,14 @@
                     $(this).parent().parent().parent().parent().remove();
                 });
             }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
+
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
         </script>
     </body>
 

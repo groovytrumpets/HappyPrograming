@@ -195,12 +195,12 @@
                                             <li><a href="error-404.html">404 Page</a></li>
                                         </ul>
                                     </li>
-                                    <li class="add-mega-menu"><a href="javascript:;">Our Mentor <i class="fa fa-chevron-down"></i></a>
+                                    <li class="add-mega-menu"><a href="javascript:;">Our Course <i class="fa fa-chevron-down"></i></a>
                                         <ul class="sub-menu add-menu">
                                             <li class="add-menu-left">
-                                                <h5 class="menu-adv-title">Our Mentor</h5>
+                                                <h5 class="menu-adv-title">Our COurses</h5>
                                                 <ul>
-                                                    <li><a href="courses.html">Courses </a></li>
+                                                    <li><a href="skillhome">Courses </a></li>
                                                     <li><a href="courses-details.html">Courses Details</a></li>
                                                     <li><a href="profile.html">Instructor Profile</a></li>
                                                     <li><a href="event.html">Upcoming Event</a></li>
@@ -224,6 +224,7 @@
                                     <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                         <ul class="sub-menu">
                                             <li><a href="admin/index.html">Dashboard</a></li>
+                                            <li><a href="admin/add-listing.html">Add Listing</a></li>
                                             <li><a href="admin/add-listing.html">Add Listing</a></li>
                                             <li><a href="admin/bookmark.html">Bookmark</a></li>
                                             <li><a href="admin/courses.html">Courses</a></li>
@@ -321,7 +322,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 heading-bx left">
-                                    <h2 class="title-head">Top Hiring <span>Mentor</span></h2>
+                                    <h2 class="title-head">Top <span>Course</span></h2>
                                     <p>Get mentored by industry-leading Hiring experts to mentor you towards your Hiring skill goals.</p>
                                 </div>
                             </div>

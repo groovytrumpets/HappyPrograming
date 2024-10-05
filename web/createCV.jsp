@@ -360,7 +360,7 @@
                                 <h4>Create CV of mentor</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="cvcreate" method="post">
+                                <form class="edit-profile m-b30" action="cvcreate" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -375,11 +375,13 @@
                                         <div class="form-group col-12">
                                             <div class=" text-center">
 
-                                                <img id="userAvatar" src="${requestScope.cvFound.avatar}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
+                                                <img id="userAvatar" src="assets/images/userprofile.png" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
                                                 <div id="Imgstatus"></div>
                                             </div>
-                                            <div>
-                                                <label class="col-form-label">Avatar link:</label><input class="form-control" type="text" name="avatar" required>
+                                                <div style="text-align: center">
+                                                <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                <span id="file-path"></span>
+                                                <input id="avatar" class="form-control" type="file" name="avatar" accept=".jpg, .jpeg, .png, .gif" hidden>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -404,12 +406,12 @@
                                             <label class="col-form-label">Email</label>
                                             <div>
                                                 <c:if test="${requestScope.error==null}">
-                                                <input class="form-control" type="email" name="email" value="${requestScope.email}"disabled>
+                                                    <input class="form-control" type="email" name="email" value="${requestScope.email}"disabled>
                                                 </c:if>
                                                 <c:if test="${requestScope.error!=null}">
-                                                <input class="form-control" type="email" name="email" value="">
-                                                <span class="help" style="color: red">Your email used by another user !</span>
-                                                    
+                                                    <input class="form-control" type="email" name="email" value="">
+                                                    <span class="help" style="color: red">Your email used by another user !</span>
+
                                                 </c:if>
                                             </div>
                                         </div>
@@ -487,7 +489,7 @@
                                                 <textarea class="form-control" name="serviceDescription" required> </textarea>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Select skills</label><br/>
                                             <br/>
@@ -581,6 +583,15 @@
                     $(this).parent().parent().parent().parent().remove();
                 });
             }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
+
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
+
         </script>
     </body>
 
