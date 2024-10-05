@@ -134,7 +134,7 @@
                                                     <div class="dropdown-menu">
                                                         
                                                             <a class="dropdown-item" href="user-profile.html">My profile</a>
-                                                            <a class="dropdown-item" href="list-view-calendar.html">Change Password</a>
+                                                            <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
                                                             <a class="dropdown-item" href="mailbox.html">Messages</a>
                                                             <a class="dropdown-item" href="logout">Logout</a>
                                                         
@@ -190,7 +190,7 @@
                                                 </ul>
                                             </li>
                                             <li><a href="portfolio.html">Portfolio</a></li>
-                                            <li><a href="profile.html">Profile</a></li>
+                                            <li><a href="menteeprofile">Profile</a></li>
                                             <li><a href="membership.html">Membership</a></li>
                                             <li><a href="error-404.html">404 Page</a></li>
                                         </ul>

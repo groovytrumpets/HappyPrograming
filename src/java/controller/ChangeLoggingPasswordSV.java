@@ -15,12 +15,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 
-
 /**
  *
  * @author asus
  */
 public class ChangeLoggingPasswordSV extends HttpServlet {
+
+    private String encrypt(String password) {
+        StringBuilder encrypted = new StringBuilder();
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            encrypted.append((char) (c + 5)); // Shift character by key
+        }
+
+        return encrypted.toString();
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,7 +40,7 @@ public class ChangeLoggingPasswordSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
+            out.println("<title>Servlet NewServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
@@ -54,39 +64,61 @@ public class ChangeLoggingPasswordSV extends HttpServlet {
         HttpSession session = request.getSession();
         request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String username = request.getParameter("username");
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
         HttpSession session = request.getSession();
-        User curUser = (User)session.getAttribute("acc");
+        User curUser = (User) session.getAttribute("acc");
 
-        if (newPassword.equals(confirmPassword)) {
-            try {
-                UserDAO userDAO = new UserDAO();
-                if (oldPassword.equals(curUser.getPassword())) {
-                    if (userDAO.updatePassword(curUser.getEmail(), newPassword)) {
-                        request.setAttribute("message", "Password changed successfully!");
-                    } else {
-                        request.setAttribute("error", "Password change failed.");
-                    }
-                } else {
-                    request.setAttribute("error", "Invalid old password.");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("error", "Database error.");
-            }
-        } else {
-            request.setAttribute("error", "New passwords do not match.");
+        UserDAO userDao = new UserDAO();
+        User user = userDao.getUserByUsername(username);
+
+        if (user == null) {
+            request.setAttribute("error", "User not found");
+            request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
+            return;
         }
 
+        // Encrypt the old password using your existing encrypt function
+        String encryptedOldPassword = encrypt(oldPassword);
+
+        // Validate old password
+        if (!user.getPassword().equals(encryptedOldPassword)) {
+            request.setAttribute("error", "Old password is incorrect");
+            request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
+            return;
+        }
+
+        // Check if new password and confirm password match
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("error", "New passwords do not match");
+            request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
+            return;
+        }
+
+        // Encrypt the new password before saving
+        String encryptedNewPassword = encrypt(newPassword);
+
+        // Update the password in the database
+        boolean updateSuccessful = userDao.updatePassword(username, encryptedNewPassword);
+
+        if (updateSuccessful) {
+            request.setAttribute("message", "Password changed successfully");
+            request.setAttribute("messageType", "success");
+        } else {
+            request.setAttribute("error", "Password change failed");
+        }
+
+        // Forward back to the JSP with the result message
         request.getRequestDispatcher("changeloggingpassword.jsp").forward(request, response);
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

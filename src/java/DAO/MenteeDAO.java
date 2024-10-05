@@ -8,6 +8,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import Model.Mentee;
 import Model.User;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 public class MenteeDAO extends DBContext {
 
@@ -104,9 +109,62 @@ public class MenteeDAO extends DBContext {
         return mentee; // Return the retrieved Mentor object or null if not found
     }
 
+    public Mentee getMenteeByUsername(String username) {
+        Mentee mentee = null;
+        try {
+            String query = "SELECT * FROM Mentee WHERE Username = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                mentee = new Mentee(
+                        rs.getInt("MenteeID"),
+                        rs.getInt("RoleID"),
+                        rs.getString("Avatar"),
+                        rs.getString("Username"),
+                        rs.getDate("CreateDate"),
+                        rs.getString("Email"),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getString("FullName"),
+                        rs.getString("Gender"),
+                        rs.getString("Status")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentee;
+    }
+
+    public void updateMenteeProfile(Mentee mentee, String oldUsername) throws SQLException {
+        String updateMenteeSQL = "UPDATE Mentee SET Username = ?, FullName = ?, DateOfBirth = ?, Gender = ?, Address = ?, Avatar = ? WHERE MenteeID = ?";
+        String updateUserSQL = "UPDATE [User] SET Username = ? WHERE Username = ?";
+
+        try (
+            PreparedStatement menteeStmt = connection.prepareStatement(updateMenteeSQL); 
+            PreparedStatement userStmt = connection.prepareStatement(updateUserSQL)) {
+
+            // Update Mentee table
+            menteeStmt.setString(1, mentee.getUsername());
+            menteeStmt.setString(2, mentee.getFullName());
+            menteeStmt.setDate(3, new Date(mentee.getDateOfBirth().getTime()));
+            menteeStmt.setString(4, mentee.getGender());
+            menteeStmt.setString(5, mentee.getAddress());
+            menteeStmt.setString(6, mentee.getAvatar());
+            menteeStmt.setInt(7, mentee.getMenteeId());
+            menteeStmt.executeUpdate();
+
+            // Update User table
+            userStmt.setString(1, mentee.getUsername());
+            userStmt.setString(2, oldUsername);
+            userStmt.executeUpdate();
+        }
+    }
+
     public static void main(String[] args) {
-        MenteeDAO u = new MenteeDAO();
-        Mentee m = u.findMenteeByUsername("hoanganhgp2");
-        System.out.println(m);
+        //Mentee m = u.getMenteeByUsername("user5");
+        System.out.println(new MenteeDAO().getMenteeByUsername("user5"));
     }
 }
