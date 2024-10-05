@@ -7,7 +7,6 @@ package controller;
 import DAO.SkillDAO;
 import DAO.SkillListDAO;
 import Model.Skill;
-import com.oracle.wls.shaded.org.apache.bcel.verifier.statics.IntList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

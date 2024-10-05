@@ -201,7 +201,7 @@ public class CVDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             for (String addSkill : addSkills) {
-                
+
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
                 st.executeUpdate();
@@ -287,10 +287,6 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
-    public static void main(String[] args) {
-          CVDAO c = new CVDAO();
-          System.out.println(c.getCVbyMentorId(7));
-    }
 
     public List<Rate> getMentorRateList(int id) {
         List<Rate> list = new ArrayList<>();
@@ -300,8 +296,8 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"), 
-                        rs.getDate("createDate"), rs.getString("status"), 
+                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"),
+                        rs.getDate("createDate"), rs.getString("status"),
                         rs.getString("comment"), rs.getInt("rate"));
                 list.add(rate);
             }
@@ -312,6 +308,85 @@ public class CVDAO extends DBContext {
         return list;
     }
 
+
+    public List<CV> getMostEficientCV() {
+        List<CV> listCV = new ArrayList<>();
+        String sql = "WITH RankedCVs AS (\n"
+                + "    SELECT CV.[CVID],\n"
+                + "           CV.[MentorID],\n"
+                + "           CV.[Education],\n"
+                + "           CV.[Experience],\n"
+                + "           CV.[Activity],\n"
+                + "           CV.[ProfessionIntroduction],\n"
+                + "           CV.[Certificate],\n"
+                + "           CV.[CreateDate],\n"
+                + "           CV.[JobProfession],\n"
+                + "           CV.[YearOfExperience],\n"
+                + "           CV.[ServiceDescription],\n"
+                + "           CV.[Status],\n"
+                + "           CV.[Framework],\n"
+                + "           CV.[Avatar],\n"
+                + "           ROW_NUMBER() OVER (PARTITION BY CV.[MentorID] \n"
+                + "                              ORDER BY \n"
+                + "                                CASE WHEN CV.[Status] = 'Active' THEN 1 ELSE 2 END,  -- prioritize active CVs\n"
+                + "                                CV.[CreateDate] DESC  -- then by newest date\n"
+                + "                             ) AS rn\n"
+                + "    FROM [dbo].[CV]\n"
+                + ")\n"
+                + "SELECT m.[MentorID],\n"
+                + "       r.[CVID],\n"
+                + "       r.[Education],\n"
+                + "       r.[Experience],\n"
+                + "       r.[Activity],\n"
+                + "       r.[ProfessionIntroduction],\n"
+                + "       r.[Certificate],\n"
+                + "       r.[CreateDate],\n"
+                + "       r.[JobProfession],\n"
+                + "       r.[YearOfExperience],\n"
+                + "       r.[ServiceDescription],\n"
+                + "       r.[Status],\n"
+                + "       r.[Framework],\n"
+                + "       r.[Avatar]\n"
+                + "FROM [dbo].[Mentor] m\n"
+                + "LEFT JOIN RankedCVs r\n"
+                + "  ON m.[MentorID] = r.[MentorID] AND r.rn = 1;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                CV curCV = new CV();
+                curCV.setMentorId(rs.getInt("MentorID"));
+                curCV.setCvId(rs.getInt("CVID"));
+                curCV.setEducation(rs.getString("Education"));
+                curCV.setExperience(rs.getString("Experience"));
+                curCV.setActivity(rs.getString("Activity"));
+                curCV.setProfessionIntroduction(rs.getString("ProfessionIntroduction"));
+                curCV.setCertificate(rs.getString("Certificate"));
+                curCV.setCreateDate(rs.getDate("CreateDate"));
+                curCV.setJobProfession(rs.getString("JobProfession"));
+                curCV.setYearOfExperience(rs.getInt("YearOfExperience"));
+                curCV.setServiceDescription(rs.getString("ServiceDescription"));
+                curCV.setStatus(rs.getString("Status"));
+                curCV.setFramework(rs.getString("Framework"));
+                byte[] avatar = rs.getBytes("Avatar");
+                if (avatar != null) {
+                    curCV.setAvatar(rs.getBytes("Avatar"));
+                }
+                listCV.add(curCV);
+
+            }
+        } catch (SQLException e) {
+        }
+        return listCV;
+    }
+
+    
+
+    public static void main(String[] args) {
+        CVDAO c = new CVDAO();
+        List<CV> list = c.getMostEficientCV();
+        System.out.println(list.get(0).getMentorId());
+    }
     public int getAveRatebyId(int id) {
         String sql = "select Avg(Rate) from Rate where MentorID =?;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
@@ -328,6 +403,7 @@ public class CVDAO extends DBContext {
         }
 
         return 0;
+
     }
 
 }
