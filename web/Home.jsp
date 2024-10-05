@@ -91,7 +91,7 @@
                                         </c:if>
                                         <c:if test="${sessionScope.acc != null}">
                                         <li>Welcome ${sessionScope.acc.username} !</li>
-                                    </c:if>
+                                        </c:if>
                                 </ul>
                             </div>
                         </div>
@@ -123,12 +123,23 @@
                                                 </c:if>
                                                 <c:if test="${sessionScope.acc != null}">
                                             <li>
-                                                
-                                                    <div data-toggle="dropdown" aria-expanded="false">
-                                                        
-                                                        <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets/images/testimonials/pic3.jpg" width="45" height="45"></span>
-                                                        
+
+                                                <div data-toggle="dropdown" aria-expanded="false">
+
+                                                    <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets/images/testimonials/pic3.jpg" width="45" height="45"></span>
+
                                                     &nbsp;&nbsp;<span>${sessionScope.acc.username}</span>
+                                                </div>
+
+                                                <div class="dropdown-menu">
+
+                                                    <a class="dropdown-item" href="user-profile.html">My profile</a>
+                                                    <a class="dropdown-item" href="list-view-calendar.html">Change Password</a>
+                                                    <a class="dropdown-item" href="mailbox.html">Messages</a>
+                                                    <a class="dropdown-item" href="logout">Logout</a>
+
+                                                </div>
+
                                                     </div>
                                                     
                                                     <div class="dropdown-menu">
@@ -321,125 +332,71 @@
                     <div class="section-area section-sp2 popular-courses-bx">
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-12 heading-bx left">
+                                <div class="col-md-8 heading-bx left">
                                     <h2 class="title-head">Top <span>Course</span></h2>
                                     <p>Get mentored by industry-leading Hiring experts to mentor you towards your Hiring skill goals.</p>
                                 </div>
+                                <div class="col-md-4 feature-filters style1 ml-auto" style="text-align: center;align-self: end">
+                                    <ul class="filters" data-toggle="buttons">
+                                        <li data-filter="" class="btn active">
+                                            <input type="radio">
+                                            <a href="#"><span>Top Rate</span></a> 
+                                        </li>
+                                        <li data-filter="publish" class="btn">
+                                            <input type="radio">
+                                            <a href="#"><span>Cheapest</span></a> 
+                                        </li>
+                                        <li data-filter="pending" class="btn">
+                                            <input type="radio">
+                                            <a href="#"><span>Newest</span></a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="courses-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                    <div class="item">
-                                        <div class="cours-bx">
-                                            <div class="action-box">
-                                                <img src="assets/images/courses/pic1.jpg" alt="">
-                                                <a href="#" class="btn">Read More</a>
-                                            </div>
-                                            <div class="info-bx text-center">
-                                                <h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-                                                <span>Programming</span>
-                                            </div>
-                                            <div class="cours-more-info">
-                                                <div class="review">
-                                                    <span>3 Review</span>
-                                                    <ul class="cours-star">
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>
+
+
+                            <div class="courses-filter">
+                                <div class="clearfix">
+                                    <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
+                                        <c:forEach items="${requestScope.skill}" var="s"  >
+
+
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 pending">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px">
+                                                        <a href="#" class="btn">Read More</a>
+                                                    </div>
+                                                    <div class="info-bx text-center" style="height: 100px">
+                                                        <h5><a href="#">${s.skillName}</a></h5>
+                                                        <span>${s.description}</span>
+                                                    </div>
+                                                    <div class="cours-more-info">
+                                                        <div  class="review"style=" display: flex; align-items: center; justify-content: center ">
+
+                                                            <ul class="cours-star">
+                                                                <c:forEach var="i" begin="1" end="${s.rating}">
+                                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                                    </c:forEach>
+                                                                    <c:forEach var="j" begin="1" end="${5-s.rating}">
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    </c:forEach>
+
+                                                            </ul>
+                                                        </div>
+                                                        <div class="price">
+                                                            <del>$190</del>
+                                                            <h5>$120</h5>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="price">
-                                                    <del>$190</del>
-                                                    <h5>$120</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="cours-bx">
-                                            <div class="action-box">
-                                                <img src="assets/images/courses/pic2.jpg" alt="">
-                                                <a href="#" class="btn">Read More</a>
-                                            </div>
-                                            <div class="info-bx text-center">
-                                                <h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-                                                <span>Programming</span>
-                                            </div>
-                                            <div class="cours-more-info">
-                                                <div class="review">
-                                                    <span>3 Review</span>
-                                                    <ul class="cours-star">
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price">
-                                                    <del>$190</del>
-                                                    <h5>$120</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="cours-bx">
-                                            <div class="action-box">
-                                                <img src="assets/images/courses/pic3.jpg" alt="">
-                                                <a href="#" class="btn">Read More</a>
-                                            </div>
-                                            <div class="info-bx text-center">
-                                                <h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-                                                <span>Programming</span>
-                                            </div>
-                                            <div class="cours-more-info">
-                                                <div class="review">
-                                                    <span>3 Review</span>
-                                                    <ul class="cours-star">
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price">
-                                                    <del>$190</del>
-                                                    <h5>$120</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="cours-bx">
-                                            <div class="action-box">
-                                                <img src="assets/images/courses/pic4.jpg" alt="">
-                                                <a href="#" class="btn">Read More</a>
-                                            </div>
-                                            <div class="info-bx text-center">
-                                                <h5><a href="#">Introduction EduChamp – LMS plugin</a></h5>
-                                                <span>Programming</span>
-                                            </div>
-                                            <div class="cours-more-info">
-                                                <div class="review">
-                                                    <span>3 Review</span>
-                                                    <ul class="cours-star">
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price">
-                                                    <del>$190</del>
-                                                    <h5>$120</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </li>
+                                        </c:forEach>
+
+
+
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -571,36 +528,36 @@
                                 </div>
                             </div>
                             <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">
+                                <c:forEach items="${requestScope.rate}" var="r">
 
-                                <div class="item">
-                                    <div class="testimonial-bx">
-                                        <div class="testimonial-thumb">
-                                            <img src="assets/images/testimonials/pic1.jpg" alt="">
-                                        </div>
-                                        <div class="testimonial-info">
-                                            <h5 class="name">Peter Packer</h5>
-                                            <p>-Art Director</p>
-                                        </div>
-                                        <div class="testimonial-content">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <a href="viewprofilecv?id=${r.mentorId}">
+                                        <div class="item">
 
-                                <div class="item">
-                                    <div class="testimonial-bx">
-                                        <div class="testimonial-thumb">
-                                            <img src="assets/images/testimonials/pic2.jpg" alt="">
+                                            <div class="testimonial-bx">
+                                                <div class="testimonial-thumb">
+                                                    <img src="assets/images/testimonials/pic1.jpg" alt="">
+                                                </div>
+                                                <div class="testimonial-info">
+                                                    <h5 class="name">Mentee: ${r.menteeId}</h5>
+                                                    <p>Mentor: ${r.mentorId}</p>
+                                                    <ul class="cours-star">
+                                                        <c:forEach var="i" begin="1" end="${r.rate}">
+                                                            <li class="active"><i class="fa fa-star"></i></li>
+                                                            </c:forEach>
+                                                            <c:forEach var="j" begin="1" end="${5-r.rate}">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            </c:forEach>
+
+                                                    </ul>
+                                                </div>
+                                                <div class="testimonial-content" style="height: 130px">
+                                                    <p>${r.comment}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="testimonial-info">
-                                            <h5 class="name">Peter Packer</h5>
-                                            <p>-Art Director</p>
-                                        </div>
-                                        <div class="testimonial-content">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </a>
+                                </c:forEach>
+
                             </div>
                         </div>
                     </div>
@@ -731,6 +688,7 @@
         <script src="assets/vendors/masonry/masonry.js"></script>
         <script src="assets/vendors/masonry/filter.js"></script>
         <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
         <!-- comment <script src='assets/vendors/switcher/switcher.js'></script>-->
