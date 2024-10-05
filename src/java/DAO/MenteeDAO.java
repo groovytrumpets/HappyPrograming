@@ -37,14 +37,14 @@ public class MenteeDAO extends DBContext {
         }
     }
 
-    public void updateMentee(Mentee mentee) throws SQLException {
+    public boolean updateMentee(Mentee mentee) throws SQLException {
         String sql = "UPDATE Mentee SET RoleID = ?, Avatar = ?, Username = ?, CreateDate = ?, "
                 + "Email = ?, Phone = ?, Address = ?, DateOfBirth = ?, FullName = ?, Gender = ?, "
                 + "Status = ? WHERE username = ?"; // Assuming MenteeID is the unique identifier
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, mentee.getRoleId());
-            st.setString(2, mentee.getAvatar());
+            st.setBytes(2, mentee.getAvatar());
             st.setString(3, mentee.getUsername());
             st.setDate(4, new Date(mentee.getCreateDate().getTime()));
             st.setString(5, mentee.getEmail());
@@ -56,9 +56,9 @@ public class MenteeDAO extends DBContext {
             st.setString(11, mentee.getStatus());
             st.setString(12, mentee.getUsername());
             st.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
-            throw e;
+            return false;
         }
     }
 
@@ -87,7 +87,10 @@ public class MenteeDAO extends DBContext {
                 mentee = new Mentee();
                 mentee.setRoleId(rs.getInt("RoleID"));
                 mentee.setUsername(rs.getString("Username"));
-                mentee.setAvatar(rs.getString("Avatar"));
+                byte[] avatar = rs.getBytes("Avatar");
+                if (avatar != null) {
+                    mentee.setAvatar(rs.getBytes("Avatar"));
+                }
                 mentee.setCreateDate(rs.getDate("CreateDate"));
                 mentee.setEmail(rs.getString("Email"));
                 mentee.setPhone(rs.getString("Phone"));
