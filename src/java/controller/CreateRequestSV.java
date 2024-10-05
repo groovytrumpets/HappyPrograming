@@ -144,19 +144,25 @@ public class CreateRequestSV extends HttpServlet {
             java.sql.Time hours = java.sql.Time.valueOf(selectedTime);
         } else {
             response.sendRedirect("createrequest?id=" + id + "&error=Deadline date or deadline not avaiable");
+            return;
         }
 
-        if (selectedSkills.length == 0 || selectedSkills.length > 3) {
+        if (selectedSkills == null || selectedSkills.length > 3) {
             response.sendRedirect("createrequest?id=" + id + "&error=You must select 1 skill and max is 3");
+            return;
         }
 
-        if (selectedSlot.length == 0) {
+        if (selectedSlot == null) {
             response.sendRedirect("createrequest?id=" + id + "&error=You must select at least 1 slot");
+            return;
         }
 
         if (requestDAO.getDuplicateSlot(menteeid) != null) {
             response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't been study");
+            return;
         }
+        
+        
 
     }
 
