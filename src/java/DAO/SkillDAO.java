@@ -327,7 +327,7 @@ public class SkillDAO extends DBContext {
                 + "      ,[Description]\n"
                 + "      ,[Status]\n"
                 + "      ,[Img]\n"
-                + "  FROM [dbo].[Skill]  SkillID =?";
+                + "  FROM [dbo].[Skill] where SkillID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, skillID);

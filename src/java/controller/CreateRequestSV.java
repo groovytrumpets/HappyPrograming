@@ -5,11 +5,14 @@
 package controller;
 
 import DAO.CVDAO;
+import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.RequestDAO;
 import DAO.SlotDAO;
 import Model.Mentor;
 import Model.Skill;
 import Model.Slot;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -68,6 +72,12 @@ public class CreateRequestSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+        User a = new User();
+        a = (User) sesion.getAttribute("acc");
+        if (a == null) {
+            response.sendRedirect("signin");
+        }
         PrintWriter out = response.getWriter();
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");
@@ -102,7 +112,14 @@ public class CreateRequestSV extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        PrintWriter out = response.getWriter();
+        RequestDAO requestDAO = new RequestDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
+
+        HttpSession sesion = request.getSession();
+        User a = new User();
+        a = (User) sesion.getAttribute("acc");
+        int menteeid = menteeDAO.findMenteeByUsername(a.getUsername()).getMenteeId();
+        
         String id = request.getParameter("id");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -132,12 +149,15 @@ public class CreateRequestSV extends HttpServlet {
         if (selectedSkills.length == 0 || selectedSkills.length > 3) {
             response.sendRedirect("createrequest?id=" + id + "&error=You must select 1 skill and max is 3");
         }
-        
-        if (selectedSlot.length == 0){
+
+        if (selectedSlot.length == 0) {
             response.sendRedirect("createrequest?id=" + id + "&error=You must select at least 1 slot");
         }
-            
-        
+
+        if (requestDAO.getDuplicateSlot(menteeid) != null) {
+            response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't been study");
+        }
+
     }
 
     /**

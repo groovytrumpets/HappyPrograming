@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class RequestDAO extends DBContext {
 
-    public List<RequestSlotItem> getProcessingRequests(int id) {
+    public List<RequestSlotItem> getDuplicateSlot(int id) {
         List<RequestSlotItem> requests = new ArrayList<>();
 
         String sql = "select *\n"
                 + "from RequestSlotItem rq\n"
                 + "join Request r on rq.RequestID = r.RequestID\n"
-                + "where r.Status = 'Processing' and r.RequestID = ?";
+                + "where r.Status = 'Processing' and r.MenteeID = ?";
 
         try {
 
@@ -34,10 +34,10 @@ public class RequestDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
-                int requestSlotItemId = rs.getInt("RequestSlotItemId");
+                int requestSlotItemID = rs.getInt("RequestSlotItem");
                 int slotId = rs.getInt("SlotID");
 
-                RequestSlotItem requestSlotItem = new RequestSlotItem(requestSlotItemId, id, slotId);
+                RequestSlotItem requestSlotItem = new RequestSlotItem(requestSlotItemID, id, slotId);
 
                 requests.add(requestSlotItem);
             }
