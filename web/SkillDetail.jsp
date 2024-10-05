@@ -281,21 +281,19 @@
                                                         <div class="instructor-info">
                                                             <h6>${mentors.fullName} </h6>
                                                             <span>Mentor</span>
-                                                            <ul class="list-inline m-tb10">
-                                                                <li><a href="#" class="btn sharp-sm facebook"><i class="fa fa-facebook"></i></a></li>
-                                                                <li><a href="#" class="btn sharp-sm twitter"><i class="fa fa-twitter"></i></a></li>
-                                                                <li><a href="#" class="btn sharp-sm linkedin"><i class="fa fa-linkedin"></i></a></li>
-                                                                <li><a href="#" class="btn sharp-sm google-plus"><i class="fa fa-google-plus"></i></a></li>
-                                                            </ul>
                                                             <p class="m-b0">
-                                                                ${cvs.education}
+                                                                Education: ${cvs.education}
                                                             </p>
                                                             <p class="m-b0">
-                                                                ${cvs.professionIntroduction}
+                                                                Description: ${cvs.professionIntroduction}
                                                             </p>
                                                             <p class="m-b0">
-                                                                ${cvs.yearOfExperience} years
+                                                                Year of experience: ${cvs.yearOfExperience} years
                                                             </p>
+                                                            <div class="instructor-info">
+                                                                <a href="#" class="btn green radius-xl outline">View CV</a>
+                                                                <a href="#" class="btn red outline radius-xl ">Rent mentor</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </c:if>

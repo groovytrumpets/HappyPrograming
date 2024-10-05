@@ -61,13 +61,12 @@ public class SkillDetailSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
-        String name = request.getParameter("name");
         SkillDAO skillDAO = new SkillDAO();
         SkillListDAO skilllistDAO = new SkillListDAO();
         CVDAO cvDAO = new CVDAO();
         request.setAttribute("cv", skilllistDAO.getCVbySkill(Integer.parseInt(id)));
         request.setAttribute("mentor", skilllistDAO.getMentorBySkill(Integer.parseInt(id)));
-        request.setAttribute("detail", skillDAO.getSkillByNameID(name, Integer.parseInt(id)));
+        request.setAttribute("detail", skillDAO.getSkillByID(Integer.parseInt(id)));
         request.getRequestDispatcher("SkillDetail.jsp").forward(request, response);
     }
 

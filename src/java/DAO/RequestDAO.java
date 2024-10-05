@@ -5,19 +5,51 @@
 package DAO;
 
 import Model.Request;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.PreparedStatement;
+import Model.RequestSlotItem;
 import java.sql.ResultSet;
-import java.sql.Time;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
- * @author tuong
+ * @author nhhag
  */
 public class RequestDAO extends DBContext {
 
-    public List<Request> getAllRequestByStatus(String status) {
+    public List<RequestSlotItem> getProcessingRequests(int id) {
+        List<RequestSlotItem> requests = new ArrayList<>();
+
+        String sql = "select *\n"
+                + "from RequestSlotItem rq\n"
+                + "join Request r on rq.RequestID = r.RequestID\n"
+                + "where r.Status = 'Processing' and r.RequestID = ?";
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                int requestSlotItemId = rs.getInt("RequestSlotItemId");
+                int slotId = rs.getInt("SlotID");
+
+                RequestSlotItem requestSlotItem = new RequestSlotItem(requestSlotItemId, id, slotId);
+
+                requests.add(requestSlotItem);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requests;
+    }  
+
+    /*public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT [RequestID]\n"
                 + "      ,[MentorID]\n"
@@ -107,5 +139,5 @@ public class RequestDAO extends DBContext {
         RequestDAO act = new RequestDAO();
         List<Request> curList = act.getAllRequestByStatus("Accepted");
         System.out.println(curList.get(0).getMentorId());
-    }
+    }*/
 }

@@ -14,7 +14,7 @@ public class DBContext {
             String username = "sa";
 
 
-            String password = "Khanh20041011";
+            String password = "122004789";
 
 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

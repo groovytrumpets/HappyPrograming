@@ -320,19 +320,17 @@ public class SkillDAO extends DBContext {
         }
         return listSkill;
     }
-
-    public Skill getSkillByNameID(String skillName, int skillID) {
+    public Skill getSkillByID( int skillID) {
         String sql = "SELECT [SkillID]\n"
                 + "      ,[SkillName]\n"
                 + "      ,[CreateDate]\n"
                 + "      ,[Description]\n"
                 + "      ,[Status]\n"
                 + "      ,[Img]\n"
-                + "  FROM [dbo].[Skill] where SkillName = ?  and SkillID =?";
+                + "  FROM [dbo].[Skill]  SkillID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, skillName);
-            st.setInt(2, skillID);
+            st.setInt(1, skillID);
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

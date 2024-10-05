@@ -4,77 +4,71 @@
  */
 package Model;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 /**
  *
- * @author tuong
+ * @author nhhag
  */
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Request {
-//    [RequestID] [int] IDENTITY(1,1) NOT NULL,
-//	[MentorID] [int] NULL,
-//	[MenteeID] [int] NULL,
-//	[Price] [float] NULL,
-//	[Note] [varchar](max) NULL,
-//	[CreateDate] [date] NULL,
-//	[Status] [nvarchar](20) NULL,
-//	[Title] [nvarchar](50) NULL,
-//	[DeadlineHour] [time](7) NULL,
-//	[DeadlineDate] [date] NULL,
-//	[Framework] [nvarchar](30) NULL,
-    private int reqId,mentorId, menteeId;
-    private float price;
-    private String note, status, title, framework;
-    private Date createDate, deadLineDate;
-    private LocalTime deadlineHour;  
 
-    public Request() {
-    }
+    private int requestId;
+    private Integer mentorId;
+    private Integer menteeId;
+    private Float price;
+    private String note;
+    private LocalDate createDate;
+    private String status;
+    private String title;
+    private LocalTime deadlineHour;
+    private LocalDate deadlineDate;
+    private String framework;
 
-    public Request(int reqId, int mentorId, int menteeId, float price, String note, String status, String title, String framework, Date createDate, Date deadLineDate, LocalTime deadlineHour) {
-        this.reqId = reqId;
+    public Request(int requestId, Integer mentorId, Integer menteeId, Float price, String note, LocalDate createDate,
+            String status, String title, LocalTime deadlineHour, LocalDate deadlineDate, String framework) {
+        this.requestId = requestId;
         this.mentorId = mentorId;
         this.menteeId = menteeId;
         this.price = price;
         this.note = note;
+        this.createDate = createDate;
         this.status = status;
         this.title = title;
-        this.framework = framework;
-        this.createDate = createDate;
-        this.deadLineDate = deadLineDate;
         this.deadlineHour = deadlineHour;
+        this.deadlineDate = deadlineDate;
+        this.framework = framework;
     }
 
-    public int getReqId() {
-        return reqId;
+    public int getRequestId() {
+        return requestId;
     }
 
-    public void setReqId(int reqId) {
-        this.reqId = reqId;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
-    public int getMentorId() {
+    public Integer getMentorId() {
         return mentorId;
     }
 
-    public void setMentorId(int mentorId) {
+    public void setMentorId(Integer mentorId) {
         this.mentorId = mentorId;
     }
 
-    public int getMenteeId() {
+    public Integer getMenteeId() {
         return menteeId;
     }
 
-    public void setMenteeId(int menteeId) {
+    public void setMenteeId(Integer menteeId) {
         this.menteeId = menteeId;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -84,6 +78,14 @@ public class Request {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 
     public String getStatus() {
@@ -102,30 +104,6 @@ public class Request {
         this.title = title;
     }
 
-    public String getFramework() {
-        return framework;
-    }
-
-    public void setFramework(String framework) {
-        this.framework = framework;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getDeadLineDate() {
-        return deadLineDate;
-    }
-
-    public void setDeadLineDate(Date deadLineDate) {
-        this.deadLineDate = deadLineDate;
-    }
-
     public LocalTime getDeadlineHour() {
         return deadlineHour;
     }
@@ -133,5 +111,22 @@ public class Request {
     public void setDeadlineHour(LocalTime deadlineHour) {
         this.deadlineHour = deadlineHour;
     }
-    
+
+    public LocalDate getDeadlineDate() {
+        return deadlineDate;
+    }
+
+    public void setDeadlineDate(LocalDate deadlineDate) {
+        this.deadlineDate = deadlineDate;
+    }
+
+    public String getFramework() {
+        return framework;
+    }
+
+    public void setFramework(String framework) {
+        this.framework = framework;
+    }
 }
+
+
