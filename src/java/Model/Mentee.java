@@ -139,5 +139,11 @@ public class Mentee {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Mentee{" + "menteeId=" + menteeId + ", roleId=" + roleId + ", avatar=" + avatar + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
+    }
+    
     
 }
