@@ -5,7 +5,11 @@
 
 package controller;
 
+import DAO.CVDAO;
 import DAO.HomeDAO;
+import Model.Mentor;
+import Model.Rate;
+import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -56,7 +61,21 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-
+        HomeDAO hdao = new HomeDAO();
+        CVDAO cvd= new CVDAO();
+        List<Skill> skillList = hdao.getListofSkill();
+        List<Rate> rateList = cvd.getRateList();
+        //List<Mentor> mentors = cvd.getMentorList();
+        System.out.println(rateList.get(0).getRate());
+        //System.out.println(rateList.get(0).getMenteeId());
+        int userNumb = hdao.countUsers();
+        int mentorNumb = hdao.countMentor();
+        
+        request.setAttribute("rate", rateList);
+        request.setAttribute("skill", skillList);
+        request.setAttribute("userNum", userNumb);
+        request.setAttribute("mentorNum", mentorNumb);
+        
         request.getRequestDispatcher("Home.jsp").forward(request, response);
     }
 
