@@ -10,6 +10,7 @@ import Model.CV;
 import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
+import Model.StatisticSkills;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -73,7 +74,8 @@ public class ViewProfileCVServlet extends HttpServlet {
             CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             String email = cvd.getUserEmail(id);
             List<Rate> rateList = cvd.getMentorRateList(id);
-            List<Skill> mentorSkillList = cvd.getMentorSkillList(id);
+            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
+            int rateAve = cvd.getAveRatebyId(id);
             request.setAttribute("skillMentor", mentorSkillList);
             
             
@@ -83,6 +85,9 @@ public class ViewProfileCVServlet extends HttpServlet {
             request.setAttribute("uFound", mentor);
             request.setAttribute("cvFound", cv);
             request.setAttribute("rate", rateList);
+            
+            request.setAttribute("rateAve", rateAve);
+            
             
             request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
         } catch (Exception e) {

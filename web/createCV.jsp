@@ -375,13 +375,13 @@
                                         <div class="form-group col-12">
                                             <div class=" text-center">
 
-                                                <img id="userAvatar" src="${requestScope.cvFound.avatar}" class="rounded-circle" alt="" style=" margin: 10px 10px;width: 150px">
+                                                <img id="userAvatar" src="assets/images/userprofile.png" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
                                                 <div id="Imgstatus"></div>
                                             </div>
                                                 <div style="text-align: center">
                                                 <label for="avatar" class="btn-secondry">Avatar file</label>
                                                 <span id="file-path"></span>
-                                                <input id="avatar" class="form-control" type="file" name="avatar" hidden required>
+                                                <input id="avatar" class="form-control" type="file" name="avatar" accept=".jpg, .jpeg, .png, .gif" hidden>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">

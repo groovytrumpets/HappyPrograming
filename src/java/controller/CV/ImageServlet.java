@@ -70,8 +70,6 @@ public class ImageServlet extends HttpServlet {
             OutputStream out = response.getOutputStream();
             out.write(imgData);
             out.close();
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);  // 404 nếu không có ảnh
         }
         } catch (Exception e) {
             System.out.println(e);
