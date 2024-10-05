@@ -25,8 +25,8 @@ import java.util.List;
  *
  * @author tuong
  */
-@WebServlet(name = "MentorListAdMinServlet", urlPatterns = {"/mentorListAdmin"})
-public class MentorListAdMinServlet extends HttpServlet {
+@WebServlet(name = "adminSearchMentorServlet", urlPatterns = {"/adminSearchMentor"})
+public class adminSearchMentorServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +45,10 @@ public class MentorListAdMinServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorListAdMinServlet</title>");
+            out.println("<title>Servlet adminSearchMentorServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorListAdMinServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet adminSearchMentorServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,9 +70,14 @@ public class MentorListAdMinServlet extends HttpServlet {
         CVDAO actCV = new CVDAO();
         RateDAO actRate = new RateDAO();
         RequestDAO actRequest = new RequestDAO();
-        List<Mentor> mentorList = actMent.getAllMentor();
+        String search = request.getParameter("search");
+        if (search == null) {
+            response.sendRedirect("mentorListAdmin");
+        }
+        List<Mentor> mentorList = actMent.searchAllMentor(search);
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
+
         int page, numDis;
         if (page_raw != null) {
             page = Integer.parseInt(page_raw);
@@ -87,9 +92,10 @@ public class MentorListAdMinServlet extends HttpServlet {
         int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
         int numMent = mentorList.size();
-        int numOfPage = (numMent % numDis == 0 ? numMent/numDis : (numMent / numDis +1));
+        int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
-        mentorList = actMent.getListMentorPagiantion(page, numDis);
+        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
+        request.setAttribute("search", search);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listMent", mentorList);
@@ -106,7 +112,7 @@ public class MentorListAdMinServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
+        request.getRequestDispatcher("adminSearchMentor.jsp").forward(request, response);
     }
 
     /**
@@ -120,23 +126,27 @@ public class MentorListAdMinServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         RequestDAO actRequest = new RequestDAO();
+        RequestDAO actRequest = new RequestDAO();
+        RateDAO actRate = new RateDAO();
         MentorDAO actMent = new MentorDAO();
         CVDAO actCV = new CVDAO();
-          RateDAO actRate = new RateDAO();
-        List<Mentor> mentorList = actMent.getAllMentor();
+        String search = request.getParameter("search");
+        if (search == null) {
+            response.sendRedirect("mentorListAdmin");
+        }
+        List<Mentor> mentorList = actMent.searchAllMentor(search);
         String id_raw = request.getParameter("mentorId");
         int id = Integer.parseInt(id_raw);
         String status = request.getParameter("status");
-        if(status!= null){
-            if(status.equalsIgnoreCase("inactive")){
+        if (status != null) {
+            if (status.equalsIgnoreCase("inactive")) {
                 boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Active");
-            }else{
-                 boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+            } else {
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
             }
-        }else{
-                 boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
-            }
+        } else {
+            boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+        }
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
         int page, numDis;
@@ -150,19 +160,21 @@ public class MentorListAdMinServlet extends HttpServlet {
         } else {
             numDis = 10;
         }
-        
+
         int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
         int numMent = mentorList.size();
-        int numOfPage = (numMent % numDis == 0 ? numMent/numDis : (numMent / numDis +1));
+        int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
-        mentorList = actMent.getListMentorPagiantion(page, numDis);
+        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
+        request.setAttribute("search", search);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listMent", mentorList);
         List<CV> listCV = actCV.getMostEficientCV();
         request.setAttribute("listCV", listCV);
-         List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
+        //Manage request Accepted
+        List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
         request.setAttribute("requestAccList", curAcceptRequestt);
         List<Request> allRequest = actRequest.getAllRequest();
         request.setAttribute("requestList", allRequest);
@@ -172,7 +184,7 @@ public class MentorListAdMinServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
+        request.getRequestDispatcher("adminSearchMentor.jsp").forward(request, response);
     }
 
     /**

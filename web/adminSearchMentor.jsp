@@ -1,6 +1,6 @@
 <%-- 
-    Document   : AdminMentorList
-    Created on : Oct 3, 2024, 5:48:10 PM
+    Document   : adminSearchMentor.jsp
+    Created on : Oct 5, 2024, 5:08:53 AM
     Author     : tuong
 --%>
 
@@ -346,7 +346,7 @@
                                 </div>
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="adminSearchMentor" style="display: flex; align-items: center;">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
+                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;" value="${requestScope.search}">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
@@ -368,11 +368,12 @@
                                     </tr>
                                     <c:set var="stt" value="${requestScope.stt}"/>
                                     <c:forEach items="${requestScope.listMent}" var="c">
-                                        <form action="mentorListAdmin" method="post">
+                                        <form action="adminSearchMentor" method="post">
                                             <input type="hidden" name="page" value="${requestScope.indexPage}">
                                             <input type="hidden" name="numDis" value="${requestScope.numDis}">
                                             <input type="hidden" name="mentorId" value="${c.mentorId}">
                                             <input type="hidden" name="status" value="${c.status}">
+                                            <input type="hidden" name="search" value="${requestScope.search}">
                                             <c:set value="${stt +1}" var="stt"/>
                                             <tr>
                                                 <td>${stt}</td>
@@ -457,7 +458,8 @@
                                 <div class="pagination" style="display: flex">
                                     <div class="col-md-6" >
                                         <div class="col-md-4">
-                                            <form action="mentorListAdmin" method="get">
+                                            <form action="adminSearchMentor" method="get">
+                                                <input type="hidden" name="search" value="${requestScope.search}">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
                                                     <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
                                                     <option value="15" ${numDis == 15 ? 'selected' : ''}>15</option>
@@ -469,7 +471,7 @@
                                     </div>
                                     <div class="col-md-6" style="text-align: right">
                                         <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                            <a href="mentorListAdmin?page=${i}&numDis=${numDis}">${i}</a>
+                                            <a href="adminSearchMentor?search=${requestScope.search}&page=${i}&numDis=${numDis}">${i}</a>
                                         </c:forEach>
                                     </div>
                                 </div>
@@ -524,4 +526,3 @@
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>
-
