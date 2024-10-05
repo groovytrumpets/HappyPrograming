@@ -9,6 +9,7 @@ import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
 import Model.SkillList;
+import Model.StatisticSkills;
 import Model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,16 +141,17 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public List<Skill> getMentorSkillList(int id) {
-        List<Skill> list = new ArrayList<>();
-        String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
+    public List<StatisticSkills> getMentorSkillList(int id) {
+        List<StatisticSkills> list = new ArrayList<>();
+        String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Skill skillName = new Skill(rs.getInt("skillId"), rs.getString("skillName"));
-                list.add(skillName);
+                StatisticSkills skillStats = new StatisticSkills(rs.getInt("skillId"), 
+                        rs.getString("skillName"), rs.getInt("rating"));
+                list.add(skillStats);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception for debugging
@@ -238,7 +240,7 @@ public class CVDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 if ((!username.equalsIgnoreCase(rs.getString("Username"))
-                        && !email.isEmpty() && rs.getString("Status").equalsIgnoreCase("inactive"))) {
+                        && !email.isEmpty() || rs.getString("Status").equalsIgnoreCase("inactive"))) {
                     return true; // email exsist
                 }
             }
@@ -301,9 +303,11 @@ public class CVDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception for debugging
+            
         }
         return list;
     }
+
 
     public List<CV> getMostEficientCV() {
         List<CV> listCV = new ArrayList<>();
@@ -382,6 +386,24 @@ public class CVDAO extends DBContext {
         CVDAO c = new CVDAO();
         List<CV> list = c.getMostEficientCV();
         System.out.println(list.get(0).getMentorId());
+    }
+    public int getAveRatebyId(int id) {
+        String sql = "select Avg(Rate) from Rate where MentorID =?;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+
     }
 
 }
