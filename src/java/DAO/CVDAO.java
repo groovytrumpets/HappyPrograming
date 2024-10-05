@@ -149,9 +149,27 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                StatisticSkills skillStats = new StatisticSkills(rs.getInt("skillId"), 
+                StatisticSkills skillStats = new StatisticSkills(rs.getInt("skillId"),
                         rs.getString("skillName"), rs.getInt("rating"));
                 list.add(skillStats);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print the exception for debugging
+        }
+        return list;
+    }
+    
+    public List<Skill> getMentorSkillListByMentorID(int id) {
+        List<Skill> list = new ArrayList<>();
+        String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Skill skill = new Skill(rs.getInt("skillId"),
+                        rs.getString("skillName"));
+                list.add(skill);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception for debugging
@@ -201,7 +219,7 @@ public class CVDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             for (String addSkill : addSkills) {
-                
+
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
                 st.executeUpdate();
@@ -287,10 +305,8 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
-    public static void main(String[] args) {
-          CVDAO c = new CVDAO();
-          System.out.println(c.getCVbyMentorId(7));
-    }
+
+    
 
     public List<Rate> getMentorRateList(int id) {
         List<Rate> list = new ArrayList<>();
@@ -300,19 +316,18 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"), 
-                        rs.getDate("createDate"), rs.getString("status"), 
+                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"),
+                        rs.getDate("createDate"), rs.getString("status"),
                         rs.getString("comment"), rs.getInt("rate"));
                 list.add(rate);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception for debugging
-            
+
         }
         return list;
     }
-    
-    
+
     public List<CV> getMostEficientCV() {
         List<CV> listCV = new ArrayList<>();
         String sql = "WITH RankedCVs AS (\n"
@@ -377,13 +392,13 @@ public class CVDAO extends DBContext {
                     curCV.setAvatar(rs.getBytes("Avatar"));
                 }
                 listCV.add(curCV);
-    
+
             }
         } catch (SQLException e) {
         }
         return listCV;
     }
-    
+
     public List<Rate> getRateList() {
         List<Rate> list = new ArrayList<>();
         String sql = "select * from Rate";
@@ -391,21 +406,19 @@ public class CVDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"), 
-                        rs.getDate("createDate"), rs.getString("status"), 
+                Rate rate = new Rate(rs.getInt("mentorId"), rs.getInt("menteeId"),
+                        rs.getDate("createDate"), rs.getString("status"),
                         rs.getString("comment"), rs.getInt("rate"));
                 list.add(rate);
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace(); // Print the exception for debugging
-            
+
         }
         return null;
     }
-    
 
-    
     public int getAveRatebyId(int id) {
         String sql = "select Avg(Rate) from Rate where MentorID =?;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
@@ -423,9 +436,8 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
-
-    public List<Mentor> getMentorList() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   public static void main(String[] args) {
+        CVDAO c = new CVDAO();
+        System.out.println(c.getMentorSkillListByMentorID(7));
     }
-
 }

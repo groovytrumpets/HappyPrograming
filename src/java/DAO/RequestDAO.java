@@ -5,19 +5,77 @@
 package DAO;
 
 import Model.Request;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.PreparedStatement;
+import Model.RequestSlotItem;
 import java.sql.ResultSet;
-import java.sql.Time;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
- * @author tuong
+ * @author nhhag
  */
 public class RequestDAO extends DBContext {
 
-    public List<Request> getAllRequestByStatus(String status) {
+    public List<RequestSlotItem> getDuplicateSlot(int id) {
+        List<RequestSlotItem> requests = new ArrayList<>();
+
+        String sql = "select *\n"
+                + "from RequestSlotItem rq\n"
+                + "join Request r on rq.RequestID = r.RequestID\n"
+                + "where r.Status = 'Processing' and r.MenteeID = ?";
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                int requestSlotItemID = rs.getInt("RequestSlotItem");
+                int slotId = rs.getInt("SlotID");
+
+                RequestSlotItem requestSlotItem = new RequestSlotItem(requestSlotItemID, id, slotId);
+
+                requests.add(requestSlotItem);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requests;
+    }
+
+    public void insertRequest(Request request) {
+        String sql = "INSERT INTO Request (MentorID, MenteeID, Price, Note, CreateDate, Status, Title, DeadlineHour, DeadlineDate, Framework) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try    
+        {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            // Set parameters for the query
+            st.setObject(1, request.getMentorId(), java.sql.Types.INTEGER);
+            st.setObject(2, request.getMenteeId(), java.sql.Types.INTEGER);
+            st.setFloat(3, request.getPrice());
+            st.setString(4, request.getNote());
+            st.setDate(5, Date.valueOf(request.getCreateDate()));
+            st.setString(6, request.getStatus());
+            st.setString(7, request.getTitle());
+            st.setTime(8, Time.valueOf(request.getDeadlineHour()));
+            st.setDate(9, Date.valueOf(request.getDeadlineDate()));
+            st.setString(10, request.getFramework());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+/*public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT [RequestID]\n"
                 + "      ,[MentorID]\n"
@@ -107,5 +165,5 @@ public class RequestDAO extends DBContext {
         RequestDAO act = new RequestDAO();
         List<Request> curList = act.getAllRequestByStatus("Accepted");
         System.out.println(curList.get(0).getMentorId());
-    }
+    }*/
 }
