@@ -1,14 +1,15 @@
 <%-- 
-    Document   : addSkill
-    Created on : Sep 17, 2024, 8:57:46 AM
+    Document   : updateProfileMentee
+    Created on : Oct 5, 2024, 8:46:21 PM
     Author     : tuong
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
     <head>
 
         <!-- META ============================================= -->
@@ -32,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Update CV of mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,10 +65,7 @@
         <header class="ttr-header">
             <div class="ttr-header-wrapper">
                 <!--sidebar menu toggler start -->
-                <div class="ttr-toggle-sidebar ttr-material-button">
-                    <i class="ti-close ttr-open-icon"></i>
-                    <i class="ti-menu ttr-close-icon"></i>
-                </div>
+
                 <!--sidebar menu toggler end -->
                 <!--logo start -->
                 <div class="ttr-logo-box">
@@ -85,16 +83,7 @@
                         <li>
                             <a href="../index.html" class="ttr-material-button ttr-submenu-toggle">HOME</a>
                         </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
-                            <div class="ttr-header-submenu">
-                                <ul>
-                                    <li><a href="../courses.html">Our Courses</a></li>
-                                    <li><a href="../event.html">New Event</a></li>
-                                    <li><a href="../membership.html">Membership</a></li>
-                                </ul>
-                            </div>
-                        </li>
+
                     </ul>
                     <!-- header left menu end -->
                 </div>
@@ -111,70 +100,7 @@
                                     <span class="ttr-notify-text-top">9 New</span>
                                     <span class="ttr-notify-text">User Notifications</span>
                                 </div>
-                                <div class="noti-box-list">
-                                    <ul>
-                                        <li>
-                                            <span class="notification-icon dashbg-gray">
-                                                <i class="fa fa-check"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Sneha Jogi</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 02:14</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-yellow">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <a href="#">Your order is placed</a> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 7 Min</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-red">
-                                                <i class="fa fa-bullhorn"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Your item is shipped</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 2 May</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-green">
-                                                <i class="fa fa-comments-o"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <a href="#">Sneha Jogi</a> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 14 July</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-primary">
-                                                <i class="fa fa-file-word-o"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Sneha Jogi</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 15 Min</span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+
                             </div>
                         </li>
                         <li>
@@ -250,73 +176,7 @@
                         <i class="ti-arrow-left"></i>
                     </div>
                 </div>
-                <!-- side menu logo end -->
-                <!-- sidebar menu start -->
-                <nav class="ttr-sidebar-navi">
-                    <ul>
-                        <li>
-                            <a href="index.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="courses.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-book"></i></span>
-                                <span class="ttr-label">User</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="SkillList" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-email"></i></span>
-                                <span class="ttr-label">Skill</span>
-                            </a>
 
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Đơn từ</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-user"></i></span>
-                                <span class="ttr-label">My Profile</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="menteeprofile" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ttr-seperate"></li>
-                    </ul>
-                    <!-- sidebar menu end -->
-                </nav>
-                <!-- sidebar menu end -->
             </div>
         </div>
         <!-- Left sidebar menu end -->
@@ -325,11 +185,10 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Add Skill</h4>
+                    <h4 class="breadcrumb-title">Update Profile</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li><a href="SkillList">Skill</a></li>
-                        <li>Add Skill</li>
+                        <li>Update Profile</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -337,58 +196,93 @@
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Add Skill</h4>
+                                <h4>Update Profile</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" method="post" action="addSkill" enctype="multipart/form-data">
+                                <form class="edit-profile m-b30" action="updateProfile" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
-                                                <h3>1. Input info</h3>
+                                                <h3>1. Personal Details</h3>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Skill Name</label>
-                                            <div>
-                                                <input class="form-control" type="text"  name="name" required="">
-                                            </div>
-                                            <div><p style="color: red">${requestScope.error}</p></div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Skill Image</label>
-                                            <div>
-                                                <input class="form-control" type="file"   name="img" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Skill Status</label>
-                                            <div>
-                                                <input type="radio"name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                        <div class="seperator"></div>
-
-                                        <div class="col-12 m-t20">
-                                            <div class="ml-auto m-b5">
-                                                <h3>2. Description</h3>
-                                            </div>
+                                        <div>
+                                            <input class="form-control" type="hidden" name="menteeId" value="${mentee.menteeId}" >
                                         </div>
                                         <div class="form-group col-12">
-                                            <label class="col-form-label">Skill description</label>
+                                            <div class=" text-center">
+                                                <img src="data:image/jpeg;base64,${mentee.base64FileImage}" class="rounded-circle" style=" margin: 50px 10px;width: 150px">
+                                            </div>
                                             <div>
-                                                <textarea class="form-control" name="description" style="border: 1px solid black" required> </textarea>
+                                                <div style="text-align: center">
+                                                    <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                    <span id="file-path"></span>
+                                                    <input id="avatar" class="form-control" type="file" name="avatar" accept=".jpg, .jpeg, .png, .gif" hidden>
+
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="col-12">
-                                            <button type="submit" class="btn-secondry add-item m-r5" value="Add Skill"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</button>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Full Name</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="fullname" value="${mentee.fullName}" required >
+                                            </div>
                                         </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Account name</label>
+                                            <div>
+                                                <input class="form-control" type="text" name="username" value="${mentee.username}"required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Date of Birth</label>
+                                            <div>
+                                                <input class="form-control" type="date" name="dob" value="${mentee.dateOfBirth}"required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Email</label>
+                                            <div>
+                                                <c:if test="${requestScope.error==email_exists}">
+                                                    <input class="form-control" type="email" name="email" value="${mentee.email}" required>
+                                                </c:if>
+                                                <c:if test="${requestScope.error!=email_exists}">
+                                                    <input class="form-control" type="email" name="email" value="" required>
+                                                    <span class="help" style="color: red">Your email used by another user !</span>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Phone No.</label>
+                                            <div>
+                                                <input class="form-control" type="number" name="phone" value="${mentee.phone}" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label class="col-form-label">Sex</label>
+                                            <div>
+                                                <select name="gender" class="" required>
+                                                    <option value="Male"<c:if test="${mentee.gender == 'Male'}">selected</c:if>>Male</option>
+                                                    <option value="Female"<c:if test="${mentee.gender == 'Female'}">selected</c:if>>Female</option>
+                                                    <option value="Other"<c:if test="${mentee.gender == 'Other'}">selected</c:if>>Other</option>
+                                                    </select>
 
-                                        <div><p style="color: green">${requestScope.successAdd}</p></div>
-
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label class="col-form-label">Address</label>
+                                                <div>
+                                                    <input class="form-control" type="text" name="address" value="${mentee.address}" required>
+                                            </div>
+                                        </div>
+                                                    <div><p style="color: green">${requestScope.message}</p></div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn">Save changes</button>
+                                            <button type="reset" class="btn-secondry">Cancel</button>
+                                        </div>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -415,7 +309,7 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
+        <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
             // Pricing add
             function newMenuItem() {
@@ -433,8 +327,16 @@
                     $(this).parent().parent().parent().parent().remove();
                 });
             }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
+
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
         </script>
     </body>
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>

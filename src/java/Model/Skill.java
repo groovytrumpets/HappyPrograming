@@ -20,11 +20,34 @@ public class Skill {
     private String status;
     private byte[] img;
     private transient String base64ImageFile;
+    private int rating;
 
     // Constructors
     public Skill() {
     }
 
+    public Skill(int skillId, String skillName, Date createDate,String description,byte[] img,int rating) {
+        this.skillId = skillId;
+        this.skillName = skillName;
+        this.createDate = createDate;
+        this.description = description;
+        this.img = img;
+        this.base64ImageFile = Base64.getEncoder().encodeToString(img);
+        this.rating = rating;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+ 
+
+    
+    
     public Skill(int skillId, String skillName, Date createDate, String description, String status, byte[] img) {
         this.skillId = skillId;
         this.skillName = skillName;

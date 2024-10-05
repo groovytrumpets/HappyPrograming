@@ -5,10 +5,6 @@
         <servlet-class>controller.PasswordResetSV</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PasswordChangeSV</servlet-name>
-        <servlet-class>controller.PasswordChangeSV</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ChangeLoggingPasswordSV</servlet-name>
         <servlet-class>controller.ChangeLoggingPasswordSV</servlet-class>
     </servlet>
@@ -17,12 +13,7 @@
         <url-pattern>/passwordreset</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PasswordChangeSV</servlet-name>
-        <url-pattern>/passwordchange</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ChangeLoggingPasswordSV</servlet-name>
         <url-pattern>/changeloggingpassword</url-pattern>
     </servlet-mapping>
-
 </web-app>
