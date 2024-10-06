@@ -345,6 +345,32 @@ public class MentorDAO extends DBContext {
         return listMentor;
     }
 
+    public Mentor getMentorById(int mentorId) {
+        Mentor mentor = null;
+        String sql = "SELECT * FROM Mentor WHERE MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mentor;
+    }
+
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
         Mentor listMentor = act.findMentorByID(7);

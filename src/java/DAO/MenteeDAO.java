@@ -86,7 +86,7 @@ public class MenteeDAO extends DBContext {
 
             if (rs.next()) {
                 mentee = new Mentee();
-                 mentee.setMenteeId(rs.getInt("MenteeID"));
+                mentee.setMenteeId(rs.getInt("MenteeID"));
                 mentee.setRoleId(rs.getInt("RoleID"));
                 mentee.setUsername(rs.getString("Username"));
                 byte[] avatar = rs.getBytes("Avatar");
@@ -111,7 +111,7 @@ public class MenteeDAO extends DBContext {
 
     public static void main(String[] args) {
         MenteeDAO u = new MenteeDAO();
-        Mentee m = u.findMenteeByUsername("hoanganhgp23");
-        System.out.println(m);
+        Mentee m = u.findMenteeByUsername("user5");
+        System.out.println(m.getMenteeId());
     }
 }
