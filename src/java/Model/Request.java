@@ -43,6 +43,11 @@ public class Request {
         this.framework = framework;
     }
 
+    @Override
+    public String toString() {
+        return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", deadlineHour=" + deadlineHour + ", deadlineDate=" + deadlineDate + ", framework=" + framework + '}';
+    }
+
     public int getRequestId() {
         return requestId;
     }

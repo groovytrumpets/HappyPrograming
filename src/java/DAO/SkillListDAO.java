@@ -70,7 +70,7 @@ public class SkillListDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"));
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("Price"));
                 list.add(cv);
 
             }
