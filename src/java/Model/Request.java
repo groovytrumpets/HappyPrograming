@@ -25,6 +25,9 @@ public class Request {
     private LocalDate deadlineDate;
     private String framework;
 
+    public Request() {
+    }
+
     public Request(int requestId, Integer mentorId, Integer menteeId, Float price, String note, LocalDate createDate,
             String status, String title, LocalTime deadlineHour, LocalDate deadlineDate, String framework) {
         this.requestId = requestId;

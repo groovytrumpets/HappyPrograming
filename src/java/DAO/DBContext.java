@@ -12,10 +12,7 @@ public class DBContext {
         try {
             String url = "jdbc:sqlserver://localhost:1433;databaseName= HappyProgramingDatabase";
             String username = "sa";
-
-
-            String password = "122004789";
-
+            String password = "admin";
 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
@@ -23,6 +20,14 @@ public class DBContext {
             System.out.println(ex);
         }
     }
-    
-    
+
+    public static void main(String[] args) {
+        DBContext test = new DBContext();
+        if (test.connection != null) {
+            System.out.println("Connection successful!");
+        } else {
+            System.out.println("Connection failed!");
+        }
+    }
+
 }

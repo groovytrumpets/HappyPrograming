@@ -10,8 +10,10 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.sql.Time;
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -72,10 +74,9 @@ public class RequestDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
     }
-}
-
-/*public List<Request> getAllRequestByStatus(String status) {
+    public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT [RequestID]\n"
                 + "      ,[MentorID]\n"
@@ -96,15 +97,17 @@ public class RequestDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
-                curRequest.setReqId(rs.getInt("RequestID"));
+                curRequest.setRequestId(rs.getInt("RequestID"));
                 curRequest.setMentorId(rs.getInt("MentorID"));
                 curRequest.setMenteeId(rs.getInt("MenteeID"));
                 curRequest.setPrice(rs.getFloat("Price"));
                 curRequest.setNote(rs.getString("Note"));
-                curRequest.setCreateDate(rs.getDate("CreateDate"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
                 curRequest.setStatus(rs.getString("Status"));
                 curRequest.setTitle(rs.getString("Title"));
-                curRequest.setDeadLineDate(rs.getDate("DeadlineDate"));
+                LocalDate curDeaDate = rs.getDate("DeadlineDate").toLocalDate();
+                curRequest.setDeadlineDate(curDeaDate);
                 Time time = rs.getTime("DeadlineHour");
                 if (time != null) {
                     curRequest.setDeadlineHour(time.toLocalTime());
@@ -138,15 +141,17 @@ public class RequestDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
-                curRequest.setReqId(rs.getInt("RequestID"));
+                curRequest.setRequestId(rs.getInt("RequestID"));
                 curRequest.setMentorId(rs.getInt("MentorID"));
                 curRequest.setMenteeId(rs.getInt("MenteeID"));
                 curRequest.setPrice(rs.getFloat("Price"));
                 curRequest.setNote(rs.getString("Note"));
-                curRequest.setCreateDate(rs.getDate("CreateDate"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
                 curRequest.setStatus(rs.getString("Status"));
                 curRequest.setTitle(rs.getString("Title"));
-                curRequest.setDeadLineDate(rs.getDate("DeadlineDate"));
+                LocalDate curDeaDate = rs.getDate("DeadlineDate").toLocalDate();
+                curRequest.setDeadlineDate(curDeaDate);
                 Time time = rs.getTime("DeadlineHour");
                 if (time != null) {
                     curRequest.setDeadlineHour(time.toLocalTime());
@@ -160,10 +165,13 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
+}
+
+/*
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
         List<Request> curList = act.getAllRequestByStatus("Accepted");
         System.out.println(curList.get(0).getMentorId());
     }*/
-}
+

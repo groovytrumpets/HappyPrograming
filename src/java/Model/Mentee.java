@@ -1,9 +1,11 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Model;
 
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -13,7 +15,7 @@ import java.util.Date;
 public class Mentee {
     private int menteeId;
     private int roleId;
-    private String avatar;
+    private byte [] avatar;
     private String username;
     private Date createDate;
     private String email;
@@ -23,11 +25,12 @@ public class Mentee {
     private String fullName;
     private String gender;
     private String status;
+    private transient String base64FileImage;
 
     public Mentee() {
     }
 
-    public Mentee(int menteeId, int roleId, String avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+    public Mentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
         this.menteeId = menteeId;
         this.roleId = roleId;
         this.avatar = avatar;
@@ -40,6 +43,7 @@ public class Mentee {
         this.fullName = fullName;
         this.gender = gender;
         this.status = status;
+        this.base64FileImage = Base64.getEncoder().encodeToString(avatar);
     }
 
     public int getMenteeId() {
@@ -50,8 +54,6 @@ public class Mentee {
         this.menteeId = menteeId;
     }
 
-    
-
     public int getRoleId() {
         return roleId;
     }
@@ -60,12 +62,13 @@ public class Mentee {
         this.roleId = roleId;
     }
 
-    public String getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+        this.base64FileImage = Base64.getEncoder().encodeToString(avatar);
     }
 
     public String getUsername() {
@@ -140,10 +143,14 @@ public class Mentee {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Mentee{" + "menteeId=" + menteeId + ", roleId=" + roleId + ", avatar=" + avatar + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + '}';
+    public String getBase64FileImage() {
+        return base64FileImage;
     }
-    
+
+    public void setBase64FileImage(String base64FileImage) {
+        this.base64FileImage = base64FileImage;
+    }
+
+   
     
 }
