@@ -10,6 +10,7 @@ import Model.Mentor;
 import Model.Skill;
 import Model.StatisticSkills;
 import Model.User;
+import com.oracle.wls.shaded.org.apache.bcel.generic.FLOAD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -134,16 +135,16 @@ public class CVUpdateServlet extends HttpServlet {
         String profession = request.getParameter("profession");
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
-        String yearxp_raw = request.getParameter("yearxp");
+
         String activity = request.getParameter("activity");
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
-        
+        String price_raw = request.getParameter("price");
         
         Date dob;
-        int userid, yearxp;
-    
+        int userid;
+        float price;
         Part filePart=null;
         try {
         filePart = request.getPart("avatar");
@@ -156,7 +157,7 @@ public class CVUpdateServlet extends HttpServlet {
         try {
 
             userid = Integer.parseInt(userId_raw);
-            yearxp = Integer.parseInt(yearxp_raw);
+            price=Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
             if (filePart.getSize() > 1024 * 1024 * 5) {
@@ -191,8 +192,7 @@ public class CVUpdateServlet extends HttpServlet {
             Mentor newMentor = new Mentor(userid, username, phone, address,
                     dob, fullname, gender);
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession,
-                    yearxp, serviceDescription, framework, avatar);
+                    professionIntroduction, profession, serviceDescription, framework, avatar, price);
             //System.out.println(nameId+" and "+email);
             cvdao.updateUser(nameId, username, email);
             cvdao.updateMentor(newMentor);

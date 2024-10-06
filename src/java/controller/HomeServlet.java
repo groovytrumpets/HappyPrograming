@@ -66,7 +66,7 @@ public class HomeServlet extends HttpServlet {
         List<Skill> skillList = hdao.getListofSkill();
         List<Rate> rateList = cvd.getRateList();
         //List<Mentor> mentors = cvd.getMentorList();
-        System.out.println(rateList.get(0).getRate());
+        //System.out.println(rateList.get(0).getRate());
         //System.out.println(rateList.get(0).getMenteeId());
         int userNumb = hdao.countUsers();
         int mentorNumb = hdao.countMentor();
