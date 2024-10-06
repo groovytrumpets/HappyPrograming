@@ -141,7 +141,7 @@ public class CVCreateServlet extends HttpServlet {
                 cvdao.insertMentorSkills(userid, addSkills);
                 //System.out.println("Add !null");
             }
-            response.sendRedirect("cvupdate?id=" + userid);
+            response.sendRedirect("cvlist?id=" + userid);
         } catch (Exception e) {
             System.out.println(e);
 

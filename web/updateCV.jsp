@@ -382,6 +382,10 @@
                                                 <label for="avatar" class="btn-secondry">Avatar file</label>
                                                 <span id="file-path"></span>
                                                 <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" accept=".jpg, .jpeg, .png, .gif" hidden>
+                                                <% String errorMessage = request.getParameter("errorMessage"); %>
+<% if (errorMessage != null) { %>
+    <div class="alert alert-danger"><%= errorMessage %></div>
+<% } %>
                                                 <c:if test="${requestScope.error2!=null}">
                                                     <span class="help" style="color: red">Your file is too big, please choose file smaller than 5MB.</span>
                                                 </c:if>
@@ -541,7 +545,7 @@
 
                                         <div class="col-12">
                                             <button type="submit" class="btn">Save changes</button>
-                                            <a href="cvlist?id=${requestScope.cvFound.mentorId}" type="reset" class="btn-secondry">Cancel</a>
+                                            <a href="cvlist?id=${requestScope.cvFound.mentorId}" type="reset" style=" color: white" class="btn-secondry">Cancel</a>
                                         </div>
                                     </div>
                                 </form>

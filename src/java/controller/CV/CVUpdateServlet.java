@@ -141,23 +141,24 @@ public class CVUpdateServlet extends HttpServlet {
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
         String price_raw = request.getParameter("price");
-        
+
         Date dob;
         int userid;
         float price;
-        Part filePart=null;
+        Part filePart = null;
         try {
-        filePart = request.getPart("avatar");
+            filePart = request.getPart("avatar");
         } catch (Exception e) {
             System.out.println("big");
-                response.sendRedirect("cvupdate?id=6&error2=file_toobig");
-                return;
+            userid = Integer.parseInt(userId_raw);
+            response.sendRedirect("cvupdate?id=15&errorMessage=File%20too%20large");
+            return;
         }
-        
+
         try {
 
             userid = Integer.parseInt(userId_raw);
-            price=Float.parseFloat(price_raw);
+            price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
             if (filePart.getSize() > 1024 * 1024 * 5) {
@@ -209,10 +210,10 @@ public class CVUpdateServlet extends HttpServlet {
             }
 
             //DEMO URL!
-            response.sendRedirect("cvupdate?id=" + userid);
+            response.sendRedirect("cvlist?id=" + newCv.getMentorId());
         } catch (Exception e) {
             System.out.println(e);
-            
+
         }
 
     }

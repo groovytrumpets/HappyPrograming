@@ -435,6 +435,7 @@ public class CVDAO extends DBContext {
                 curCV.setActivity(rs.getString("Activity"));
                 curCV.setProfessionIntroduction(rs.getString("ProfessionIntroduction"));
                 curCV.setCertificate(rs.getString("Certificate"));
+                
                 curCV.setCreateDate(rs.getString("CreateDate"));
                 curCV.setJobProfession(rs.getString("JobProfession"));
                 curCV.setYearOfExperience(rs.getInt("YearOfExperience"));
