@@ -397,7 +397,7 @@
                                             </div>
                                             <div class="col-12"> 
                                                 <div class="form-group col-6">
-                                                    <label class="col-form-label">Select Skills</label><br/>
+                                                    <label class="col-form-label">Select Slots</label><br/>
                                                     <!-- Skills List -->
                                                     <div>
                                                         <table class="table border rounded">

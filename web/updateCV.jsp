@@ -470,9 +470,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label class="col-form-label">Year of experience</label>
+                                            <label class="col-form-label">Price</label>
                                             <div>
-                                                <input class="form-control" type="text" name="yearxp" value="${requestScope.cvFound.yearOfExperience}"required>
+                                                <input class="form-control" type="number" name="price" step="0.0001" value="${requestScope.cvFound.price}"required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">

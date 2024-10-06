@@ -45,7 +45,20 @@ public class CV {
         this.price = price;
     }
 
-    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar,float price) {
+    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, String serviceDescription, String framework, byte[] avatar, float price) {
+        this.mentorId = mentorId;
+        this.education = education;
+        this.experience = experience;
+        this.activity = activity;
+        this.professionIntroduction = professionIntroduction;
+        this.jobProfession = jobProfession;
+        this.serviceDescription = serviceDescription;
+        this.framework = framework;
+        this.avatar = avatar;
+        this.price = price;
+    }
+
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar) {
         this.cvId = cvId;
         this.mentorId = mentorId;
         this.education = education;
@@ -69,14 +82,38 @@ public class CV {
         return price;
     }
 
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar, float price) {
+        this.cvId = cvId;
+        this.mentorId = mentorId;
+        this.education = education;
+        this.experience = experience;
+        this.activity = activity;
+        this.professionIntroduction = professionIntroduction;
+        this.certificate = certificate;
+        this.createDate = createDate;
+        this.jobProfession = jobProfession;
+        this.yearOfExperience = yearOfExperience;
+        this.serviceDescription = serviceDescription;
+        this.status = status;
+        this.framework = framework;
+        this.avatar = avatar;
+        this.price = price;
+    }
+    
+    
+    
+    
+
     @Override
     public String toString() {
         return "CV{" + "cvId=" + cvId + ", mentorId=" + mentorId + ", education=" + education + ", experience=" + experience + ", activity=" + activity + ", professionIntroduction=" + professionIntroduction + ", certificate=" + certificate + ", createDate=" + createDate + ", jobProfession=" + jobProfession + ", yearOfExperience=" + yearOfExperience + ", serviceDescription=" + serviceDescription + ", status=" + status + ", framework=" + framework + ", avatar=" + avatar + ", price=" + price + '}';
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public byte[] getAvatar() {
         return avatar;
