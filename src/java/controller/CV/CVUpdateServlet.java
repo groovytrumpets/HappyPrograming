@@ -85,15 +85,15 @@ public class CVUpdateServlet extends HttpServlet {
         try {
             id = Integer.parseInt(id_raw);
 
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
-            List<Skill> skillList = cvd.getSkillList(id);
+            CV cv = cvd.getCVbyCVId(id);
+            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(cv.getMentorId());
+            List<Skill> skillList = cvd.getSkillList(cv.getMentorId());
             //System.out.println(mentorSkillList.get(0).getSkillName());
             request.setAttribute("skillMentor", mentorSkillList);
             request.setAttribute("skillList", skillList);
 
-            Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
-            String email = cvd.getUserEmail(id);
+            Mentor mentor = cvd.getMentorByID(cv.getMentorId());
+            String email = cvd.getUserEmail(cv.getMentorId());
             request.setAttribute("error", error);
             request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);

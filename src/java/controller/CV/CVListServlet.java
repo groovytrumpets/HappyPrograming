@@ -7,10 +7,6 @@ package controller.CV;
 
 import DAO.CVDAO;
 import Model.CV;
-import Model.Mentor;
-import Model.Rate;
-import Model.Skill;
-import Model.StatisticSkills;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,8 +20,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="ViewProfileCVServlet", urlPatterns={"/viewprofilecv"})
-public class ViewProfileCVServlet extends HttpServlet {
+@WebServlet(name="CVListServlet", urlPatterns={"/cvlist"})
+public class CVListServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +38,10 @@ public class ViewProfileCVServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProfileCVServlet</title>");  
+            out.println("<title>Servlet CVListServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProfileCVServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CVListServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,36 +59,20 @@ public class ViewProfileCVServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        String error = request.getParameter("error");
-        
-        
         int id;
-        CVDAO cvd = new CVDAO();
         try {
+            CVDAO cvd = new CVDAO();
             id = Integer.parseInt(id_raw);
-            Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
-            //String email = cvd.getUserEmail(id);
-            List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
-            int rateAve = cvd.getAveRatebyId(id);
-            request.setAttribute("skillMentor", mentorSkillList);
+            List<CV> listcv = cvd.getListofCVbyMentorId(id);
             
+            request.setAttribute("listcv", listcv);
+            request.setAttribute("id", id);
             
-            
-            request.setAttribute("error", error);
-            //request.setAttribute("email", email);
-            request.setAttribute("uFound", mentor);
-            request.setAttribute("cvFound", cv);
-            request.setAttribute("rate", rateList);
-            
-            request.setAttribute("rateAve", rateAve);
-            
-            
-            request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
+        
+        request.getRequestDispatcher("listofCV.jsp").forward(request, response);
     } 
 
     /** 
