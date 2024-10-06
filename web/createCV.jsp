@@ -520,7 +520,7 @@
 
                                         <div class="col-12">
                                             <button type="submit" class="btn">Save changes</button>
-                                            <button type="reset" class="btn-secondry">Cancel</button>
+                                            <a href="cvlist?id=${requestScope.uFound.mentorId}" type="reset" style=" color: white" class="btn-secondry">Cancel</a>
                                         </div>
                                     </div>
                                 </form>

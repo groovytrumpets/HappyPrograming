@@ -65,7 +65,7 @@ public class CVDeleteServlet extends HttpServlet {
             id = Integer.parseInt(id_raw);
             CV cv = cvd.getCVbyCVId(id);
             cvd.deleteCV(id);
-        response.sendRedirect("cvlist?id=" + id);
+        response.sendRedirect("cvlist?id=" + cv.getMentorId());
         } catch (Exception e) {
             System.out.println(e);
         }
