@@ -33,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Update CV of mentor</title>
+        <title>List CV of mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -180,7 +180,7 @@
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-                            <div class="ttr-header-submenu">
+                            <div class="ttr-header-submenu">src="assets/images/testimonials/pic3.jpg
                                 <ul>
                                     <li><a href="user-profile.html">My profile</a></li>
                                     <li><a href="list-view-calendar.html">Activity</a></li>
@@ -329,7 +329,7 @@
                                     <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
                                 </li>
                                 <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Update CV of mentor</span></a>
+                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Create CV of mentor</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -346,10 +346,10 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Update CV of mentor</h4>
+                    <h4 class="breadcrumb-title">List CV of mentor</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Update CV of mentor</li>
+                        <li>List CV of mentor</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -357,194 +357,41 @@
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Update CV of mentor</h4>
+                                <h4>List CV of mentor </h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="cvupdate" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="ml-auto">
-                                                <h3>1. Personal Details</h3>
-                                            </div>
-                                        </div>
-
-
-                                        <div>
-                                            <input class="form-control" type="hidden" name="mentorId" value="${requestScope.uFound.mentorId}" >
-                                        </div>
-                                        <div class="form-group col-12">
-                                            <div class=" text-center">
-                                                
-                                                <img id="userAvatar" src="getimage?id=${requestScope.uFound.mentorId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
-                                            </div>
-                                            <div>
-                                                <div style="text-align: center">
-                                                <label for="avatar" class="btn-secondry">Avatar file</label>
-                                                <span id="file-path"></span>
-                                                <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" accept=".jpg, .jpeg, .png, .gif" hidden>
-                                                <c:if test="${requestScope.error2!=null}">
-                                                    <span class="help" style="color: red">Your file is too big, please choose file smaller than 5MB.</span>
-                                                </c:if>
-                                                    
-                                                 
+                                <a href="cvcreate?id=${requestScope.id}" class="btn btn-secondry" style="">Create CV+</a>
+                                <div class="courses-filter">
+                                    <div class="clearfix">
+                                        <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
+                                            <c:forEach items="${requestScope.listcv}" var="c">
+                                            <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="assets/images/courses/pic1.jpg" alt="">
+                                                        
+                                                    </div>
+                                                    <div class="info-bx text-center">
+                                                        <h5><a href="#">CV no#${c.cvId}</a></h5>
+                                                        <span>Last change: ${c.createDate}</span>
+                                                    </div>
+                                                    <div class="cours-more-info" style="height: 50px">
+                                                        <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
+                                                           Update
+                                                        </a>
+                                                        <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
+                                                            Delete
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Full Name</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="fullname" value="${requestScope.uFound.fullName}" required >
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Account name</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}"required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Date of Birth</label>
-                                            <div>
-                                                <input class="form-control" type="date" name="dob" value="${requestScope.uFound.dateOfBirth}"required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Email</label>
-                                            <div>
-                                                <c:if test="${requestScope.error==email_exists}">
-                                                <input class="form-control" type="email" name="email" value="${requestScope.email}" required>
-                                                </c:if>
-                                                <c:if test="${requestScope.error!=email_exists}">
-                                                    <input class="form-control" type="email" name="email" value="" required>
-                                                <span class="help" style="color: red">Your email used by another user !</span>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Phone No.</label>
-                                            <div>
-                                                <input class="form-control" type="number" name="phone" value="${requestScope.uFound.phone}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Sex</label>
-                                            <div>
-                                                <select name="gender" class="">
-                                                    <option value="Male"<c:if test="${requestScope.uFound.gender == 'Male'}">selected</c:if>>Male</option>
-                                                    <option value="Female"<c:if test="${requestScope.uFound.gender == 'Female'}">selected</c:if>>Female</option>
-                                                    <option value="Other"<c:if test="${requestScope.uFound.gender == 'Other'}">selected</c:if>>Other</option>
-                                                    </select>
+                                            </li>
+                                            
+                                            </c:forEach>
+                                            
 
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Address</label>
-                                                <div>
-                                                    <input class="form-control" type="text" name="address" value="${requestScope.uFound.address}">
-                                            </div>
-                                        </div>
-
-                                        <div class="seperator"></div>
-
-                                        <div class="col-12 m-t20">
-                                            <div class="ml-auto m-b5">
-                                                <h3>2. CV detail</h3>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Profession</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="profession" value="${requestScope.cvFound.jobProfession}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Framework</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="framework" value="${requestScope.cvFound.framework}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Education</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="education" value="${requestScope.cvFound.education}">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Price</label>
-                                            <div>
-                                                <input class="form-control" type="number" name="price" step="0.0001" value="${requestScope.cvFound.price}"required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Activity</label>
-                                            <div>
-                                                <input class="form-control" type="text" name="activity" value="${requestScope.cvFound.activity}">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Profession Introduction</label>
-                                            <div>
-                                                <textarea class="form-control" name="professionIntroduction" >${requestScope.cvFound.professionIntroduction} </textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Service description</label>
-                                            <div>
-                                                <textarea class="form-control" name="serviceDescription">${requestScope.cvFound.serviceDescription} </textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label">Select skills</label><br/>
-                                            <label class="col-form-label"><i>Delete Your Skills</i></label>
-                                            <div>
-                                                <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
-                                                    <c:forEach items="${requestScope.skillMentor}" var="c">
-                                                        <li>
-                                                            <div class="check-box">
-                                                                <label class="col-form-label">
-                                                                    <input type="checkbox" class="checkbox" name="deleteSkills" value="${c.skillId}">
-                                                                    ${c.skillName} </label>
-                                                            </div>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <br/>
-                                            <label class="col-form-label"><i>Add Skills</i></label>
-                                            <div>
-                                                <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
-                                                    <c:forEach items="${requestScope.skillList}" var="c">
-                                                        <li>
-                                                            <div class="check-box">
-                                                                <label class="col-form-label">
-                                                                    <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
-                                                                    ${c.skillName}</label>
-                                                            </div>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Archivement description</label>
-                                            <div>
-                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience} </textarea>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
-
-
-                                        <div class="col-12">
-                                            <button type="submit" class="btn">Save changes</button>
-                                            <a href="cvlist?id=${requestScope.cvFound.mentorId}" type="reset" class="btn-secondry">Cancel</a>
-                                        </div>
+                                        </ul>
                                     </div>
-                                </form>
+                                </div>
 
                             </div>
                         </div>
@@ -574,6 +421,13 @@
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
+            function delete1(id) {
+        if (confirm('are u sure to delete id' + id + '?')) {
+            window.location = '/happy_programming/cvdelete?id=' + id;
+        }
+    }
+        </script>
+        <script>
             // Pricing add
             function newMenuItem() {
                 var newElem = $('tr.list-item').first().clone();
@@ -598,6 +452,7 @@
                 const fileName = input.files[0].name; // Lấy tên file được chọn
                 filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
             });
+
         </script>
     </body>
 

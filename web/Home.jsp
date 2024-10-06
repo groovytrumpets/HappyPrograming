@@ -140,17 +140,17 @@
 
                                                 </div>
 
-                                                    </div>
-                                                    
-                                                    <div class="dropdown-menu">
-                                                        
-                                                            <a class="dropdown-item" href="user-profile.html">My profile</a>
-                                                            <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
-                                                            <a class="dropdown-item" href="mailbox.html">Messages</a>
-                                                            <a class="dropdown-item" href="logout">Logout</a>
-                                                        
-                                                    </div>
-                                                
+                                                </div>
+
+                                                <div class="dropdown-menu">
+
+                                                    <a class="dropdown-item" href="user-profile.html">My profile</a>
+                                                    <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
+                                                    <a class="dropdown-item" href="mailbox.html">Messages</a>
+                                                    <a class="dropdown-item" href="logout">Logout</a>
+
+                                                </div>
+
                                             </li>
                                         </c:if>
 

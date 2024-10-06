@@ -8,6 +8,7 @@ package Model;
  *
  * @author nhhag
  */
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CV {
@@ -19,7 +20,7 @@ public class CV {
     private String activity;
     private String professionIntroduction; // Renamed for clarity
     private String certificate;
-    private Date createDate;
+    private String createDate;
     private String jobProfession; // Renamed for clarity
     private int yearOfExperience; // Changed to INT for year representation
     private String serviceDescription;
@@ -65,7 +66,8 @@ public class CV {
         this.activity = activity;
         this.professionIntroduction = professionIntroduction;
         this.certificate = certificate;
-        this.createDate = createDate;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        this.createDate = formatter.format(createDate);
         this.jobProfession = jobProfession;
         this.yearOfExperience = yearOfExperience;
         this.serviceDescription = serviceDescription;
@@ -90,7 +92,8 @@ public class CV {
         this.activity = activity;
         this.professionIntroduction = professionIntroduction;
         this.certificate = certificate;
-        this.createDate = createDate;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        this.createDate = formatter.format(createDate);
         this.jobProfession = jobProfession;
         this.yearOfExperience = yearOfExperience;
         this.serviceDescription = serviceDescription;
@@ -174,11 +177,11 @@ public class CV {
         this.certificate = certificate;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
