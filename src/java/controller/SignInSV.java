@@ -77,6 +77,7 @@ public class SignInSV extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String pass = request.getParameter("pass");
+        String rememberMe = request.getParameter("rememberMe");
         String enpass = encrypt(pass);
         UserDAO u = new UserDAO();
         User a = u.findUserPass(username, enpass);
@@ -89,7 +90,30 @@ public class SignInSV extends HttpServlet {
                 if (a != null && a.getStatus().equals("active")) {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
-                    response.sendRedirect("Home.jsp");
+                    if (rememberMe != null) {  // Checkbox was checked
+                        Cookie usernameCookie = new Cookie("username", username);
+                        Cookie passwordCookie = new Cookie("pass", pass);
+
+                        // Set cookie age to one week (7 days)
+                        usernameCookie.setMaxAge(7 * 24 * 60 * 60);
+                        passwordCookie.setMaxAge(7 * 24 * 60 * 60);
+
+                        // Add cookies to the response
+                        response.addCookie(usernameCookie);
+                        response.addCookie(passwordCookie);
+                    } else {
+                        // Clear cookies if "Remember Me" is not checked
+                        Cookie usernameCookie = new Cookie("username", null);
+                        Cookie passwordCookie = new Cookie("pass", null);
+
+                        // Invalidate the cookies by setting the max age to 0
+                        usernameCookie.setMaxAge(0);
+                        passwordCookie.setMaxAge(0);
+
+                        response.addCookie(usernameCookie);
+                        response.addCookie(passwordCookie);
+                    }
+                    response.sendRedirect("home");
                 } else if (a != null && a.getStatus().equals("inactive")) {
                     request.setAttribute("notify", "Your account is not active, please active by link in your email");
                     request.getRequestDispatcher("SignIn.jsp").forward(request, response);
