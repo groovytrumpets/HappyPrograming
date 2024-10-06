@@ -85,15 +85,15 @@ public class CVUpdateServlet extends HttpServlet {
         try {
             id = Integer.parseInt(id_raw);
 
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
-            List<Skill> skillList = cvd.getSkillList(id);
+            CV cv = cvd.getCVbyCVId(id);
+            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(cv.getMentorId());
+            List<Skill> skillList = cvd.getSkillList(cv.getMentorId());
             //System.out.println(mentorSkillList.get(0).getSkillName());
             request.setAttribute("skillMentor", mentorSkillList);
             request.setAttribute("skillList", skillList);
 
-            Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
-            String email = cvd.getUserEmail(id);
+            Mentor mentor = cvd.getMentorByID(cv.getMentorId());
+            String email = cvd.getUserEmail(cv.getMentorId());
             request.setAttribute("error", error);
             request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);
@@ -141,23 +141,24 @@ public class CVUpdateServlet extends HttpServlet {
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
         String price_raw = request.getParameter("price");
-        
+
         Date dob;
         int userid;
         float price;
-        Part filePart=null;
+        Part filePart = null;
         try {
-        filePart = request.getPart("avatar");
+            filePart = request.getPart("avatar");
         } catch (Exception e) {
             System.out.println("big");
-                response.sendRedirect("cvupdate?id=6&error2=file_toobig");
-                return;
+            userid = Integer.parseInt(userId_raw);
+            response.sendRedirect("cvupdate?id=15&errorMessage=File%20too%20large");
+            return;
         }
-        
+
         try {
 
             userid = Integer.parseInt(userId_raw);
-            price=Float.parseFloat(price_raw);
+            price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
             if (filePart.getSize() > 1024 * 1024 * 5) {
@@ -209,10 +210,10 @@ public class CVUpdateServlet extends HttpServlet {
             }
 
             //DEMO URL!
-            response.sendRedirect("cvupdate?id=" + userid);
+            response.sendRedirect("cvlist?id=" + newCv.getMentorId());
         } catch (Exception e) {
             System.out.println(e);
-            
+
         }
 
     }

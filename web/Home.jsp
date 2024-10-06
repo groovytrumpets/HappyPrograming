@@ -130,17 +130,6 @@
 
                                                     &nbsp;&nbsp;<span>${sessionScope.acc.username}</span>
                                                 </div>
-
-                                                <div class="dropdown-menu">
-
-                                                    <a class="dropdown-item" href="user-profile.html">My profile</a>
-                                                    <a class="dropdown-item" href="list-view-calendar.html">Change Password</a>
-                                                    <a class="dropdown-item" href="mailbox.html">Messages</a>
-                                                    <a class="dropdown-item" href="logout">Logout</a>
-
-                                                </div>
-
-                                                    </div>
                                                     
                                                     <div class="dropdown-menu">
                                                         

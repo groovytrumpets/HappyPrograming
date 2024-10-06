@@ -16,6 +16,8 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -73,6 +75,59 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    public CV getCVbyCVId(int id) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from [dbo].[CV] where CVID =?;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                return cv;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    public List<CV> getListofCVbyMentorId(int id) {
+        List<CV> cvList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from CV where MentorID=?;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                cvList.add(cv);
+
+            }
+                return cvList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    
 
     public void updateMentor(Mentor c) {
         String sql = "UPDATE [dbo].[Mentor]\n"
@@ -102,7 +157,7 @@ public class CVDAO extends DBContext {
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
                 + "      ,[Activity] = ?\n"
-                + "      ,[ProfessionIntroduction] = ?\n"
+                + "      ,[ProfessionIntroduction] = ?,[CreateDate] = GETDATE()\n"
                 + "      ,[JobProfession] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
@@ -157,6 +212,7 @@ public class CVDAO extends DBContext {
         }
         return list;
     }
+    
     
     public List<Skill> getMentorSkillListByMentorID(int id) {
         List<Skill> list = new ArrayList<>();
@@ -379,7 +435,8 @@ public class CVDAO extends DBContext {
                 curCV.setActivity(rs.getString("Activity"));
                 curCV.setProfessionIntroduction(rs.getString("ProfessionIntroduction"));
                 curCV.setCertificate(rs.getString("Certificate"));
-                curCV.setCreateDate(rs.getDate("CreateDate"));
+                
+                curCV.setCreateDate(rs.getString("CreateDate"));
                 curCV.setJobProfession(rs.getString("JobProfession"));
                 curCV.setYearOfExperience(rs.getInt("YearOfExperience"));
                 curCV.setServiceDescription(rs.getString("ServiceDescription"));
@@ -437,5 +494,18 @@ public class CVDAO extends DBContext {
    public static void main(String[] args) {
         CVDAO c = new CVDAO();
         System.out.println(c.getCVbyMentorId(7));
+    }
+
+    public void deleteCV(int id) {
+
+        String sql = "delete from CV where CVID =? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    
     }
 }
