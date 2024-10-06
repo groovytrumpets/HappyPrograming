@@ -185,10 +185,10 @@ public class CreateRequestSV extends HttpServlet {
             Request newRequest = new Request(0, id, menteeid, cv.getPrice() * selectedSlot.length,
                     "Nothing", creaDate, "Open", title,
                     selectedTime, selectedDate, framework);
-            out.print(newRequest);
-            /*requestDAO.insertRequest(newRequest);
+  
+            requestDAO.insertRequest(newRequest);
             requestDAO.addItemByRequestID(selectedSkills, selectedSlot);
-            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");*/
+            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
