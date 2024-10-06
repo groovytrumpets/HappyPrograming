@@ -42,4 +42,19 @@ public class RateDAO extends DBContext {
         }
         return listRate;
     }
+    
+    public void saveRating(int menteeId, int mentorId, int rate, String comment) {
+        String sql = "INSERT INTO Rate (MentorID, MenteeID, CreateDate, Status, Comment, Rate) VALUES (?, ?, GETDATE(), ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            st.setInt(2, menteeId);
+            st.setString(3, "active"); // Assuming status is set to 'active' when a rating is made
+            st.setString(4, comment);
+            st.setInt(5, rate);
+            st.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
