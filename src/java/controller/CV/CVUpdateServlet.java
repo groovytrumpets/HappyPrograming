@@ -10,7 +10,6 @@ import Model.Mentor;
 import Model.Skill;
 import Model.StatisticSkills;
 import Model.User;
-import com.oracle.wls.shaded.org.apache.bcel.generic.FLOAD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
