@@ -203,8 +203,8 @@ public class UserDAO extends DBContext {
     }
 
     // Main method for testing
-    public static void main(String[] args) throws SQLException {
-        UserDAO u = new UserDAO();
+//    public static void main(String[] args) throws SQLException {
+//        UserDAO u = new UserDAO();
         /*User newUser = new User();
         newUser.setRoleId(1);
         newUser.setUsername("hoanganhgp2");
@@ -216,7 +216,7 @@ public class UserDAO extends DBContext {
         newUser.setPassword("securepassword");
         System.out.println(newUser);
         u.updateUser(newUser);*/
-        System.out.println(u.findUserPass("user1", "123"));
-    }
+//        System.out.println(u.findUserPass("user1", "123"));
+//    }
 
 }
