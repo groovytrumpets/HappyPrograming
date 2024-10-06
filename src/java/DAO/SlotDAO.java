@@ -52,8 +52,34 @@ public class SlotDAO extends DBContext {
         return slots;
     }
 
+    public Slot getSlotsById(int Id) {
+        String sql = "SELECT SlotID, MentorID, StartTime, EndTime, DayInWeek, Status FROM Slot WHERE SlotID = ? ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, Id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int mentorId = rs.getInt("mentorID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status);
+                return slot;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         SlotDAO s = new SlotDAO();
-        System.out.println(s.getSlotsByMentorId(7));
+        System.out.println(s.getSlotsById(1));
     }
 }

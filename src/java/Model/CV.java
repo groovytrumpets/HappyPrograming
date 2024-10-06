@@ -26,11 +26,12 @@ public class CV {
     private String status;
     private String framework;
     private byte[] avatar;
+    private float price;
 
     public CV() {
     }
 
-    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, byte[] avatar) {
+    public CV(int mentorId, String education, String experience, String activity, String professionIntroduction, String jobProfession, int yearOfExperience, String serviceDescription, String framework, byte[] avatar, float price) {
         this.mentorId = mentorId;
         this.education = education;
         this.experience = experience;
@@ -41,11 +42,10 @@ public class CV {
         this.serviceDescription = serviceDescription;
         this.framework = framework;
         this.avatar = avatar;
+        this.price = price;
     }
-    
-    
-    
-    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar) {
+
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, Date createDate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar,float price) {
         this.cvId = cvId;
         this.mentorId = mentorId;
         this.education = education;
@@ -60,14 +60,24 @@ public class CV {
         this.status = status;
         this.framework = framework;
         this.avatar = avatar;
+         this.price = price;
+    }
+
+ 
+
+    public float getPrice() {
+        return price;
     }
 
     @Override
     public String toString() {
-        return "CV{" + "cvId=" + cvId + ", mentorId=" + mentorId + ", education=" + education + ", experience=" + experience + ", activity=" + activity + ", professionIntroduction=" + professionIntroduction + ", certificate=" + certificate + ", createDate=" + createDate + ", jobProfession=" + jobProfession + ", yearOfExperience=" + yearOfExperience + ", serviceDescription=" + serviceDescription + ", status=" + status + ", framework=" + framework + ", avatar=" + avatar + '}';
+        return "CV{" + "cvId=" + cvId + ", mentorId=" + mentorId + ", education=" + education + ", experience=" + experience + ", activity=" + activity + ", professionIntroduction=" + professionIntroduction + ", certificate=" + certificate + ", createDate=" + createDate + ", jobProfession=" + jobProfession + ", yearOfExperience=" + yearOfExperience + ", serviceDescription=" + serviceDescription + ", status=" + status + ", framework=" + framework + ", avatar=" + avatar + ", price=" + price + '}';
     }
 
-    
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public byte[] getAvatar() {
         return avatar;
     }
@@ -179,9 +189,5 @@ public class CV {
     public void setFramework(String framework) {
         this.framework = framework;
     }
-    
-    
 
-  
 }
-

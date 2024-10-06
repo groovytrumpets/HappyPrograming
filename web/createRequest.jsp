@@ -353,6 +353,7 @@
                             <div class="wc-title">
                                 <h4>Add listing</h4>
                                 <p style="color: red"> ${error}</p>
+                                <p style="color: blue"> ${notify}</p>
                             </div>
                             <div class="widget-inner">
                                     <form class="edit-profile m-b30" action="createrequest" method="post">

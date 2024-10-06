@@ -63,7 +63,8 @@ public class CVDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"));
+                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                        
                 return cv;
 
             }
@@ -438,6 +439,6 @@ public class CVDAO extends DBContext {
     }
    public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getMentorSkillListByMentorID(7));
+        System.out.println(c.getCVbyMentorId(7));
     }
 }
