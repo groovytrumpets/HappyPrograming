@@ -79,6 +79,10 @@ public class CreateRequestSV extends HttpServlet {
 
         HttpSession sesion = request.getSession();
         User a = new User();
+        CVDAO cvd = new CVDAO();
+        SlotDAO slotDAO = new SlotDAO();
+        MentorDAO mentorDAO = new MentorDAO();
+        
         a = (User) sesion.getAttribute("acc");
         if (a == null) {
             response.sendRedirect("signin");
@@ -88,15 +92,13 @@ public class CreateRequestSV extends HttpServlet {
         String error = request.getParameter("error");
         String notify = request.getParameter("notify");
         int id;
-        CVDAO cvd = new CVDAO();
-        SlotDAO slotDAO = new SlotDAO();
-        MentorDAO mentorDAO = new MentorDAO();
+
         try {
             id = Integer.parseInt(id_raw);
             List<Skill> skillList = cvd.getMentorSkillListByMentorID(id);
             List<Slot> slotList = slotDAO.getSlotsByMentorId(id);
             request.setAttribute("mid", id);
-            request.setAttribute("mentor", cvd.getCVbyMentorId(id));
+            request.setAttribute("mentor", mentorDAO.findMentorByID(id));
             request.setAttribute("skillList", skillList);
             request.setAttribute("error", error);
             request.setAttribute("notify", notify);
@@ -185,7 +187,7 @@ public class CreateRequestSV extends HttpServlet {
             Request newRequest = new Request(0, id, menteeid, cv.getPrice() * selectedSlot.length,
                     "Nothing", creaDate, "Open", title,
                     selectedTime, selectedDate, framework);
-  
+
             requestDAO.insertRequest(newRequest);
             requestDAO.addItemByRequestID(selectedSkills, selectedSlot);
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
