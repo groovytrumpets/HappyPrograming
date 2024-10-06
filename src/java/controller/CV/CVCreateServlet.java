@@ -112,17 +112,20 @@ public class CVCreateServlet extends HttpServlet {
         String profession = request.getParameter("profession");
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
-        String yearxp_raw = request.getParameter("yearxp");
+        
         String activity = request.getParameter("activity");
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
         Part filePart = request.getPart("avatar");
+        String price_raw = request.getParameter("price");
 
-        int userid, yearxp;
+        int userid;
+        float price;
+                
         try {
             userid = Integer.parseInt(userId_raw);
-            yearxp = Integer.parseInt(yearxp_raw);
+            price = Integer.parseInt(price_raw);
 
             //img processing
             InputStream fileRead = filePart.getInputStream();
@@ -130,8 +133,7 @@ public class CVCreateServlet extends HttpServlet {
 
             CVDAO cvdao = new CVDAO();
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession,
-                    yearxp, serviceDescription, framework, avatar);
+                    professionIntroduction, profession, serviceDescription, framework, avatar,price);
             cvdao.createCV(newCv);
 
             //add skills

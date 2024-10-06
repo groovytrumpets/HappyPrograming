@@ -55,8 +55,7 @@ public class RequestDAO extends DBContext {
         String sql = "INSERT INTO Request (MentorID, MenteeID, Price, Note, CreateDate, Status, Title, DeadlineHour, DeadlineDate, Framework) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try    
-        {
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
 
             // Set parameters for the query
@@ -74,8 +73,42 @@ public class RequestDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
     }
+
+    public void addItemByRequestID(String[] skills, String[] slots) {
+        String sql1 = "SELECT TOP 1 RequestID FROM [dbo].[Request] ORDER BY RequestID DESC";
+        String sql2 = "INSERT INTO [dbo].[RequestItem] (RequestID, SkillID) VALUES (?, ?)";
+        String sql3 = "INSERT INTO [dbo].[RequestSlotItem] (RequestID, SlotID) VALUES (?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql1);
+            ResultSet rs = st.executeQuery();
+            int lastRequestId = 0;
+            if (rs.next()) {
+                lastRequestId = rs.getInt("RequestID");
+            }
+
+            st = connection.prepareStatement(sql2);
+            for (String skillIdStr : skills) {
+                int skillId = Integer.parseInt(skillIdStr);
+                st.setInt(1, lastRequestId);
+                st.setInt(2, skillId);
+                st.executeUpdate();
+            }
+
+            st = connection.prepareStatement(sql3);
+            for (String slotIdStr : slots) {
+                int slotId = Integer.parseInt(slotIdStr);
+                st.setInt(1, lastRequestId);
+                st.setInt(2, slotId);
+                st.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+    }
+
     public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT [RequestID]\n"
@@ -174,4 +207,3 @@ public class RequestDAO extends DBContext {
         List<Request> curList = act.getAllRequestByStatus("Accepted");
         System.out.println(curList.get(0).getMentorId());
     }*/
-

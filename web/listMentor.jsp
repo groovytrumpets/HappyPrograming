@@ -124,8 +124,7 @@
                     </div>
                 </div>
                 <!-- Mentor List Section -->
-                <div class="container">
-                    <h1>Mentor List</h1>
+                <div class="container" style="padding-top: 25px">
                     <% for (Mentor mentor : mentorList) { %>
                     <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
                         <div class="cours-bx" style="height: 110px">

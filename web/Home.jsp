@@ -365,7 +365,7 @@
                                                 <div class="cours-bx">
                                                     <div class="action-box">
                                                         <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px">
-                                                        <a href="#" class="btn">Read More</a>
+                                                        <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
                                                     <div class="info-bx text-center" style="height: 100px">
                                                         <h5><a href="#">${s.skillName}</a></h5>

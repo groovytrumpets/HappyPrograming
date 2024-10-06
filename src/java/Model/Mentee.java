@@ -30,6 +30,11 @@ public class Mentee {
     public Mentee() {
     }
 
+    @Override
+    public String toString() {
+        return "Mentee{" + "menteeId=" + menteeId + ", roleId=" + roleId + ", avatar=" + avatar + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + ", base64FileImage=" + base64FileImage + '}';
+    }
+
     public Mentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
         this.menteeId = menteeId;
         this.roleId = roleId;

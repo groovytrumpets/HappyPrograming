@@ -465,9 +465,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label class="col-form-label">Year of experience</label>
+                                            <label class="col-form-label">Price</label>
                                             <div>
-                                                <input class="form-control" type="text" name="yearxp" required>
+                                                <input class="form-control" type="number" step="0.0001" name="price" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">

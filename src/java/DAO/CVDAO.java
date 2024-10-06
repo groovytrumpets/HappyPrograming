@@ -63,7 +63,7 @@ public class CVDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"));
+                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
                 return cv;
 
             }
@@ -104,9 +104,8 @@ public class CVDAO extends DBContext {
                 + "      ,[Activity] = ?\n"
                 + "      ,[ProfessionIntroduction] = ?\n"
                 + "      ,[JobProfession] = ?\n"
-                + "      ,[YearOfExperience] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
-                + "      ,[Framework] = ?,[Avatar] =?\n"
+                + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
                 + " WHERE [MentorID] = ? and Status='active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -115,10 +114,10 @@ public class CVDAO extends DBContext {
             st.setString(3, c.getActivity());
             st.setString(4, c.getProfessionIntroduction());
             st.setString(5, c.getJobProfession());
-            st.setInt(6, c.getYearOfExperience());
-            st.setString(7, c.getServiceDescription());
-            st.setString(8, c.getFramework());
-            st.setBytes(9, c.getAvatar());
+            st.setString(6, c.getServiceDescription());
+            st.setString(7, c.getFramework());
+            st.setBytes(8, c.getAvatar());
+            st.setFloat(9, c.getPrice());
             st.setInt(10, c.getMentorId());
             st.executeUpdate();
         } catch (SQLException e) {
@@ -279,13 +278,12 @@ public class CVDAO extends DBContext {
                 + "           ,[Certificate]\n"
                 + "           ,[CreateDate]\n"
                 + "           ,[JobProfession]\n"
-                + "           ,[YearOfExperience]\n"
                 + "           ,[ServiceDescription]\n"
                 + "           ,[Status]\n"
                 + "           ,[Framework]\n"
-                + "           ,[Avatar])\n"
+                + "           ,[Avatar],[Price])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,GETDATE(),?,?,?,'inactive',?,?)";
+                + "           (?,?,?,?,?,?,GETDATE(),?,?,'inactive',?,?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, cv.getMentorId());
@@ -295,10 +293,10 @@ public class CVDAO extends DBContext {
             st.setString(5, cv.getProfessionIntroduction());
             st.setString(6, cv.getCertificate());
             st.setString(7, cv.getJobProfession());
-            st.setInt(8, cv.getYearOfExperience());
-            st.setString(9, cv.getServiceDescription());
-            st.setString(10, cv.getFramework());
-            st.setBytes(11, cv.getAvatar());
+            st.setString(8, cv.getServiceDescription());
+            st.setString(9, cv.getFramework());
+            st.setBytes(10, cv.getAvatar());
+            st.setFloat(11, cv.getPrice());
             st.executeUpdate();
 
         } catch (SQLException e) {
@@ -438,6 +436,6 @@ public class CVDAO extends DBContext {
     }
    public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getMentorSkillListByMentorID(7));
+        System.out.println(c.getCVbyMentorId(7));
     }
 }

@@ -95,6 +95,44 @@ public class MentorDAO extends DBContext {
         return mentor; // Return the retrieved Mentor object or null if not found
     }
 
+    public Mentor findMentorByID(int id) {
+        Mentor mentor = null;
+        String sql = "SELECT [MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentor] "
+                + "where MentorID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return mentor; // Return the retrieved Mentor object or null if not found
+    }
+
     public List<Mentor> getAllMentor() {
         List<Mentor> listMentor = new ArrayList<>();
         String sql = "SELECT [MentorID]\n"
@@ -335,8 +373,8 @@ public class MentorDAO extends DBContext {
 
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
-        List<Mentor> listMentor = act.getListMentorPagiantion(0, 10);
-        System.out.println(listMentor.get(0).getMentorId());
+        Mentor listMentor = act.findMentorByID(7);
+        System.out.println(listMentor);
 
     }
 }
