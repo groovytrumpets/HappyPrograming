@@ -244,7 +244,7 @@
                                             <label class="col-form-label">Email</label>
                                             <div>
                                                 <c:if test="${requestScope.error==email_exists}">
-                                                    <input class="form-control" type="email" name="email" value="${mentee.email}" required>
+                                                    <input class="form-control" type="email" name="email" value="${mentee.email}" readonly>
                                                 </c:if>
                                                 <c:if test="${requestScope.error!=email_exists}">
                                                     <input class="form-control" type="email" name="email" value="" required>
