@@ -271,7 +271,7 @@
                                         <div class="widget-post-bx">
                                             <c:forEach items="${list2}" var="list2">
                                                 <div class="widget-post clearfix">
-                                                    <div class="ttr-post-media"> <img src="data:image/jpeg;base64,${list2.base64ImageFile}" width="200" height="160" alt=""> </div>
+                                                    <div class="ttr-post-media"> <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}"> <img src="data:image/jpeg;base64,${list2.base64ImageFile}" width="200" height="160" alt="" > </a></div>
                                                     <div class="ttr-post-info">
                                                         <div class="ttr-post-header">
                                                             <h6 class="post-title"><a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">${list2.skillName}</a></h6>
@@ -294,7 +294,7 @@
                                             <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
                                                 <div class="cours-bx">
                                                     <div class="action-box">
-                                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}">
+                                                        <a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}"><img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}"></a>
 
                                                     </div>
                                                     <div class="info-bx text-center">
