@@ -130,6 +130,8 @@ public class CVCreateServlet extends HttpServlet {
             //img processing
             InputStream fileRead = filePart.getInputStream();
             byte[] avatar = fileRead.readAllBytes();
+            System.out.println(avatar);
+            System.out.println(fileRead);
 
             CVDAO cvdao = new CVDAO();
             CV newCv = new CV(userid, education, experience, activity,
@@ -158,4 +160,7 @@ public class CVCreateServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+
 }
+

@@ -6,7 +6,9 @@
 package controller.CV;
 
 import DAO.CVDAO;
+import DAO.HomeDAO;
 import Model.CV;
+import Model.Mentee;
 import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
@@ -76,6 +78,10 @@ public class ViewProfileCVServlet extends HttpServlet {
             List<Rate> rateList = cvd.getMentorRateList(id);
             List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
             int rateAve = cvd.getAveRatebyId(id);
+            HomeDAO hdao = new HomeDAO();
+            List<Mentee> menteeList = hdao.getListofMentee();
+            
+            
             request.setAttribute("skillMentor", mentorSkillList);
             
             
@@ -85,7 +91,7 @@ public class ViewProfileCVServlet extends HttpServlet {
             request.setAttribute("uFound", mentor);
             request.setAttribute("cvFound", cv);
             request.setAttribute("rate", rateList);
-            
+            request.setAttribute("menteeList", menteeList);
             request.setAttribute("rateAve", rateAve);
             
             

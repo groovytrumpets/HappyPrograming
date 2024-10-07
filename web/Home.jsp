@@ -148,8 +148,8 @@
                             </div>
                             <!-- Search Box ==== -->
                             <div class="nav-search-bar">
-                                <form action="home">
-                                    <input name="search" value="" type="text" class="form-control" placeholder="Type to search">
+                                <form action="searchskill">
+                                    <input name="skill" value="" type="text" class="form-control" placeholder="Type to search">
                                     <span><i class="ti-search"></i></span>
                                 </form>
                                 <span id="search-remove"><i class="ti-close"></i></span>
@@ -185,8 +185,8 @@
                                             </li>
                                             <li><a href="javascript:;">Contact Us<i class="fa fa-angle-right"></i></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="contact-1.html">Contact Us 1</a></li>
-                                                    <li><a href="contact-2.html">Contact Us 2</a></li>
+                                                    <li><a href="contact.jsp">Contact Us</a></li>
+                                                    
                                                 </ul>
                                             </li>
                                             <li><a href="portfolio.html">Portfolio</a></li>
@@ -275,9 +275,9 @@
                             <div class="col-md-12 text-center text-white">
                                 <h2>Find a Hiring mentor</h2>
                                 <h5>Struggling to mastering Hiring on your own?</h5>
-                                <form class="cours-search" action="home">
+                                <form class="cours-search" action="searchskill">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="What do you want to learn today?	" name="search">
+                                        <input type="text" class="form-control" placeholder="What do you want to learn today?	" name="skill">
                                         <div class="input-group-append">
                                             <button class="btn" type="submit">Search</button> 
                                         </div>
@@ -298,17 +298,17 @@
                                 <div class="col-md-4 col-sm-6">
                                     <div class="cours-search-bx m-b30">
                                         <div class="icon-box">
-                                            <h3><i class="ti-book"></i><span class="counter">5</span>x</h3>
+                                            <h3><i class="ti-book"></i><span class="counter">${requestScope.skillCount}</span>+</h3>
                                         </div>
-                                        <span class="cours-search-text">Success Rate</span>
+                                        <span class="cours-search-text">Courses</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <div class="cours-search-bx m-b30">
                                         <div class="icon-box">
-                                            <h3><i class="ti-layout-list-post"></i><span class="counter">95</span>%</h3>
+                                            <h3><i class="ti-layout-list-post"></i><span class="counter">${Math.round(requestScope.rateAve/5*100)}</span>%</h3>
                                         </div>
-                                        <span class="cours-search-text">Satisfaction</span>
+                                            <span class="cours-search-text">Satisfaction </span>
                                     </div>
                                 </div>
                             </div>
@@ -399,7 +399,7 @@
                                         <h2>At your fingertips: <br>  dedicated career coach</h2>
                                         <h4><span class="counter">${requestScope.mentorNum}</span>+ mentors available</h4>
                                         <p>Want to start a new dream career? Successfully build your startup? Itching to learn high-demand skills? Work smart with an online mentor by your side to offer expert advice and guidance to match your zeal. Become unstoppable using HappyPrograming.</p>
-                                        <a href="#" class="btn button-md">Join Now</a>
+                                        <a href="skillhome" class="btn button-md">Join Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -410,10 +410,10 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-6 m-b30">
-                                    <h2 class="title-head ">Achieve your goals with <br> <span class="text-primary"> the help of a Hiring mentor</span></h2>
-                                    <h4><span class="counter">2000</span>+ Mentor</h4>
+                                    <h2 class="title-head ">Achieve your goals with <br><span class="text-primary"> the help of a Hiring mentor</span></h2>
+                                    <h4><span class="counter">${requestScope.menteeCount}</span>+ Mentee</h4>
                                     <p>Reaching new heights is easier when you do so with some help from qualified mentors. Know everything that there is to know about one of the fastest-growing languages out there today.</p>
-                                    <a href="#" class="btn button-md">Join Now</a>
+                                    <a href="skillhome" class="btn button-md">Join Now</a>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="row">
@@ -498,7 +498,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 m-b30">
                                     <div class="counter-style-1">
                                         <div class="text-white">
-                                            <span class="counter">1000</span><span>+</span>
+                                            <span class="counter">${requestScope.requestCount}</span><span>+</span>
                                         </div>
                                         <span class="counter-text">Ordered Coffee's</span>
                                     </div>
@@ -527,8 +527,18 @@
                                                     <img src="assets/images/testimonials/pic1.jpg" alt="">
                                                 </div>
                                                 <div class="testimonial-info">
-                                                    <h5 class="name">Mentee: ${r.menteeId}</h5>
-                                                    <p>Mentor: ${r.mentorId}</p>
+                                                    <c:forEach items="${requestScope.menteeList}" var="c">
+                                                        <c:if test="${c.menteeId==r.menteeId}">
+                                                            
+                                                    <h5 class="name">${c.username}</h5>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <c:forEach items="${requestScope.mentorList}" var="c">
+                                                        <c:if test="${c.mentorId==r.mentorId}">
+                                                            
+                                                    <p>Rating: ${c.username}</p>
+                                                        </c:if>
+                                                    </c:forEach>
                                                     <ul class="cours-star">
                                                         <c:forEach var="i" begin="1" end="${r.rate}">
                                                             <li class="active"><i class="fa fa-star"></i></li>
@@ -573,7 +583,7 @@
                                     </ul>
                                 </div>
                                 <div class="pt-btn-join">
-                                    <a href="#" class="btn ">Join Now</a>
+                                    <a href="skillhome" class="btn ">Join Now</a>
                                 </div>
                             </div>
                         </div>
@@ -606,7 +616,7 @@
                                                 <li><a href="index.html">Home</a></li>
                                                 <li><a href="about-1.html">About</a></li>
                                                 <li><a href="faq-1.html">FAQs</a></li>
-                                                <li><a href="contact-1.html">Contact</a></li>
+                                                <li><a href="contact.jsp">Contact</a></li>
                                             </ul>
                                         </div>
                                     </div>

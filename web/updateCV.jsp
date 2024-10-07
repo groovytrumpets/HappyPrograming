@@ -371,11 +371,13 @@
 
                                         <div>
                                             <input class="form-control" type="hidden" name="mentorId" value="${requestScope.uFound.mentorId}" >
+                                            <input class="form-control" type="hidden" name="cvId" value="${requestScope.cvId}" >
+                                            
                                         </div>
                                         <div class="form-group col-12">
                                             <div class=" text-center">
                                                 
-                                                <img id="userAvatar" src="getimage?id=${requestScope.uFound.mentorId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
+                                                <img id="userAvatar" src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
                                             </div>
                                             <div>
                                                 <div style="text-align: center">

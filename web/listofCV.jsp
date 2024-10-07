@@ -367,8 +367,8 @@
                                             <c:forEach items="${requestScope.listcv}" var="c">
                                             <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
                                                 <div class="cours-bx">
-                                                    <div class="action-box">
-                                                        <img src="assets/images/courses/pic1.jpg" alt="">
+                                                    <div class="action-box" style="height: 300px">
+                                                        <img src="getCVimage?id=${c.cvId}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                                         
                                                     </div>
                                                     <div class="info-bx text-center">

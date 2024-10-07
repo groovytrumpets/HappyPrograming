@@ -2,15 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
-package controller;
+package controller.CV;
 
 import DAO.CVDAO;
-import DAO.HomeDAO;
-import Model.Mentee;
-import Model.Mentor;
-import Model.Rate;
-import Model.Skill;
+import Model.CV;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,42 +13,45 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.io.OutputStream;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="HomeServlet", urlPatterns={"/home"})
-public class HomeServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "ImageServlet", urlPatterns = {"/getCVimage"})
+public class ImageCVServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeServlet</title>");  
+            out.println("<title>Servlet ImageServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ImageServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,46 +59,31 @@ public class HomeServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        HomeDAO hdao = new HomeDAO();
-        CVDAO cvd= new CVDAO();
-        List<Skill> skillList = hdao.getListofSkill();
-        List<Rate> rateList = cvd.getRateList();
-        List<Mentor> mentorList = hdao.getListofMentor();
-        List<Mentee> menteeList = hdao.getListofMentee();
-        
-        
-        //List<Mentor> mentors = cvd.getMentorList();
-        //System.out.println(rateList.get(0).getRate());
-        //System.out.println(rateList.get(0).getMenteeId());
-        int userNumb = hdao.countUsers();
-        int mentorNumb = hdao.countMentor();
-        int menteeCount = hdao.countMentee();
-        int requestCount = hdao.countRequest();
-        //System.out.println(menteeList.get(0));
-        
-        int skillCount = hdao.skillCount();
-        float rateAve = hdao.getRateAve();
-        //System.out.println(rateAve);
-        request.setAttribute("rate", rateList);
-        request.setAttribute("rateAve", rateAve);
-        request.setAttribute("skillCount", skillCount);
-        request.setAttribute("menteeCount", menteeCount);
-         request.setAttribute("requestCount", requestCount);
-         
-        request.setAttribute("mentorList", mentorList);
-        request.setAttribute("menteeList", menteeList);
-         
-        
-        request.setAttribute("skill", skillList);
-        request.setAttribute("userNum", userNumb);
-        request.setAttribute("mentorNum", mentorNumb);
-        
-        request.getRequestDispatcher("Home.jsp").forward(request, response);
+            throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(id_raw);
+            CVDAO cvd = new CVDAO();
+            CV cv = cvd.getCVbyCVId(id);
+            byte[] imgData = cv.getAvatar();
+
+            if (imgData.length > 0) {
+                response.setContentType("image/jpeg");  // Đặt loại MIME tương ứng
+                OutputStream out = response.getOutputStream();
+                out.write(imgData);
+                out.close();
+            }else{
+                //System.out.println("null picture");
+                response.sendRedirect("assets\\images\\userprofile.png");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -108,12 +91,13 @@ public class HomeServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

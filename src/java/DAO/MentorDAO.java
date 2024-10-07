@@ -139,7 +139,6 @@ public class MentorDAO extends DBContext {
                 + "      ,[RoleID]\n"
                 + "      ,[Username]\n"
                 + "      ,[CreateDate]\n"
-                + "      ,[Email]\n"
                 + "      ,[Phone]\n"
                 + "      ,[Address]\n"
                 + "      ,[DateOfBirth]\n"
@@ -176,7 +175,6 @@ public class MentorDAO extends DBContext {
                 + "      ,[RoleID]\n"
                 + "      ,[Username]\n"
                 + "      ,[CreateDate]\n"
-                + "      ,[Email]\n"
                 + "      ,[Phone]\n"
                 + "      ,[Address]\n"
                 + "      ,[DateOfBirth]\n"
@@ -208,6 +206,7 @@ public class MentorDAO extends DBContext {
                 listMentor.add(mentor);
             }
         } catch (Exception e) {
+            System.out.println(e);
         }
 
         return listMentor;
@@ -235,7 +234,6 @@ public class MentorDAO extends DBContext {
                 + "       [RoleID],\n"
                 + "       [Username],\n"
                 + "       Mentor.[CreateDate],\n"
-                + "       [Email],\n"
                 + "       [Phone],\n"
                 + "       [Address],\n"
                 + "       [DateOfBirth],\n"
@@ -300,7 +298,7 @@ public class MentorDAO extends DBContext {
                 + "       [RoleID],\n"
                 + "       [Username],\n"
                 + "       Mentor.[CreateDate],\n"
-                + "       [Email],\n"
+
                 + "       [Phone],\n"
                 + "       [Address],\n"
                 + "       [DateOfBirth],\n"
@@ -373,8 +371,8 @@ public class MentorDAO extends DBContext {
 
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
-        Mentor listMentor = act.findMentorByID(7);
-        System.out.println(listMentor);
+        List<Mentor> listMentor = act.getListMentorPagiantion(1, 5);
+        System.out.println(listMentor.get(0).getUsername());
 
     }
 }

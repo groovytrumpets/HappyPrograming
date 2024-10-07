@@ -254,7 +254,7 @@
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
                                     <div class="profile-bx text-center">
                                         <div class="user-profile-thumb">
-                                            <img src="getimage?id=${requestScope.uFound.mentorId}" alt=""/>
+                                            <img src="getCVimage?id=${requestScope.uFound.mentorId}" alt=""/>
                                         </div>
                                         <div class="profile-info">
 
@@ -395,7 +395,12 @@
                                         <img src="assets/images/testimonials/pic1.jpg" alt="">
                                     </div>
                                     <div class="instructor-info">
-                                        <h6>Mentee: ${c.menteeId}</h6>
+                                        <c:forEach items="${requestScope.menteeList}" var="r">
+                                            <c:if test="${c.menteeId==r.menteeId}">
+                                                
+                                        <h6>${r.username}</h6>
+                                            </c:if>
+                                        </c:forEach>
                                         <span>${c.createDate}</span>
                                         <ul class="cours-star">
                                             <c:forEach var="i" begin="1" end="${c.rate}">
