@@ -87,6 +87,8 @@ public class CreateRequestSV extends HttpServlet {
         if (a == null) {
             response.sendRedirect("signin");
         }
+        if(a.getRoleId() == 1 )
+            response.sendRedirect("home");
         PrintWriter out = response.getWriter();
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");
@@ -173,7 +175,7 @@ public class CreateRequestSV extends HttpServlet {
                 for (int i = 0; i < listSlot.size(); i++) {
                     for (String slot : selectedSlot) {
                         int slotid = Integer.parseInt(slot);
-                        if (slotid == listSlot.get(i).getSlotId()) {
+                        if (slotid == listSlot.get(i)   .getSlotId()) {
                             response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't been study");
                             return;
                         }
