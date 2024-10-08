@@ -87,8 +87,10 @@ public class CreateRequestSV extends HttpServlet {
         if (a == null) {
             response.sendRedirect("signin");
         }
-        if(a.getRoleId() == 1 )
+        else
+        if(a.getRoleId() != 2 )
             response.sendRedirect("home");
+        
         PrintWriter out = response.getWriter();
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");

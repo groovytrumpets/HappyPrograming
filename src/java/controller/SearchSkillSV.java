@@ -62,28 +62,17 @@ public class SearchSkillSV extends HttpServlet {
             throws ServletException, IOException {
         String skillname = request.getParameter("skill");
         SkillDAO skillDAO = new SkillDAO();
-        skillname = skillname.toLowerCase();
-
         if (skillname == null || skillname.trim().isEmpty()) {
             response.sendRedirect("skillhome?index=1");
         } else {
-            List<Skill> listSkill = skillDAO.getListOfSkillByName(skillname);
+            List<Skill> list = skillDAO.getListOfSkillByName(skillname);
             List<Skill> list2 = skillDAO.getListOfSkillByDate();
-            int index = 1;
-            int totalSkill = listSkill.size();
-            int page;
-            if (totalSkill / 9 == 0) {
-                page = totalSkill / 9;
-            } else {
-                page = totalSkill / 9 + 1;
-            }
-            List<Skill> list = skillDAO.getListOfSkillByNamePagination(index, 9, skillname);
+            int totalSkill = list.size();
+          
             if (list == null || list.isEmpty()) {
                 request.setAttribute("notify", "There is no skill name: " + skillname);
                 request.getRequestDispatcher("SkillList.jsp").forward(request, response);
             } else {
-                request.setAttribute("pageIndex", index);
-                request.setAttribute("endP", page);
                 request.setAttribute("list", list);
                 request.setAttribute("list2", list2);
                 request.setAttribute("notify", "There is " + totalSkill + " skills found ");

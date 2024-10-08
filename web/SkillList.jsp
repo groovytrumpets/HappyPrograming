@@ -294,7 +294,10 @@
                                             <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
                                                 <div class="cours-bx">
                                                     <div class="action-box">
-                                                        <a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}"><img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}"></a>
+                                                        <a href="skilldetail?id=${skill.skillId}&name=${skill.skillName}">
+                                                            <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}" style="width: 262px; height: 250px; "
+                                                                 >
+                                                        </a>
 
                                                     </div>
                                                     <div class="info-bx text-center">
