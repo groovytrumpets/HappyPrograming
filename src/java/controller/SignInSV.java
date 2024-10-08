@@ -94,19 +94,18 @@ public class SignInSV extends HttpServlet {
                         Cookie usernameCookie = new Cookie("username", username);
                         Cookie passwordCookie = new Cookie("pass", pass);
 
-                        // Set cookie age to one week (7 days)
+                  
                         usernameCookie.setMaxAge(7 * 24 * 60 * 60);
                         passwordCookie.setMaxAge(7 * 24 * 60 * 60);
 
-                        // Add cookies to the response
+                 
                         response.addCookie(usernameCookie);
                         response.addCookie(passwordCookie);
                     } else {
-                        // Clear cookies if "Remember Me" is not checked
+               
                         Cookie usernameCookie = new Cookie("username", null);
                         Cookie passwordCookie = new Cookie("pass", null);
 
-                        // Invalidate the cookies by setting the max age to 0
                         usernameCookie.setMaxAge(0);
                         passwordCookie.setMaxAge(0);
 
