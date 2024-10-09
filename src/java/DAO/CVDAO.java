@@ -152,7 +152,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void updateCV(CV c) {
+    public void updateCV(CV c,int cvid) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
@@ -161,7 +161,7 @@ public class CVDAO extends DBContext {
                 + "      ,[JobProfession] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
-                + " WHERE [MentorID] = ? and Status='active'";
+                + " WHERE [CVID] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getEducation());
@@ -173,7 +173,7 @@ public class CVDAO extends DBContext {
             st.setString(7, c.getFramework());
             st.setBytes(8, c.getAvatar());
             st.setFloat(9, c.getPrice());
-            st.setInt(10, c.getMentorId());
+            st.setInt(10, cvid);
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

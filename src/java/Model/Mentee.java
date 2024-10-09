@@ -35,6 +35,20 @@ public class Mentee {
         return "Mentee{" + "menteeId=" + menteeId + ", roleId=" + roleId + ", avatar=" + avatar + ", username=" + username + ", createDate=" + createDate + ", email=" + email + ", phone=" + phone + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", fullName=" + fullName + ", gender=" + gender + ", status=" + status + ", base64FileImage=" + base64FileImage + '}';
     }
 
+    public Mentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
+        this.menteeId = menteeId;
+        this.roleId = roleId;
+        this.avatar = avatar;
+        this.username = username;
+        this.createDate = createDate;
+        this.phone = phone;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.status = status;
+    }
+
     public Mentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {
         this.menteeId = menteeId;
         this.roleId = roleId;

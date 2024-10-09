@@ -76,15 +76,15 @@ public class CVUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
+        String cvId_raw = request.getParameter("id");
         String error = request.getParameter("error");
 
-        int id;
+        int cvId;
         CVDAO cvd = new CVDAO();
         try {
-            id = Integer.parseInt(id_raw);
+            cvId = Integer.parseInt(cvId_raw);
 
-            CV cv = cvd.getCVbyCVId(id);
+            CV cv = cvd.getCVbyCVId(cvId);
             List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(cv.getMentorId());
             List<Skill> skillList = cvd.getSkillList(cv.getMentorId());
             //System.out.println(mentorSkillList.get(0).getSkillName());
@@ -93,16 +93,17 @@ public class CVUpdateServlet extends HttpServlet {
 
             Mentor mentor = cvd.getMentorByID(cv.getMentorId());
             String email = cvd.getUserEmail(cv.getMentorId());
+            
             request.setAttribute("error", error);
             request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);
             request.setAttribute("cvFound", cv);
+            request.setAttribute("cvId", cvId);
 
             //System.out.println(mentor.getFullName());
             request.getRequestDispatcher("updateCV.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
-            response.sendRedirect("404.jsp");
         }
 
     }
@@ -121,7 +122,7 @@ public class CVUpdateServlet extends HttpServlet {
         //getParameterValues khac getParameter
         String[] deleteSkills = request.getParameterValues("deleteSkills");
         String[] addSkills = request.getParameterValues("addSkills");
-
+        String cvId_raw=request.getParameter("cvId");
         String userId_raw = request.getParameter("mentorId");
         String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
@@ -143,6 +144,8 @@ public class CVUpdateServlet extends HttpServlet {
 
         Date dob;
         int userid;
+        int cvId;
+        
         float price;
         Part filePart = null;
         try {
@@ -157,6 +160,8 @@ public class CVUpdateServlet extends HttpServlet {
         try {
 
             userid = Integer.parseInt(userId_raw);
+            cvId = Integer.parseInt(cvId_raw);
+            
             price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
@@ -168,16 +173,17 @@ public class CVUpdateServlet extends HttpServlet {
 
             CVDAO cvdao = new CVDAO();
             String nameId = cvdao.getMentorByID(userid).getUsername();
-            CV cv = cvdao.getCVbyMentorId(userid);
+            CV cv = cvdao.getCVbyCVId(cvId);
 
             //img processing
             byte[] avatar = null;
             //check image too big
-            //check user update avatar
+            //check user not update avatar
             if (filePart.getSize() > 0) {
                 InputStream fileRead = filePart.getInputStream();
                 avatar = fileRead.readAllBytes();
             } else {
+                //System.out.println(cv.getCvId());
                 avatar = cv.getAvatar();
             }
 
@@ -195,8 +201,9 @@ public class CVUpdateServlet extends HttpServlet {
                     professionIntroduction, profession, serviceDescription, framework, avatar, price);
             //System.out.println(nameId+" and "+email);
             cvdao.updateUser(nameId, username, email);
+            //System.out.println(newCv.getMentorId());
             cvdao.updateMentor(newMentor);
-            cvdao.updateCV(newCv);
+            cvdao.updateCV(newCv,cvId);
 
             if (deleteSkills != null) {
                 cvdao.deleteMentorSkills(userid, deleteSkills);

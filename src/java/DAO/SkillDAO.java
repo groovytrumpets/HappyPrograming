@@ -97,7 +97,7 @@ public class SkillDAO extends DBContext {
                 + "      ,[Status]\n"
                 + "      ,[Img]\n"
                 + "  FROM [dbo].[Skill]\n"
-                + "  order by Skill.SkillName asc\n"
+                + "  order by Skill.SkillID asc\n"
                 + "offset ? rows\n"
                 + "fetch next ? row only";
         int start = (page - 1) * numShow;
@@ -250,7 +250,7 @@ public class SkillDAO extends DBContext {
                 + "       [Status], \n"
                 + "       [Img]\n"
                 + "FROM [dbo].[Skill]\n"
-                + "ORDER BY [CreateDate] desc;";
+                + "ORDER BY [CreateDate] asc;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -361,7 +361,7 @@ public class SkillDAO extends DBContext {
                 + "      ,[Img]\n"
                 + "  FROM [dbo].[Skill]\n"
                 + "  WHERE [SkillName] LIKE '%' + ? + '%' \n"
-                + "  order by SkillName asc\n"
+                + "  order by SkillID asc\n"
                 + "  offset ? row \n"
                 + "  fetch next ? row only";
         int start = (page - 1) * numShow;
