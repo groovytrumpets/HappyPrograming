@@ -234,10 +234,11 @@ public class HomeDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            while (rs.next()) {      
+                
                 Mentee mentee = new Mentee(rs.getInt("menteeId"), rs.getInt("roleId"),
                         rs.getBytes("avatar"), rs.getString("username")
-                        , rs.getDate("createDate"),rs.getString("email"), rs.getString("phone"), rs.getString("address"),
+                        , rs.getDate("createDate"), rs.getString("phone"), rs.getString("address"),
                         rs.getDate("dateOfBirth"), rs.getString("fullName"),
                         rs.getString("gender"), rs.getString("status"));
                
