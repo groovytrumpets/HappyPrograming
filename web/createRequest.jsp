@@ -249,7 +249,7 @@
                 <!-- sidebar menu start -->
                 <nav class="ttr-sidebar-navi">
                     <ul>
-                  
+
                         <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-email"></i></span>
@@ -268,8 +268,8 @@
                                 </li>
                             </ul>
                         </li>
-                        
-                   
+
+
                         <li>
                             <a href="review.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
@@ -311,7 +311,7 @@
             <div class="container-fluid">
                 <div class="db-breadcrumb">
                     <h4 class="breadcrumb-title">Create request to mentor ${mentor.fullName}</h4>
-                  
+
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->
@@ -322,125 +322,136 @@
                                 <p style="color: blue"> ${notify}</p>
                             </div>
                             <div class="widget-inner">
-                                    <form class="edit-profile m-b30" action="createrequest" method="post">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="ml-auto">
-                                                    <h3>1. Content</h3>
-                                                </div>
+                                <form class="edit-profile m-b30" action="createrequest" method="post" id="slotForm">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="ml-auto">
+                                                <h3>1. Content</h3>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Title of request</label>
-                                                <div>
-                                                    <input class="form-control" type="text" value="" name="title" required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Title of request</label>
+                                            <div>
+                                                <input class="form-control" type="text" value="" name="title" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Content of request</label>
-                                                <div>
-                                                    <input class="form-control" type="text" value="" name="content" required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Content of request</label>
+                                            <div>
+                                                <input class="form-control" type="text" value="" name="content" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Deadline hour</label>
-                                                <div>
-                                                    <input class="form-control" type="time" value="" name="hour" required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Deadline hour</label>
+                                            <div>
+                                                <input class="form-control" type="time" value="" name="hour" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Deadline date</label>
-                                                <div>
-                                                    <input class="form-control" type="date" value="" name="date" required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Deadline date</label>
+                                            <div>
+                                                <input class="form-control" type="date" value="" name="date" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Framework</label>
-                                                <div>
-                                                    <input class="form-control" type="text" value="" name="framework" required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Start Date</label>
+                                            <div>
+                                                <input class="form-control" type="date" value="" name="start" id="start" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <div>
-                                                    <input class="form-control" type="hidden" value="${mid}" name="id">
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">End Date</label>
+                                            <div>
+                                                <input class="form-control" type="date" value="" name="end" id="end" required>
                                             </div>
-
-                                            <div class="col-12 m-t20">
-                                                <div class="ml-auto m-b5">
-                                                    <h3>2. Select skill</h3>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Framework</label>
+                                            <div>
+                                                <input class="form-control" type="text" value="" name="framework" required>
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label class="col-form-label">Select Skills</label><br/>
-
-                                                <!-- Skills List -->
-                                                <div>
-                                                    <ul class="border p-3 rounded mr-3 mb-3 category" style="list-style-type: none; display: flex; flex-wrap: wrap; gap: 10px;">
-                                                        <c:forEach items="${skillList}" var="c">
-                                                            <li>
-                                                                <div class="check-box">
-                                                                    <label class="col-form-label">
-                                                                        <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
-                                                                        ${c.skillName}
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <div>
+                                                <input class="form-control" type="hidden" value="${mid}" name="id">
                                             </div>
-
-                                            <div class="col-12 m-t20">
-                                                <div class="ml-auto">
-                                                    <h3 class="m-form__section">3. Select slot</h3>
-                                                </div>
-                                            </div>
-                                            <div class="col-12"> 
-                                                <div class="form-group col-6">
-                                                    <label class="col-form-label">Select Slots</label><br/>
-                                                    <!-- Skills List -->
-                                                    <div>
-                                                        <table class="table border rounded">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Select</th>
-                                                                    <th scope="col">Day in week</th>
-                                                                    <th scope="col">Start time</th>
-                                                                    <th scope="col">End time</th>
-                                                                    <th scope="col">Status</th>
-
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <c:forEach items="${slotList}" var="s">
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="checkbox" class="checkbox" name="addSlot" value="${s.slotID}"
-                                                                                   <c:if test="${s.status == 'inavaiable'}" >
-                                                                                       disabled
-                                                                                   </c:if>
-                                                                                   >
-                                                                        </td>
-                                                                        <td>${s.dayInWeek}</td>
-                                                                        <td>${s.startTime}</td>
-                                                                        <td>${s.endTime}</td>
-                                                                        <td>${s.status}</td>
-
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </tbody>
-                                                        </table>
-
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <button type="submit" class="btn-secondry add-item m-r5"><i class="fa fa-fw fa-plus-circle"></i>Create request</button>
-                                                    </div>
-                                                </div>
-                                                </form>
                                         </div>
 
+                                        <div class="col-12 m-t20">
+                                            <div class="ml-auto m-b5">
+                                                <h3>2. Select skill</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label class="col-form-label">Select Skills</label><br/>
+                                            <div>
+                                                <ul class="border p-3 rounded mr-3 mb-3 category" style="list-style-type: none; display: flex; flex-wrap: wrap; gap: 10px;">
+                                                    <c:forEach items="${skillList}" var="c">
+                                                        <li>
+                                                            <div class="check-box">
+                                                                <label class="col-form-label">
+                                                                    <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
+                                                                    ${c.skillName}
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-12 m-t20">
+                                            <div class="ml-auto">
+                                                <h3 class="m-form__section">3. Select slot</h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-12"> 
+                                            <div class="form-group col-6">
+                                                <label class="col-form-label">Select Slots</label><br/>
+                                                <div>
+                                                    <table class="table border rounded">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Select</th>
+                                                                <th scope="col">Day in week</th>
+                                                                <th scope="col">Start time</th>
+                                                                <th scope="col">End time</th>
+                                                                <th scope="col">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:forEach items="${slotList}" var="s">
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="checkbox" class="checkbox slot-checkbox" name="addSlot" value="${s.slotID}" data-day="${s.dayInWeek}" 
+                                                                               <c:if test="${s.status == 'inavaiable'}" >
+                                                                                   disabled
+                                                                               </c:if>
+                                                                               >
+                                                                    </td>
+                                                                    <td>${s.dayInWeek}</td>
+                                                                    <td>${s.startTime}</td>
+                                                                    <td>${s.endTime}</td>
+                                                                    <td>${s.status}</td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </tbody> 
+                                                    </table>
+                                                    <div class="col-12" style="margin-left: -15px">
+                                                        <h3>Total Price: $<span id="totalPrice">0</span></h3>
+                                                        <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
+                                                        <button type="submit" class="btn-secondry add-item m-r5">
+                                                            <i class="fa fa-fw fa-plus-circle"></i>Create request
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </form>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -468,7 +479,7 @@
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
-        
+
         <script>
             // Pricing add
             function newMenuItem() {
@@ -486,6 +497,57 @@
                     $(this).parent().parent().parent().parent().remove();
                 });
             }
+        </script>
+        <script>
+            // Price per selected day (for example purposes, let's assume each selected day costs $10)
+            document.addEventListener('DOMContentLoaded', function () {
+                // Price per selected day (make sure this variable is set correctly in your backend)
+                const pricePerDay = ${cv.price};
+
+                // Function to calculate the price based on selected days and date range
+                function calculatePrice() {
+                    const startDateInput = document.getElementById('start');
+                    const endDateInput = document.getElementById('end');
+                    const startDate = new Date(startDateInput.value);
+                    const endDate = new Date(endDateInput.value);
+                    const selectedDays = Array.from(document.querySelectorAll('.slot-checkbox:checked'))
+                            .map(el => el.getAttribute('data-day'));
+                    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+                    // Validate date inputs
+                    if (isNaN(startDate) || isNaN(endDate) || startDate > endDate || selectedDays.length === 0) {
+                        document.getElementById('totalPrice').textContent = '0';
+                        return;
+                    }
+
+                    let totalDays = 0;
+
+                    let currentDate = new Date(startDate);
+
+                    // Count occurrences of selected days within the date range
+                    while (currentDate <= endDate) {
+                        const dayName = dayNames[currentDate.getDay()];
+                        if (selectedDays.includes(dayName)) {
+                            totalDays++;
+                        }
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+                    // Calculate total price
+                    const totalPrice = totalDays * pricePerDay;
+                    document.getElementById('totalPrice').textContent = totalPrice;
+                    document.getElementById('totalPriceInput').value = totalPrice; // Set hidden input value
+                }
+
+                // Event listeners for date inputs
+                document.getElementById('start').addEventListener('change', calculatePrice);
+                document.getElementById('end').addEventListener('change', calculatePrice);
+
+                // Event listeners for slot checkboxes
+                document.querySelectorAll('.slot-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', calculatePrice);
+                });
+            });
+
         </script>
     </body>
 

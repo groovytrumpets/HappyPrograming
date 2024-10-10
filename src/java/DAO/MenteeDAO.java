@@ -110,7 +110,7 @@ public class MenteeDAO extends DBContext {
 
     public static void main(String[] args) {
         MenteeDAO u = new MenteeDAO();
-        Mentee m = u.findMenteeByUsername("user3");
+        Mentee m = u.findMenteeByUsername("hoanganhgp23");
         System.out.println(m.getMenteeId());
     }
 }

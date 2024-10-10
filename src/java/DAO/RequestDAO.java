@@ -27,7 +27,7 @@ public class RequestDAO extends DBContext {
         String sql = "select *\n"
                 + "from RequestSlotItem rq\n"
                 + "join Request r on rq.RequestID = r.RequestID\n"
-                + "where r.Status = 'Processing' and r.MenteeID = ?";
+                + "where r.MenteeID = ?";
 
         try {
 
@@ -52,8 +52,8 @@ public class RequestDAO extends DBContext {
     }
 
     public void insertRequest(Request request) {
-        String sql = "INSERT INTO Request (MentorID, MenteeID, Price, Note, CreateDate, Status, Title, DeadlineHour, DeadlineDate, Framework) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Request (MentorID, MenteeID, Price, Note, CreateDate, Status, Title, DeadlineHour, DeadlineDate, Framework, StartDate, EndDate) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -69,6 +69,8 @@ public class RequestDAO extends DBContext {
             st.setTime(8, Time.valueOf(request.getDeadlineHour()));
             st.setDate(9, Date.valueOf(request.getDeadlineDate()));
             st.setString(10, request.getFramework());
+            st.setDate(11, Date.valueOf(request.getStartDate()));
+            st.setDate(12, Date.valueOf(request.getEndDate()));
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,23 +107,13 @@ public class RequestDAO extends DBContext {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 
     public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "SELECT [RequestID]\n"
-                + "      ,[MentorID]\n"
-                + "      ,[MenteeID]\n"
-                + "      ,[Price]\n"
-                + "      ,[Note]\n"
-                + "      ,[CreateDate]\n"
-                + "      ,[Status]\n"
-                + "      ,[Title]\n"
-                + "      ,[DeadlineHour]\n"
-                + "      ,[DeadlineDate]\n"
-                + "      ,[Framework]\n"
+        String sql = "SELECT*"
                 + "  FROM [dbo].[Request]\n"
                 + "  Where Request.Status like ? ";
         try {
@@ -140,7 +132,11 @@ public class RequestDAO extends DBContext {
                 curRequest.setStatus(rs.getString("Status"));
                 curRequest.setTitle(rs.getString("Title"));
                 LocalDate curDeaDate = rs.getDate("DeadlineDate").toLocalDate();
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
                 curRequest.setDeadlineDate(curDeaDate);
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
                 Time time = rs.getTime("DeadlineHour");
                 if (time != null) {
                     curRequest.setDeadlineHour(time.toLocalTime());
@@ -157,17 +153,7 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getAllRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "SELECT [RequestID]\n"
-                + "      ,[MentorID]\n"
-                + "      ,[MenteeID]\n"
-                + "      ,[Price]\n"
-                + "      ,[Note]\n"
-                + "      ,[CreateDate]\n"
-                + "      ,[Status]\n"
-                + "      ,[Title]\n"
-                + "      ,[DeadlineHour]\n"
-                + "      ,[DeadlineDate]\n"
-                + "      ,[Framework]\n"
+        String sql = "SELECT *"
                 + "  FROM [dbo].[Request]\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -184,11 +170,13 @@ public class RequestDAO extends DBContext {
                 curRequest.setStatus(rs.getString("Status"));
                 curRequest.setTitle(rs.getString("Title"));
                 LocalDate curDeaDate = rs.getDate("DeadlineDate").toLocalDate();
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
                 curRequest.setDeadlineDate(curDeaDate);
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
                 Time time = rs.getTime("DeadlineHour");
-                if (time != null) {
-                    curRequest.setDeadlineHour(time.toLocalTime());
-                }
+                curRequest.setDeadlineHour(time.toLocalTime());
                 curRequest.setFramework(rs.getString("Framework"));
                 listRequest.add(curRequest);
             }
@@ -198,12 +186,13 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
-}
-
-/*
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
-        List<Request> curList = act.getAllRequestByStatus("Accepted");
-        System.out.println(curList.get(0).getMentorId());
-    }*/
+        List<RequestSlotItem> curList = act.getDuplicateSlot(4);
+        for(int i = 0; i < curList.size() ; i++)
+        {
+            System.out.println(curList.get(i));
+        }
+    }
+}

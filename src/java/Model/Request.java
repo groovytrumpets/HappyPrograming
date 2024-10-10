@@ -23,13 +23,15 @@ public class Request {
     private String title;
     private LocalTime deadlineHour;
     private LocalDate deadlineDate;
+    private LocalDate startDate;
+    private LocalDate endDate; 
     private String framework;
 
     public Request() {
     }
 
     public Request(int requestId, Integer mentorId, Integer menteeId, Float price, String note, LocalDate createDate,
-            String status, String title, LocalTime deadlineHour, LocalDate deadlineDate, String framework) {
+            String status, String title, LocalTime deadlineHour, LocalDate deadlineDate, String framework, LocalDate startDate, LocalDate endDate) {
         this.requestId = requestId;
         this.mentorId = mentorId;
         this.menteeId = menteeId;
@@ -41,15 +43,34 @@ public class Request {
         this.deadlineHour = deadlineHour;
         this.deadlineDate = deadlineDate;
         this.framework = framework;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+
+    public int getRequestId() {
+        return requestId;
     }
 
     @Override
     public String toString() {
-        return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", deadlineHour=" + deadlineHour + ", deadlineDate=" + deadlineDate + ", framework=" + framework + '}';
-    }
-
-    public int getRequestId() {
-        return requestId;
+        return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", deadlineHour=" + deadlineHour + ", deadlineDate=" + deadlineDate + ", startDate=" + startDate + ", endDate=" + endDate + ", framework=" + framework + '}';
     }
 
     public void setRequestId(int requestId) {
