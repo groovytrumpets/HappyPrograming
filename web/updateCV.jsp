@@ -372,27 +372,27 @@
                                         <div>
                                             <input class="form-control" type="hidden" name="mentorId" value="${requestScope.uFound.mentorId}" >
                                             <input class="form-control" type="hidden" name="cvId" value="${requestScope.cvId}" >
-                                            
+
                                         </div>
                                         <div class="form-group col-12">
                                             <div class=" text-center">
-                                                
-                                                <img id="userAvatar" src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px">
+
+                                                <img id="userAvatar" src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
                                             </div>
                                             <div>
                                                 <div style="text-align: center">
-                                                <label for="avatar" class="btn-secondry">Avatar file</label>
-                                                <span id="file-path"></span>
-                                                <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" accept=".jpg, .jpeg, .png, .gif" hidden>
-                                                <% String errorMessage = request.getParameter("errorMessage"); %>
-<% if (errorMessage != null) { %>
-    <div class="alert alert-danger"><%= errorMessage %></div>
-<% } %>
-                                                <c:if test="${requestScope.error2!=null}">
-                                                    <span class="help" style="color: red">Your file is too big, please choose file smaller than 5MB.</span>
-                                                </c:if>
-                                                    
-                                                 
+                                                    <label for="avatar" class="btn-secondry">Avatar file</label>
+                                                    <span id="file-path"></span>
+                                                    <input id="avatar" class="form-control" type="file" name="avatar" value="${requestScope.cvFound.avatar}" accept=".jpg, .jpeg, .png, .gif" hidden>
+                                                    <% String errorMessage = request.getParameter("errorMessage"); %>
+                                                    <% if (errorMessage != null) { %>
+                                                    <div class="alert alert-danger"><%= errorMessage %></div>
+                                                    <% } %>
+                                                    <c:if test="${requestScope.error2!=null}">
+                                                        <span class="help" style="color: red">Your file is too big, please choose file smaller than 5MB.</span>
+                                                    </c:if>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -418,16 +418,16 @@
                                             <label class="col-form-label">Email</label>
                                             <div>
                                                 <c:if test="${requestScope.error==email_exists}">
-                                                <input class="form-control" type="email" name="email" value="${requestScope.email}" required>
+                                                    <input class="form-control" type="email" name="email" value="${requestScope.email}" required>
                                                 </c:if>
                                                 <c:if test="${requestScope.error!=email_exists}">
                                                     <input class="form-control" type="email" name="email" value="" required>
-                                                <span class="help" style="color: red">Your email used by another user !</span>
+                                                    <span class="help" style="color: red">Your email used by another user !</span>
                                                 </c:if>
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label class="col-form-label">Phone No.</label>
+                                            <label class="col-form-label">Phone number</label>
                                             <div>
                                                 <input class="form-control" type="number" name="phone" value="${requestScope.uFound.phone}">
                                             </div>

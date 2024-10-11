@@ -85,8 +85,8 @@ public class CVUpdateServlet extends HttpServlet {
             cvId = Integer.parseInt(cvId_raw);
 
             CV cv = cvd.getCVbyCVId(cvId);
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(cv.getMentorId());
-            List<Skill> skillList = cvd.getSkillList(cv.getMentorId());
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(cvId);
+            List<Skill> skillList = cvd.getSkillList(cv.getCvId());
             //System.out.println(mentorSkillList.get(0).getSkillName());
             request.setAttribute("skillMentor", mentorSkillList);
             request.setAttribute("skillList", skillList);
@@ -206,12 +206,12 @@ public class CVUpdateServlet extends HttpServlet {
             cvdao.updateCV(newCv,cvId);
 
             if (deleteSkills != null) {
-                cvdao.deleteMentorSkills(userid, deleteSkills);
+                cvdao.deleteMentorSkills(cvId, deleteSkills);
                 //System.out.println("Del !null");
             }
 
             if (addSkills != null) {
-                cvdao.insertMentorSkills(userid, addSkills);
+                cvdao.insertMentorSkills(userid, addSkills,cvId);
                 //System.out.println("Add !null");
             }
 
