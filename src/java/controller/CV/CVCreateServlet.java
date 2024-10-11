@@ -79,7 +79,7 @@ public class CVCreateServlet extends HttpServlet {
         CVDAO cvd = new CVDAO();
         try {
             id = Integer.parseInt(id_raw);
-            List<Skill> skillList = cvd.getSkillList(id);
+            List<Skill> skillList = cvd.getListofSkill();
             request.setAttribute("skillList", skillList);
             Mentor mentor = cvd.getMentorByID(id);
             //check cv exist
@@ -125,22 +125,22 @@ public class CVCreateServlet extends HttpServlet {
                 
         try {
             userid = Integer.parseInt(userId_raw);
-            price = Integer.parseInt(price_raw);
+            price = Float.parseFloat(price_raw);
 
             //img processing
             InputStream fileRead = filePart.getInputStream();
             byte[] avatar = fileRead.readAllBytes();
-            System.out.println(avatar);
-            System.out.println(fileRead);
+            //System.out.println(avatar);
+            //System.out.println(fileRead);
 
             CVDAO cvdao = new CVDAO();
             CV newCv = new CV(userid, education, experience, activity,
                     professionIntroduction, profession, serviceDescription, framework, avatar,price);
-            cvdao.createCV(newCv);
-
+            int cvId = cvdao.createCV(newCv);
+            //System.out.println(cvId);
             //add skills
             if (addSkills != null) {
-                cvdao.insertMentorSkills(userid, addSkills);
+                cvdao.insertMentorSkills(userid, addSkills,cvId);
                 //System.out.println("Add !null");
             }
             response.sendRedirect("cvlist?id=" + userid);

@@ -8,7 +8,10 @@ package Model;
  *
  * @author nhhag
  */
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class CV {
@@ -28,6 +31,11 @@ public class CV {
     private String framework;
     private byte[] avatar;
     private float price;
+    private Timestamp createTime;
+    private int hour;
+    private int min;
+    private int sec;
+    
 
     public CV() {
     }
@@ -76,6 +84,50 @@ public class CV {
         this.framework = framework;
         this.avatar = avatar;
          this.price = price;
+    }
+
+    public CV(int cvId, int mentorId, String education, String experience, String activity, String professionIntroduction, String certificate, String jobProfession, int yearOfExperience, String serviceDescription, String status, String framework, byte[] avatar, float price, Timestamp createTime) {
+        this.cvId = cvId;
+        this.mentorId = mentorId;
+        this.education = education;
+        this.experience = experience;
+        this.activity = activity;
+        this.professionIntroduction = professionIntroduction;
+        this.certificate = certificate;
+        LocalDateTime localDateTime = createTime.toLocalDateTime();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss a");
+        this.createDate = localDateTime.format(dateFormatter);
+        this.jobProfession = jobProfession;
+        this.yearOfExperience = yearOfExperience;
+        this.serviceDescription = serviceDescription;
+        this.status = status;
+        this.framework = framework;
+        this.avatar = avatar;
+        this.price = price;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getSec() {
+        return sec;
+    }
+
+    public void setSec(int sec) {
+        this.sec = sec;
+    }
+    
+
+    
+
+    
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
  
