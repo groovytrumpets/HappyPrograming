@@ -553,20 +553,6 @@
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
-            const img = document.getElementById('userAvatar');
-            const statusDiv = document.getElementById('Imgstatus');
-
-            img.onload = function () {
-                statusDiv.innerHTML = "Image uploaded successfully!";
-                statusDiv.style.color = "green";
-            };
-
-            img.onerror = function () {
-                statusDiv.innerHTML = "Unable to load image!";
-                statusDiv.style.color = "red";
-            };
-        </script>
-        <script>
             // Pricing add
             function newMenuItem() {
                 var newElem = $('tr.list-item').first().clone();

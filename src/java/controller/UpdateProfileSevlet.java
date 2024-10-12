@@ -73,6 +73,9 @@ public class UpdateProfileSevlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            
+        
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
         MenteeDAO actMentee = new MenteeDAO();
@@ -94,6 +97,9 @@ public class UpdateProfileSevlet extends HttpServlet {
         }
 
         request.getRequestDispatcher("updateProfileMentee.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -143,7 +149,7 @@ public class UpdateProfileSevlet extends HttpServlet {
         } catch (ParseException ex) {
             System.out.println(ex);
         }
-        curMentee.setEmail(request.getParameter("email"));
+        //xoa email
         curMentee.setPhone(request.getParameter("phone"));
         curMentee.setGender(request.getParameter("gender"));
         curMentee.setAddress(request.getParameter("address"));

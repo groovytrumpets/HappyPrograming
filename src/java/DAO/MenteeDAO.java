@@ -40,7 +40,7 @@ public class MenteeDAO extends DBContext {
 
     public boolean updateMentee(Mentee mentee) throws SQLException {
         String sql = "UPDATE Mentee SET RoleID = ?, Avatar = ?, Username = ?, CreateDate = ?, "
-                + "Email = ?, Phone = ?, Address = ?, DateOfBirth = ?, FullName = ?, Gender = ?, "
+                + "Phone = ?, Address = ?, DateOfBirth = ?, FullName = ?, Gender = ?, "
                 + "Status = ? WHERE username = ?"; // Assuming MenteeID is the unique identifier
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -48,14 +48,14 @@ public class MenteeDAO extends DBContext {
             st.setBytes(2, mentee.getAvatar());
             st.setString(3, mentee.getUsername());
             st.setDate(4, new Date(mentee.getCreateDate().getTime()));
-            st.setString(5, mentee.getEmail());
-            st.setString(6, mentee.getPhone());
-            st.setString(7, mentee.getAddress());
-            st.setDate(8, new Date(mentee.getDateOfBirth().getTime()));
-            st.setString(9, mentee.getFullName());
-            st.setString(10, mentee.getGender());
-            st.setString(11, mentee.getStatus());
-            st.setString(12, mentee.getUsername());
+            st.setString(5, mentee.getPhone());
+            //xoa email
+            st.setString(6, mentee.getAddress());
+            st.setDate(7, new Date(mentee.getDateOfBirth().getTime()));
+            st.setString(8, mentee.getFullName());
+            st.setString(9, mentee.getGender());
+            st.setString(10, mentee.getStatus());
+            st.setString(11, mentee.getUsername());
             st.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -70,7 +70,6 @@ public class MenteeDAO extends DBContext {
                 + "      ,[Avatar]\n"
                 + "      ,[Username]\n"
                 + "      ,[CreateDate]\n"
-                + "      ,[Email]\n"
                 + "      ,[Phone]\n"
                 + "      ,[Address]\n"
                 + "      ,[DateOfBirth]\n"
@@ -94,7 +93,7 @@ public class MenteeDAO extends DBContext {
                     mentee.setAvatar(rs.getBytes("Avatar"));
                 }
                 mentee.setCreateDate(rs.getDate("CreateDate"));
-                mentee.setEmail(rs.getString("Email"));
+                //xoa email
                 mentee.setPhone(rs.getString("Phone"));
                 mentee.setAddress(rs.getString("Address"));
                 mentee.setDateOfBirth(rs.getDate("DateOfBirth"));
@@ -103,7 +102,7 @@ public class MenteeDAO extends DBContext {
                 mentee.setStatus(rs.getString("Status"));
             }
         } catch (SQLException e) {
-
+            System.out.println(e);
         }
 
         return mentee; // Return the retrieved Mentor object or null if not found
@@ -111,7 +110,7 @@ public class MenteeDAO extends DBContext {
 
     public static void main(String[] args) {
         MenteeDAO u = new MenteeDAO();
-        Mentee m = u.findMenteeByUsername("user5");
+        Mentee m = u.findMenteeByUsername("hoanganhgp23");
         System.out.println(m.getMenteeId());
     }
 }

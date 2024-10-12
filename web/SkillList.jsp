@@ -294,7 +294,7 @@
                                             <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
                                                 <div class="cours-bx">
                                                     <div class="action-box">
-                                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}">
+                                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}" style="width: 272px; height: 200px" >
 
                                                     </div>
                                                     <div class="info-bx text-center">

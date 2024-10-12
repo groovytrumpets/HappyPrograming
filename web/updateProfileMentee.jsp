@@ -210,8 +210,9 @@
                                             <input class="form-control" type="hidden" name="menteeId" value="${mentee.menteeId}" >
                                         </div>
                                         <div class="form-group col-12">
+                                            
                                             <div class=" text-center">
-                                                <img src="data:image/jpeg;base64,${mentee.base64FileImage}" class="rounded-circle" style=" margin: 50px 10px;width: 150px">
+                                                <img src="data:image/jpeg;base64,${mentee.base64ImageFile}" class="rounded-circle" style=" margin: 50px 10px;width: 150px">
                                             </div>
                                             <div>
                                                 <div style="text-align: center">
@@ -244,7 +245,7 @@
                                             <label class="col-form-label">Email</label>
                                             <div>
                                                 <c:if test="${requestScope.error==email_exists}">
-                                                    <input class="form-control" type="email" name="email" value="${mentee.email}" readonly>
+                                                    <input class="form-control" type="email" name="email" value="${sessionScope.acc.email}" readonly>
                                                 </c:if>
                                                 <c:if test="${requestScope.error!=email_exists}">
                                                     <input class="form-control" type="email" name="email" value="" required>

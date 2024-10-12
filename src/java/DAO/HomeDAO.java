@@ -5,6 +5,8 @@
 package DAO;
 
 import Model.CV;
+import Model.Mentee;
+import Model.Mentor;
 import Model.Skill;
 import Model.User;
 import java.util.ArrayList;
@@ -130,6 +132,120 @@ public class HomeDAO extends DBContext {
 
             }
             return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public float getRateAve() {
+        String sql = "SELECT AVG(CAST(Rate AS FLOAT)) FROM Rate;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //System.out.println(rs.getInt(""));
+                return rs.getFloat("");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public int skillCount() {
+        String sql = "select count(SkillID) from Skill";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //System.out.println(rs.getInt(""));
+                return rs.getInt("");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public int countMentee() {
+       String sql = "SELECT COUNT(*) FROM [dbo].[User] where [dbo].[User].RoleID=2";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //System.out.println(rs.getInt(""));
+                return rs.getInt("");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public int countRequest() {
+        String sql = "select count(RequestID) from Request";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //System.out.println(rs.getInt(""));
+                return rs.getInt("");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public List<Mentor> getListofMentor() {
+        List<Mentor> list = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from Mentor";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                
+                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"),
+                        rs.getString("username"),
+                        rs.getDate("createDate"),
+                        rs.getString("phone"), rs.getString("address"),
+                        rs.getDate("dateOfBirth"), rs.getString("fullName"),
+                        rs.getString("gender"), rs.getString("status"));
+                list.add(mentor);
+
+            }
+                return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<Mentee> getListofMentee() {
+        List<Mentee> list = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from Mentee";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {      
+                
+                Mentee mentee = new Mentee(rs.getInt("menteeId"), rs.getInt("roleId"),
+                        rs.getBytes("avatar"), rs.getString("username")
+                        , rs.getDate("createDate"), rs.getString("phone"), rs.getString("address"),
+                        rs.getDate("dateOfBirth"), rs.getString("fullName"),
+                        rs.getString("gender"), rs.getString("status"));
+               
+                list.add(mentee);
+
+            }
+                return list;
         } catch (SQLException e) {
             System.out.println(e);
         }

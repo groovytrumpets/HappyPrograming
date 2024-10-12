@@ -7,6 +7,7 @@ package controller;
 import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.PaymentDAO;
 import DAO.RequestDAO;
 import DAO.SlotDAO;
 import Model.CV;
@@ -82,13 +83,11 @@ public class CreateRequestSV extends HttpServlet {
         CVDAO cvd = new CVDAO();
         SlotDAO slotDAO = new SlotDAO();
         MentorDAO mentorDAO = new MentorDAO();
-        
+
         a = (User) sesion.getAttribute("acc");
         if (a == null) {
             response.sendRedirect("signin");
         }
-        if(a.getRoleId() == 1 )
-            response.sendRedirect("home");
         PrintWriter out = response.getWriter();
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");
@@ -99,6 +98,7 @@ public class CreateRequestSV extends HttpServlet {
             id = Integer.parseInt(id_raw);
             List<Skill> skillList = cvd.getMentorSkillListByMentorID(id);
             List<Slot> slotList = slotDAO.getSlotsByMentorId(id);
+            request.setAttribute("cv", cvd.getCVbyMentorId(id));
             request.setAttribute("mid", id);
             request.setAttribute("mentor", mentorDAO.findMentorByID(id));
             request.setAttribute("skillList", skillList);
@@ -127,6 +127,7 @@ public class CreateRequestSV extends HttpServlet {
         MenteeDAO menteeDAO = new MenteeDAO();
         CVDAO cvDAO = new CVDAO();
         SlotDAO slotDAO = new SlotDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
 
         HttpSession sesion = request.getSession();
         User a = new User();
@@ -138,17 +139,23 @@ public class CreateRequestSV extends HttpServlet {
         String content = request.getParameter("content");
         String hour = request.getParameter("hour");
         String date = request.getParameter("date");
+        String end = request.getParameter("end");
+        String start = request.getParameter("start");
+        String total = request.getParameter("totalPrice");
         String framework = request.getParameter("framework");
         String[] selectedSkills = request.getParameterValues("addSkills");
         String[] selectedSlot = request.getParameterValues("addSlot");
         try {
             int id = Integer.parseInt(id_raw);
+            float totalP = Float.parseFloat(total);
 
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             LocalDate selectedDate = LocalDate.parse(date, dateFormatter);
             LocalTime selectedTime = LocalTime.parse(hour, timeFormatter);
+            LocalDate selectedStartDate = LocalDate.parse(start, dateFormatter);
+            LocalDate selectedEndDate = LocalDate.parse(end, dateFormatter);
 
             LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, selectedTime);
 
@@ -156,7 +163,12 @@ public class CreateRequestSV extends HttpServlet {
             LocalDate creaDate = LocalDate.now();
 
             if (selectedDateTime.isBefore(now)) {
-                response.sendRedirect("createrequest?id=" + id + "&error=Deadline date or deadline not avaiable");
+                response.sendRedirect("createrequest?id=" + id + "&error=Deadline date or deadline not available");
+                return;
+            }
+
+            if (selectedEndDate.isBefore(selectedStartDate)) {
+                response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
                 return;
             }
 
@@ -175,27 +187,32 @@ public class CreateRequestSV extends HttpServlet {
                 for (int i = 0; i < listSlot.size(); i++) {
                     for (String slot : selectedSlot) {
                         int slotid = Integer.parseInt(slot);
-                        if (slotid == listSlot.get(i)   .getSlotId()) {
-                            response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't been study");
+                        if (slotid == listSlot.get(i).getSlotId()) {
+                            response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't selected");
                             return;
                         }
                     }
                 }
 
             }
+            
+            if (paymentDAO.getNewestPaymentByMenteeId(menteeid).getBalance() < totalP) {
+                response.sendRedirect("createrequest?id=" + id + "&error=Your account doesn't have enough money");
+                return;
+            }
 
-            CV cv = cvDAO.getCVbyMentorId(id);
-
-            Request newRequest = new Request(0, id, menteeid, cv.getPrice() * selectedSlot.length,
+            Request newRequest = new Request(0, id, menteeid, totalP,
                     "Nothing", creaDate, "Open", title,
-                    selectedTime, selectedDate, framework);
-
+                    selectedTime, selectedDate, framework, selectedStartDate, selectedEndDate);
+            out.print(newRequest);
             requestDAO.insertRequest(newRequest);
             requestDAO.addItemByRequestID(selectedSkills, selectedSlot);
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
+
+            out.print(e);
         }
 
     }
