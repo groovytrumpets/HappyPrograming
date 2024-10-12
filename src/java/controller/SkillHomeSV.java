@@ -86,7 +86,7 @@ public class SkillHomeSV extends HttpServlet {
             number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
         }
         request.setAttribute("number", number);
-         request.setAttribute("list2", list2);
+        request.setAttribute("list2", list2);
         request.setAttribute("pageIndex", index);
         request.setAttribute("endP", page);
         request.setAttribute("list", list);
