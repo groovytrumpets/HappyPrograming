@@ -3,14 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.CV;
+package controller.Manager;
 
 import DAO.CVDAO;
 import Model.CV;
-import Model.Mentor;
-import Model.Skill;
-import Model.SkillList;
-import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,8 +20,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="ManagerCVServlet", urlPatterns={"/cvmanager"})
-public class ManagerCVServlet extends HttpServlet {
+@WebServlet(name="ActiveMentorCVServlet", urlPatterns={"/activecv"})
+public class ActiveMentorCVServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +38,10 @@ public class ManagerCVServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagerCVServlet</title>");  
+            out.println("<title>Servlet ActiveMentorCVServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagerCVServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ActiveMentorCVServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,24 +58,36 @@ public class ManagerCVServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        CVDAO cvd = new CVDAO();
-        List<Mentor> listMentor = cvd.getListofMentor();
-        List<CV> listCV = cvd.getListofCV();
-        List<Skill> listSkill = cvd.getListofSkill();
-        List<SkillList> listSkillList = cvd.getListofSkillList();
-        //hien thi avata gan nhat
-        List<CV> listActiveCV = cvd.getListofActiveCV();
-        
-        List<User> listUser = cvd.getListofUser();
-//        System.out.println(listMentor.get(0).getUsername());
-        request.setAttribute("mentorList", listMentor);
-        request.setAttribute("listCV", listCV);
-        request.setAttribute("listUser", listUser);
-        request.setAttribute("listActiveCV", listActiveCV);
-        
-        request.setAttribute("listSkill", listSkill);
-        request.setAttribute("listSkillList", listSkillList);
-        request.getRequestDispatcher("managerCV.jsp").forward(request, response);
+        String id_raw = request.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(id_raw);
+            CVDAO cvd = new CVDAO();
+            CV cv = cvd.getCVbyCVId(id);
+            List<CV> listCV = cvd.getListofCVbyMentorId(cv.getMentorId());
+            boolean haveCVActive=false;
+            for (CV cv1 : listCV) {
+                if (cv1.getStatus().equalsIgnoreCase("active")) {
+                    haveCVActive=true;
+                }
+            }
+//            System.out.println(haveCVActive);
+            if (cv.getStatus().equalsIgnoreCase("inactive")&&haveCVActive) {
+                //error
+                response.sendRedirect("cvmanager?error=Mentor already have actived CV");
+            }else{
+                if (cv.getStatus().equalsIgnoreCase("inactive")) {
+                    cvd.setStatusActiveCvId(id);
+            response.sendRedirect("cvmanager");
+                }
+                if (cv.getStatus().equalsIgnoreCase("active")) {
+                    cvd.setStatusInactiveCvId(id);
+            response.sendRedirect("cvmanager");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /** 

@@ -696,7 +696,7 @@ public class CVDAO extends DBContext {
 
                 SkillList skillList = new SkillList(rs.getInt("skillListId"),
                         rs.getInt("skillId"), rs.getInt("mentorId"),
-                        rs.getInt("rating"));
+                        rs.getInt("rating"),rs.getInt("cvId"));
                 userList.add(skillList);
 
             }
@@ -706,5 +706,26 @@ public class CVDAO extends DBContext {
         }
 
         return null;
+    }
+
+    public void setStatusActiveCvId(int id) {
+        String sql = "Update CV set Status ='active' where CVID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public void setStatusInactiveCvId(int id) {
+        String sql = "Update CV set Status ='inactive' where CVID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

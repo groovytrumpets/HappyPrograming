@@ -64,7 +64,6 @@
     </head>
     <body id="bg">
         <div class="page-wraper">
-            <div id="loading-icon-bx"></div>
 
             
             
@@ -178,23 +177,6 @@
             <button class="back-to-top fa fa-chevron-up" ></button>
         </div>
 
-        <!-- External JavaScripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"defer></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"defer></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"defer></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"defer></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"defer></script>
-        <script src="assets/vendors/counter/waypoints-min.js"defer></script>
-        <script src="assets/vendors/counter/counterup.min.js"defer></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"defer></script>
-        <script src="assets/vendors/masonry/masonry.js"defer></script>
-        <script src="assets/vendors/masonry/filter.js"defer></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"defer></script>
-        <script src="assets/vendors/masonry/filter.js"defer></script>
-        <script src="assets/js/functions.js"defer></script>
-        <script src="assets/js/contact.js"defer></script>
-        <!-- comment <script src='assets/vendors/switcher/switcher.js'></script>-->
     </body>
 
 </html>

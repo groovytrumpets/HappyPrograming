@@ -462,7 +462,7 @@
                 <!-- Card END -->
                 <div class="row">
                     <!-- Your Profile Views Chart -->
-                    
+
 
 
                     <div class="col-lg-6 m-b30">
@@ -504,7 +504,7 @@
                                                     </td>                                                
                                                     <td class="align-middle">
                                                         <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">View CV List</a>
+                                                            <a href="cvmanagercate?id=${c.mentorId}" class="btn button-sm green">View CV List</a>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -522,9 +522,15 @@
                         <div class="widget-box">
                             <div class="wc-title">
                                 <h4>CV List</h4>
+
                             </div>
                             <div class="widget-inner">
                                 <div class="orders-list">
+                                    <c:if test="${not empty requestScope.error}">
+                                        <div class="alert alert-danger" role="alert">
+                                            ${requestScope.error}
+                                        </div>
+                                    </c:if>
                                     <ul>
                                         <c:forEach items="${requestScope.listCV}" var="v">
 
@@ -535,24 +541,29 @@
                                                 </span>
                                                 <c:if test="${v.status.equals('inactive')}">
                                                     <span class="orders-btn">
-                                                        <a href="#" class="btn button-sm red">Inactive</a>
-                                                        <a data-toggle="modal" data-target="#exampleModal" href="#" class="btn button-sm primary ">View</a>
+                                                        <a href="activecv?id=${v.cvId}" class="btn button-sm red">Inactive</a>
+                                                        <a data-toggle="modal" data-target="#exampleModal${v.cvId}" href="#" class="btn button-sm primary ">View</a>
                                                     </span>
+
                                                 </c:if>
                                                 <c:if test="${v.status.equals('active')}">
                                                     <span class="orders-btn">
-                                                        <a href="#" class="btn button-sm green">Active</a>
-                                                        <a data-toggle="modal" data-target="#exampleModal" href="#" class="btn button-sm primary ">View</a>
+                                                        <a href="activecv?id=${v.cvId}" class="btn button-sm green">Active</a>
+                                                        <a data-toggle="modal" data-target="#exampleModal${v.cvId}" href="#" class="btn button-sm primary ">View</a>
                                                     </span>
                                                 </c:if>
 
                                             </li>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="exampleModal${v.cvId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">CV</h5>
+                                                            <c:forEach items="${requestScope.mentorList}" var="c">
+                                                                <c:if test="${c.mentorId==v.mentorId}">
+                                                                    <h5 class="modal-title text-center" id="exampleModalLabel">CV of Mentor: ${c.username}</h5>
+                                                                </c:if>
+                                                            </c:forEach>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -583,51 +594,51 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-6">
-                                                                                        <label class="col-form-label">Full Name</label>
+                                                                                        <label class="col-form-label font-weight-bold">Full Name</label>
                                                                                         <div>
                                                                                             ${c.fullName}
 
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-6">
-                                                                                        <label class="col-form-label">Account name</label>
+                                                                                        <label class="col-form-label font-weight-bold">Account name</label>
                                                                                         <div>
                                                                                             ${c.username}
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-6">
-                                                                                        <label class="col-form-label">Date of Birth</label>
+                                                                                        <label class="col-form-label font-weight-bold">Date of Birth</label>
                                                                                         <div>
                                                                                             ${c.dateOfBirthFormatted}
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-6">
-                                                                                        <label class="col-form-label">Email</label>
+                                                                                        <label class="col-form-label font-weight-bold">Email</label>
                                                                                         <div>
                                                                                             <c:forEach items="${requestScope.listUser}" var="u">
-                                                                                            <c:if test="${c.username==u.username}">
-                                                                                                ${u.email}
-                                                                                            </c:if>
+                                                                                                <c:if test="${c.username==u.username}">
+                                                                                                    ${u.email}
+                                                                                                </c:if>
                                                                                             </c:forEach>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-3">
-                                                                                        <label class="col-form-label">Phone number</label>
+                                                                                        <label class="col-form-label font-weight-bold">Phone number</label>
                                                                                         <div>
                                                                                             ${c.phone}
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group col-3">
-                                                                                        <label class="col-form-label">Sex</label>
+                                                                                        <label class="col-form-label font-weight-bold">Sex</label>
                                                                                         <div>
                                                                                             ${c.gender}
 
-                                                                                            </div>
                                                                                         </div>
-                                                                                        <div class="form-group col-6">
-                                                                                            <label class="col-form-label">Address</label>
-                                                                                            <div>
-                                                                                                ${c.address}
+                                                                                    </div>
+                                                                                    <div class="form-group col-6">
+                                                                                        <label class="col-form-label font-weight-bold">Address</label>
+                                                                                        <div>
+                                                                                            ${c.address}
                                                                                         </div>
                                                                                     </div>
                                                                                 </c:if>
@@ -640,73 +651,70 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Profession</label>
+                                                                                <label class="col-form-label font-weight-bold">Profession</label>
                                                                                 <div>
                                                                                     ${v.jobProfession}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Framework</label>
+                                                                                <label class="col-form-label font-weight-bold">Framework</label>
                                                                                 <div>
                                                                                     ${v.framework}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-3">
-                                                                                <label class="col-form-label">Education</label>
+                                                                                <label class="col-form-label font-weight-bold">Education</label>
                                                                                 <div>
                                                                                     ${v.education}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-3">
-                                                                                <label class="col-form-label">Price</label>
+                                                                                <label class="col-form-label font-weight-bold">Price</label>
                                                                                 <div>
                                                                                     ${v.price}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Activity</label>
+                                                                                <label class="col-form-label font-weight-bold">Activity</label>
                                                                                 <div>
                                                                                     ${v.activity}
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Profession Introduction</label>
+                                                                                <label class="col-form-label font-weight-bold">Profession Introduction</label>
                                                                                 <div>
                                                                                     ${v.professionIntroduction}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Service description</label>
+                                                                                <label class="col-form-label font-weight-bold">Service description</label>
                                                                                 <div>
                                                                                     ${v.serviceDescription}
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Skills</label><br/>
-                                                                                <br/>
+                                                                                <label class="col-form-label font-weight-bold">Skills</label><br/>
                                                                                 <div>
-                                                                                    <ul class="border p-3 rounded mr-3 mb-3" class="category" style="list-style-type: none;display: flex; flex-wrap: wrap; gap: 10px;">
-                                                                                        <c:forEach items="${requestScope.listSkillList}" var="s">
-                                                                                            <c:if test="${v.mentorId==s.mentorId}">
-                                                                                            <li style="max-width: 200px;word-wrap: break-word;">
-                                                                                                <c:forEach items="${requestScope.listSkill}" var="x">
-                                                                                                    <c:if test="${s.skillId==x.skillId}">
-                                                                                                <label class="col-form-label">
-                                                                                                ${x.skillName}
-                                                                                                </label>
-                                                                                                        
-                                                                                                    </c:if>    
-                                                                                                </c:forEach>
-                                                                                            </li>
-                                                                                            </c:if>
-                                                                                        </c:forEach>
-                                                                                    </ul>
+
+                                                                                    <c:forEach items="${requestScope.listSkillList}" var="s">
+                                                                                        <c:if test="${v.cvId==s.cvId}">
+                                                                                            <c:forEach items="${requestScope.listSkill}" var="x">
+                                                                                                <c:if test="${s.skillId==x.skillId}">
+                                                                                                    <label class="col-form-label" >
+                                                                                                        ${x.skillName} &nbsp;&nbsp;&nbsp;&nbsp;         
+                                                                                                    </label>
+                                                                                                </c:if>    
+                                                                                            </c:forEach>
+
+                                                                                        </c:if>
+                                                                                    </c:forEach>
+
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-6">
-                                                                                <label class="col-form-label">Archivement description</label>
+                                                                                <label class="col-form-label font-weight-bold">Archivement description</label>
                                                                                 <div>
                                                                                     ${v.experience}
                                                                                 </div>
@@ -717,8 +725,8 @@
 
 
                                                                             <div class="col-12">
-                                                                                <button type="submit" class="btn">Save changes</button>
-                                                                                <a href="cvlist?id=${requestScope.uFound.mentorId}" type="reset" style=" color: white" class="btn-secondry">Cancel</a>
+                                                                                <br/>
+
                                                                             </div>
                                                                         </div>
                                                                     </form>
@@ -734,6 +742,8 @@
                                             </div>
                                         </c:forEach>
                                     </ul>
+
+
 
 
                                 </div>
