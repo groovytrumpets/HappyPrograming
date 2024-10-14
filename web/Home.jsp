@@ -379,7 +379,7 @@
             </div>
             <!-- Content END-->
             <!-- Footer ==== -->
-             <jsp:include page="footer.jsp" />
+              <jsp:include page="footer.jsp" />
             <!-- Footer END ==== -->
             <button class="back-to-top fa fa-chevron-up" ></button>
         </div>
