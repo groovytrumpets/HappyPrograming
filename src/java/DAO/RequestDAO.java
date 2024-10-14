@@ -269,6 +269,47 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
+    
+    public List<Request> getRequestsByMenteeUsername(String username) {
+        List<Request> requests = new ArrayList<>();
+        String query = "SELECT * FROM [Request] WHERE MenteeID = (SELECT MenteeID FROM Mentee WHERE Username = ?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Request request = new Request(
+                        rs.getInt("RequestID"), 
+                        rs.getInt("MentorID"), 
+                        rs.getInt("MenteeID"), 
+                        rs.getFloat("Price"), 
+                        rs.getString("Note"), 
+                        rs.getDate("CreateDate").toLocalDate(), 
+                        rs.getString("Status"), 
+                        rs.getString("Title"), 
+                        rs.getString("Framework"), 
+                        rs.getDate("StartDate").toLocalDate(), 
+                        rs.getDate("EndDate").toLocalDate(), 
+                        rs.getInt("SkillID"));
+                requests.add(request);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+    public void deleteRequest(int requestId) {
+        String sql = "DELETE FROM Request WHERE RequestID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, requestId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getNumOfMentorEachMentee(int menteeId) {
         int count = 0;

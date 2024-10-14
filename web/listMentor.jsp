@@ -4,14 +4,8 @@
     Author     : asus
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="Model.Mentor" %>
-<%@ page import="DAO.MentorDAO" %>
-<%
-    MentorDAO mentorDAO = new MentorDAO();
-    List<Mentor> mentorList = mentorDAO.getAllMentor(); // Fetch all mentors
-%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -124,23 +118,42 @@
                     </div>
                 </div>
                 <!-- Mentor List Section -->
-                <div class="container" style="padding-top: 25px">
-                    <% for (Mentor mentor : mentorList) { %>
-                    <div class="col-md-6 col-lg-4 col-sm-6 m-b30" >
-                        <div class="cours-bx" style="height: 110px">
-                            <div class="info-bx text-center">
-                                <h5>
-                                    <a href="ratementor?mentorId=<%= mentor.getMentorId() %>"><%= mentor.getFullName() %></a>
-                                </h5>
-                            </div>
-                            <div style="display: flex; align-items: center; padding-bottom: 10px; padding-left: 120px">
-                                <a href="ratementor?mentorId=<%= mentor.getMentorId() %>" class="btn">Review</a>
-                            </div>
-                        </div>     
-                    </div>
-                    <% } %>
-                </div>
 
+
+                <div class="courses-filter">
+                    <div class="clearfix">
+                        <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
+                            <c:forEach items="${requestScope.cvlist}" var="c">
+                                <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
+                                    <div class="cours-bx">
+                                        <div class="action-box" style="height: 250px">
+                                            <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
+
+                                        </div>
+                                        <div class="info-bx text-center">
+                                            <c:forEach items="${requestScope.mentorlist}" var="m">
+                                                <c:if test="${c.mentorId==m.mentorId}">
+                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">MentorID: ${m.fullName}</a></h5>
+                                                </c:if>
+                                            </c:forEach>
+
+                                            
+                                            <br/>
+                                            <span>Framework: ${c.framework}</span>
+                                            <br/>
+                                            <span>Education: ${c.education}</span>  
+                                        </div>
+                                        <div class="cours-more-info" style="height: 50px">
+                                            <a href="ratementor?mentorId=${c.mentorId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                Review
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- Footer ==== -->
