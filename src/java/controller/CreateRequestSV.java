@@ -192,16 +192,14 @@ public class CreateRequestSV extends HttpServlet {
             }
 
             Request newRequest = new Request(0, id, menteeid, totalP,
-                    "Nothing", creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
-            out.print(newRequest);
+                    content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
             requestDAO.insertRequest(newRequest);
             requestDAO.addItemByRequestID(selectedSlot);
+            
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
-
-            out.print(e);
         }
 
     }
