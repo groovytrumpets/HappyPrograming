@@ -11,12 +11,14 @@ import Model.Skill;
 import Model.SkillList;
 import Model.StatisticSkills;
 import Model.User;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -65,7 +67,7 @@ public class CVDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
                 return cv;
 
             }
@@ -75,6 +77,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+
     public CV getCVbyCVId(int id) {
         //lenh sql select * from categories cach 1:
         String sql = "select*from [dbo].[CV] where CVID =?;";
@@ -90,7 +93,7 @@ public class CVDAO extends DBContext {
                         rs.getString("certificate"), rs.getDate("createDate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
                 return cv;
 
             }
@@ -100,6 +103,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+
     public List<CV> getListofCVbyMentorId(int id) {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
@@ -110,24 +114,89 @@ public class CVDAO extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
-                        rs.getString("education"), rs.getString("experience"),
-                        rs.getString("activity"), rs.getString("professionIntroduction"),
-                        rs.getString("certificate"), rs.getDate("createDate"),
+
+                java.sql.Timestamp timestamp = rs.getTimestamp("createDate");
+                CV cv = new CV(rs.getInt("cvId"),
+                        rs.getInt("mentorId"), rs.getString("education"),
+                        rs.getString("experience"), rs.getString("activity"),
+                        rs.getString("professionIntroduction"),
+                        rs.getString("certificate"),
                         rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
                         rs.getString("serviceDescription"), rs.getString("status"),
-                        rs.getString("framework"), rs.getBytes("avatar"),rs.getFloat("price"));
+                        rs.getString("framework"), rs.getBytes("avatar"),
+                        rs.getFloat("price"), timestamp);
                 cvList.add(cv);
 
             }
-                return cvList;
+            return cvList;
         } catch (SQLException e) {
             System.out.println(e);
         }
 
         return null;
     }
-    
+
+    public List<CV> getListofCV() {
+        List<CV> cvList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from CV";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                java.sql.Timestamp timestamp = rs.getTimestamp("createDate");
+                CV cv = new CV(rs.getInt("cvId"),
+                        rs.getInt("mentorId"), rs.getString("education"),
+                        rs.getString("experience"), rs.getString("activity"),
+                        rs.getString("professionIntroduction"),
+                        rs.getString("certificate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"),
+                        rs.getFloat("price"), timestamp);
+                cvList.add(cv);
+
+            }
+            return cvList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<CV> getListofActiveCV() {
+        List<CV> cvList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from CV where Status='active'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                java.sql.Timestamp timestamp = rs.getTimestamp("createDate");
+                CV cv = new CV(rs.getInt("cvId"),
+                        rs.getInt("mentorId"), rs.getString("education"),
+                        rs.getString("experience"), rs.getString("activity"),
+                        rs.getString("professionIntroduction"),
+                        rs.getString("certificate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"),
+                        rs.getFloat("price"), timestamp);
+                cvList.add(cv);
+
+            }
+            return cvList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public void updateMentor(Mentor c) {
         String sql = "UPDATE [dbo].[Mentor]\n"
@@ -152,7 +221,8 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void updateCV(CV c,int cvid) {
+    public int updateCV(CV c, int cvid) {
+        int CVid = -1;
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
@@ -161,7 +231,7 @@ public class CVDAO extends DBContext {
                 + "      ,[JobProfession] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
-                + " WHERE [CVID] = ?";
+                + " WHERE [CVID] = ?;SELECT SCOPE_IDENTITY();";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, c.getEducation());
@@ -175,10 +245,14 @@ public class CVDAO extends DBContext {
             st.setFloat(9, c.getPrice());
             st.setInt(10, cvid);
             st.executeUpdate();
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+            CVid = rs.getInt(1); // Lấy CVid tự động tạo
+        }
         } catch (SQLException e) {
             System.out.println(e);
         }
-
+        return CVid;
     }
 
     public void updateUser(String userid, String username, String email) {
@@ -195,9 +269,9 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public List<StatisticSkills> getMentorSkillList(int id) {
+    public List<StatisticSkills> getCVSkillList(int id) {
         List<StatisticSkills> list = new ArrayList<>();
-        String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
+        String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where CVID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -212,9 +286,26 @@ public class CVDAO extends DBContext {
         }
         return list;
     }
-    
-    
+
     public List<Skill> getMentorSkillListByMentorID(int id) {
+        List<Skill> list = new ArrayList<>();
+        String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Skill skill = new Skill(rs.getInt("skillId"),
+                        rs.getString("skillName"));
+                list.add(skill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print the exception for debugging
+        }
+        return list;
+    }
+
+    public List<Skill> getMentorSkillListByCVID(int id) {
         List<Skill> list = new ArrayList<>();
         String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
         try {
@@ -234,7 +325,7 @@ public class CVDAO extends DBContext {
 
     public List<Skill> getSkillList(int id) {
         List<Skill> list = new ArrayList<>();
-        String sql = "select s.SkillID,s.SkillName from Skill s left join SkillList sl on s.SkillID=sl.SkillID and sl.MentorID = ?\n"
+        String sql = "select s.SkillID,s.SkillName from Skill s left join SkillList sl on s.SkillID=sl.SkillID and sl.CVID = ?\n"
                 + "where sl.SkillID is null;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -251,7 +342,7 @@ public class CVDAO extends DBContext {
     }
 
     public void deleteMentorSkills(int MentorId, String[] deleteSkills) {
-        String sql = "delete from SkillList where MentorID =? and SkillID =?";
+        String sql = "delete from SkillList where CVID =? and SkillID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             for (String i : deleteSkills) {
@@ -264,20 +355,24 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void insertMentorSkills(int MentorId, String[] addSkills) {
+    public void insertMentorSkills(int MentorId, String[] addSkills,int cvId) {
         String sql = "INSERT INTO [dbo].[SkillList]\n"
                 + "           ([SkillID]\n"
                 + "           ,[MentorID]\n"
-                + "           ,[Rating])\n"
+                + "           ,[Rating]\n"
+                + "           ,[CVID])\n"
                 + "     VALUES\n"
-                + "           (?,?,null)";
+                + "           (?,?,null,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             for (String addSkill : addSkills) {
 
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
+                st.setInt(3, cvId);
+                
                 st.executeUpdate();
+                
             }
 
         } catch (SQLException e) {
@@ -324,7 +419,8 @@ public class CVDAO extends DBContext {
         return false;
     }
 
-    public void createCV(CV cv) {
+    public int createCV(CV cv) {
+        int CVid = -1;
         String sql = "INSERT INTO [dbo].[CV]\n"
                 + "           ([MentorID]\n"
                 + "           ,[Education]\n"
@@ -339,7 +435,7 @@ public class CVDAO extends DBContext {
                 + "           ,[Framework]\n"
                 + "           ,[Avatar],[Price])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,GETDATE(),?,?,'inactive',?,?,?)";
+                + "           (?,?,?,?,?,?,GETDATE(),?,?,'inactive',?,?,?)SELECT SCOPE_IDENTITY();";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, cv.getMentorId());
@@ -354,13 +450,16 @@ public class CVDAO extends DBContext {
             st.setBytes(10, cv.getAvatar());
             st.setFloat(11, cv.getPrice());
             st.executeUpdate();
-
+             ResultSet rs = st.getGeneratedKeys();
+        if (rs.next()) {
+            CVid = rs.getInt(1); // Lấy CVid tự động tạo
+        }
+        
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return CVid;
     }
-
-    
 
     public List<Rate> getMentorRateList(int id) {
         List<Rate> list = new ArrayList<>();
@@ -435,7 +534,7 @@ public class CVDAO extends DBContext {
                 curCV.setActivity(rs.getString("Activity"));
                 curCV.setProfessionIntroduction(rs.getString("ProfessionIntroduction"));
                 curCV.setCertificate(rs.getString("Certificate"));
-                
+
                 curCV.setCreateDate(rs.getString("CreateDate"));
                 curCV.setJobProfession(rs.getString("JobProfession"));
                 curCV.setYearOfExperience(rs.getInt("YearOfExperience"));
@@ -491,7 +590,8 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
-   public static void main(String[] args) {
+
+    public static void main(String[] args) {
         CVDAO c = new CVDAO();
         System.out.println(c.getCVbyMentorId(7));
     }
@@ -506,6 +606,126 @@ public class CVDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
-    
+
+    }
+
+    public List<Mentor> getListofMentor() {
+        List<Mentor> mentorList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from [Mentor]";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Mentor mentor = new Mentor(rs.getInt("mentorId"),
+                        rs.getInt("roleId"), rs.getString("username"),
+                        rs.getDate("createDate"), rs.getString("phone"),
+                        rs.getString("address"), rs.getDate("dateOfBirth"),
+                        rs.getString("fullName"), rs.getString("gender"),
+                        rs.getString("status"));
+                mentorList.add(mentor);
+
+            }
+            return mentorList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<User> getListofUser() {
+        List<User> userList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from [User]";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                User us = new User();
+                us.setUsername(rs.getString("username"));
+                us.setEmail(rs.getString("email"));
+                userList.add(us);
+
+            }
+            return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<Skill> getListofSkill() {
+        List<Skill> userList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from [Skill]";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Skill skill = new Skill();
+                skill.setSkillId(rs.getInt("skillId"));
+                skill.setSkillName(rs.getString("skillName"));
+                userList.add(skill);
+
+            }
+            return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<SkillList> getListofSkillList() {
+        List<SkillList> userList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from SkillList";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                SkillList skillList = new SkillList(rs.getInt("skillListId"),
+                        rs.getInt("skillId"), rs.getInt("mentorId"),
+                        rs.getInt("rating"),rs.getInt("cvId"));
+                userList.add(skillList);
+
+            }
+            return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public void setStatusActiveCvId(int id) {
+        String sql = "Update CV set Status ='active' where CVID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public void setStatusInactiveCvId(int id) {
+        String sql = "Update CV set Status ='inactive' where CVID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

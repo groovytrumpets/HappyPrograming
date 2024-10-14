@@ -3,16 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.CV;
+package controller.Manager;
 
 import DAO.CVDAO;
-import DAO.HomeDAO;
 import Model.CV;
-import Model.Mentee;
-import Model.Mentor;
-import Model.Rate;
-import Model.Skill;
-import Model.StatisticSkills;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,8 +20,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="ViewProfileCVServlet", urlPatterns={"/viewprofilecv"})
-public class ViewProfileCVServlet extends HttpServlet {
+@WebServlet(name="ActiveMentorCVServlet", urlPatterns={"/activecv"})
+public class ActiveMentorCVServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -44,10 +38,10 @@ public class ViewProfileCVServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProfileCVServlet</title>");  
+            out.println("<title>Servlet ActiveMentorCVServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProfileCVServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ActiveMentorCVServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,41 +59,36 @@ public class ViewProfileCVServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        String error = request.getParameter("error");
-        
-        
         int id;
-        CVDAO cvd = new CVDAO();
         try {
             id = Integer.parseInt(id_raw);
-            Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
-            //String email = cvd.getUserEmail(id);
-            List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(id);
-            int rateAve = cvd.getAveRatebyId(id);
-            HomeDAO hdao = new HomeDAO();
-            List<Mentee> menteeList = hdao.getListofMentee();
-            
-            
-            request.setAttribute("skillMentor", mentorSkillList);
-            
-            
-            
-            request.setAttribute("error", error);
-            //request.setAttribute("email", email);
-            request.setAttribute("uFound", mentor);
-            request.setAttribute("cvFound", cv);
-            request.setAttribute("rate", rateList);
-            request.setAttribute("menteeList", menteeList);
-            request.setAttribute("rateAve", rateAve);
-            
-            
-            request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
+            CVDAO cvd = new CVDAO();
+            CV cv = cvd.getCVbyCVId(id);
+            List<CV> listCV = cvd.getListofCVbyMentorId(cv.getMentorId());
+            boolean haveCVActive=false;
+            for (CV cv1 : listCV) {
+                if (cv1.getStatus().equalsIgnoreCase("active")) {
+                    haveCVActive=true;
+                }
+            }
+//            System.out.println(haveCVActive);
+            if (cv.getStatus().equalsIgnoreCase("inactive")&&haveCVActive) {
+                //error
+                response.sendRedirect("cvmanager?error=Mentor already have actived CV");
+            }else{
+                if (cv.getStatus().equalsIgnoreCase("inactive")) {
+                    cvd.setStatusActiveCvId(id);
+            response.sendRedirect("cvmanager");
+                }
+                if (cv.getStatus().equalsIgnoreCase("active")) {
+                    cvd.setStatusInactiveCvId(id);
+            response.sendRedirect("cvmanager");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.

@@ -372,8 +372,10 @@
                                                         
                                                     </div>
                                                     <div class="info-bx text-center">
-                                                        <h5><a href="#">CV no#${c.cvId}</a></h5>
-                                                        <span>Last change: ${c.createDate}</span>
+                                                        <h5><a href="#">CV id: ${c.cvId}</a></h5>
+                                                        <span>Last change:</span>
+                                                        <br/>
+                                                        <span> ${c.createDate}</span>
                                                     </div>
                                                     <div class="cours-more-info" style="height: 50px">
                                                         <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
