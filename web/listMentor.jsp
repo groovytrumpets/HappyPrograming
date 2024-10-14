@@ -121,19 +121,19 @@
 
 
                 <div class="courses-filter">
-                    <div class="clearfix">
+                    <div class="clearfix" style="padding-left: 70px">
                         <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
                             <c:forEach items="${requestScope.cvlist}" var="c">
                                 <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
                                     <div class="cours-bx">
-                                        <div class="action-box" style="height: 250px">
+                                        <div class="action-box" style="height: 250px" >
                                             <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
 
                                         </div>
                                         <div class="info-bx text-center">
                                             <c:forEach items="${requestScope.mentorlist}" var="m">
                                                 <c:if test="${c.mentorId==m.mentorId}">
-                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">MentorID: ${m.fullName}</a></h5>
+                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
                                                 </c:if>
                                             </c:forEach>
 
