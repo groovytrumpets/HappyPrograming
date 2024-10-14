@@ -58,7 +58,6 @@ public class SkillListDAO extends DBContext {
                 + "from CV\n"
                 + "join SkillList s on CV.MentorID = s.MentorID\n"
                 + "where s.SkillID =?";
-
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
