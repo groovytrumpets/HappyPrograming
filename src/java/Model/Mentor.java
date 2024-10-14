@@ -4,6 +4,7 @@
  */
 package Model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -137,5 +138,8 @@ public class Mentor {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+    public String getDateOfBirthFormatted() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(this.dateOfBirth);
+    }
 }
