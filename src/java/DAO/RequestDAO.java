@@ -52,8 +52,19 @@ public class RequestDAO extends DBContext {
     }
 
     public void insertRequest(Request request) {
-        String sql = "INSERT INTO Request (MentorID, MenteeID, Price, Note, CreateDate, Status, Title,Framework, StartDate, EndDate, SkillID) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [dbo].[Request]\n"
+                + "           ([MentorID]\n"
+                + "           ,[MenteeID]\n"
+                + "           ,[Price]\n"
+                + "           ,[Note]\n"
+                + "           ,[CreateDate]\n"
+                + "           ,[Status]\n"
+                + "           ,[Title]\n"
+                + "           ,[Framework]\n"
+                + "           ,[StartDate]\n"
+                + "           ,[EndDate]\n"
+                + "           ,[SkillID])\n"
+                + "     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -173,9 +184,6 @@ public class RequestDAO extends DBContext {
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
-        List<RequestSlotItem> curList = act.getDuplicateSlot(4);
-        for (int i = 0; i < curList.size(); i++) {
-            System.out.println(curList.get(i));
-        }
+
     }
 }

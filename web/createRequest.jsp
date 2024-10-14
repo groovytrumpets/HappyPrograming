@@ -378,7 +378,7 @@
                                                         <li>
                                                             <div class="check-box">
                                                                 <label class="col-form-label">
-                                                                    <input type="radio" class="checkbox" name="addSkills" value="${c.skillId}">
+                                                                    <input type="radio" class="checkbox" name="addSkills" value="${c.skillId}" required="">
                                                                     ${c.skillName}
                                                                 </label>
                                                             </div>
