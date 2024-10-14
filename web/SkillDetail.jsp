@@ -277,7 +277,6 @@
                                                     <div class="instructor-bx">
                                                         <div class="instructor-author">
                                                             <img src="getCVimage?id=${cvs.cvId}" alt="mentor image">
-                         
                                                         </div>
                                                         <div class="instructor-info">
                                                             <h6>${mentors.fullName} </h6>

@@ -342,18 +342,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
-                                            <label class="col-form-label">Deadline hour</label>
-                                            <div>
-                                                <input class="form-control" type="time" value="" name="hour" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label class="col-form-label">Deadline date</label>
-                                            <div>
-                                                <input class="form-control" type="date" value="" name="date" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-6">
                                             <label class="col-form-label">Start Date</label>
                                             <div>
                                                 <input class="form-control" type="date" value="" name="start" id="start" required>
@@ -390,7 +378,7 @@
                                                         <li>
                                                             <div class="check-box">
                                                                 <label class="col-form-label">
-                                                                    <input type="checkbox" class="checkbox" name="addSkills" value="${c.skillId}">
+                                                                    <input type="radio" class="checkbox" name="addSkills" value="${c.skillId}">
                                                                     ${c.skillName}
                                                                 </label>
                                                             </div>

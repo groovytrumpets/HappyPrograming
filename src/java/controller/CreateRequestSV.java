@@ -12,6 +12,7 @@ import DAO.RequestDAO;
 import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentor;
+import Model.Payment;
 import Model.Request;
 import Model.RequestSlotItem;
 import Model.Skill;
@@ -137,47 +138,33 @@ public class CreateRequestSV extends HttpServlet {
         String id_raw = request.getParameter("id");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        String hour = request.getParameter("hour");
-        String date = request.getParameter("date");
         String end = request.getParameter("end");
         String start = request.getParameter("start");
         String total = request.getParameter("totalPrice");
         String framework = request.getParameter("framework");
-        String[] selectedSkills = request.getParameterValues("addSkills");
+        String selectedSkills = request.getParameter("addSkills");
         String[] selectedSlot = request.getParameterValues("addSlot");
+
         try {
             int id = Integer.parseInt(id_raw);
+            int skill = Integer.parseInt(selectedSkills);
             float totalP = Float.parseFloat(total);
 
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            LocalDate selectedDate = LocalDate.parse(date, dateFormatter);
-            LocalTime selectedTime = LocalTime.parse(hour, timeFormatter);
             LocalDate selectedStartDate = LocalDate.parse(start, dateFormatter);
             LocalDate selectedEndDate = LocalDate.parse(end, dateFormatter);
 
-            LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, selectedTime);
-
             LocalDateTime now = LocalDateTime.now();
             LocalDate creaDate = LocalDate.now();
-
-            if (selectedDateTime.isBefore(now)) {
-                response.sendRedirect("createrequest?id=" + id + "&error=Deadline date or deadline not available");
-                return;
-            }
 
             if (selectedEndDate.isBefore(selectedStartDate)) {
                 response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
                 return;
             }
 
-            if (selectedSkills == null || selectedSkills.length > 3) {
-                response.sendRedirect("createrequest?id=" + id + "&error=You must select 1 skill and max is 3");
-                return;
-            }
-
-            if (selectedSlot == null) {
+            if (selectedSlot == null || selectedSlot.length == 0) {
                 response.sendRedirect("createrequest?id=" + id + "&error=You must select at least 1 slot");
                 return;
             }
@@ -195,20 +182,22 @@ public class CreateRequestSV extends HttpServlet {
                 }
 
             }
-            
-            if (paymentDAO.getNewestPaymentByMenteeId(menteeid).getBalance() < totalP) {
+
+            Payment payment = paymentDAO.getNewestPaymentByMenteeId(menteeid);
+            if (payment == null || payment.getBalance() < totalP) {
                 response.sendRedirect("createrequest?id=" + id + "&error=Your account doesn't have enough money");
                 return;
             }
 
             Request newRequest = new Request(0, id, menteeid, totalP,
-                    "Nothing", creaDate, "Open", title,
-                    selectedTime, selectedDate, framework, selectedStartDate, selectedEndDate);
+                    "Nothing", creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
             out.print(newRequest);
-            requestDAO.insertRequest(newRequest);
-            requestDAO.addItemByRequestID(selectedSkills, selectedSlot);
-            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
+            /*requestDAO.insertRequest(newRequest);
+            requestDAO.addItemByRequestID(selectedSlot);
+            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");*/
 
+        } catch (NumberFormatException ee) {
+            out.print(ee);
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
 
