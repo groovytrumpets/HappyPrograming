@@ -156,10 +156,65 @@ public class MenteeDAO extends DBContext {
 
         return listMen;
     }
+
+    public List<Mentee> getListMenteePagination(int page, int display) {
+        List<Mentee> listMen = new ArrayList<>();
+        String sql = "SELECT [MenteeID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Avatar]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Email]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentee]\n"
+                + "  order by FullName asc\n"
+                + "  OFFSET ? ROWS\n"
+                + "  FETCH NEXT ? ROW  ONLY";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (page-1)*display;
+            st.setInt(1, offset);
+            st.setInt(2, display);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Mentee curMentee = new Mentee();
+                curMentee.setMenteeId(rs.getInt("MenteeID"));
+                curMentee.setRoleId(rs.getInt("RoleID"));
+                byte[] avatar = rs.getBytes("Avatar");
+                if (avatar != null) {
+                    curMentee.setAvatar(avatar);
+                } else {
+                    curMentee.setAvatar(null);
+                }
+                curMentee.setUsername(rs.getString("Username"));
+                curMentee.setCreateDate(rs.getDate("CreateDate"));
+                curMentee.setEmail(rs.getString("Email"));
+                curMentee.setPhone(rs.getString("Phone"));
+                curMentee.setAddress(rs.getString("Address"));
+                curMentee.setDateOfBirth(rs.getDate("DateOfBirth"));
+                curMentee.setFullName(rs.getString("FullName"));
+                curMentee.setGender(rs.getString("Gender"));
+                curMentee.setStatus(rs.getString("Status"));
+                listMen.add(curMentee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listMen;
+    }
+
     public static void main(String[] args) {
         MenteeDAO actMentee = new MenteeDAO();
-        List<Mentee> list1 = actMentee.getAllMentee();
-        System.out.println(list1.get(0).getFullName());
+        List<Mentee> list1 = actMentee.getListMenteePagination(1, 10);
+        System.out.println(list1.get(4).getFullName());
     }
 
 }

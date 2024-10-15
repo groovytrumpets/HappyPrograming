@@ -10,6 +10,8 @@ import DAO.MentorDAO;
 import DAO.PaymentDAO;
 import DAO.RequestDAO;
 import DAO.SlotDAO;
+import DAO.Wallet;
+import DAO.WalletDAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Payment;
@@ -129,6 +131,7 @@ public class CreateRequestSV extends HttpServlet {
         CVDAO cvDAO = new CVDAO();
         SlotDAO slotDAO = new SlotDAO();
         PaymentDAO paymentDAO = new PaymentDAO();
+        WalletDAO walletDAO = new WalletDAO();
 
         HttpSession sesion = request.getSession();
         User a = new User();
@@ -163,7 +166,7 @@ public class CreateRequestSV extends HttpServlet {
                 response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
                 return;
             }
-
+            
             if (selectedSlot == null || selectedSlot.length == 0) {
                 response.sendRedirect("createrequest?id=" + id + "&error=You must select at least 1 slot");
                 return;
@@ -183,8 +186,8 @@ public class CreateRequestSV extends HttpServlet {
 
             }
 
-            Payment payment = paymentDAO.getNewestPaymentByMenteeId(menteeid);
-            if (payment == null || payment.getBalance() < totalP) {
+            Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+            if (wallet == null || wallet.getBalance() < totalP) {
                 response.sendRedirect("createrequest?id=" + id + "&error=Your account doesn't have enough money");
                 return;
             }
@@ -192,12 +195,12 @@ public class CreateRequestSV extends HttpServlet {
             Request newRequest = new Request(0, id, menteeid, totalP,
                     "Nothing", creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
             out.print(newRequest);
-            /*requestDAO.insertRequest(newRequest);
+            requestDAO.insertRequest(newRequest);
             requestDAO.addItemByRequestID(selectedSlot);
-            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");*/
+            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
-        } catch (NumberFormatException ee) {
-            out.print(ee);
+
+
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
 
