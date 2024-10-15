@@ -19,6 +19,9 @@ public class RequestSlotItem {
         this.slotId = slotId;
     }
 
+    public RequestSlotItem() {
+    }
+
     public int getRequestSlotItemId() {
         return requestSlotItemId;
     }
