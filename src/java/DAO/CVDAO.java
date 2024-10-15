@@ -9,6 +9,7 @@ import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
 import Model.SkillList;
+import Model.Slot;
 import Model.StatisticSkills;
 import Model.User;
 import java.security.Timestamp;
@@ -19,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -876,6 +878,35 @@ public class CVDAO extends DBContext {
 
             }
             return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<Slot> getSlotByMentorId(int mentorId) {
+        List<Slot> slotList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Slot where MentorID = ? and Status = 'avaiable'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1,mentorId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Slot sl = new Slot();
+                sl.setSlotID(rs.getInt("slotID"));
+                sl.setMentorID(rs.getInt("mentorID"));
+                sl.setStartTime(rs.getTime("startTime").toLocalTime());
+                sl.setStartTime(rs.getTime("endTime").toLocalTime());
+                sl.setDayInWeek(rs.getString("dayInWeek"));
+                sl.setStatus(rs.getString("status"));
+                slotList.add(sl);
+
+            }
+            return slotList;
         } catch (SQLException e) {
             System.out.println(e);
         }

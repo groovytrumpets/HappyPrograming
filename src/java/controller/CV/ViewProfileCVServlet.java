@@ -12,7 +12,10 @@ import Model.Mentee;
 import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
+import Model.Slot;
 import Model.StatisticSkills;
+import com.google.gson.Gson;
+import static controller.Mentor.SlotViewServlet.convertDayInWeekToCurrentDate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +23,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,6 +98,19 @@ public class ViewProfileCVServlet extends HttpServlet {
             request.setAttribute("menteeList", menteeList);
             request.setAttribute("rateAve", rateAve);
             
+            
+            //slot view
+            List<String> dateConverted = new ArrayList<>();
+            List<Slot> mentorSlot = cvd.getSlotByMentorId(id);
+            //System.out.println(mentorSlot.get(0).getDayInWeek());
+            for (int i = 0; i < mentorSlot.size(); i++) {
+                String date = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();
+                //System.out.println(date+", "+mentorSlot.get(i).getStartTime());
+                dateConverted.add(date);
+            }
+
+            request.setAttribute("key", new Gson().toJson("Good Doog"));
+            request.setAttribute("values", new Gson().toJson(dateConverted));
             
             request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
         } catch (Exception e) {
