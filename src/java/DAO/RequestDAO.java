@@ -6,6 +6,7 @@ package DAO;
 
 import Model.Request;
 import Model.RequestSlotItem;
+import Model.StatisticRequests;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -492,6 +493,32 @@ public class RequestDAO extends DBContext {
         return null;
 
 
+        
+    }
+public List<StatisticRequests> getRequestStatistics(int menteeId) {
+        List<StatisticRequests> statistics = new ArrayList<>();
+        String sql = "SELECT Title, COUNT(*) AS totalRequests, "
+                + "SUM(DATEDIFF(hour, StartDate, EndDate)) AS totalHours, "
+                + "COUNT(DISTINCT MentorID) AS totalMentors "
+                + "FROM Request WHERE MenteeID = ? GROUP BY Title";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, menteeId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("Title");
+                int totalRequests = rs.getInt("totalRequests");
+                int totalHours = rs.getInt("totalHours");
+                int totalMentors = rs.getInt("totalMentors");
+
+                // Create a RequestStatistic object to hold the data
+                StatisticRequests stt = new StatisticRequests(title, totalRequests, totalHours, totalMentors);
+                statistics.add(stt);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statistics;
     }
 
     public static void main(String[] args) {
