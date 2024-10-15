@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -247,8 +249,8 @@ public class CVDAO extends DBContext {
             st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
-            CVid = rs.getInt(1); // Lấy CVid tự động tạo
-        }
+                CVid = rs.getInt(1); // Lấy CVid tự động tạo
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -355,7 +357,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void insertMentorSkills(int MentorId, String[] addSkills,int cvId) {
+    public void insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
         String sql = "INSERT INTO [dbo].[SkillList]\n"
                 + "           ([SkillID]\n"
                 + "           ,[MentorID]\n"
@@ -370,9 +372,9 @@ public class CVDAO extends DBContext {
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
                 st.setInt(3, cvId);
-                
+
                 st.executeUpdate();
-                
+
             }
 
         } catch (SQLException e) {
@@ -450,11 +452,11 @@ public class CVDAO extends DBContext {
             st.setBytes(10, cv.getAvatar());
             st.setFloat(11, cv.getPrice());
             st.executeUpdate();
-             ResultSet rs = st.getGeneratedKeys();
-        if (rs.next()) {
-            CVid = rs.getInt(1); // Lấy CVid tự động tạo
-        }
-        
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                CVid = rs.getInt(1); // Lấy CVid tự động tạo
+            }
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -696,7 +698,7 @@ public class CVDAO extends DBContext {
 
                 SkillList skillList = new SkillList(rs.getInt("skillListId"),
                         rs.getInt("skillId"), rs.getInt("mentorId"),
-                        rs.getInt("rating"),rs.getInt("cvId"));
+                        rs.getInt("rating"), rs.getInt("cvId"));
                 userList.add(skillList);
 
             }
@@ -718,6 +720,7 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
+
     public void setStatusInactiveCvId(int id) {
         String sql = "Update CV set Status ='inactive' where CVID =?";
         try {
@@ -727,5 +730,156 @@ public class CVDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    public Map<String, Integer> getRatingMapbyMentorId(int mentorid) {
+        Map<String, Integer> monthlyRatings = new HashMap<>();
+        String sql = "select s.SkillName,sl.Rating from SkillList sl join Skill s on sl.SkillID = s.SkillID where sl.MentorID =?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                String month = "'" + rs.getString("SkillName") + "'";
+                int rating = rs.getInt("Rating");
+
+                //System.out.println(monthName+", "+rating);
+                monthlyRatings.put(month, rating);
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return monthlyRatings;
+    }
+
+    public int countInvitedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Pending'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int countAcceptedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int countCanceledRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=1 and Status ='Canceled'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int countRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public List<Mentor> getListofMentorbyName(String name) {
+        List<Mentor> mentorList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select m.MentorID,m.RoleID,m.Username,m.CreateDate,m.Phone,m.Address,m.DateOfBirth,m.FullName,m.Gender,m.Status\n"
+                + "from Mentor m join [User] u on m.Username=u.Username where m.FullName like ? or m.Username like ? or u.Email like ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            st.setString(2, "%" + name + "%");
+            st.setString(3, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Mentor mentor = new Mentor(rs.getInt("mentorId"),
+                        rs.getInt("roleId"), rs.getString("username"),
+                        rs.getDate("createDate"), rs.getString("phone"),
+                        rs.getString("address"), rs.getDate("dateOfBirth"),
+                        rs.getString("fullName"), rs.getString("gender"),
+                        rs.getString("status"));
+                mentorList.add(mentor);
+
+            }
+            return mentorList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<User> getListofUserbyName(String name) {
+        List<User> userList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from [User] where Email like ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                User us = new User();
+                us.setUsername(rs.getString("username"));
+                us.setEmail(rs.getString("email"));
+                userList.add(us);
+
+            }
+            return userList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
     }
 }
