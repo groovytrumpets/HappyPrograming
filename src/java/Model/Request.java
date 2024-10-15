@@ -22,9 +22,10 @@ public class Request {
     private String status;
     private String title;
     private LocalDate startDate;
-    private LocalDate endDate; 
+    private LocalDate endDate;
     private String framework;
     private int skillId;
+
 
     public Request() {
     }
@@ -50,7 +51,6 @@ public class Request {
         return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", framework=" + framework + ", skillId=" + skillId + '}';
     }
 
-    
     public int getSkillId() {
         return skillId;
     }
@@ -78,7 +78,6 @@ public class Request {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-
 
     public int getRequestId() {
         return requestId;
@@ -152,5 +151,3 @@ public class Request {
         this.framework = framework;
     }
 }
-
-

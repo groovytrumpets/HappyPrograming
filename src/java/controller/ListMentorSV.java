@@ -4,8 +4,10 @@
  */
 package controller;
 
+import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.User;
@@ -64,18 +66,30 @@ public class ListMentorSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Instantiate MentorDAO to fetch the list of mentors
-        MentorDAO mentorDAO = new MentorDAO();
-        List<Mentor> mentorList = mentorDAO.getAllMentor();
-        
+        try {
+            CVDAO cvdao = new CVDAO();
+            
+            List<CV> cvlist = cvdao.getListofActiveCV();
+            List<Mentor> mentorlist = cvdao.getListofMentor();
+            
+            request.setAttribute("cvlist", cvlist);
+            request.setAttribute("mentorlist", mentorlist);
 
-        
+            request.getRequestDispatcher("listMentor.jsp").forward(request, response);
+        } catch (Exception e) {
+            // Log the error (optional)
+            System.err.println("Error retrieving mentors: " + e.getMessage());
 
-        // Set the list of mentors as a request attribute
-        request.setAttribute("mentorList", mentorList);
+            // Optionally set an error message
+            request.setAttribute("errorMessage", "Unable to retrieve mentor list. Please try again later.");
+
+            // Forward to an error page or a specific JSP
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return; // Stop further processing
+        }
 
         // Forward the request to listMentors.jsp to display the mentor list
-        request.getRequestDispatcher("listMentor.jsp").forward(request, response);
+        
     }
 
     /**
