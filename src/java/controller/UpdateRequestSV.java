@@ -12,9 +12,6 @@ import DAO.RequestDAO;
 import DAO.SlotDAO;
 import DAO.Wallet;
 import DAO.WalletDAO;
-import Model.CV;
-import Model.Mentor;
-import Model.Payment;
 import Model.Request;
 import Model.RequestSlotItem;
 import Model.Skill;
@@ -30,17 +27,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author nhhag
  */
-@WebServlet(name = "CreateRequestSV", urlPatterns = {"/createrequest"})
-public class CreateRequestSV extends HttpServlet {
+@WebServlet(name = "UpdateRequestSV", urlPatterns = {"/updateRequest"})
+public class UpdateRequestSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,10 +54,10 @@ public class CreateRequestSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateRequestSV</title>");
+            out.println("<title>Servlet UpdateRequestSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateRequestSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateRequestSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -80,17 +75,17 @@ public class CreateRequestSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession sesion = request.getSession();
         User a = new User();
         CVDAO cvd = new CVDAO();
         SlotDAO slotDAO = new SlotDAO();
         MentorDAO mentorDAO = new MentorDAO();
+        RequestDAO requestDAO = new RequestDAO();
 
-        a = (User) sesion.getAttribute("acc");
+        /*a = (User) sesion.getAttribute("acc");
         if (a == null) {
             response.sendRedirect("signin");
-        }
+        }*/
         PrintWriter out = response.getWriter();
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");
@@ -99,16 +94,20 @@ public class CreateRequestSV extends HttpServlet {
 
         try {
             id = Integer.parseInt(id_raw);
-            List<Skill> skillList = cvd.getMentorSkillListByMentorID(id);
-            List<Slot> slotList = slotDAO.getSlotsByMentorId(id);
-            request.setAttribute("cv", cvd.getCVbyMentorId(id));
+            Request requests = requestDAO.getRequestByID(id);
+            List<Skill> list1 = cvd.getMentorSkillListByMentorID(requests.getMentorId());
+            List<Slot> slotList = slotDAO.getSlotsByMentorId(requests.getMentorId());
+            List<RequestSlotItem> checkedSlot = requestDAO.getSlotByRequestID(id);
+            request.setAttribute("cv", cvd.getCVbyMentorId(requests.getMentorId()));
             request.setAttribute("mid", id);
-            request.setAttribute("mentor", mentorDAO.findMentorByID(id));
-            request.setAttribute("skillList", skillList);
+            request.setAttribute("request", requests);
+            request.setAttribute("skillList", list1);
             request.setAttribute("error", error);
             request.setAttribute("notify", notify);
             request.setAttribute("slotList", slotList);
-            request.getRequestDispatcher("createRequest.jsp").forward(request, response);
+            request.setAttribute("checkedSlot", checkedSlot);
+            request.setAttribute("mentor", mentorDAO.findMentorByID(requests.getMentorId()));
+            request.getRequestDispatcher("updateRequest.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -152,6 +151,7 @@ public class CreateRequestSV extends HttpServlet {
             int id = Integer.parseInt(id_raw);
             int skill = Integer.parseInt(selectedSkills);
             float totalP = Float.parseFloat(total);
+            Request requests = requestDAO.getRequestByID(id);
 
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -163,23 +163,25 @@ public class CreateRequestSV extends HttpServlet {
             LocalDate creaDate = LocalDate.now();
 
             if (selectedEndDate.isBefore(selectedStartDate)) {
-                response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
+                response.sendRedirect("updateRequest?id=" + id + "&error=End date cannot be earlier than start date");
                 return;
             }
-            
+
             if (selectedSlot == null || selectedSlot.length == 0) {
-                response.sendRedirect("createrequest?id=" + id + "&error=You must select at least 1 slot");
+                response.sendRedirect("updateRequest?id=" + id + "&error=You must select at least 1 slot");
                 return;
             }
 
             List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(menteeid);
             if (listSlot != null) {
                 for (int i = 0; i < listSlot.size(); i++) {
-                    for (String slot : selectedSlot) {
-                        int slotid = Integer.parseInt(slot);
-                        if (slotid == listSlot.get(i).getSlotId()) {
-                            response.sendRedirect("createrequest?id=" + id + "&error=You must choose slot that you haven't selected");
-                            return;
+                    if (listSlot.get(i).getRequestId() != id) {
+                        for (String slot : selectedSlot) {
+                            int slotid = Integer.parseInt(slot);
+                            if (slotid == listSlot.get(i).getSlotId()) {
+                                response.sendRedirect("updateRequest?id=" + id + "&error=You must choose slot that you haven't selected");
+                                return;
+                            }
                         }
                     }
                 }
@@ -188,21 +190,20 @@ public class CreateRequestSV extends HttpServlet {
 
             Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
             if (wallet == null || wallet.getBalance() < totalP) {
-                response.sendRedirect("createrequest?id=" + id + "&error=Your account doesn't have enough money");
+                response.sendRedirect("updateRequest?id=" + id + "&error=Your account doesn't have enough money");
                 return;
             }
 
-            Request newRequest = new Request(0, id, menteeid, totalP,
+            Request newRequest = new Request(requests.getRequestId(), requests.getMentorId(), requests.getMenteeId(), totalP,
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
-            requestDAO.insertRequest(newRequest);
-            requestDAO.addItemByRequestID(selectedSlot);
-            
-            response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
+            requestDAO.updateRequest(newRequest);
+            requestDAO.updateItemsByRequestID(id, selectedSlot);
 
+            response.sendRedirect("updateRequest?id=" + id + "&notify=Update request succesfully");
 
         } catch (Exception e) {
-            response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
+            response.sendRedirect("updateRequest?id=" + id_raw + "&error=An error occured during update request");
         }
 
     }

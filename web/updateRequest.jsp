@@ -311,7 +311,7 @@
             <div class="container-fluid">
                 <div class="db-breadcrumb">
                     <h4 class="breadcrumb-title">Create request to mentor ${mentor.fullName}</h4>
-                     <h4 class="breadcrumb-title">Price: ${cv.price}VND/Slot</h4>
+                    <h4 class="breadcrumb-title">Price: ${cv.price}VND/Slot</h4>
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->
@@ -322,7 +322,7 @@
                                 <p style="color: blue"> ${notify}</p>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="createrequest" method="post" id="slotForm">
+                                <form class="edit-profile m-b30" action="updateRequest" method="post" id="slotForm">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -332,31 +332,31 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Title of request</label>
                                             <div>
-                                                <input class="form-control" type="text" value="" name="title" required>
+                                                <input class="form-control" type="text" value="${request.title}" name="title" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Content of request</label>
                                             <div>
-                                                <input class="form-control" type="text" value="" name="content" required>
+                                                <input class="form-control" type="text" value="${request.note}" name="content" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Start Date</label>
                                             <div>
-                                                <input class="form-control" type="date" value="" name="start" id="start" required>
+                                                <input class="form-control" type="date" value="${request.startDate}" name="start" id="start" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">End Date</label>
                                             <div>
-                                                <input class="form-control" type="date" value="" name="end" id="end" required>
+                                                <input class="form-control" type="date" value="${request.endDate}" name="end" id="end" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Framework</label>
                                             <div>
-                                                <input class="form-control" type="text" value="" name="framework" required>
+                                                <input class="form-control" type="text" value="${request.framework}" name="framework" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -378,12 +378,15 @@
                                                         <li>
                                                             <div class="check-box">
                                                                 <label class="col-form-label">
-                                                                    <input type="radio" class="checkbox" name="addSkills" value="${c.skillId}" required="">
+                                                                    <input type="radio" class="checkbox" name="addSkills" 
+                                                                           value="${c.skillId}" 
+                                                                           ${c.skillId == request.skillId ? 'checked' : ''} required>
                                                                     ${c.skillName}
                                                                 </label>
                                                             </div>
                                                         </li>
                                                     </c:forEach>
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -408,13 +411,20 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
                                                             <c:forEach items="${slotList}" var="s">
                                                                 <tr>
                                                                     <td>
-                                                                        <input type="checkbox" class="checkbox slot-checkbox" name="addSlot" value="${s.slotID}" data-day="${s.dayInWeek}" 
-                                                                               <c:if test="${s.status == 'inavaiable'}" >
+                                                                        <input type="checkbox" class="checkbox slot-checkbox" name="addSlot" value="${s.slotID}" data-day="${s.dayInWeek}"
+                                                                               <c:if test="${s.status == 'inavaiable'}">
                                                                                    disabled
                                                                                </c:if>
+                                                                               <c:forEach items="${checkedSlot}" var="c">
+                                                                                   <c:if test="${c.slotId == s.slotID}">
+                                                                                       checked="checked"
+                                                                                   </c:if>
+                                                                               </c:forEach>
                                                                                >
                                                                     </td>
                                                                     <td>${s.dayInWeek}</td>
@@ -423,13 +433,14 @@
                                                                     <td>${s.status}</td>
                                                                 </tr>
                                                             </c:forEach>
+
                                                         </tbody> 
                                                     </table>
                                                     <div class="col-12" style="margin-left: -15px">
                                                         <h3>Total Price: $<span id="totalPrice">0</span></h3>
                                                         <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
                                                         <button type="submit" class="btn-secondry add-item m-r5">
-                                                            <i class="fa fa-fw fa-plus-circle"></i>Create request
+                                                            <i class="fa fa-fw fa-plus-circle"></i>Update request
                                                         </button>
                                                     </div>
                                                 </div>
@@ -487,11 +498,10 @@
             }
         </script>
         <script>
-            // Price per selected day (for example purposes, let's assume each selected day costs $10)
+
             document.addEventListener('DOMContentLoaded', function () {
                 // Price per selected day (make sure this variable is set correctly in your backend)
                 const pricePerDay = ${cv.price};
-                
 
                 // Function to calculate the price based on selected days and date range
                 function calculatePrice() {
@@ -535,6 +545,7 @@
                 document.querySelectorAll('.slot-checkbox').forEach(checkbox => {
                     checkbox.addEventListener('change', calculatePrice);
                 });
+                calculatePrice();
             });
 
         </script>
