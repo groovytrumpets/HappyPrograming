@@ -5,9 +5,13 @@
 package controller;
 
 import DAO.CVDAO;
+import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.PaymentDAO;
 import DAO.RequestDAO;
 import DAO.SlotDAO;
+import DAO.Wallet;
+import DAO.WalletDAO;
 import Model.Request;
 import Model.RequestSlotItem;
 import Model.Skill;
@@ -21,6 +25,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -117,7 +124,88 @@ public class UpdateRequestSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        RequestDAO requestDAO = new RequestDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
+        CVDAO cvDAO = new CVDAO();
+        SlotDAO slotDAO = new SlotDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
+        WalletDAO walletDAO = new WalletDAO();
+
+        HttpSession sesion = request.getSession();
+        User a = new User();
+        a = (User) sesion.getAttribute("acc");
+        int menteeid = menteeDAO.findMenteeByUsername(a.getUsername()).getMenteeId();
+
+        String id_raw = request.getParameter("id");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String end = request.getParameter("end");
+        String start = request.getParameter("start");
+        String total = request.getParameter("totalPrice");
+        String framework = request.getParameter("framework");
+        String selectedSkills = request.getParameter("addSkills");
+        String[] selectedSlot = request.getParameterValues("addSlot");
+
+        try {
+            int id = Integer.parseInt(id_raw);
+            int skill = Integer.parseInt(selectedSkills);
+            float totalP = Float.parseFloat(total);
+            Request requests = requestDAO.getRequestByID(id);
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+            LocalDate selectedStartDate = LocalDate.parse(start, dateFormatter);
+            LocalDate selectedEndDate = LocalDate.parse(end, dateFormatter);
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDate creaDate = LocalDate.now();
+
+            if (selectedEndDate.isBefore(selectedStartDate)) {
+                response.sendRedirect("updateRequest?id=" + id + "&error=End date cannot be earlier than start date");
+                return;
+            }
+
+            if (selectedSlot == null || selectedSlot.length == 0) {
+                response.sendRedirect("updateRequest?id=" + id + "&error=You must select at least 1 slot");
+                return;
+            }
+
+            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(menteeid);
+            if (listSlot != null) {
+                for (int i = 0; i < listSlot.size(); i++) {
+                    if (listSlot.get(i).getRequestId() != id) {
+                        for (String slot : selectedSlot) {
+                            int slotid = Integer.parseInt(slot);
+                            if (slotid == listSlot.get(i).getSlotId()) {
+                                response.sendRedirect("updateRequest?id=" + id + "&error=You must choose slot that you haven't selected");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+            if (wallet == null || wallet.getBalance() < totalP) {
+                response.sendRedirect("updateRequest?id=" + id + "&error=Your account doesn't have enough money");
+                return;
+            }
+
+            Request newRequest = new Request(requests.getRequestId(), requests.getMentorId(), requests.getMenteeId(), totalP,
+                    content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
+
+            requestDAO.updateRequest(newRequest);
+            requestDAO.updateItemsByRequestID(id, selectedSlot);
+
+            response.sendRedirect("updateRequest?id=" + id + "&notify=Update request succesfully");
+
+        } catch (Exception e) {
+            response.sendRedirect("updateRequest?id=" + id_raw + "&error=An error occured during update request");
+        }
+
     }
 
     /**

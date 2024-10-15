@@ -322,7 +322,7 @@
                                 <p style="color: blue"> ${notify}</p>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" action="createrequest" method="post" id="slotForm">
+                                <form class="edit-profile m-b30" action="updateRequest" method="post" id="slotForm">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -498,7 +498,7 @@
             }
         </script>
         <script>
-            
+
             document.addEventListener('DOMContentLoaded', function () {
                 // Price per selected day (make sure this variable is set correctly in your backend)
                 const pricePerDay = ${cv.price};
@@ -545,6 +545,7 @@
                 document.querySelectorAll('.slot-checkbox').forEach(checkbox => {
                     checkbox.addEventListener('change', calculatePrice);
                 });
+                calculatePrice();
             });
 
         </script>

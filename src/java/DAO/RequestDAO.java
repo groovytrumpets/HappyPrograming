@@ -36,12 +36,11 @@ public class RequestDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
-                int requestSlotItemID = rs.getInt("RequestSlotItem");
-                int slotId = rs.getInt("SlotID");
-
-                RequestSlotItem requestSlotItem = new RequestSlotItem(requestSlotItemID, id, slotId);
-
-                requests.add(requestSlotItem);
+                RequestSlotItem s = new RequestSlotItem();
+                s.setRequestId(rs.getInt("RequestID"));
+                s.setRequestSlotItemId(rs.getInt("RequestSlotItem"));
+                s.setSlotId(rs.getInt("SlotID"));
+                requests.add(s);
             }
 
         } catch (SQLException e) {
@@ -50,7 +49,8 @@ public class RequestDAO extends DBContext {
 
         return requests;
     }
-     public List<RequestSlotItem> getSlotByRequestID(int id) {
+
+    public List<RequestSlotItem> getSlotByRequestID(int id) {
         List<RequestSlotItem> requests = new ArrayList<>();
 
         String sql = "select *\n"
@@ -133,7 +133,6 @@ public class RequestDAO extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-
             // Set parameters for the query
             st.setInt(1, request.getMentorId());
             st.setInt(2, request.getMenteeId());
@@ -146,7 +145,7 @@ public class RequestDAO extends DBContext {
             st.setDate(9, Date.valueOf(request.getStartDate()));
             st.setDate(10, Date.valueOf(request.getEndDate()));
             st.setInt(11, request.getSkillId());
-            st.setInt(12, request.getRequestId()); // Assuming request has a method getRequestId() for the unique ID.
+            st.setInt(12, request.getRequestId());
 
             st.executeUpdate();
         } catch (SQLException e) {
@@ -270,7 +269,7 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
-    
+
     public Request getRequestByID(int id) {
         String sql = "SELECT *"
                 + "  FROM [dbo].[Request]"
@@ -308,8 +307,7 @@ public class RequestDAO extends DBContext {
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
-        for(int i = 0; i< act.getSlotByRequestID(30).size(); i++)
-        {
+        for (int i = 0; i < act.getSlotByRequestID(30).size(); i++) {
             System.out.println(act.getSlotByRequestID(30).get(i));
         }
     }

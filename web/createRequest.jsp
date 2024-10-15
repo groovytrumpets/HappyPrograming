@@ -491,6 +491,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 // Price per selected day (make sure this variable is set correctly in your backend)
                 const pricePerDay = ${cv.price};
+                
 
                 // Function to calculate the price based on selected days and date range
                 function calculatePrice() {
