@@ -182,6 +182,90 @@ public class RequestDAO extends DBContext {
 
     }
 
+    public int getNumOfMentorEachMentee(int menteeId) {
+        int count = 0;
+        String sql = "select COUNT(DISTINCT MentorID) from Request \n"
+                + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
+                + "and MenteeID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public int getNumOfSkillEachMentee(int menteeId) {
+        int count = 0;
+        String sql = "select COUNT(DISTINCT SkillID) from Request \n"
+                + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
+                + "and MenteeID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public List<Request> getRequestByMenteeID(int menteeId) {
+        List<Request> listMentee = new ArrayList<>();
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                 + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
+                + "and MenteeID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                
+                listMentee.add(curRequest);
+            }
+        } catch (Exception e) {
+        
+        
+    }
+        return listMentee;
+    }
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
 

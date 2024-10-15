@@ -298,7 +298,6 @@ public class MentorDAO extends DBContext {
                 + "       [RoleID],\n"
                 + "       [Username],\n"
                 + "       Mentor.[CreateDate],\n"
-
                 + "       [Phone],\n"
                 + "       [Address],\n"
                 + "       [DateOfBirth],\n"
@@ -368,6 +367,8 @@ public class MentorDAO extends DBContext {
         }
         return mentor;
     }
+
+    
 
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
