@@ -14,6 +14,7 @@ import DAO.Wallet;
 import DAO.WalletDAO;
 import Model.CV;
 import Model.Mentor;
+import Model.Payment;
 import Model.Request;
 import Model.RequestSlotItem;
 import Model.Skill;
@@ -197,6 +198,8 @@ public class CreateRequestSV extends HttpServlet {
             requestDAO.addItemByRequestID(selectedSlot);
             
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
+
+
 
         } catch (Exception e) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");

@@ -87,7 +87,9 @@ public class Mentee {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+        if (avatar != null) {
         this.base64FileImage = Base64.getEncoder().encodeToString(avatar);
+    }
     }
 
     public String getUsername() {
