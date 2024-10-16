@@ -6,6 +6,7 @@ package DAO;
 
 import Model.Request;
 import Model.RequestSlotItem;
+import Model.StatisticRequests;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -269,6 +270,47 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
+    
+    public List<Request> getRequestsByMenteeUsername(String username) {
+        List<Request> requests = new ArrayList<>();
+        String query = "SELECT * FROM [Request] WHERE MenteeID = (SELECT MenteeID FROM Mentee WHERE Username = ?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Request request = new Request(
+                        rs.getInt("RequestID"), 
+                        rs.getInt("MentorID"), 
+                        rs.getInt("MenteeID"), 
+                        rs.getFloat("Price"), 
+                        rs.getString("Note"), 
+                        rs.getDate("CreateDate").toLocalDate(), 
+                        rs.getString("Status"), 
+                        rs.getString("Title"), 
+                        rs.getString("Framework"), 
+                        rs.getDate("StartDate").toLocalDate(), 
+                        rs.getDate("EndDate").toLocalDate(), 
+                        rs.getInt("SkillID"));
+                requests.add(request);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+    public void deleteRequest(int requestId) {
+        String sql = "DELETE FROM Request WHERE RequestID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, requestId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getNumOfMentorEachMentee(int menteeId) {
         int count = 0;
@@ -450,6 +492,7 @@ public class RequestDAO extends DBContext {
         return null;
 
     }
+
 
     public String[] getAllStatusInRequest() {
         String sql = "SELECT DISTINCT [Status] FROM Request";
@@ -832,6 +875,34 @@ public class RequestDAO extends DBContext {
         }
 
         return listReq;
+
+        
+    }
+public List<StatisticRequests> getRequestStatistics(int menteeId) {
+        List<StatisticRequests> statistics = new ArrayList<>();
+        String sql = "SELECT Title, COUNT(*) AS totalRequests, "
+                + "SUM(DATEDIFF(hour, StartDate, EndDate)) AS totalHours, "
+                + "COUNT(DISTINCT MentorID) AS totalMentors "
+                + "FROM Request WHERE MenteeID = ? GROUP BY Title";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, menteeId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("Title");
+                int totalRequests = rs.getInt("totalRequests");
+                int totalHours = rs.getInt("totalHours");
+                int totalMentors = rs.getInt("totalMentors");
+
+                // Create a RequestStatistic object to hold the data
+                StatisticRequests stt = new StatisticRequests(title, totalRequests, totalHours, totalMentors);
+                statistics.add(stt);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statistics;
+
     }
 
     public static void main(String[] args) {

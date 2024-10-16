@@ -460,6 +460,8 @@
                     </div>
                 </div>
                 <!-- Card END -->
+
+
                 <div class="row">
                     <!-- Your Profile Views Chart -->
 
@@ -467,8 +469,16 @@
 
                     <div class="col-lg-6 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Mentor List</h4>
+
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block" >Mentor List</h4>
+                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
+                                    
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Search" name="mentor">
+                                        </div>
+                                    
+                                </form>
                             </div>
                             <div class="widget-inner">
                                 <div class="new-user-list" >
@@ -520,9 +530,15 @@
                     </div>
                     <div class="col-lg-6 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>CV List</h4>
-
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block" >CV List</h4>
+                                
+                                    
+                                    <div class="d-inline-block ml-auto">
+                                        <a href="cvmanager" class="btn button-layout purple">Reset</a>
+                                        </div>
+                                    
+                                
                             </div>
                             <div class="widget-inner">
                                 <div class="orders-list">

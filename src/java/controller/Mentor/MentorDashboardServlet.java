@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.Mentor;
 
-import DAO.SkillDAO;
-import DAO.SkillListDAO;
-import Model.Skill;
+import DAO.CVDAO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
- * @author nhhag
+ * @author ADMIN
  */
-@WebServlet(name = "SkillHomeSV", urlPatterns = {"/skillhome"})
-public class SkillHomeSV extends HttpServlet {
+@WebServlet(name = "MentorDashboardServlet", urlPatterns = {"/mentordashboard"})
+public class MentorDashboardServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class SkillHomeSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SkillHomeSV</title>");
+            out.println("<title>Servlet MentorDashboardServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SkillHomeSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MentorDashboardServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,36 +62,35 @@ public class SkillHomeSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String index_raw = request.getParameter("index");
-        SkillListDAO skilllistDAO = new SkillListDAO();
-        SkillDAO skillDAO = new SkillDAO();
-        List<Skill> listSkill = skillDAO.getListOfAllSkill();
-        int index = 1;
-        int totalSkill = listSkill.size();
-        int page;
-        if (totalSkill / 9 == 0) {
-            page = totalSkill / 9;
-        } else {
-            page = totalSkill / 9 + 1;
-        }
+        String mentorid_raw = request.getParameter("id");
+        int mentorid;
         try {
-            index = Integer.parseInt(index_raw);
+            mentorid = Integer.parseInt(mentorid_raw);
+            CVDAO cvd = new CVDAO();
+            int rateAve = cvd.getAveRatebyId(mentorid);
+            int invitedRequest = cvd.countInvitedRequestbyMentorId(mentorid);
+            int acceptedRequest = cvd.countAcceptedRequestbyMentorId(mentorid);
+            int canceledRequest = cvd.countCanceledRequestbyMentorId(mentorid);
+            int countRequest = cvd.countRequestbyMentorId(mentorid);
+            
+            request.setAttribute("rateAve", rateAve);
+            request.setAttribute("invitedRequest", invitedRequest);
+            request.setAttribute("acceptedRequest", acceptedRequest);
+            request.setAttribute("canceledRequest", canceledRequest);
+            request.setAttribute("countRequest", countRequest);
+            
+            Map<String, Integer> monthlyRatings = cvd.getRatingMapbyMentorId(mentorid);
+            System.out.println(monthlyRatings.keySet() + ", " + monthlyRatings.values());
+            List<String> keys = new ArrayList<>(monthlyRatings.keySet());
+            List<Integer> values = new ArrayList<>(monthlyRatings.values());
+            
+            request.setAttribute("key", new Gson().toJson(keys));
+            request.setAttribute("values", new Gson().toJson(values));
+
+            request.getRequestDispatcher("mentorDashboard.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
-
-        List<Skill> list = skillDAO.getListOfSkillPaging(index, 9);
-        List<Skill> list2 = skillDAO.getListOfSkillByDate();
-        int number[] = new int[10];
-        for (int i = 0; i < list.size(); i++) {
-            number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
-        }
-        request.setAttribute("number", number);
-        request.setAttribute("list2", list2);
-        request.setAttribute("pageIndex", index);
-        request.setAttribute("endP", page);
-        request.setAttribute("list", list);
-        request.getRequestDispatcher("SkillList.jsp").forward(request, response);
     }
 
     /**

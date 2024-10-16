@@ -168,7 +168,6 @@ public class UpdateProfileSevlet extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-
     }
 
     /**

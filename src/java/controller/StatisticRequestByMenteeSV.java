@@ -4,9 +4,11 @@
  */
 package controller;
 
-import DAO.SkillDAO;
-import DAO.SkillListDAO;
-import Model.Skill;
+import DAO.MenteeDAO;
+import DAO.RequestDAO;
+import Model.Mentee;
+import Model.StatisticRequests;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +16,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  *
- * @author nhhag
+ * @author asus
  */
-@WebServlet(name = "SkillHomeSV", urlPatterns = {"/skillhome"})
-public class SkillHomeSV extends HttpServlet {
+@WebServlet(name = "StatisticRequestByMenteeSV", urlPatterns = {"/statisticrequestbymentee"})
+public class StatisticRequestByMenteeSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +43,10 @@ public class SkillHomeSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SkillHomeSV</title>");
+            out.println("<title>Servlet StatisticRequestByMenteeSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SkillHomeSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StatisticRequestByMenteeSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,36 +64,28 @@ public class SkillHomeSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String index_raw = request.getParameter("index");
-        SkillListDAO skilllistDAO = new SkillListDAO();
-        SkillDAO skillDAO = new SkillDAO();
-        List<Skill> listSkill = skillDAO.getListOfAllSkill();
-        int index = 1;
-        int totalSkill = listSkill.size();
-        int page;
-        if (totalSkill / 9 == 0) {
-            page = totalSkill / 9;
-        } else {
-            page = totalSkill / 9 + 1;
-        }
-        try {
-            index = Integer.parseInt(index_raw);
-        } catch (Exception e) {
-            System.out.println(e);
+
+        HttpSession session = request.getSession();
+        User curUser = (User) session.getAttribute("acc");
+        if (curUser == null) {
+            response.sendRedirect("signin");
+            return;
         }
 
-        List<Skill> list = skillDAO.getListOfSkillPaging(index, 9);
-        List<Skill> list2 = skillDAO.getListOfSkillByDate();
-        int number[] = new int[10];
-        for (int i = 0; i < list.size(); i++) {
-            number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
+        MenteeDAO menteeDAO = new MenteeDAO();
+        RequestDAO requestDAO = new RequestDAO();
+        int roleID = curUser.getRoleId();
+
+        if (roleID == 2) {  // Only allow mentees
+            Mentee curMentee = menteeDAO.findMenteeByUsername(curUser.getUsername());
+            int menteeId = curMentee.getMenteeId();
+            
+            List<StatisticRequests> statistics = requestDAO.getRequestStatistics(menteeId);
+            request.setAttribute("statistics", statistics);
+            request.getRequestDispatcher("statisticRequestByMentee.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("Home.jsp");
         }
-        request.setAttribute("number", number);
-        request.setAttribute("list2", list2);
-        request.setAttribute("pageIndex", index);
-        request.setAttribute("endP", page);
-        request.setAttribute("list", list);
-        request.getRequestDispatcher("SkillList.jsp").forward(request, response);
     }
 
     /**
