@@ -349,73 +349,72 @@ public class RequestDAO extends DBContext {
                 listReq.add(curRequest);
             }
         } catch (SQLException e) {
-               e.printStackTrace();
+            e.printStackTrace();
         }
         return listReq;
     }
 
     public List<Request> getAllRequestPagination(int page, int disNum) {
-    List<Request> listReq = new ArrayList<>();
-    String sql = "SELECT [RequestID]\n"
-            + "      ,[MentorID]\n"
-            + "      ,[MenteeID]\n"
-            + "      ,[Price]\n"
-            + "      ,[Note]\n"
-            + "      ,[CreateDate]\n"
-            + "      ,[Status]\n"
-            + "      ,[Title]\n"
-            + "      ,[Framework]\n"
-            + "      ,[StartDate]\n"
-            + "      ,[EndDate]\n"
-            + "      ,[SkillID]\n"
-            + "  FROM [dbo].[Request]\n"
-            + "  order by RequestID\n"
-            + "OFFSET ? ROWS\n"
-            + "FETCH NEXT ? ROWS ONLY";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        int offset = (page-1) * disNum;
-        st.setInt(1, offset);
-        st.setInt(2, disNum);
-        ResultSet rs = st.executeQuery();
-        while (rs.next()) {
-            Request curRequest = new Request();
-            curRequest.setRequestId(rs.getInt("RequestID"));
-            curRequest.setMentorId(rs.getInt("MentorID"));
-            curRequest.setMenteeId(rs.getInt("MenteeID"));
-            curRequest.setPrice(rs.getFloat("Price"));
-            curRequest.setNote(rs.getString("Note"));
-            
-           
-            Date createDateSql = rs.getDate("CreateDate");
-            if (createDateSql != null) {
-                curRequest.setCreateDate(createDateSql.toLocalDate());
+        List<Request> listReq = new ArrayList<>();
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                + "  order by RequestID\n"
+                + "OFFSET ? ROWS\n"
+                + "FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (page - 1) * disNum;
+            st.setInt(1, offset);
+            st.setInt(2, disNum);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
             }
-
-            Date startDateSql = rs.getDate("StartDate");
-            if (startDateSql != null) {
-                curRequest.setStartDate(startDateSql.toLocalDate());
-            }
-
-            Date endDateSql = rs.getDate("EndDate");
-            if (endDateSql != null) {
-                curRequest.setEndDate(endDateSql.toLocalDate());
-            }
-
-            curRequest.setStatus(rs.getString("Status"));
-            curRequest.setTitle(rs.getString("Title"));
-            curRequest.setSkillId(rs.getInt("SkillID"));
-            curRequest.setPrice(rs.getFloat("Price"));
-            curRequest.setFramework(rs.getString("Framework"));
-
-            listReq.add(curRequest);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
 
-    return listReq;
-}
+        return listReq;
+    }
 
     public Request getRequestByID(int id) {
         String sql = "SELECT *"
@@ -450,13 +449,394 @@ public class RequestDAO extends DBContext {
         }
         return null;
 
+    }
 
+    public String[] getAllStatusInRequest() {
+        String sql = "SELECT DISTINCT [Status] FROM Request";
+        List<String> statuses = new ArrayList<>();
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                // Retrieve the status and add it to the list
+                String status = rs.getString("Status");
+                statuses.add(status);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Convert the list to a String array
+        return statuses.toArray(new String[0]);
+    }
+
+    public List<Request> getAllRequestPaginationByStatus(int page, int disNum, String status) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                + "  where [Status] = ?\n"
+                + "  order by RequestID\n"
+                + "offset ? rows\n"
+                + "fetch next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (page - 1) * disNum;
+            st.setString(1, status);
+            st.setInt(2, offset);
+            st.setInt(3, disNum);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listReq;
+    }
+
+    public List<Request> getAllRequestBySearch(String search) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = " SELECT DISTINCT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,r.[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,r.[CreateDate]\n"
+                + "      ,r.[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request] r LEFT JOIN Mentee m \n"
+                + "  on r.MenteeID = m.MenteeID\n"
+                + "  Where RequestID like ? \n"
+                + "  OR Title like ?\n"
+                + "  OR m.Username like ?\n"
+                + "  ORDER BY RequestID";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listReq;
+    }
+
+    public List<Request> getAllRequestBySearchPagination(String search, int page, int disNum) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = "  SELECT DISTINCT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,r.[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,r.[CreateDate]\n"
+                + "      ,r.[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request] r LEFT JOIN Mentee m \n"
+                + "  on r.MenteeID = m.MenteeID\n"
+                + "  Where RequestID like ? \n"
+                + "  OR Title like ?\n"
+                + "  OR m.Username like ?\n"
+                + "  ORDER BY RequestID\n"
+                + "  OFFSET ? ROWS\n"
+                + "  FETCH NEXT ? ROW ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            int numOffSet = (page - 1) * disNum;
+            st.setInt(4, numOffSet);
+            st.setInt(5, disNum);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listReq;
+    }
+
+    public boolean converSearch(String search) {
+        try {
+            int id = Integer.parseInt(search);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public List<Request> getRequestByStatusAndSearch(String search, String status) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = " SELECT DISTINCT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,r.[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,r.[CreateDate]\n"
+                + "      ,r.[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request] r LEFT JOIN Mentee m \n"
+                + "  on r.MenteeID = m.MenteeID\n"
+                + "  Where (RequestID like ? \n"
+                + "  OR Title like ?\n"
+                + "  OR m.Username like ?)\n"
+                + "  and r.Status like ? \n"
+                + "  ORDER BY RequestID";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            String statusPattern = "%" + status + "%";
+            st.setString(4, statusPattern);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listReq;
+    }
+
+    public List<Request> getRequestByStatusAndSearchPagination(String search, int page, int disNum, String status) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = "  SELECT DISTINCT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,r.[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,r.[CreateDate]\n"
+                + "      ,r.[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request] r LEFT JOIN Mentee m \n"
+                + "  on r.MenteeID = m.MenteeID\n"
+                + "  Where (RequestID like ? \n"
+                + "  OR Title like ?\n"
+                + "  OR m.Username like ?)\n"
+                + "  and r.Status like ? \n"
+                + "  ORDER BY RequestID\n"
+                + "  OFFSET ? ROWS\n"
+                + "  FETCH NEXT ? ROW ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, 0);
+            if (converSearch(search)) {
+                st.setInt(1, Integer.parseInt(search));
+            }
+            String searchPattern = "%" + search + "%";
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+             String statusPattern = "%" + status + "%";
+            st.setString(4, statusPattern);
+            int numOffSet = (page - 1) * disNum;
+            st.setInt(5, numOffSet);
+            st.setInt(6, disNum);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+
+                Date createDateSql = rs.getDate("CreateDate");
+                if (createDateSql != null) {
+                    curRequest.setCreateDate(createDateSql.toLocalDate());
+                }
+
+                Date startDateSql = rs.getDate("StartDate");
+                if (startDateSql != null) {
+                    curRequest.setStartDate(startDateSql.toLocalDate());
+                }
+
+                Date endDateSql = rs.getDate("EndDate");
+                if (endDateSql != null) {
+                    curRequest.setEndDate(endDateSql.toLocalDate());
+                }
+
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listReq;
     }
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
-        for (int i = 0; i < act.getSlotByRequestID(30).size(); i++) {
-            System.out.println(act.getSlotByRequestID(30).get(i));
-        }
+        List<Request> list = act.getRequestByStatusAndSearch("frobakt", "cancel");
+        System.out.println(list.size());
     }
 }

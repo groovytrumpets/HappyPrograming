@@ -178,7 +178,7 @@ public class MenteeDAO extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            int offset = (page-1)*display;
+            int offset = (page - 1) * display;
             st.setInt(1, offset);
             st.setInt(2, display);
             ResultSet rs = st.executeQuery();
@@ -209,6 +209,51 @@ public class MenteeDAO extends DBContext {
         }
 
         return listMen;
+    }
+
+    public Mentee getMenteeByID(int menteeId) {
+        Mentee mentee = null;
+        String sql = "SELECT [MenteeID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Avatar]\n"
+                + "      ,[Username]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,[Status]\n"
+                + "  FROM [dbo].[Mentee] "
+                + "where MenteeID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                mentee = new Mentee();
+                mentee.setMenteeId(rs.getInt("MenteeID"));
+                mentee.setRoleId(rs.getInt("RoleID"));
+                mentee.setUsername(rs.getString("Username"));
+                byte[] avatar = rs.getBytes("Avatar");
+                if (avatar != null) {
+                    mentee.setAvatar(rs.getBytes("Avatar"));
+                }
+                mentee.setCreateDate(rs.getDate("CreateDate"));
+                //xoa email
+                mentee.setPhone(rs.getString("Phone"));
+                mentee.setAddress(rs.getString("Address"));
+                mentee.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentee.setFullName(rs.getString("FullName"));
+                mentee.setGender(rs.getString("Gender"));
+                mentee.setStatus(rs.getString("Status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return mentee; // Return the retrieved Mentor object or null if not found
     }
 
     public static void main(String[] args) {
