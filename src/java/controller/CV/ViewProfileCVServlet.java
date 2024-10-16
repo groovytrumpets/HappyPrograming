@@ -101,15 +101,17 @@ public class ViewProfileCVServlet extends HttpServlet {
             
             //slot view
             List<String> dateConverted = new ArrayList<>();
+            List<String> statusSlot = new ArrayList<>();
             List<Slot> mentorSlot = cvd.getSlotByMentorId(id);
             //System.out.println(mentorSlot.get(0).getDayInWeek());
             for (int i = 0; i < mentorSlot.size(); i++) {
                 String date = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();
-                //System.out.println(date+", "+mentorSlot.get(i).getStartTime());
+                statusSlot.add(mentorSlot.get(i).getStatus());
+                //System.out.println(date+", "+mentorSlot.get(i).getEndTime());
                 dateConverted.add(date);
             }
 
-            request.setAttribute("key", new Gson().toJson("Good Doog"));
+            request.setAttribute("status", new Gson().toJson(statusSlot));
             request.setAttribute("values", new Gson().toJson(dateConverted));
             
             request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);

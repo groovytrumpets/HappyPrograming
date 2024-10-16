@@ -888,7 +888,7 @@ public class CVDAO extends DBContext {
     public List<Slot> getSlotByMentorId(int mentorId) {
         List<Slot> slotList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Slot where MentorID = ? and Status = 'avaiable'";
+        String sql = "select * from Slot where MentorID = ?";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -899,12 +899,12 @@ public class CVDAO extends DBContext {
                 Slot sl = new Slot();
                 sl.setSlotID(rs.getInt("slotID"));
                 sl.setMentorID(rs.getInt("mentorID"));
-                sl.setStartTime(rs.getTime("startTime").toLocalTime());
-                sl.setStartTime(rs.getTime("endTime").toLocalTime());
+                sl.setStartTime(rs.getTime("StartTime").toLocalTime());
+                sl.setEndTime(rs.getTime("EndTime").toLocalTime());
                 sl.setDayInWeek(rs.getString("dayInWeek"));
                 sl.setStatus(rs.getString("status"));
+                
                 slotList.add(sl);
-
             }
             return slotList;
         } catch (SQLException e) {

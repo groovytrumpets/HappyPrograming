@@ -411,13 +411,22 @@
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
         <script>
-             $(document).ready(function () {
+            $(document).ready(function () {
+                var status = JSON.parse('${requestScope.status}');
                 var values = JSON.parse('${requestScope.values}');
+                
                 var eventsArray = [];
                 for (var i = 0; i < values.length; i++) {
+                    var eventColor = '';
+                    if (status[i].toLowerCase() === 'inavaiable') {eventColor = '#c22d2d';}
+                    else {eventColor = '#2dc22d';}
+                    console.log(status[i]);
+                    console.log(status[i].toLowerCase() === 'inactive');
                     eventsArray.push({
-                        title: 'Avaiable Learn Slot',
-                        start: values[i]
+                        title: status[i],
+                        start: values[i],
+                        
+                        color: eventColor
                     });
                 }
                 $('#calendar').fullCalendar({
