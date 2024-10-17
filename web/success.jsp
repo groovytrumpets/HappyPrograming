@@ -39,7 +39,7 @@
             <h1>Registration Successful!</h1>
             <p>Thank you for signing up. Please check your email to confirm your account.</p>
             <p>If you do not see the email, check your spam folder or try signing up again.</p>
-            <a href="index.jsp">Return to Home</a>
+            <a href="home">Return to Home</a>
         </div>
     </body>
 </html>

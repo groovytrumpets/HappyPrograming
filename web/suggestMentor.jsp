@@ -237,108 +237,48 @@
         </header>
         <!-- header end -->
         <!-- Left sidebar menu start -->
-        <div class="ttr-sidebar">
-            <div class="ttr-sidebar-wrapper content-scroll">
-                <!-- side menu logo start -->
-                <div class="ttr-sidebar-logo">
-                    <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
-                    <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
-                            <i class="material-icons ttr-fixed-icon">gps_fixed</i>
-                            <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
-                    </div> -->
-                    <div class="ttr-sidebar-toggle-button">
-                        <i class="ti-arrow-left"></i>
-                    </div>
+        <div class="ttr-sidebar" style="margin-top: 100px;margin-left: 10px">
+            <h4>Filter & Sort Mentors</h4>
+            <form action="suggestMentor" method="GET" style="margin-left: 10px">
+                <!-- Filter by Experience -->
+                <div class="form-group">
+                    <label for="experience">Experience</label>
+                    <select id="experience" name="experience" class="form-control">
+                        <option value="">Select Experience</option>
+                        <option value="1">1-2 years</option>
+                        <option value="2">3-5 years</option>
+                        <option value="3">5+ years</option>
+                    </select>
                 </div>
-                <!-- side menu logo end -->
-                <!-- sidebar menu start -->
-                <nav class="ttr-sidebar-navi">
-                    <ul>
-                        <li>
-                            <a href="index.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="courses.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-book"></i></span>
-                                <span class="ttr-label">Courses</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-email"></i></span>
-                                <span class="ttr-label">Mailbox</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Calendar</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="bookmark.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-                                <span class="ttr-label">Bookmarks</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="review.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-comments"></i></span>
-                                <span class="ttr-label">Review</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="add-listing.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
-                                <span class="ttr-label">Add listing</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-user"></i></span>
-                                <span class="ttr-label">My Profile</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ttr-seperate"></li>
-                    </ul>
-                    <!-- sidebar menu end -->
-                </nav>
-                <!-- sidebar menu end -->
-            </div>
+
+                <!-- Filter by Price Range -->
+                <div class="form-group">
+                    <label for="priceRange">Price Range</label>
+                    <select id="priceRange" name="priceRange" class="form-control">
+                        <option value="">Select Price Range</option>
+                        <option value="1">0-500,000 VND</option>
+                        <option value="2">500,000-1,000,000 VND</option>
+                        <option value="3">1,000,000+ VND</option>
+                    </select>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="form-group">
+                    <label for="sortBy">Sort By</label>
+                    <select id="sortBy" name="sortBy" class="form-control">
+                        <option value="">Select Sort Option</option>
+                        <option value="totalRequests">Total Requests</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn green radius-xl" style="margin-top: 10px;">Filter</button>
+            </form>
         </div>
+
+
+
         <!-- Left sidebar menu end -->
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -358,43 +298,58 @@
                                 <h4>Review</h4>
                             </div>
                             <div class="widget-inner">
-                                
-                                <div class="card-courses-list admin-review">
-                                    <div class="card-courses-full-dec">
-                                        <div class="card-courses-title">
-                                            <h4>Become a PHP Master and Make Money</h4>
-                                        </div>
-                                        <div class="card-courses-list-bx">
-                                            <ul class="card-courses-view">
-                                                <li class="card-courses-user">
-                                                    <div class="card-courses-user-pic">
-                                                        <img src="assets/images/testimonials/pic3.jpg" alt=""/>
-                                                    </div>
-                                                    <div class="card-courses-user-info">
-                                                        <h5>Mentor</h5>
-                                                        <h4>${Cv.FullNmae}</h4>
-                                                    </div>
-                                                </li>
-                                                <li class="card-courses-review">
-                                                    <h5>3 Review</h5>
-                                                    <ul class="cours-star">
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="card-courses-categories">
-                                                    <h5>Date</h5>
-                                                    <h4>10/12/2019</h4>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="row card-courses-dec">
-                                            <div class="col-md-12">
-                                                <h6 class="m-b10">Best Quality Product</h6>
-                                                <p>Lorem ipsum dolor sit amet, est ei idque voluptua copiosae, pro detracto disputando reformidans at, ex vel suas eripuit. Vel alii zril maiorum ex, mea id sale eirmod epicurei. Sit te possit senserit, eam alia veritus maluisset ei, id cibo vocent ocurreret per. Te qui doming doctus referrentur, usu debet tamquam et. Sea ut nullam aperiam, mei cu tollit salutatus delicatissimi. </p>	
+                                <c:forEach items="${mentorList}" var="mentors">
+                                    <div class="card-courses-list admin-review" style="border: 2px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                                        <div class="card-courses-full-dec">
+                                            <div class="card-courses-list-bx">
+                                                <ul class="card-courses-view">
+
+                                                    <!-- Mentor Profile Image and Name -->
+                                                    <li class="card-courses-user">
+                                                        <div class="card-courses-user-pic">
+                                                            <img src="assets/images/testimonials/pic3.jpg" alt="Mentor Picture" />
+                                                        </div>
+                                                        <div class="card-courses-user-info">
+                                                            <h5>Mentor Name</h5>
+                                                            <h4>${mentors.mentor.fullName}</h4>
+                                                        </div>
+                                                    </li>
+
+                                                    <!-- Mentor Rating and Reviews -->
+                                                    <li class="card-courses-review">
+                                                        <h5>${mentors.rate} Reviews</h5>
+                                                        <ul class="cours-star">
+                                                            <!-- Display filled stars based on rating -->
+                                                            <c:forEach begin="1" end="${mentors.rating}" var="i">
+                                                                <li class="active">
+                                                                    <i class="fa fa-star"></i>
+                                                                </li>
+                                                            </c:forEach>
+                                                            <!-- Display empty stars for the remaining -->
+                                                            <c:forEach begin="1" end="${5 - mentors.rating}" var="i">
+                                                                <li>
+                                                                    <i class="fa fa-star"></i>
+                                                                </li>
+                                                            </c:forEach>
+                                                        </ul>
+                                                    </li>
+
+                                                    <!-- Total Requests -->
+                                                    <li class="card-courses-categories">
+                                                        <h5>Total Requests</h5>
+                                                        <h4>${mentors.numReq} requests</h4>
+                                                    </li>
+                                                    <li class="card-courses-categories">
+                                                        <h5>Price</h5>
+                                                        <h4>${mentors.cv.price}VND</h4>
+                                                    </li>
+
+                                                    <!-- Mentor Account Username -->
+                                                    <li class="card-courses-categories">
+                                                        <h5>Years of experience</h5>
+                                                        <h4>${mentors.cv.yearOfExperience} years</h4>
+                                                    </li>
+                                                </ul>
                                             </div>
                                             <div class="col-md-12">
                                                 <a href="#" class="btn" data-toggle="modal" data-target="#exampleModal">Reply Review</a>
@@ -421,6 +376,27 @@
                                             <button type="button" class="btn mr-auto">Reply</button>
                                         </div>
                                     </div>
+                                </c:forEach>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal fade review-bx-reply" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Reply to review</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <textarea class="form-control" placeholder="Type text"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn mr-auto">Reply</button>
                                 </div>
                             </div>
                         </div>

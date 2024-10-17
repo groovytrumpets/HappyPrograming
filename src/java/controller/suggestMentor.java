@@ -24,7 +24,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -80,27 +83,102 @@ public class suggestMentor extends HttpServlet {
         if (a == null) {
             response.sendRedirect("signin");
         }
-        PrintWriter out = response.getWriter();
-        
-        Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
-        List<CV> Cv = requestDAO.getSuggestMentorCVByMentee(mentee.getMenteeId());
-   
-        request.setAttribute("CV", Cv);
 
+        String experience = request.getParameter("experience");
+        String priceRange = request.getParameter("priceRange");
+        String sortBy = request.getParameter("sortBy");
+
+        // Fetch mentors based on the mentee's preference
+        Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
+        List<CV> mentorCvList = requestDAO.getSuggestMentorCVByMentee(mentee.getMenteeId());
+        List<MentorRating> mentorRatingList = new ArrayList<>();
+
+        // Populate the list with MentorRating objects
+        for (CV cv : mentorCvList) {
+            int rating = cvd.getAveRatebyId(cv.getMentorId());
+            Mentor mentor = mentorDAO.getMentorById(cv.getMentorId());
+            int reviewsCount = cvd.getMentorRateList(cv.getMentorId()).size();
+            int numRequest = requestDAO.getRequestByMentorID(cv.getMentorId()).size();
+            List<Skill> skillList = cvd.getMentorSkillListByMentorID(cv.getMentorId());
+
+            MentorRating mentorRating = new MentorRating(mentor, rating, cv, reviewsCount, numRequest, skillList);
+            mentorRatingList.add(mentorRating);
+        }
+
+        // Apply filters
+        mentorRatingList = filterByExperience(mentorRatingList, experience);
+        mentorRatingList = filterByPriceRange(mentorRatingList, priceRange);
+
+        // Apply sorting
+        if ("totalRequests".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getNumReq).reversed());
+        } else if ("rating".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getRating).reversed());
+        }
+
+        // Set the filtered and sorted list as an attribute
+        request.setAttribute("mentorList", mentorRatingList);
         request.getRequestDispatcher("suggestMentor.jsp").forward(request, response);
-    
     }
 
-       
-    
+    private List<MentorRating> filterByExperience(List<MentorRating> mentors, String experience) {
+        List<MentorRating> filteredMentors = new ArrayList<>();
+        if (experience == null || experience.isEmpty()) {
+            return mentors; // Return all if no filter is applied
+        }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+        for (MentorRating mentor : mentors) {
+            int years = mentor.getCv().getYearOfExperience();
+            switch (experience) {
+                case "1":
+                    if (years >= 1 && years <= 2) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+                case "2":
+                    if (years >= 3 && years <= 5) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+                case "3":
+                    if (years > 5) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+            }
+        }
+        return filteredMentors;
+    }
+
+    private List<MentorRating> filterByPriceRange(List<MentorRating> mentors, String priceRange) {
+        List<MentorRating> filteredMentors = new ArrayList<>();
+        if (priceRange == null || priceRange.isEmpty()) {
+            return mentors; // Return all if no filter is applied
+        }
+
+        for (MentorRating mentor : mentors) {
+            float price = mentor.getCv().getPrice();
+            switch (priceRange) {
+                case "1":
+                    if (price <= 500000) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+                case "2":
+                    if (price > 500000 && price <= 1000000) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+                case "3":
+                    if (price > 1000000) {
+                        filteredMentors.add(mentor);
+                    }
+                    break;
+            }
+        }
+        return filteredMentors;
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

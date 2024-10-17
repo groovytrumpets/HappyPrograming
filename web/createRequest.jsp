@@ -311,7 +311,7 @@
             <div class="container-fluid">
                 <div class="db-breadcrumb">
                     <h4 class="breadcrumb-title">Create request to mentor ${mentor.fullName}</h4>
-                     <h4 class="breadcrumb-title">Price: ${cv.price}VND/Slot</h4>
+                    <h4 class="breadcrumb-title">Price: ${cv.price}VND/Slot</h4>
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->
@@ -425,13 +425,17 @@
                                                             </c:forEach>
                                                         </tbody> 
                                                     </table>
-                                                    <div class="col-12" style="margin-left: -15px">
-                                                        <h3>Total Price: $<span id="totalPrice">0</span></h3>
+                                                    <div class="col-12" style="margin-left: -15px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                                        <h3 style="font-size: 24px; color: #333; margin-bottom: 15px;">
+                                                            Total Price: <span id="totalPrice" style="color: #28a745;">$0</span>
+                                                        </h3>
                                                         <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
                                                         <button type="submit" class="btn-secondry add-item m-r5">
                                                             <i class="fa fa-fw fa-plus-circle"></i>Create request
                                                         </button>
+                                                       
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -491,7 +495,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 // Price per selected day (make sure this variable is set correctly in your backend)
                 const pricePerDay = ${cv.price};
-                
+
 
                 // Function to calculate the price based on selected days and date range
                 function calculatePrice() {
