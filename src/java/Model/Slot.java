@@ -16,6 +16,9 @@ public class Slot {
     private String dayInWeek;
     private String status;
 
+    public Slot() {
+    }
+
     // Constructor
     public Slot(int slotID, int mentorID, java.time.LocalTime startTime, java.time.LocalTime endTime, String dayInWeek, String status) {
         this.slotID = slotID;
