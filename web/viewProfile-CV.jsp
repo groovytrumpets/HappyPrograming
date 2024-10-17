@@ -412,20 +412,20 @@
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
         <script>
             $(document).ready(function () {
-                var status = JSON.parse('${requestScope.status}');
-                var values = JSON.parse('${requestScope.values}');
-                
+                var titleClass = JSON.parse('${requestScope.status}');
+                var start = JSON.parse('${requestScope.values}');
+                var end = JSON.parse('${requestScope.endValues}');
                 var eventsArray = [];
-                for (var i = 0; i < values.length; i++) {
+                for (var i = 0; i < start.length; i++) {
                     var eventColor = '';
-                    if (status[i].toLowerCase() === 'inavaiable') {eventColor = '#c22d2d';}
+                    if (titleClass[i].toLowerCase() === 'inavaiable') {eventColor = '#c22d2d';}
                     else {eventColor = '#2dc22d';}
-                    console.log(status[i]);
-                    console.log(status[i].toLowerCase() === 'inactive');
+                    console.log(titleClass[i]);
+                    console.log(titleClass[i].toLowerCase() === 'inactive');
                     eventsArray.push({
-                        title: status[i],
-                        start: values[i],
-                        
+                        title: titleClass[i],
+                        start: start[i],
+                        end:end[i],
                         color: eventColor
                     });
                 }
@@ -433,7 +433,7 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
+                        right: 'agendaWeek,listWeek,agendaDay'
                     },
 
                     defaultView: 'agendaWeek',
@@ -445,7 +445,8 @@
 
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
-                    events: eventsArray
+                    events: eventsArray,
+                    height: 500 
                 });
 
             });

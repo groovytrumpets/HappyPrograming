@@ -5,11 +5,15 @@
 package DAO;
 
 import Model.CV;
+import Model.Mentee;
 import Model.Mentor;
+import Model.Payment;
 import Model.Rate;
+import Model.Request;
 import Model.Skill;
 import Model.SkillList;
 import Model.Slot;
+import Model.SlotRequest;
 import Model.StatisticSkills;
 import Model.User;
 import java.security.Timestamp;
@@ -19,8 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -892,7 +896,7 @@ public class CVDAO extends DBContext {
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1,mentorId);
+            st.setInt(1, mentorId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -903,7 +907,7 @@ public class CVDAO extends DBContext {
                 sl.setEndTime(rs.getTime("EndTime").toLocalTime());
                 sl.setDayInWeek(rs.getString("dayInWeek"));
                 sl.setStatus(rs.getString("status"));
-                
+
                 slotList.add(sl);
             }
             return slotList;
@@ -913,4 +917,275 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+
+    public List<Request> getListofRequest() {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "SELECT *"
+                + "  FROM [dbo].[Request]\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
+
+    public List<Request> getListofCompleteRequest() {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "select * from Request where Status='Paid' or Status='Complete'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
+
+    public List<Mentee> getListofMentee() {
+        List<Mentee> listMen = new ArrayList<>();
+        String sql = "SELECT [MenteeID],"
+                + "      [RoleID],"
+                + "      [Avatar],"
+                + "      [Username],"
+                + "      [CreateDate],"
+                + "      [Email],"
+                + "      [Phone],"
+                + "      [Address],"
+                + "      [DateOfBirth],"
+                + "      [FullName],"
+                + "      [Gender],"
+                + "      [Status]"
+                + "  FROM [dbo].[Mentee]";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Mentee curMentee = new Mentee();
+                curMentee.setMenteeId(rs.getInt("MenteeID"));
+                curMentee.setRoleId(rs.getInt("RoleID"));
+                byte[] avatar = rs.getBytes("Avatar");
+                if (avatar != null) {
+                    curMentee.setAvatar(avatar);
+                } else {
+                    curMentee.setAvatar(null);
+                }
+                curMentee.setUsername(rs.getString("Username"));
+                curMentee.setCreateDate(rs.getDate("CreateDate"));
+                curMentee.setEmail(rs.getString("Email"));
+                curMentee.setPhone(rs.getString("Phone"));
+                curMentee.setAddress(rs.getString("Address"));
+                curMentee.setDateOfBirth(rs.getDate("DateOfBirth"));
+                curMentee.setFullName(rs.getString("FullName"));
+                curMentee.setGender(rs.getString("Gender"));
+                curMentee.setStatus(rs.getString("Status"));
+                listMen.add(curMentee);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return listMen;
+    }
+
+    public List<Payment> getListofPaymentbyRequestId(int id) {
+        List<Payment> paymentList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Payment where RequestID =?;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setRequestId(rs.getInt("requestId"));
+                p.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime());
+                p.setTotalAmount(rs.getFloat("totalAmount"));
+                p.setStatus(rs.getString("status"));
+                p.setSender(rs.getString("sender"));
+                p.setReceiver(rs.getString("receiver"));
+
+                paymentList.add(p);
+
+            }
+            return paymentList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public Request getRequestbyRequestId(int requestId) {
+        String sql = "select * from Request where RequestID =?;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+
+                Request rq = new Request();
+                rq.setRequestId(rs.getInt("RequestID"));
+                rq.setMentorId(rs.getInt("MentorID"));
+                rq.setMenteeId(rs.getInt("MenteeID"));
+                rq.setPrice(rs.getFloat("Price"));
+                rq.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                rq.setCreateDate(curCreaDate);
+                rq.setStatus(rs.getString("Status"));
+                rq.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                rq.setStartDate(start);
+                rq.setEndDate(end);
+                rq.setSkillId(rs.getInt("SkillID"));
+                rq.setPrice(rs.getFloat("Price"));
+                rq.setFramework(rs.getString("Framework"));
+
+                return rq;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public void setStatusStudyingRequestId(int requestId) {
+        String sql = "Update Request set Status ='Studying' where RequestID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void setStatusPendingRequestId(int requestId) {
+        String sql = "Update Request set Status ='Pending' where RequestID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void setStatusPaidRequestId(int requestId) {
+        String sql = "Update Request set Status ='Paid' where RequestID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void setStatusCompleteRequestId(int requestId) {
+        String sql = "Update Request set Status ='Complete' where RequestID =?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public List<SlotRequest> getSlotRequestbyMenteeId(int menteeId) {
+        List<SlotRequest> srList = new ArrayList<>();
+        String sql = "select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,\n"
+                + "r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate\n"
+                + "from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID\n"
+                + "where r.MenteeID=2";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            //st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                SlotRequest sr = new SlotRequest();
+                sr.setSlotID(rs.getInt("slotID"));
+                sr.setStartTime(rs.getTime("startTime").toLocalTime());
+                sr.setEndTime(rs.getTime("endTime").toLocalTime());
+                sr.setDayInWeek(rs.getString("dayInWeek"));
+                sr.setRequestId(rs.getInt("RequestID"));
+                sr.setMentorId(rs.getInt("MentorID"));
+                sr.setMenteeId(rs.getInt("MenteeID"));
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setStatus(rs.getString("Status"));
+                sr.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                sr.setStartDate(start);
+                sr.setEndDate(end);
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setFramework(rs.getString("Framework"));
+
+                //System.out.println(sr.getMenteeId());
+                srList.add(sr);
+            }
+            return srList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
 }

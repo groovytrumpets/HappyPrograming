@@ -5,7 +5,9 @@
 package controller.Mentor;
 
 import DAO.CVDAO;
+import Model.Request;
 import Model.Slot;
+import Model.SlotRequest;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -73,17 +75,47 @@ public class SlotViewServlet extends HttpServlet {
         try {
             mentorId = Integer.parseInt(mentorId_raw);
             CVDAO cvd = new CVDAO();
-            List<String> dateConverted = new ArrayList<>();
+            
+            List<String> statusSlot = new ArrayList<>();
             List<Slot> mentorSlot = cvd.getSlotByMentorId(mentorId);
-            //System.out.println(mentorSlot.get(0).getDayInWeek());
-            for (int i = 0; i < mentorSlot.size(); i++) {
-                String date = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();
-                //System.out.println(date+", "+mentorSlot.get(i).getStartTime());
-                dateConverted.add(date);
+            int menteeId = 2;
+            List<SlotRequest> menteeSRList = cvd.getSlotRequestbyMenteeId(menteeId);
+            //debug converter START-------------------------------------
+            System.out.println(menteeSRList.get(0).getDayInWeek());
+            System.out.println(menteeSRList.get(0).getStartDate());
+            System.out.println(menteeSRList.get(0).getEndDate());
+            List<String> startDateconverted = new ArrayList<>();
+            List<String> endDateconverted = new ArrayList<>();
+            List<String> classTitle = new ArrayList<>();
+            
+            LocalDate startDate = menteeSRList.get(0).getStartDate();
+            LocalDate endDate = menteeSRList.get(0).getEndDate();
+            
+            for (int j = 0; j < menteeSRList.size(); j++) {
+                List<String> dateList = convertDayInWeekToDatesBetweenRange(menteeSRList.get(j).getDayInWeek(), startDate, endDate);
+                for (int i = 0; i < dateList.size(); i++) {
+                    String startDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getStartTime();
+                    String endDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getEndTime();
+                    classTitle.add(menteeSRList.get(j).getFramework());
+                    startDateconverted.add(startDateAdd);
+                    endDateconverted.add(endDateAdd);
+                }
+                //debug converter result
+                System.out.println("OK:");
+                dateList.forEach(System.out::println);
+                System.out.println("Combine:");
+                startDateconverted.forEach(System.out::println);
+            //debug converter END----------------------------
+                
+                request.setAttribute("values", new Gson().toJson(startDateconverted));
+                request.setAttribute("endDateconverted", new Gson().toJson(endDateconverted));
+                request.setAttribute("status", new Gson().toJson(classTitle));
+                
             }
 
-            request.setAttribute("key", new Gson().toJson("Good Doog"));
-            request.setAttribute("values", new Gson().toJson(dateConverted));
+
+            
+         
             request.getRequestDispatcher("slotDemo.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
@@ -104,25 +136,47 @@ public class SlotViewServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-public static String convertDayInWeekToCurrentDate(String dayInWeek) {
-    // Lấy ngày hiện tại
-    LocalDate today = LocalDate.now();
-    
-    // Chuyển đổi chuỗi thành DayOfWeek (ví dụ: "Monday" -> DayOfWeek.MONDAY)
-    DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayInWeek.toUpperCase());
-    
-    // Tìm thứ trong tuần hiện tại
-    LocalDate resultDate = today.with(DayOfWeek.MONDAY); // Mặc định là lấy ngày Monday trong tuần hiện tại
+    public static String convertDayInWeekToCurrentDate(String dayInWeek) {
+        // Lấy ngày hiện tại
+        LocalDate today = LocalDate.now();
 
-    // Nếu thứ bạn muốn không phải là Monday, hãy điều chỉnh lại
-    while (resultDate.getDayOfWeek() != dayOfWeek) {
-        resultDate = resultDate.plusDays(1);
+        // Chuyển đổi chuỗi thành DayOfWeek (ví dụ: "Monday" -> DayOfWeek.MONDAY)
+        DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayInWeek.toUpperCase());
+
+        // Tìm thứ trong tuần hiện tại
+        LocalDate resultDate = today.with(DayOfWeek.MONDAY); // Mặc định là lấy ngày Monday trong tuần hiện tại
+
+        // Nếu thứ bạn muốn không phải là Monday, hãy điều chỉnh lại
+        while (resultDate.getDayOfWeek() != dayOfWeek) {
+            resultDate = resultDate.plusDays(1);
+        }
+
+        // Chuyển đổi LocalDate thành chuỗi
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return resultDate.format(formatter);
     }
 
-    // Chuyển đổi LocalDate thành chuỗi
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    return resultDate.format(formatter);
-}
+    public static List<String> convertDayInWeekToDatesBetweenRange(String dayInWeek, LocalDate startDate, LocalDate endDate) {
+        // Chuyển đổi chuỗi thành DayOfWeek (ví dụ: "Monday" -> DayOfWeek.MONDAY)
+        DayOfWeek targetDayOfWeek = DayOfWeek.valueOf(dayInWeek.toUpperCase());
+
+        // Tạo danh sách để chứa các ngày kết quả
+        List<String> resultDates = new ArrayList<>();
+
+        // Lấy ngày đầu tiên trong khoảng thời gian có cùng thứ với dayInWeek
+        LocalDate current = startDate.with(TemporalAdjusters.nextOrSame(targetDayOfWeek));
+
+        // Lặp qua từng tuần cho đến khi vượt quá endDate
+        while (!current.isAfter(endDate)) {
+            // Thêm ngày vào danh sách kết quả
+            resultDates.add(current.toString()); // Format là "yyyy-MM-dd" mặc định
+
+            // Tăng thêm 1 tuần (7 ngày)
+            current = current.plusWeeks(1);
+        }
+
+        return resultDates;
+    }
 
     /**
      * Returns a short description of the servlet.
