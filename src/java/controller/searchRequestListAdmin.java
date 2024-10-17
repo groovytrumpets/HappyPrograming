@@ -1,9 +1,9 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller;
+
 import DAO.MenteeDAO;
 import DAO.RequestDAO;
 import Model.Mentee;
@@ -15,15 +15,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author tuong
  */
-@WebServlet(urlPatterns = {"/requestListAdmin"})
-public class RequestListAdmin extends HttpServlet {
+@WebServlet(name = "searchRequestListAdmin", urlPatterns = {"/searchRequestListAdmin"})
+public class searchRequestListAdmin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +41,10 @@ public class RequestListAdmin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RequestListAdmin</title>");
+            out.println("<title>Servlet searchRequestListAdmin</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RequestListAdmin at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet searchRequestListAdmin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -79,12 +78,18 @@ public class RequestListAdmin extends HttpServlet {
         } else {
             numDis = 10;
         }
+
         int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
+        String search = request.getParameter("search");
+        if (search != null) {
+            request.setAttribute("search", search);
+            listReq = actRequest.getAllRequestBySearch(search);
+        }
         int numMent = listReq.size();
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
-        listReq = actRequest.getAllRequestPagination(page, numDis);
+        listReq = actRequest.getAllRequestBySearchPagination(search, page, numDis);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listReq", listReq);
@@ -92,7 +97,7 @@ public class RequestListAdmin extends HttpServlet {
         request.setAttribute("listName", listNameMentee);
         String[] listStatus = actRequest.getAllStatusInRequest();
         request.setAttribute("listStatus", listStatus);
-        request.getRequestDispatcher("RequestListAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
     }
 
     public String[] getRequestMenteeName(List<Request> listReq) {
@@ -121,18 +126,9 @@ public class RequestListAdmin extends HttpServlet {
         MenteeDAO actMentee = new MenteeDAO();
         RequestDAO actRequest = new RequestDAO();
         List<Request> listReq = actRequest.getAllRequest();
+       
         String status = request.getParameter("status");
        
-        if (status != null) {
-            if (!status.equalsIgnoreCase("all")) {
-                listReq = actRequest.getAllRequestByStatus(status);
-                request.setAttribute("status", status);
-            } else {
-                response.sendRedirect("requestListAdmin");
-                return;
-            }
-            
-        }
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
         int page, numDis;
@@ -148,11 +144,31 @@ public class RequestListAdmin extends HttpServlet {
         }
         int stt = (page - 1) * numDis;
         request.setAttribute("stt", stt);
+        String search = request.getParameter("search");
+        if (search != null) {
+            search = search.trim().replaceAll("\\s+", " ");
+            out.print(search.length());
+            request.setAttribute("search", search);
+            listReq = actRequest.getAllRequestBySearch(search);
+        } else {
+            response.sendRedirect("requestListAdmin");
+            return;
+        }
+        if (status != null) {
+            if (!status.equalsIgnoreCase("all")) {
+                listReq = actRequest.getRequestByStatusAndSearch(search, status);
+                request.setAttribute("status", status);
+            } else {
+                response.sendRedirect("requestListAdmin");
+                return;
+            }
+
+        }
         int numMent = listReq.size();
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
 
-        listReq = actRequest.getAllRequestPaginationByStatus(page, numDis, status);
+        listReq = actRequest.getRequestByStatusAndSearchPagination(search, page, numDis, status);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listReq", listReq);

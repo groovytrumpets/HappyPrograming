@@ -149,8 +149,7 @@ public class MenteeListAdminServlet extends HttpServlet {
     public float getTotalHourOfRequest(Request request) {
         SlotDAO actSlot = new SlotDAO();
         float sum = 0;
-        int mentorId = request.getMentorId();
-        List<Slot> listSlot = actSlot.getSlotsByMentorId(mentorId);
+        List<Slot> listSlot = actSlot.getSlotByRequestId(request.getRequestId());
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
 

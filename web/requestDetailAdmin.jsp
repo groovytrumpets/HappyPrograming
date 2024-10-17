@@ -1,6 +1,6 @@
 <%-- 
-    Document   : RequestListAdmin
-    Created on : Oct 15, 2024, 12:24:23 PM
+    Document   : requestDetailAdmin
+    Created on : Oct 16, 2024, 10:23:10 PM
     Author     : tuong
 --%>
 
@@ -342,91 +342,99 @@
                         <div class="widget-box" >
                             <div class="wc-title" style="display: flex">
                                 <div class="col-md-4">
-                                    <h4>Mentor List</h4>
+                                    <h4>Request Detail</h4>
                                 </div>
-                                <div class="mail-search-bar col-md-4">
-                                    <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
-                                    </form>
-                                </div>
-                                <div class="col-md-4 " >
-                                    <form method="post" action="requestListAdmin">
-                                        <input type="hidden" name="page" value="${requestScope.indexPage}">
-                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <select class="dropdown-item" name="status" onchange="this.form.submit();">
-                                            <option value="all">Select all</option>
-                                            <c:forEach items="${requestScope.listStatus}" var="s">
-                                                <option value="${s}" ${requestScope.status eq s ? 'selected' : ''}>${s}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </form>
-                                </div>
-
-
                             </div>
 
                             <div class="widget-inner">
-                                <table class="table-bordered">
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>ID</th>
-                                        <th>Account name</th>
-                                        <th>Title</th>
-                                        <th>Status</th>
-
-
-                                    </tr>
-                                    <c:set var="stt" value="${requestScope.stt}"/>
-                                    <c:forEach items="${requestScope.listReq}" var="c">
-                                        <form action="requestListAdmin" method="post">
-                                            <input type="hidden" name="page" value="${requestScope.indexPage}">
-                                            <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                            <input type="hidden" name="status" value="${c.status}">
-                                            <c:set value="${stt +1}" var="stt"/>
-                                            <tr>
-                                                <td>${stt}</td>
-                                                <td><a href="requestDetailAdmin?requestID=${c.requestId}">${c.requestId}</a></td>
-                                                <td>${listName[stt-((indexPage-1)*numDis)-1]}</td>
-                                                <td>${c.title}</td>
-                                                <td>${c.status}</td>
-                                            </tr>
-                                        </form>
-                                    </c:forEach>
-                                </table>
-                                <c:set var="page" value="${requestScope.indexPage}"/>
-                                <div class="pagination" style="display: flex">
-                                    <div class="col-md-6" >
-                                        <div class="col-md-4">
-                                            <form action="requestListAdmin" method="get">
-                                                <select name="numDis" id="numDis" onchange="this.form.submit()">
-                                                    <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
-                                                    <option value="15" ${numDis == 15 ? 'selected' : ''}>15</option>
-                                                    <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
-                                                </select>
-                                                <noscript><input type="submit" value="Submit"></noscript>
-                                            </form>
-                                        </div>
+                                <div class="breadcrumb-title"> Request ID: ${request.requestId}</div>
+                                <div>Request Status: ${request.status}</div>
+                                <div class="seperator"></div>
+                                <br>
+                                <div style="display: flex" class="row">
+                                    <div class="col-md-6">
+                                        <h6>Mentor</h6>
+                                        <p>Mentor ID: ${mentor.mentorId}</p>
+                                        <p>Full name: ${mentor.fullName}</p>
+                                        <p>Date of birth: ${mentor.dateOfBirth}</p>
+                                        <p>Profession: ${cv.jobProfession}</p>
                                     </div>
-                                    <div class="col-md-6" style="text-align: right">
-                                        <c:choose>
-                                            <c:when test="${requestScope.status != null}">
-                                                <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <form action="requestListAdmin" method="post" style="display: inline;">
-                                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                                        <input type="hidden" name="status" value="${requestScope.status}">
-                                                        <button type="submit" name="page" value="${i}">${i}</button>
-                                                    </form>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <a href="requestListAdmin?page=${i}&numDis=${requestScope.numDis}">${i}</a>
-                                                </c:forEach>
-                                            </c:otherwise>
-                                        </c:choose>
+                                    <div class="col-md-6">
+                                        <h6>Mentee</h6>
+                                        <p>Mentee ID: ${mentee.menteeId}</p>
+                                        <p>Full name: ${mentee.fullName}</p>
+                                        <p>Date of birth: ${mentee.dateOfBirth}</p>
                                     </div>
                                 </div>
+                                <div class="seperator"></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="ml-auto">
+                                            <h6>Skill info</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <p>Skill ID: ${skill.skillId}</p>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <p>Skill Name: ${skill.skillName}</p>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <p>Status: ${skill.status}</p>
+                                    </div>
+                                    <div>
+                                        <label>Image: </label>&nbsp;
+                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px">
+                                    </div>
+                                </div>
+                                <div class="seperator">-</div>
+                                <div class="header" style="text-align: center"><h5>Schedule</h5></div>
+                                <div>
+                                    <p>Start date: ${request.startDate}</p>
+                                    <p>End date: ${request.endDate}</p></div>
+
+                                <div class="row">
+                                    <form action="requestDetailAdmin" method="get">
+                                        <input type="hidden" name="requestID" value="${request.requestId}">
+                                        <label>Start date:</label>
+                                        <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
+                                    </form>
+                                    <table>
+                                        <thead>
+                                            <tr>
+
+                                                <th>Monday</th>
+                                                <th>Tuesday</th>
+                                                <th>Wednesday</th>
+                                                <th>Thursday</th>
+                                                <th>Friday</th>
+                                                <th>Saturday</th>
+                                                <th>Sunday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <c:forEach var="day" items="${daysOfWeek}">
+                                                    <td>
+                                                        <c:if test="${not empty dateStartDay[day]}">
+                                                            <div>${dateStartDay[day]}</div>
+                                                        </c:if>
+                                                        <c:if test="${not empty slotsByDay[day]}">
+                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                <div>${slot.startTime} - ${slot.endTime}</div>
+                                                            </c:forEach>
+
+                                                        </c:if>
+                                                        <c:if test="${empty slotsByDay[day]}">
+                                                            No slots available
+                                                        </c:if>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -455,22 +463,22 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-                                                    // Pricing add
-                                                    function newMenuItem() {
-                                                        var newElem = $('tr.list-item').first().clone();
-                                                        newElem.find('input').val('');
-                                                        newElem.appendTo('table#item-add');
-                                                    }
-                                                    if ($("table#item-add").is('*')) {
-                                                        $('.add-item').on('click', function (e) {
-                                                            e.preventDefault();
-                                                            newMenuItem();
-                                                        });
-                                                        $(document).on("click", "#item-add .delete", function (e) {
-                                                            e.preventDefault();
-                                                            $(this).parent().parent().parent().parent().remove();
-                                                        });
-                                                    }
+                                            // Pricing add
+                                            function newMenuItem() {
+                                                var newElem = $('tr.list-item').first().clone();
+                                                newElem.find('input').val('');
+                                                newElem.appendTo('table#item-add');
+                                            }
+                                            if ($("table#item-add").is('*')) {
+                                                $('.add-item').on('click', function (e) {
+                                                    e.preventDefault();
+                                                    newMenuItem();
+                                                });
+                                                $(document).on("click", "#item-add .delete", function (e) {
+                                                    e.preventDefault();
+                                                    $(this).parent().parent().parent().parent().remove();
+                                                });
+                                            }
 
         </script>
 

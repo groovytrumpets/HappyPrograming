@@ -1,6 +1,6 @@
 <%-- 
-    Document   : RequestListAdmin
-    Created on : Oct 15, 2024, 12:24:23 PM
+    Document   : searchRequestAdmin
+    Created on : Oct 15, 2024, 3:43:40 PM
     Author     : tuong
 --%>
 
@@ -346,14 +346,15 @@
                                 </div>
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
+                                        <input type="text" name="search" placeholder="Search" value="${search}" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
                                 <div class="col-md-4 " >
-                                    <form method="post" action="requestListAdmin">
+                                    <form method="post" action="searchRequestListAdmin">
                                         <input type="hidden" name="page" value="${requestScope.indexPage}">
                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
+                                        <input type="hidden" name="search" value="${requestScope.search}">
                                         <select class="dropdown-item" name="status" onchange="this.form.submit();">
                                             <option value="all">Select all</option>
                                             <c:forEach items="${requestScope.listStatus}" var="s">
@@ -386,7 +387,7 @@
                                             <c:set value="${stt +1}" var="stt"/>
                                             <tr>
                                                 <td>${stt}</td>
-                                                <td><a href="requestDetailAdmin?requestID=${c.requestId}">${c.requestId}</a></td>
+                                                <td>${c.requestId}</td>
                                                 <td>${listName[stt-((indexPage-1)*numDis)-1]}</td>
                                                 <td>${c.title}</td>
                                                 <td>${c.status}</td>
@@ -398,7 +399,8 @@
                                 <div class="pagination" style="display: flex">
                                     <div class="col-md-6" >
                                         <div class="col-md-4">
-                                            <form action="requestListAdmin" method="get">
+                                            <form action="searchRequestListAdmin" method="get">
+                                                <input type="hidden" name="search" value="${requestScope.search}">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
                                                     <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
                                                     <option value="15" ${numDis == 15 ? 'selected' : ''}>15</option>
@@ -412,7 +414,8 @@
                                         <c:choose>
                                             <c:when test="${requestScope.status != null}">
                                                 <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <form action="requestListAdmin" method="post" style="display: inline;">
+                                                    <form action="searchRequestListAdmin" method="post" style="display: inline;">
+                                                        <input type="hidden" name="search" value="${requestScope.search}">
                                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
                                                         <input type="hidden" name="status" value="${requestScope.status}">
                                                         <button type="submit" name="page" value="${i}">${i}</button>
@@ -421,7 +424,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <a href="requestListAdmin?page=${i}&numDis=${requestScope.numDis}">${i}</a>
+                                                    <a href="searchRequestListAdmin?page=${i}&numDis=${requestScope.numDis}">${i}</a>
                                                 </c:forEach>
                                             </c:otherwise>
                                         </c:choose>
