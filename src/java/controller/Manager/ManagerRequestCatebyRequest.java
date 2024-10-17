@@ -2,10 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.Mentor;
+package controller.Manager;
 
 import DAO.CVDAO;
-import com.google.gson.Gson;
+import Model.Mentee;
+import Model.Mentor;
+import Model.Payment;
+import Model.Request;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +17,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "MentorDashboardServlet", urlPatterns = {"/mentordashboard"})
-public class MentorDashboardServlet extends HttpServlet {
+@WebServlet(name = "ManagerRequestCatebyRequest", urlPatterns = {"/paymentmanagercate"})
+public class ManagerRequestCatebyRequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +43,10 @@ public class MentorDashboardServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorDashboardServlet</title>");
+            out.println("<title>Servlet ManagerRequestCatebyRequest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorDashboardServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ManagerRequestCatebyRequest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,35 +64,31 @@ public class MentorDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorid_raw = request.getParameter("id");
-        int mentorid;
+        String requestId_raw = request.getParameter("id");
+        int requestId;
         try {
-            mentorid = Integer.parseInt(mentorid_raw);
+            requestId = Integer.parseInt(requestId_raw);
             CVDAO cvd = new CVDAO();
-            int rateAve = cvd.getAveRatebyId(mentorid);
-            int invitedRequest = cvd.countInvitedRequestbyMentorId(mentorid);
-            int acceptedRequest = cvd.countAcceptedRequestbyMentorId(mentorid);
-            int canceledRequest = cvd.countCanceledRequestbyMentorId(mentorid);
-            int countRequest = cvd.countRequestbyMentorId(mentorid);
-            
-            request.setAttribute("rateAve", rateAve);
-            request.setAttribute("invitedRequest", invitedRequest);
-            request.setAttribute("acceptedRequest", acceptedRequest);
-            request.setAttribute("canceledRequest", canceledRequest);
-            request.setAttribute("countRequest", countRequest);
-            
-            Map<String, Integer> monthlyRatings = cvd.getRatingMapbyMentorId(mentorid);
-            System.out.println(monthlyRatings.keySet() + ", " + monthlyRatings.values());
-            List<String> keys = new ArrayList<>(monthlyRatings.keySet());
-            List<Integer> values = new ArrayList<>(monthlyRatings.values());
-            
-            request.setAttribute("key", new Gson().toJson(keys));
-            request.setAttribute("values", new Gson().toJson(values));
+            List<Request> requestList = cvd.getListofRequest();
+            List<Mentee> menteeList = cvd.getListofMentee();
+            List<Payment> paymentList = cvd.getListofPaymentbyRequestId(requestId);
+            List<Mentor> mentorList = cvd.getListofMentor();
+            List<User> listUser = cvd.getListofUser();
+            List<Request> completeRequestList = cvd.getListofCompleteRequest();
 
-            request.getRequestDispatcher("mentorDashboard.jsp").forward(request, response);
+            request.setAttribute("requestList", requestList);
+            request.setAttribute("menteeList", menteeList);
+            request.setAttribute("mentorList", mentorList);
+            request.setAttribute("listUser", listUser);
+            request.setAttribute("completeRequestList", completeRequestList);
+
+            request.setAttribute("paymentList", paymentList);
+
+            request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
+
     }
 
     /**

@@ -6,7 +6,11 @@
 package controller.Manager;
 
 import DAO.CVDAO;
-import Model.CV;
+import Model.Mentee;
+import Model.Mentor;
+import Model.Payment;
+import Model.Request;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,8 +24,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="ActiveMentorCVServlet", urlPatterns={"/activecv"})
-public class ActiveMentorCVServlet extends HttpServlet {
+@WebServlet(name="ManagerPaymentServlet", urlPatterns={"/paymentmanager"})
+public class ManagerPaymentServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +42,10 @@ public class ActiveMentorCVServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ActiveMentorCVServlet</title>");  
+            out.println("<title>Servlet ManagerPaymentServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ActiveMentorCVServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ManagerPaymentServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,38 +62,23 @@ public class ActiveMentorCVServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        int cvid;
-        try {
-            cvid = Integer.parseInt(id_raw);
-            CVDAO cvd = new CVDAO();
-            CV cv = cvd.getCVbyCVId(cvid);
-            int mentorId = cv.getMentorId();
-            List<CV> listCV = cvd.getListofCVbyMentorId(mentorId);
-            boolean haveCVActive=false;
-            for (CV cv1 : listCV) {
-                if (cv1.getStatus().equalsIgnoreCase("active")) {
-                    haveCVActive=true;
-                }
-            }
-//            System.out.println(haveCVActive);
-            if (cv.getStatus().equalsIgnoreCase("inactive")&&haveCVActive) {
-                //error
-                response.sendRedirect("cvmanagercate?id="+mentorId+"&error=Mentor already have actived CV");
-            }else{
-                if (cv.getStatus().equalsIgnoreCase("inactive")) {
-                    cvd.setStatusActiveCvId(cvid);
-            response.sendRedirect("cvmanagercate?id="+mentorId);
-                }
-                if (cv.getStatus().equalsIgnoreCase("active")) {
-                    cvd.setStatusInactiveCvId(cvid);
-            response.sendRedirect("cvmanagercate?id="+mentorId);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+        CVDAO cvd = new CVDAO();
+        List<Request> requestList = cvd.getListofRequest();
+        List<Mentee> menteeList = cvd.getListofMentee();
+        List<Mentor> mentorList = cvd.getListofMentor();
+        List<User> listUser = cvd.getListofUser();
+        List<Request> completeRequestList = cvd.getListofCompleteRequest();
+        //List<Payment> paymentList = cvd.getListofPaymentbyRequestId(id);
+        request.setAttribute("requestList", requestList);
+        request.setAttribute("menteeList", menteeList);
+        request.setAttribute("mentorList", mentorList);
+        request.setAttribute("listUser", listUser);
+        request.setAttribute("completeRequestList", completeRequestList);
+        
+        //request.setAttribute("paymentList", paymentList);
+        
+        request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.

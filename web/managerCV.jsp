@@ -353,7 +353,7 @@
                     </ul>
                 </div>	
                 <!-- Card -->
-                
+
                 <!-- Card END -->
 
 
@@ -368,11 +368,11 @@
                             <div class="wc-title d-flex align-items-center">
                                 <h4 class="d-inline-block" >Mentor List</h4>
                                 <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
-                                    
-                                        <div>
-                                            <input type="text" class="form-control" placeholder="Search" name="mentor">
-                                        </div>
-                                    
+
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
+                                    </div>
+
                                 </form>
                             </div>
                             <div class="widget-inner">
@@ -392,7 +392,7 @@
 
                                                 <tr>
                                                     <th class="align-middle" scope="row">${c.mentorId}</th>
-                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${c.username}</td>
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="viewprofilecv?id=${c.mentorId}" class="text-primary">${c.username}</a></td>
                                                     <td class="align-middle">
                                                         <c:forEach items="${requestScope.listActiveCV}" var="cv">
                                                             <c:if test="${c.mentorId==cv.mentorId}">                                                            ${u.email}
@@ -408,8 +408,8 @@
                                                         </c:forEach>
                                                     </td>                                                
                                                     <td class="align-middle">
-                                                        <span class="orders-btn">
-                                                            <a href="cvmanagercate?id=${c.mentorId}" class="btn button-sm green">View CV List</a>
+                                                        <span class="new-users-btn">
+                                                            <a href="cvmanagercate?id=${c.mentorId}" class="btn button-sm outline">View CV List</a>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -427,13 +427,13 @@
                         <div class="widget-box">
                             <div class="wc-title d-flex align-items-center">
                                 <h4 class="d-inline-block" >CV List</h4>
-                                
-                                    
-                                    <div class="d-inline-block ml-auto">
-                                        <a href="cvmanager" class="btn button-layout purple">Reset</a>
-                                        </div>
-                                    
-                                
+
+
+                                <div class="d-inline-block ml-auto">
+                                    <a href="cvmanager" class="btn button-layout purple">Reset</a>
+                                </div>
+
+
                             </div>
                             <div class="widget-inner">
                                 <div class="orders-list">

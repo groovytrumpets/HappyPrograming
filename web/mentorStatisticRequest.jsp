@@ -720,6 +720,11 @@
                                 font: {
                                     size: 16
                                 }
+                            },
+                            suggestedMin: 0, // Giới hạn tối thiểu
+                            suggestedMax: 5, // Giới hạn tối đa
+                            ticks: {
+                                stepSize: 1 // Chỉ lấy số nguyên, bước nhảy là 1
                             }
                         }
                     }

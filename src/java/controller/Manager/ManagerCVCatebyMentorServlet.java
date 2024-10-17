@@ -3,19 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.CV;
+package controller.Manager;
 
 import DAO.CVDAO;
-import DAO.HomeDAO;
 import Model.CV;
-import Model.Mentee;
 import Model.Mentor;
-import Model.Rate;
 import Model.Skill;
-import Model.Slot;
-import Model.StatisticSkills;
-import com.google.gson.Gson;
-import static controller.Mentor.SlotViewServlet.convertDayInWeekToCurrentDate;
+import Model.SkillList;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,15 +18,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="ViewProfileCVServlet", urlPatterns={"/viewprofilecv"})
-public class ViewProfileCVServlet extends HttpServlet {
+@WebServlet(name="ManagerCVbyMentorServlet", urlPatterns={"/cvmanagercate"})
+public class ManagerCVCatebyMentorServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -48,10 +42,10 @@ public class ViewProfileCVServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProfileCVServlet</title>");  
+            out.println("<title>Servlet ManagerCVbyMentorServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProfileCVServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ManagerCVbyMentorServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,59 +64,33 @@ public class ViewProfileCVServlet extends HttpServlet {
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
         String error = request.getParameter("error");
-        
-        
         int id;
-        CVDAO cvd = new CVDAO();
         try {
-            id = Integer.parseInt(id_raw);
-            Mentor mentor = cvd.getMentorByID(id);
-            CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
-            //String email = cvd.getUserEmail(id);
-            List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(id);
-            int rateAve = cvd.getAveRatebyId(id);
-            HomeDAO hdao = new HomeDAO();
-            List<Mentee> menteeList = hdao.getListofMentee();
             
-            
-            request.setAttribute("skillMentor", mentorSkillList);
-            
-            
-            
-            request.setAttribute("error", error);
-            //request.setAttribute("email", email);
-            request.setAttribute("uFound", mentor);
-            request.setAttribute("cvFound", cv);
-            request.setAttribute("rate", rateList);
-            request.setAttribute("menteeList", menteeList);
-            request.setAttribute("rateAve", rateAve);
-            
-            
-            //slot view
-            List<String> dateConverted = new ArrayList<>();
-            List<String> enddateConverted = new ArrayList<>();
-            List<String> statusSlot = new ArrayList<>();
-            List<Slot> mentorSlot = cvd.getSlotByMentorId(id);
-            //System.out.println(mentorSlot.get(0).getDayInWeek());
-            for (int i = 0; i < mentorSlot.size(); i++) {
-                String startDate = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();
-                String endDate = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getEndTime();
-                statusSlot.add(mentorSlot.get(i).getStatus());
-                //System.out.println(startDate+", "+mentorSlot.get(i).getEndTime());
-                dateConverted.add(startDate);
-                enddateConverted.add(endDate);
-            }
-
-            request.setAttribute("status", new Gson().toJson(statusSlot));
-            request.setAttribute("values", new Gson().toJson(dateConverted));
-            request.setAttribute("endValues", new Gson().toJson(enddateConverted));
-            
-            
-            request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
+          id=Integer.parseInt(id_raw);
+        CVDAO cvd = new CVDAO();
+        List<Mentor> listMentor = cvd.getListofMentor();
+        List<CV> listCV = cvd.getListofCVbyMentorId(id);
+        List<Skill> listSkill = cvd.getListofSkill();
+        List<SkillList> listSkillList = cvd.getListofSkillList();
+        //hien thi avata gan nhat
+        List<CV> listActiveCV = cvd.getListofActiveCV();
+        
+        List<User> listUser = cvd.getListofUser();
+//        System.out.println(listMentor.get(0).getUsername());
+        request.setAttribute("mentorList", listMentor);
+        request.setAttribute("listCV", listCV);
+        request.setAttribute("listUser", listUser);
+        request.setAttribute("listActiveCV", listActiveCV);
+        
+        request.setAttribute("listSkill", listSkill);
+        request.setAttribute("listSkillList", listSkillList);
+        request.setAttribute("error", error);
+        request.getRequestDispatcher("managerCV.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
+          
     } 
 
     /** 

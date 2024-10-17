@@ -6,11 +6,7 @@
 package controller.Manager;
 
 import DAO.CVDAO;
-import Model.CV;
-import Model.Mentor;
-import Model.Skill;
-import Model.SkillList;
-import Model.User;
+import Model.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,14 +14,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="ManagerCVbyMentorServlet", urlPatterns={"/cvmanagercate"})
-public class ManagerCVbyMentorServlet extends HttpServlet {
+@WebServlet(name="StatusPaidMentorRequestServlet", urlPatterns={"/statuspaidmentorrequest"})
+public class StatusPaidRequestServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +37,10 @@ public class ManagerCVbyMentorServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagerCVbyMentorServlet</title>");  
+            out.println("<title>Servlet ActiveMenteeRequestServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagerCVbyMentorServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ActiveMenteeRequestServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,35 +57,24 @@ public class ManagerCVbyMentorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        
-        int id;
+        String requestId_raw = request.getParameter("id");
+        int requestId;
         try {
-            
-          id=Integer.parseInt(id_raw);
-        CVDAO cvd = new CVDAO();
-        List<Mentor> listMentor = cvd.getListofMentor();
-        List<CV> listCV = cvd.getListofCVbyMentorId(id);
-        List<Skill> listSkill = cvd.getListofSkill();
-        List<SkillList> listSkillList = cvd.getListofSkillList();
-        //hien thi avata gan nhat
-        List<CV> listActiveCV = cvd.getListofActiveCV();
-        
-        List<User> listUser = cvd.getListofUser();
-//        System.out.println(listMentor.get(0).getUsername());
-        request.setAttribute("mentorList", listMentor);
-        request.setAttribute("listCV", listCV);
-        request.setAttribute("listUser", listUser);
-        request.setAttribute("listActiveCV", listActiveCV);
-        
-        request.setAttribute("listSkill", listSkill);
-        request.setAttribute("listSkillList", listSkillList);
-        
-        request.getRequestDispatcher("managerCV.jsp").forward(request, response);
+            requestId=Integer.parseInt(requestId_raw);
+            CVDAO cvd = new CVDAO();
+            Request rq = cvd.getRequestbyRequestId(requestId);
+            if (rq.getStatus().equalsIgnoreCase("Complete")) {
+               // System.out.println("Complete");
+                cvd.setStatusPaidRequestId(requestId);
+                response.sendRedirect("paymentmanagercate?id="+requestId);
+            }else if (rq.getStatus().equalsIgnoreCase("Paid")) {
+                System.out.println("Paid");
+                cvd.setStatusCompleteRequestId(requestId);
+                response.sendRedirect("paymentmanagercate?id="+requestId);
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
-          
     } 
 
     /** 
