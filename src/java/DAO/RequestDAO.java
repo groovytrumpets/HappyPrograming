@@ -7,6 +7,7 @@ package DAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Request;
+import Model.RequestSlotData;
 import Model.RequestSlotItem;
 import Model.StatisticRequests;
 import java.sql.ResultSet;
@@ -16,7 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Time;
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -272,7 +281,7 @@ public class RequestDAO extends DBContext {
         return listRequest;
         
     }
-    
+
     public List<Request> getRequestsByMenteeUsername(String username) {
         List<Request> requests = new ArrayList<>();
         String query = "SELECT * FROM [Request] WHERE MenteeID = (SELECT MenteeID FROM Mentee WHERE Username = ?)";
@@ -284,17 +293,17 @@ public class RequestDAO extends DBContext {
 
             while (rs.next()) {
                 Request request = new Request(
-                        rs.getInt("RequestID"), 
-                        rs.getInt("MentorID"), 
-                        rs.getInt("MenteeID"), 
-                        rs.getFloat("Price"), 
-                        rs.getString("Note"), 
-                        rs.getDate("CreateDate").toLocalDate(), 
-                        rs.getString("Status"), 
-                        rs.getString("Title"), 
-                        rs.getString("Framework"), 
-                        rs.getDate("StartDate").toLocalDate(), 
-                        rs.getDate("EndDate").toLocalDate(), 
+                        rs.getInt("RequestID"),
+                        rs.getInt("MentorID"),
+                        rs.getInt("MenteeID"),
+                        rs.getFloat("Price"),
+                        rs.getString("Note"),
+                        rs.getDate("CreateDate").toLocalDate(),
+                        rs.getString("Status"),
+                        rs.getString("Title"),
+                        rs.getString("Framework"),
+                        rs.getDate("StartDate").toLocalDate(),
+                        rs.getDate("EndDate").toLocalDate(),
                         rs.getInt("SkillID"));
                 requests.add(request);
             }
@@ -494,7 +503,6 @@ public class RequestDAO extends DBContext {
         return null;
 
     }
-
 
     public String[] getAllStatusInRequest() {
         String sql = "SELECT DISTINCT [Status] FROM Request";
@@ -835,7 +843,7 @@ public class RequestDAO extends DBContext {
             String searchPattern = "%" + search + "%";
             st.setString(2, searchPattern);
             st.setString(3, searchPattern);
-             String statusPattern = "%" + status + "%";
+            String statusPattern = "%" + status + "%";
             st.setString(4, statusPattern);
             int numOffSet = (page - 1) * disNum;
             st.setInt(5, numOffSet);
@@ -878,9 +886,9 @@ public class RequestDAO extends DBContext {
 
         return listReq;
 
-        
     }
-public List<StatisticRequests> getRequestStatistics(int menteeId) {
+
+    public List<StatisticRequests> getRequestStatistics(int menteeId) {
         List<StatisticRequests> statistics = new ArrayList<>();
         String sql = "SELECT Title, COUNT(*) AS totalRequests, "
                 + "SUM(DATEDIFF(hour, StartDate, EndDate)) AS totalHours, "
@@ -922,6 +930,177 @@ public List<StatisticRequests> getRequestStatistics(int menteeId) {
                 AND r2.MentorID = sl.MentorID
             );
         """;
+
+    public List<Request> getRequestOfMentor(String mentorName) {
+        List<Request> requestlist = new ArrayList<>();
+        String sql = "SELECT r.* FROM Request r\n"
+                + "  JOIN RequestSlotItem rsi ON rsi.RequestID = r.RequestID\n"
+                + "  JOIN Slot sl ON sl.SlotID = rsi.SlotID\n"
+                + "  JOIN Mentor m ON m.MentorID = r.MentorID\n"
+                + "  WHERE CONVERT(DATETIME, r.EndDate) + CAST(sl.EndTime AS DATETIME) >\n"
+                + "  GETDATE() AND m.Username = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Request request = new Request(
+                        rs.getInt("RequestID"),
+                        rs.getInt("MentorID"),
+                        rs.getInt("MenteeID"),
+                        rs.getFloat("Price"),
+                        rs.getString("Note"),
+                        rs.getDate("CreateDate").toLocalDate(),
+                        rs.getString("Status"),
+                        rs.getString("Title"),
+                        rs.getString("Framework"),
+                        rs.getDate("StartDate").toLocalDate(),
+                        rs.getDate("EndDate").toLocalDate(),
+                        rs.getInt("SkillID"));
+
+                requestlist.add(request);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return requestlist;
+    }
+
+    public void updateStatusByMentor(int requestId, String newStatus) throws SQLException {
+        String query = "UPDATE Request SET Status = ? WHERE RequestID = ?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, newStatus);
+            ps.setInt(2, requestId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateRequestStatus(int requestId, String newStatus) throws SQLException {
+        String query = "UPDATE Request SET Status = ? WHERE RequestID = ?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, newStatus);
+            ps.setInt(2, requestId);
+            ps.executeUpdate();
+        }
+    }
+
+    public List<StatisticRequests> getRequestStatisticsTotal(int menteeId) {
+        List<StatisticRequests> statistics = new ArrayList<>();
+        String sql = "SELECT s.SlotID, s.StartTime, s.EndTime, s.DayInWeek, "
+                + "r.RequestID, r.Title, r.StartDate, r.EndDate "
+                + "FROM Slot s "
+                + "JOIN RequestSlotItem rs ON s.SlotID = rs.SlotID "
+                + "JOIN Request r ON rs.RequestID = r.RequestID "
+                + "WHERE r.MenteeID = ? AND r.Status NOT LIKE 'Canceled' "
+                + "AND r.Status NOT LIKE 'Reject'";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, menteeId);
+            ResultSet rs = ps.executeQuery();
+
+            Map<String, List<RequestSlotData>> slotDataMap = new HashMap<>();
+
+            while (rs.next()) {
+                // Fetch necessary fields
+                String title = rs.getString("Title");
+                LocalDate startDate = rs.getDate("StartDate").toLocalDate();
+                LocalDate endDate = rs.getDate("EndDate").toLocalDate();
+                String dayInWeek = rs.getString("DayInWeek");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+
+                RequestSlotData slotData = new RequestSlotData(
+                        rs.getInt("SlotID"), startDate, endDate, dayInWeek, startTime, endTime
+                );
+
+                // Group slot data by title (request title)
+                slotDataMap.computeIfAbsent(title, k -> new ArrayList<>()).add(slotData);
+            }
+
+            for (Map.Entry<String, List<RequestSlotData>> entry : slotDataMap.entrySet()) {
+                String title = entry.getKey();
+                List<RequestSlotData> slots = entry.getValue();
+
+                // Calculate total hours for this request
+                int totalHours = calculateTotalHours(slots);
+                int totalRequests = slots.size();
+                int totalMentors = getTotalMentors(slots); // Example method to calculate mentors
+
+                // Add to the list of statistics
+                statistics.add(new StatisticRequests(title, totalRequests, totalHours, totalMentors));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statistics;
+    }
+
+    //Ham phu tinh tong thoi gian
+    //Bat dau ham
+    private int calculateTotalHours(List<RequestSlotData> slots) {
+        int totalHours = 0;
+
+        for (RequestSlotData slot : slots) {
+            LocalDate startDate = slot.getStartDate();
+            LocalDate endDate = slot.getEndDate();
+            DayOfWeek dayInWeek = DayOfWeek.valueOf(slot.getDayInWeek().toUpperCase());
+            LocalTime startTime = slot.getStartTime();
+            LocalTime endTime = slot.getEndTime();
+
+            // Logic for calculating the total hours in the range
+            totalHours += calculateTotalHours(startDate, endDate,
+                    Collections.singletonList(dayInWeek), startTime, endTime);
+        }
+
+        return totalHours;
+    }
+
+    // Example method to calculate total mentors (you can adapt based on your data)
+    private int getTotalMentors(List<RequestSlotData> slots) {
+        Set<Integer> mentorIds = new HashSet<>();
+        for (RequestSlotData slot : slots) {
+            // Assume slot contains mentorID, adjust if necessary
+            // mentorIds.add(slot.getMentorId());
+        }
+        return mentorIds.size();
+    }
+
+    public static int calculateTotalHours(LocalDate startDate, LocalDate endDate,
+            List<DayOfWeek> daysOfWeek,
+            LocalTime startTime, LocalTime endTime) {
+        int totalHours = 0;
+
+        // Iterate through each day between startDate and endDate
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            DayOfWeek currentDayOfWeek = date.getDayOfWeek();
+
+            // If the current day is one of the days the slot is active
+            if (daysOfWeek.contains(currentDayOfWeek)) {
+                // Calculate the duration for this day (hours between startTime and endTime)
+                Duration duration = Duration.between(startTime, endTime);
+                totalHours += duration.toHours();
+            }
+        }
+        return totalHours;
+    }
+    //Ket thuc
+    
+    public int getSlotIdByRequestId(int requestId) throws SQLException {
+        String query = "SELECT slotId FROM RequestSlotItem WHERE requestId = ?";
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, requestId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("slotId");
+            }
+        }
+        return -1; // If no slot is found for the request
+    }
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);

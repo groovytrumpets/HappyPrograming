@@ -5,17 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="Model.Mentor" %>
-<%@ page import="DAO.MentorDAO" %>
-<%
-    int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-    MentorDAO mentorDAO = new MentorDAO();
-    Mentor mentor = mentorDAO.getMentorById(mentorId); // Assuming you have this method
-
-    // Retrieve menteeId from request attribute
-    int menteeId = (int) request.getAttribute("menteeId");
-%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -147,21 +136,20 @@
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                         <li>Rate Mentor</li>
                     </ul>
-                </div>	
+                </div>  
                 <div class="row">
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="widget-inner">
                                 <form action="ratementor" method="POST">
-                                    <input type="hidden" name="menteeId" value="<%= menteeId %>" />
-                                    <input type="hidden" name="mentorId" value="<%= mentorId %>" />
+                                    <input type="hidden" name="menteeId" value="${mentee.menteeId}" />
+                                    <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
 
                                     <!-- Rating Section -->
-                                    <h3><%= mentor.getFullName() %></h3>
+                                    <h3>${mentor.fullName}</h3>
                                     <h4>FPT University</h4>
-                                    
+
                                     <div class="star-rating">
-                                        
                                         <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
                                         <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
                                         <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>

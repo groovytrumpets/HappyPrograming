@@ -599,11 +599,6 @@ public class CVDAO extends DBContext {
         return 0;
     }
 
-    public static void main(String[] args) {
-        CVDAO c = new CVDAO();
-        System.out.println(c.getCVbyMentorId(8));
-    }
-
     public void deleteCV(int id) {
 
         String sql = "delete from CV where CVID =? ";
@@ -1186,6 +1181,38 @@ public class CVDAO extends DBContext {
         }
 
         return null;
+    }
+    
+    public List<Mentor> getListofMentorWithStatus() {
+        List<Mentor> mentorList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select m.* from [Mentor] m join Request r on m.MentorID = r.MentorID where r.[Status] = 'Completed'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Mentor mentor = new Mentor(rs.getInt("mentorId"),
+                        rs.getInt("roleId"), rs.getString("username"),
+                        rs.getDate("createDate"), rs.getString("phone"),
+                        rs.getString("address"), rs.getDate("dateOfBirth"),
+                        rs.getString("fullName"), rs.getString("gender"),
+                        rs.getString("status"));
+                mentorList.add(mentor);
+
+            }
+            return mentorList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        CVDAO c = new CVDAO();
+        System.out.println(c.getListofMentorWithStatus());
     }
 
 }
