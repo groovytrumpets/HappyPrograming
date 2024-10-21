@@ -762,7 +762,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countInvitedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Processing'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -798,7 +798,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countCompletedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Complete'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1008,7 +1008,7 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofCompleteRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where Status='Paid' or Status='Complete'";
+        String sql = "select * from Request where Status='Paid' or Status='Completed'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -1189,7 +1189,7 @@ public class CVDAO extends DBContext {
     }
 
     public void setStatusCompleteRequestId(int requestId) {
-        String sql = "Update Request set Status ='Complete' where RequestID =?";
+        String sql = "Update Request set Status ='Completed' where RequestID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, requestId);
