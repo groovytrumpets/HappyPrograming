@@ -6,9 +6,9 @@ package controller;
 
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
-import DAO.RateDAO;
-import Model.Mentee;
-import Model.Mentor;
+import DAO.RequestDAO;
+import DAO.SlotDAO;
+import Model.Request;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,13 +18,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "RateMentorSV", urlPatterns = {"/ratementor"})
-public class RateMentorSV extends HttpServlet {
+@WebServlet(name = "UpdateStatusByMentorSV", urlPatterns = {"/updatestatusbymentor"})
+public class UpdateStatusByMentorSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +44,10 @@ public class RateMentorSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RateMentorSV</title>");
+            out.println("<title>Servlet UpdateStatusByMentorSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RateMentorSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateStatusByMentorSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,40 +67,52 @@ public class RateMentorSV extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
-        MenteeDAO actMentee = new MenteeDAO();
-        MentorDAO actMentor = new MentorDAO();
+
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
         }
-        PrintWriter out = response.getWriter();
+
         int roleID = curUser.getRoleId();
-        Mentee curMentee = new Mentee();
-        if (roleID == 2) {
-            curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
-            request.setAttribute("mentee", curMentee);
-        } else if (roleID == 1) {
-            Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
-            response.sendRedirect("Home.jsp");
-            return;
-        }
-        String mentorId_raw = request.getParameter("mentorId");
-        int mentorId;
+        int requestId = Integer.parseInt(request.getParameter("requestId"));
+        RequestDAO requestDAO = new RequestDAO();
+        SlotDAO slotDAO = new SlotDAO();
+
         try {
-            mentorId = Integer.parseInt(mentorId_raw);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid mentor ID");
-            return;
-        }
+            if (roleID == 1) { // Mentor actions
+                String action = request.getParameter("action");
+                int slotId = requestDAO.getSlotIdByRequestId(requestId);
 
-        Mentor mentor = actMentor.getMentorById(mentorId);
-        if (mentor == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
-            return;
-        }
+                if (slotId == -1) {
+                    // Handle the case when no slot is associated with the request
+                    response.sendRedirect("errorPage.jsp");
+                    return;
+                }
 
-        request.setAttribute("mentor", mentor);
-        request.getRequestDispatcher("rateMentor.jsp").forward(request, response);
+                switch (action) {
+                    case "accept":
+                        requestDAO.updateStatusByMentor(requestId, "Processing");
+                        slotDAO.updateSlotStatusToUnavailable(slotId);
+                        break;
+                    case "reject":
+                        requestDAO.updateStatusByMentor(requestId, "Reject");
+                        break;
+                    case "complete":
+                        requestDAO.updateStatusByMentor(requestId, "Completed");
+                        slotDAO.updateSlotStatusToAvailable(slotId);
+                        break;
+                    default:
+                        break;
+                }
+                response.sendRedirect("listrequestofmentor");
+            } else if (roleID == 2) {
+                response.sendRedirect("home");
+                return;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -113,40 +126,8 @@ public class RateMentorSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get the session
-        HttpSession session = request.getSession();
-        User curUser = (User) session.getAttribute("acc");
-        MenteeDAO actMentee = new MenteeDAO();
-        MentorDAO actMentor = new MentorDAO();
-        if (curUser == null) {
-            response.sendRedirect("signin");
-            return;
-        }
-        PrintWriter out = response.getWriter();
-        int roleID = curUser.getRoleId();
-        Mentee curMentee = new Mentee();
-        if (roleID == 2) {
-            curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
-            request.setAttribute("mentee", curMentee);
-        } else if (roleID == 1) {
-            Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
-            response.sendRedirect("home");
-            return;
-        }
+        processRequest(request, response);
 
-        int menteeId = curMentee.getMenteeId(); // Get the menteeId from the current mentee
-
-        // Retrieve the mentor ID from the request
-        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-        int rate = Integer.parseInt(request.getParameter("rating"));
-        String comment = request.getParameter("comment");
-
-        // Use RateDAO to save the rating
-        RateDAO rateDAO = new RateDAO();
-        rateDAO.saveRating(menteeId, mentorId, rate, comment);
-
-        // Redirect back to the mentor profile or success page
-        response.sendRedirect("viewprofilecv?id=" + mentorId);
     }
 
     /**

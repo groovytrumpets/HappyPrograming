@@ -1,8 +1,17 @@
+<%-- 
+    Document   : test
+    Created on : Oct 17, 2024, 2:29:43 PM
+    Author     : asus
+--%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
     <head>
+
         <!-- META ============================================= -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,30 +57,6 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-
-        <!-- Star Rating CSS -->
-        <style>
-            .star-rating {
-                direction: rtl;
-                display: inline-block;
-                font-size: 20px;
-            }
-            .star-rating input[type="radio"] {
-                display: none;
-            }
-            .star-rating label {
-                color: #ddd;
-                font-size: 30px;
-                cursor: pointer;
-            }
-            .star-rating input:checked ~ label {
-                color: #f5b301;
-            }
-            .star-rating label:hover,
-            .star-rating label:hover ~ label {
-                color: #f5b301;
-            }
-        </style>
 
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
@@ -359,35 +344,97 @@
 
         <!--Main container start -->
         <main class="ttr-wrapper">
-            <div>
-                <div class="container">
-                    <h2 style="text-align: left;">Rate Your Mentor</h2>
+            <div class="container-fluid">
+
+                <div class="row">
+                    <!-- Your Profile Views Chart -->
+                    <div class="col-lg-12 m-b30">
+                        <div class="widget-box">
+
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block" >Mentee Request List</h4>
+                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
+
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="widget-inner">
+                                <div class="new-user-list" >
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">End Date</th>
+                                                <th scope="col">Note</th>
+                                                <th scope="col">Framework</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <c:forEach items="${requestScope.mentorrequest}" var="c"  varStatus="status">
+
+                                                <tr>
+                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
+                                                    <td class="align-middle">${c.title}</td>
 
 
-                    <form action="RateMentorSV" method="POST">
-                        <input type="hidden" name="mentorId" value="${mentorId}" />
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${c.startDate}</a></td>
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.endDate}</td>
 
-                        <!-- Star Rating System -->
-                        <div class="form-group">
-                            <label for="rating">Rate the Mentor:</label><br>
-                            <div class="star-rating">
-                                <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
-                                <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
-                                <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
-                                <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
-                                <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+
+
+                                                    <td class="align-middle">${c.note}</td>
+                                                    <td class="align-middle">${c.framework}</td>
+
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
+                                                        ${c.status}
+
+
+                                                    </td>     
+
+                                                    <td class="align-middle">
+                                                        <c:choose>
+                                                            <c:when test="${c.status.equals('Open')}">
+                                                                <span class="orders-btn">
+                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm green">Accept</a>
+                                                                </span>
+                                                                <span class="orders-btn">
+                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red">Reject</a>
+                                                                </span> 
+                                                            </c:when>
+                                                            <c:when test="${c.status.equals('Processing')}">
+                                                                <span class="orders-btn">
+                                                                    <a href="requestdetail?id=${c.requestId}" class="btn button-sm orange">Complete</a>
+                                                                </span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <span class="new-users-btn">
+                                                            <a href="requestDetailAdmin?requestID=${c.requestId}" class="btn button-sm outline">Detail</a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- Your Profile Views Chart END-->
 
-                        <div class="form-group">
-                            <label for="comment">Comment:</label><br>
-                            <textarea name="comment" id="comment" placeholder="Leave a comment about the mentor" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit">Submit Rating</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </main>
@@ -412,7 +459,6 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
             $(document).ready(function () {
 

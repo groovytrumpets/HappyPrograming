@@ -156,6 +156,24 @@ public class SlotDAO extends DBContext {
         return listSlot;
     }
 
+    public void updateSlotStatusToUnavailable(int slotId) throws SQLException {
+        String query = "UPDATE Slot SET status = 'Unavailable' WHERE slotID = ?";
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, slotId);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateSlotStatusToAvailable(int slotId) throws SQLException {
+        String query = "UPDATE Slot SET status = 'Available' WHERE slotID = ?";
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, slotId);
+            ps.executeUpdate();
+        }
+    }
+
     public static void main(String[] args) {
         SlotDAO slotDAO = new SlotDAO();
 

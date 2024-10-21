@@ -7,6 +7,7 @@ package controller;
 import DAO.MenteeDAO;
 import DAO.RequestDAO;
 import Model.Mentee;
+import Model.RequestSlotData;
 import Model.StatisticRequests;
 import Model.User;
 import java.io.IOException;
@@ -17,7 +18,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -79,12 +87,12 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
         if (roleID == 2) {  // Only allow mentees
             Mentee curMentee = menteeDAO.findMenteeByUsername(curUser.getUsername());
             int menteeId = curMentee.getMenteeId();
-            
-            List<StatisticRequests> statistics = requestDAO.getRequestStatistics(menteeId);
+
+            List<StatisticRequests> statistics = requestDAO.getRequestStatisticsTotal(menteeId);
             request.setAttribute("statistics", statistics);
             request.getRequestDispatcher("statisticRequestByMentee.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("Home.jsp");
+        } else if (roleID == 1) {
+            response.sendRedirect("home");
         }
     }
 
