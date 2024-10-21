@@ -4,14 +4,7 @@
  */
 package controller;
 
-import DAO.CVDAO;
-import DAO.MenteeDAO;
-import DAO.MentorDAO;
 import DAO.RequestDAO;
-import Model.CV;
-import Model.Mentee;
-import Model.Mentor;
-import Model.Request;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,14 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "ListMentorSV", urlPatterns = {"/listmentor"})
-public class ListMentorSV extends HttpServlet {
+@WebServlet(name = "UpdateStatusOfMenteeSV", urlPatterns = {"/updatestatusofmentee"})
+public class UpdateStatusOfMenteeSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,10 +39,10 @@ public class ListMentorSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListMentorSV</title>");
+            out.println("<title>Servlet UpdateStatusOfMenteeSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListMentorSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateStatusOfMenteeSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,32 +60,40 @@ public class ListMentorSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            CVDAO cvdao = new CVDAO();
-            RequestDAO requestdao = new RequestDAO();
-            
-            List<CV> cvlist = cvdao.getListofActiveCV();
-            List<Mentor> mentorlist = cvdao.getListofMentorWithStatus();
-            
-            
-            request.setAttribute("cvlist", cvlist);
-            request.setAttribute("mentorlist", mentorlist);
+        HttpSession session = request.getSession();
+        User curUser = (User) session.getAttribute("acc");
 
-            request.getRequestDispatcher("listMentor.jsp").forward(request, response);
-        } catch (Exception e) {
-            // Log the error (optional)
-            System.err.println("Error retrieving mentors: " + e.getMessage());
-
-            // Optionally set an error message
-            request.setAttribute("errorMessage", "Unable to retrieve mentor list. Please try again later.");
-
-            // Forward to an error page or a specific JSP
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return; // Stop further processing
+        if (curUser == null) {
+            response.sendRedirect("signin");
+            return;
         }
 
-        // Forward the request to listMentors.jsp to display the mentor list
-        
+        int roleID = curUser.getRoleId();
+        int requestId = Integer.parseInt(request.getParameter("requestId"));
+        RequestDAO requestDAO = new RequestDAO();
+
+        try {
+            if (roleID == 2) {
+                String action = request.getParameter("action");
+
+                switch (action) {
+                    case "update":
+                        response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
+                        break;
+                    case "cancel":
+                        requestDAO.updateRequestStatus(requestId, "Canceled");
+                        break;
+                    default:
+                        break;
+                }
+                response.sendRedirect("listrequestbymentee");
+            } else if (roleID == 1) {
+                response.sendRedirect("home");
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -107,7 +107,7 @@ public class ListMentorSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);  // Handle both POST and GET the same way
+        processRequest(request, response);
     }
 
     /**

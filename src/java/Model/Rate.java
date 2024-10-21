@@ -11,12 +11,6 @@ import java.util.Date;
  * @author ADMIN
  */
 public class Rate {
-    /*[MentorID] [int] NULL,
-	[MenteeID] [int] NULL,
-	[CreateDate] [date] NULL,
-	[status] [nvarchar](20) NULL,
-	[Comment] [varchar](max) NULL,
-	[Rate] [int] NULL*/
     private int mentorId,menteeId;
     private Date createDate;
     private String status,comment;
@@ -81,6 +75,10 @@ public class Rate {
     public void setRate(int rate) {
         this.rate = rate;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Rate{" + "mentorId=" + mentorId + ", menteeId=" + menteeId + ", createDate=" + createDate + ", status=" + status + ", comment=" + comment + ", rate=" + rate + '}';
+    }
     
 }

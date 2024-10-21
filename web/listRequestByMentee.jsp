@@ -178,63 +178,174 @@
                         <i class="ti-arrow-left"></i>
                     </div>
                 </div>
-
+                <!-- side menu logo end -->
+                <!-- sidebar menu start -->
+                <nav class="ttr-sidebar-navi">
+                    <ul>
+                        <li>
+                            <a href="index.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-home"></i></span>
+                                <span class="ttr-label">Dashborad</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="courses.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-book"></i></span>
+                                <span class="ttr-label">Courses</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-email"></i></span>
+                                <span class="ttr-label">Mailbox</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
+                                <span class="ttr-label">Calendar</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
+                                </li>
+                                <li>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="bookmark.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                <span class="ttr-label">Bookmarks</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="review.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-comments"></i></span>
+                                <span class="ttr-label">Review</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="add-listing.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+                                <span class="ttr-label">Add listing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-user"></i></span>
+                                <span class="ttr-label">My Profile</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
+                                </li>
+                                <li>
+                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ttr-seperate"></li>
+                    </ul>
+                    <!-- sidebar menu end -->
+                </nav>
+                <!-- sidebar menu end -->
             </div>
         </div>
         <!-- Left sidebar menu end -->
 
-        <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
-                <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">List Request</h4>
-                    <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>List Request</li>
-                    </ul>
-                </div>	
+
                 <div class="row">
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>List Request</h4>
+
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block" >Mentee Request List</h4>
+                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
+
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
+                                    </div>
+
+                                </form>
                             </div>
                             <div class="widget-inner">
-                                <table border="1">
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Description</th>
-                                        <th>Skills</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    <c:forEach var="req" items="${requestScope.requestlist}">
-                                        <tr>
-                                            <td>${req.title}</td>
-                                            <td>${req.startDate}</td>
-                                            <td>${req.endDate}</td>
-                                            <td>${req.note}</td>
-                                            <td>${req.framework}</td>
-                                            <td>
-                                                <form action="updateRequest" method="get">
-                                                    <div class="col-12" style="padding-bottom: 10px">
-                                                        <input type="hidden" name="requestId" value="${req.requestId}" />
-                                                        <button type="submit" class="btn">Update</button>
-                                                    </div>
-                                                </form>
-                                                <form action="deleterequestbymentee" method="post">
-                                                    <div class="col-12">
-                                                        <input type="hidden" name="requestId" value="${req.requestId}" />
-                                                        <button type="submit" class="btn">Delete</button>
-                                                    </div>
-                                                </form>
+                                <div class="new-user-list" >
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">End Date</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Framework</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </table>
+                                            <c:forEach items="${requestScope.requestlist}" var="r"  varStatus="status">
+
+                                                <tr>
+                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
+                                                    <td class="align-middle">${r.title}</td>
+
+
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${r.startDate}</a></td>
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>
+
+
+
+                                                    <td class="align-middle">${r.note}</td>
+                                                    <td class="align-middle">${r.framework}</td>
+
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
+                                                        ${r.status}
+                                                    </td>     
+
+                                                    <td class="align-middle">
+                                                        <c:choose>
+                                                            <c:when test="${r.status == 'Open'}">
+                                                                <span class="orders-btn">
+                                                                    <a href="UpdateRequestOfMentee?action=update&requestId=${r.requestId}" class="btn button-sm blue">Update</a>
+                                                                </span>
+                                                                <span class="orders-btn">
+                                                                    <a href="updatestatusofmentee?action=cancel&requestId=${r.requestId}" class="btn button-sm red">Cancel</a>
+                                                                </span>
+                                                            </c:when>
+                                                            <c:otherwise>   
+                                                            </c:otherwise>
+                                                        </c:choose>
+
+                                                        <span class="new-users-btn">
+                                                            <a href="requestDetailAdmin?requestID=${r.requestId}" class="btn button-sm outline">Detail</a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -243,6 +354,7 @@
             </div>
         </main>
         <div class="ttr-overlay"></div>
+        <!--Main container end -->
 
         <!-- External JavaScripts -->
         <script src="assets/js/jquery.min.js"></script>
