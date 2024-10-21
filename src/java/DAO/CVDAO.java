@@ -762,7 +762,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countInvitedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Processing'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -798,7 +798,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countCompletedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Complete'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
