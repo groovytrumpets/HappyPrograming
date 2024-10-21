@@ -37,8 +37,25 @@ public class WalletDAO extends DBContext {
         return null;
     }
     
+    public boolean updateWalletBalanceByUsername(String username, double newBalance) {
+    String sql = "UPDATE Wallet SET Balance = ? WHERE Username = ?";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setDouble(1, newBalance);
+        st.setString(2, username);
+        int rowsUpdated = st.executeUpdate(); // Execute the update statement
+        return rowsUpdated > 0; // Return true if the update was successful
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return false;
+}
+
+    
     public static void main(String[] args) {
         WalletDAO act = new WalletDAO();
         System.out.println(act.getWalletByUsername("hoanganhgp23"));
+        act.updateWalletBalanceByUsername("hoanganhgp23", 3000000);
+         System.out.println(act.getWalletByUsername("hoanganhgp23"));
     }
 }
