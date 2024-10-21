@@ -5,17 +5,15 @@
 package DAO;
 
 import Model.Payment;
+import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Formatter;
+
 import java.util.List;
+import java.util.Calendar;
 
 /**
  *
@@ -23,34 +21,90 @@ import java.util.List;
  */
 public class PaymentDAO extends DBContext {
 
-    public Payment getNewestPaymentByMenteeId(int menteeId) {
-        Payment payment = null;
-        String sql = "SELECT TOP 1 * FROM Payment WHERE MenteeID = ? ORDER BY PaymentDate DESC";
+    // Method to insert a new payment into the database
+    public boolean addPayment(Payment payment) {
+        String sql = "INSERT INTO payments (requestId, paymentDate, totalAmount, status, sender, receiver) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, payment.getRequestId());
+            LocalDateTime paymentDate = payment.getPaymentDate();
+            if (paymentDate != null) {
+                pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(paymentDate));
+            } else {
+                pstmt.setNull(2, java.sql.Types.TIMESTAMP);
+            }
+            pstmt.setDouble(3, payment.getTotalAmount());
+            pstmt.setString(4, payment.getStatus());
+            pstmt.setString(5, payment.getSender());
+            pstmt.setString(6, payment.getReceiver());
 
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, menteeId);
-            ResultSet resultSet = st.executeQuery();
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
 
-            if (resultSet.next()) {
-                payment = new Payment();
-                payment.setPaymentID(resultSet.getInt("PaymentID"));
-                payment.setRequestID(resultSet.getInt("RequestID"));
-                payment.setCreateDate(resultSet.getDate("CreateDate"));
-                payment.setTotalAmount(resultSet.getDouble("TotalAmount"));
-                payment.setPaymentDate(resultSet.getDate("PaymentDate"));
-                payment.setStatus(resultSet.getString("Status"));
-                payment.setBalance(resultSet.getDouble("Balance"));
-                payment.setMentorID(resultSet.getInt("MentorID"));
-                payment.setMenteeID(resultSet.getInt("MenteeID"));
+    // Method to retrieve a payment by its ID
+    public Payment getPaymentById(int paymentId) {
+        String sql = "SELECT * FROM payments WHERE paymentId = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, paymentId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
             }
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
-
-        return payment;
+        return null; // Return null if no payment found
     }
-    public static void main(String[] args) {
-        PaymentDAO p = new PaymentDAO();
-        System.out.println(p.getNewestPaymentByMenteeId(4));
+
+    // Method to retrieve all payments
+    public List<Payment> getAllPayments() {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payments";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
+
+    // Method to update payment status
+    public boolean updatePaymentStatus(int paymentId, String newStatus) {
+        String sql = "UPDATE payments SET status = ? WHERE paymentId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, newStatus);
+            pstmt.setInt(2, paymentId);
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // Returns true if the update was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
     }
 }
