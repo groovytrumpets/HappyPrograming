@@ -11,6 +11,8 @@
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="your.package.name.WalletDAO"%> <!-- Import your WalletDAO class -->
+<%@page import="your.package.name.Wallet"%> <!-- Import your Wallet model class -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,62 +20,19 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <meta name="description" content="">
-        <meta name="author" content="">
         <title>KẾT QUẢ THANH TOÁN</title>
-        <!-- Bootstrap core CSS -->
         <link href="/vnpay_jsp/assets/bootstrap.min.css" rel="stylesheet"/>
-        <!-- Custom styles for this template -->
-        <link href="/vnpay_jsp/assets/jumbotron-narrow.css" rel="stylesheet"> 
         <script src="/vnpay_jsp/assets/jquery-1.11.3.min.js"></script>
-        <meta name="description" content="EduChamp : Education HTML Template" />
-
-        <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
-        <meta property="og:image" content="" />
-        <meta name="format-detection" content="telephone=no">
-
-        <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-
-        <!-- PAGE TITLE HERE ============================================= -->
-
-        <!-- MOBILE SPECIFIC ============================================= -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.min.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
-
-        <!-- All PLUGINS CSS ============================================= -->
-        <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
-        <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
-
-        <!-- TYPOGRAPHY ============================================= -->
-        <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
-
-        <!-- SHORTCODES ============================================= -->
-        <link rel="stylesheet" type="text/css" href="assets/css/shortcodes/shortcodes.css">
-
-        <!-- STYLESHEETS ============================================= -->
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
-        <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-
     </head>
     <body>
         <header class="header rs-nav">
             <jsp:include page="header.jsp" />
         </header>
         <%
-            //Begin process return from VNPAY
-            Map fields = new HashMap();
-            for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
-                String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+            // Begin process return from VNPAY
+            Map<String, String> fields = new HashMap<>();
+            for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements();) {
+                String fieldName = URLEncoder.encode(params.nextElement(), StandardCharsets.US_ASCII.toString());
                 String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
                 if ((fieldValue != null) && (fieldValue.length() > 0)) {
                     fields.put(fieldName, fieldValue);
@@ -81,14 +40,26 @@
             }
 
             String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-            if (fields.containsKey("vnp_SecureHashType")) {
-                fields.remove("vnp_SecureHashType");
-            }
-            if (fields.containsKey("vnp_SecureHash")) {
-                fields.remove("vnp_SecureHash");
-            }
+            fields.remove("vnp_SecureHashType");
+            fields.remove("vnp_SecureHash");
             String signValue = Config.hashAllFields(fields);
 
+            // Wallet update logic
+            if (signValue.equals(vnp_SecureHash)) {
+                if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
+                    // Extract relevant information
+                    String username = request.getParameter("username"); // Assuming you have this parameter
+                    double amount = Double.parseDouble(request.getParameter("vnp_Amount")) / 100; // Amount is usually in cents
+                    WalletDAO walletDAO = new WalletDAO();
+                    
+                    // Get the current wallet by username
+                    Wallet wallet = walletDAO.getWalletByUsername(username);
+                    if (wallet != null) {
+                        double newBalance = wallet.getBalance() + amount; // Update the balance
+                        walletDAO.updateWalletBalanceByUsername(username, newBalance); // Update wallet in the database
+                    }
+                }
+            }
         %>
         <!--Begin display -->
         <div class="container">
