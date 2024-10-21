@@ -111,6 +111,7 @@
             Gson gson = new Gson();
             //resp.getWriter().write(gson.toJson(job));
             resp.sendRedirect(paymentUrl);
+            
         }
 
     }
