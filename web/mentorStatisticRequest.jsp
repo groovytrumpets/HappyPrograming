@@ -358,10 +358,10 @@
                         <div class="widget-card widget-bg1">					 
                             <div class="wc-item">
                                 <h4 class="wc-title">
-                                    Currently Invited Request
+                                    Currently Open Request
                                 </h4>
                                 <span class="wc-des">
-                                    Number of currently invited request
+                                    Number of currently Open request
                                 </span>
                                 <span class="wc-stats">
                                     <span class="counter">${requestScope.invitedRequest}</span> 
@@ -442,13 +442,67 @@
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-8 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Statistic of Rating Skills</h4>
+
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block" >Mentee Request List</h4>
+                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
+
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
+                                    </div>
+
+                                </form>
                             </div>
-                            <div class="widget-inner" style="height: 100%">
-                                <canvas id="LineChart"></canvas>
+                            <div class="widget-inner">
+                                <div class="new-user-list" >
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Mentee</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Start Time</th>
+                                                <th scope="col">Framework</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <c:forEach items="${requestScope.requestList}" var="c"  varStatus="status">
+
+                                                <tr>
+                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
+                                                    <td class="align-middle">${c.title}</td>
+                                                    <c:forEach items="${requestScope.menteeList}" var="v">
+                                                        <c:if test="${c.menteeId==v.menteeId}">
+                                                            <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
+                                                            <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${v.email}</td>
+                                                        </c:if>
+                                                    </c:forEach>
+
+                                                    <td class="align-middle">${c.startDate}</td>
+                                                    <td class="align-middle">${c.framework}</td>
+                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.status}</td>     
+
+                                                    <td class="align-middle">
+                                                        <span class="new-users-btn">
+                                                            <a href="paymentmanagercate?id=${c.requestId}" class="btn button-sm outline">Detail</a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                     <div class="col-lg-4 m-b30">
                         <div class="widget-box">
@@ -459,6 +513,16 @@
                                 <canvas id="PieChart"></canvas>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-lg-8 m-b30">
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>Statistic of Rating Skills</h4>
+                            </div>
+                            <div class="widget-inner" style="height: 100%">
+                                <canvas id="LineChart"></canvas>
+                            </div>
+                        </div> 
                     </div>
                     <!-- Your Profile Views Chart END-->
                     <div class="col-lg-4 m-b30">
@@ -673,16 +737,16 @@
 
         <script>
             const ctx = document.getElementById('PieChart');
-            const accept = '${(requestScope.acceptedRequest)/requestScope.countRequest*100}';
+            const accept = '${(requestScope.completedRequest)/requestScope.countRequest*100}';
             const invited = '${(requestScope.invitedRequest)/requestScope.countRequest*100}';
             const canceled = '${(requestScope.canceledRequest)/requestScope.countRequest*100}';
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Accepted Request', 'Canceled Request', 'Invited Request'],
+                    labels: ['Completed Request', 'Canceled Request', 'Open Request'],
                     datasets: [{
                             label: ' %',
-                            data: [accept, invited, canceled],
+                            data: [accept, canceled, invited],
                             borderWidth: 1
                         }], hoverOffset: 4
                 }, options: {
