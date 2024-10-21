@@ -5,6 +5,7 @@
 package DAO;
 
 import Model.CV;
+import Model.Mentor;
 import Model.Request;
 import Model.RequestSlotItem;
 import Model.StatisticRequests;
@@ -908,8 +909,45 @@ public List<StatisticRequests> getRequestStatistics(int menteeId) {
     
     public List<CV> getSuggestMentorCVByMentee(int menteeId) {
         List<Integer> mentorIds = new ArrayList<>();
-        List<CV> mentorCV = new ArrayList<>();
-        CVDAO c = new CVDAO();
+        List<CV> mentor = new ArrayList<>();
+        CVDAO m = new CVDAO();
+        String sql = """
+            SELECT DISTINCT sl.MentorID
+            FROM SkillList sl
+            JOIN Request r ON sl.SkillID = r.SkillID
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM Request r2
+                WHERE r2.MenteeID = ?
+                AND r2.MentorID = sl.MentorID
+            );
+        """;
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int mentorId = rs.getInt("MentorID");
+                mentorIds.add(mentorId);
+            }
+            for (int i = 0; i < mentorIds.size(); i++) {
+                mentor.add(m.getCVbyMentorId(mentorIds.get(i)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mentor;
+    }
+
+    public List<Mentor> getSuggestMentorByMentee(int menteeId) {
+        List<Integer> mentorIds = new ArrayList<>();
+        List<Mentor> mentorCV = new ArrayList<>();
+        MentorDAO m = new MentorDAO();
+        
         String sql = """
             SELECT DISTINCT sl.MentorID
             FROM SkillList sl
@@ -932,7 +970,7 @@ public List<StatisticRequests> getRequestStatistics(int menteeId) {
                 mentorIds.add(mentorId);
             }
             for (int i = 0; i < mentorIds.size(); i++) {
-                mentorCV.add(c.getCVbyMentorId(mentorIds.get(i)));
+                mentorCV.add(m.getMentorById(mentorIds.get(i)));
             }
             
         } catch (SQLException e) {
@@ -941,10 +979,56 @@ public List<StatisticRequests> getRequestStatistics(int menteeId) {
         
         return mentorCV;
     }
+     public List<Request> getRequestByMentorID(int mentorId) {
+        List<Request> listReq = new ArrayList<>();
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                + "where MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+
+                listReq.add(curRequest);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listReq;
+    }
+
     
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
-        List<Request> list = act.getRequestByStatusAndSearch("frobakt", "cancel");
-        System.out.println(list.size());
+        System.out.println(act.getSuggestMentorCVByMentee(0));
     }
 }

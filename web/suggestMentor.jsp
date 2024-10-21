@@ -4,6 +4,7 @@
     Author     : nhhag
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,189 +62,18 @@
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
         <!-- header start -->
-        <header class="ttr-header">
-            <div class="ttr-header-wrapper">
-                <!--sidebar menu toggler start -->
-                <div class="ttr-toggle-sidebar ttr-material-button">
-                    <i class="ti-close ttr-open-icon"></i>
-                    <i class="ti-menu ttr-close-icon"></i>
-                </div>
-                <!--sidebar menu toggler end -->
-                <!--logo start -->
-                <div class="ttr-logo-box">
-                    <div>
-                        <a href="index.html" class="ttr-logo">
-                            <img alt="" class="ttr-logo-mobile" src="assets/images/logo-mobile.png" width="30" height="30">
-                            <img alt="" class="ttr-logo-desktop" src="assets/images/logo-white.png" width="160" height="27">
-                        </a>
-                    </div>
-                </div>
-                <!--logo end -->
-                <div class="ttr-header-menu">
-                    <!-- header left menu start -->
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="../index.html" class="ttr-material-button ttr-submenu-toggle">HOME</a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
-                            <div class="ttr-header-submenu">
-                                <ul>
-                                    <li><a href="../courses.html">Our Courses</a></li>
-                                    <li><a href="../event.html">New Event</a></li>
-                                    <li><a href="../membership.html">Membership</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- header left menu end -->
-                </div>
-                <div class="ttr-header-right ttr-with-seperator">
-                    <!-- header right menu start -->
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-search-toggle"><i class="fa fa-search"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell"></i></a>
-                            <div class="ttr-header-submenu noti-menu">
-                                <div class="ttr-notify-header">
-                                    <span class="ttr-notify-text-top">9 New</span>
-                                    <span class="ttr-notify-text">User Notifications</span>
-                                </div>
-                                <div class="noti-box-list">
-                                    <ul>
-                                        <li>
-                                            <span class="notification-icon dashbg-gray">
-                                                <i class="fa fa-check"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Sneha Jogi</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 02:14</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-yellow">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <a href="#">Your order is placed</a> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 7 Min</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-red">
-                                                <i class="fa fa-bullhorn"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Your item is shipped</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 2 May</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-green">
-                                                <i class="fa fa-comments-o"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <a href="#">Sneha Jogi</a> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 14 July</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="notification-icon dashbg-primary">
-                                                <i class="fa fa-file-word-o"></i>
-                                            </span>
-                                            <span class="notification-text">
-                                                <span>Sneha Jogi</span> sent you a message.
-                                            </span>
-                                            <span class="notification-time">
-                                                <a href="#" class="fa fa-close"></a>
-                                                <span> 15 Min</span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-                            <div class="ttr-header-submenu">
-                                <ul>
-                                    <li><a href="user-profile.html">My profile</a></li>
-                                    <li><a href="list-view-calendar.html">Activity</a></li>
-                                    <li><a href="mailbox.html">Messages</a></li>
-                                    <li><a href="../login.html">Logout</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="ttr-hide-on-mobile">
-                            <a href="#" class="ttr-material-button"><i class="ti-layout-grid3-alt"></i></a>
-                            <div class="ttr-header-submenu ttr-extra-menu">
-                                <a href="#">
-                                    <i class="fa fa-music"></i>
-                                    <span>Musics</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-youtube-play"></i>
-                                    <span>Videos</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-envelope"></i>
-                                    <span>Emails</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-book"></i>
-                                    <span>Reports</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-smile-o"></i>
-                                    <span>Persons</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-picture-o"></i>
-                                    <span>Pictures</span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- header right menu end -->
-                </div>
-                <!--header search panel start -->
-                <div class="ttr-search-bar">
-                    <form class="ttr-search-form">
-                        <div class="ttr-search-input-wrapper">
-                            <input type="text" name="qq" placeholder="search something..." class="ttr-search-input">
-                            <button type="submit" name="search" class="ttr-search-submit"><i class="ti-arrow-right"></i></button>
-                        </div>
-                        <span class="ttr-search-close ttr-search-toggle">
-                            <i class="ti-close"></i>
-                        </span>
-                    </form>
-                </div>
-                <!--header search panel end -->
-            </div>
-        </header>
+        <header class="header rs-nav" >
+            <jsp:include page="header.jsp" />
+        </header >
         <!-- header end -->
         <!-- Left sidebar menu start -->
-        <div class="ttr-sidebar" style="margin-top: 100px;margin-left: 10px">
-            <h4>Filter & Sort Mentors</h4>
-            <form action="suggestMentor" method="GET" style="margin-left: 10px">
+        <div class="ttr-sidebar" style="margin-top: 100px; margin-left: 10px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+            <h4 style="color: #333; margin-bottom: 20px;">Filter & Sort Mentors</h4>
+            <form action="suggestMentor" method="GET" style="margin-left: 10px;">
                 <!-- Filter by Experience -->
-                <div class="form-group">
-                    <label for="experience">Experience</label>
-                    <select id="experience" name="experience" class="form-control">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="experience" style="font-weight: bold; color: #555;">Experience</label>
+                    <select id="experience" name="experience" class="form-control" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
                         <option value="">Select Experience</option>
                         <option value="1">1-2 years</option>
                         <option value="2">3-5 years</option>
@@ -252,9 +82,9 @@
                 </div>
 
                 <!-- Filter by Price Range -->
-                <div class="form-group">
-                    <label for="priceRange">Price Range</label>
-                    <select id="priceRange" name="priceRange" class="form-control">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="priceRange" style="font-weight: bold; color: #555;">Price Range</label>
+                    <select id="priceRange" name="priceRange" class="form-control" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
                         <option value="">Select Price Range</option>
                         <option value="1">0-500,000 VND</option>
                         <option value="2">500,000-1,000,000 VND</option>
@@ -263,19 +93,32 @@
                 </div>
 
                 <!-- Sort Options -->
-                <div class="form-group">
-                    <label for="sortBy">Sort By</label>
-                    <select id="sortBy" name="sortBy" class="form-control">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="sortBy" style="font-weight: bold; color: #555;">Sort By</label>
+                    <select id="sortBy" name="sortBy" class="form-control" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
                         <option value="">Select Sort Option</option>
-                        <option value="totalRequests">Total Requests</option>
-                        <option value="rating">Rating</option>
+                        <option value="totalRequestsAsc">Total Requests (Ascending)</option>
+                        <option value="totalRequestsDesc">Total Requests (Descending)</option>
+                        <option value="ratingAsc">Rating (Ascending)</option>
+                        <option value="ratingDesc">Rating (Descending)</option>
+                        <option value="priceAsc">Price (Ascending)</option>
+                        <option value="priceDesc">Price (Descending)</option>
                     </select>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="btn green radius-xl" style="margin-top: 10px;">Filter</button>
+                <!-- Submit Button --> 
+                <button type="submit" class="btn green radius-xl" style="margin-top: 10px; width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    Filter
+                </button>
+
+                <a href="suggestMentor" style="text-decoration: none;">
+                    <button type="button" class="btn red radius-xl" style="margin-top: 10px; width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Show All
+                    </button>
+                </a>
             </form>
         </div>
+
 
 
 
@@ -284,18 +127,14 @@
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Review</h4>
-                    <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Review</li>
-                    </ul>
+                    <h4 class="breadcrumb-title">Suggest mentor</h4>
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Review</h4>
+                                <h4>List suggest mentor</h4>
                             </div>
                             <div class="widget-inner">
                                 <c:forEach items="${mentorList}" var="mentors">
@@ -351,29 +190,31 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div class="col-md-12">
-                                                <a href="#" class="btn" data-toggle="modal" data-target="#exampleModal">Reply Review</a>
+
+                                            <!-- Mentor's CV Details Section -->
+                                          <div class="col-md-12 mt-3">
+                                                <h6 class="text-dark mb-2">Mentor skills</h6>
+                                                <div class="row">
+                                                    <c:forEach items="${mentors.skills}" var="skill">
+                                                        <a href="skilldetail?id=${skill.skillId}" class="btn green radius-xl outline">
+                                                            ${skill.skillName}
+                                                        </a>
+                                                    </c:forEach>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                
-                            </div>
-                            <div class="modal fade review-bx-reply" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Reply to review</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <textarea class="form-control" placeholder="Type text"></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn mr-auto">Reply</button>
+
+
+                                            <div class="card-body">   
+                                                <div class="col-md-12 mt-3">
+                                                    <a href="viewprofilecv?id=${mentors.mentor.mentorId}" class="btn green radius">
+                                                        View CV
+                                                    </a>
+                                                    <a href="createrequest?id=${mentors.mentor.mentorId}" class="btn red  radius">
+                                                        Rent Mentor
+                                                    </a>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -401,31 +242,32 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Your Profile Views Chart END-->
                 </div>
             </div>
-        </main>
-        <div class="ttr-overlay"></div>
+            <!-- Your Profile Views Chart END-->
+      
+</main>
+<div class="ttr-overlay"></div>
 
-        <!-- External JavaScripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-        <script src="assets/vendors/counter/waypoints-min.js"></script>
-        <script src="assets/vendors/counter/counterup.min.js"></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-        <script src="assets/vendors/masonry/masonry.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
-    </body>
+<!-- External JavaScripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+<script src="assets/vendors/counter/waypoints-min.js"></script>
+<script src="assets/vendors/counter/counterup.min.js"></script>
+<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+<script src="assets/vendors/masonry/masonry.js"></script>
+<script src="assets/vendors/masonry/filter.js"></script>
+<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+<script src='assets/vendors/scroll/scrollbar.min.js'></script>
+<script src="assets/js/functions.js"></script>
+<script src="assets/vendors/chart/chart.min.js"></script>
+<script src="assets/js/admin.js"></script>
+<script src='assets/vendors/switcher/switcher.js'></script>
+</body>
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/review.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/review.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>

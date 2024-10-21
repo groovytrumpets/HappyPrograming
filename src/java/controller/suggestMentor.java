@@ -12,9 +12,11 @@ import DAO.RequestDAO;
 import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentee;
+import Model.Mentor;
 import Model.Request;
 import Model.Skill;
 import Model.Slot;
+import Model.MentorRating;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -100,7 +102,6 @@ public class suggestMentor extends HttpServlet {
             int reviewsCount = cvd.getMentorRateList(cv.getMentorId()).size();
             int numRequest = requestDAO.getRequestByMentorID(cv.getMentorId()).size();
             List<Skill> skillList = cvd.getMentorSkillListByMentorID(cv.getMentorId());
-
             MentorRating mentorRating = new MentorRating(mentor, rating, cv, reviewsCount, numRequest, skillList);
             mentorRatingList.add(mentorRating);
         }
@@ -109,10 +110,23 @@ public class suggestMentor extends HttpServlet {
         mentorRatingList = filterByExperience(mentorRatingList, experience);
         mentorRatingList = filterByPriceRange(mentorRatingList, priceRange);
 
-        // Apply sorting
-        if ("totalRequests".equals(sortBy)) {
+        if ("priceAsc".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingDouble(mr -> {
+                CV cv = ((MentorRating) mr).getCv(); 
+                return (cv != null) ? cv.getPrice() : Double.MAX_VALUE; 
+            }));
+        } else if ("priceDesc".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingDouble(mr -> {
+                CV cv = ((MentorRating) mr).getCv(); 
+                return (cv != null) ? cv.getPrice() : Double.MAX_VALUE; 
+            }).reversed());
+        } else if ("totalRequestsAsc".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getNumReq));
+        } else if ("totalRequestsDesc".equals(sortBy)) {
             mentorRatingList.sort(Comparator.comparingInt(MentorRating::getNumReq).reversed());
-        } else if ("rating".equals(sortBy)) {
+        } else if ("ratingAsc".equals(sortBy)) {
+            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getRating));
+        } else if ("ratingDesc".equals(sortBy)) {
             mentorRatingList.sort(Comparator.comparingInt(MentorRating::getRating).reversed());
         }
 
