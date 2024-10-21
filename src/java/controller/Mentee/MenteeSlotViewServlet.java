@@ -3,10 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.Manager;
+package controller.Mentee;
 
-import DAO.CVDAO;
-import Model.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name="ActiveMenteeRequestServlet", urlPatterns={"/activementeerequest"})
-public class StatusStudyingRequestServlet extends HttpServlet {
+@WebServlet(name="MenteeSlotViewServlet", urlPatterns={"/slotmentee"})
+public class MenteeSlotViewServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +35,10 @@ public class StatusStudyingRequestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ActiveMenteeRequestServlet</title>");  
+            out.println("<title>Servlet MenteeSlotViewServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ActiveMenteeRequestServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet MenteeSlotViewServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,24 +55,7 @@ public class StatusStudyingRequestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String requestId_raw = request.getParameter("id");
-        int requestId;
-        try {
-            requestId=Integer.parseInt(requestId_raw);
-            CVDAO cvd = new CVDAO();
-            Request rq = cvd.getRequestbyRequestId(requestId);
-            if (rq.getStatus().equalsIgnoreCase("Processing")) {
-                //System.out.println("pending");
-                cvd.setStatusStudyingRequestId(requestId);
-                response.sendRedirect("paymentmanagercate?id="+requestId);
-            }else if (rq.getStatus().equalsIgnoreCase("Studying")) {
-                //System.out.println("studying");
-                cvd.setStatusProcessingRequestId(requestId);
-                response.sendRedirect("paymentmanagercate?id="+requestId);
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        processRequest(request, response);
     } 
 
     /** 

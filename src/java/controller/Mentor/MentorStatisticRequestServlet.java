@@ -5,6 +5,10 @@
 package controller.Mentor;
 
 import DAO.CVDAO;
+import Model.Mentee;
+import Model.Mentor;
+import Model.Request;
+import Model.User;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -69,18 +73,23 @@ public class MentorStatisticRequestServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             int rateAve = cvd.getAveRatebyId(mentorid);
             int invitedRequest = cvd.countInvitedRequestbyMentorId(mentorid);
-            int acceptedRequest = cvd.countAcceptedRequestbyMentorId(mentorid);
+            int compeletedRequest = cvd.countCompletedRequestbyMentorId(mentorid);
             int canceledRequest = cvd.countCanceledRequestbyMentorId(mentorid);
             int countRequest = cvd.countRequestbyMentorId(mentorid);
-            
+            List<Request> requestList = cvd.getListofRequestbyMentorId(mentorid);
+            List<Mentee> menteeList = cvd.getListofMentee();
+            List<User> listUser = cvd.getListofUser();
             request.setAttribute("rateAve", rateAve);
             request.setAttribute("invitedRequest", invitedRequest);
-            request.setAttribute("acceptedRequest", acceptedRequest);
+            request.setAttribute("completedRequest", compeletedRequest);
             request.setAttribute("canceledRequest", canceledRequest);
             request.setAttribute("countRequest", countRequest);
+            request.setAttribute("requestList", requestList);
+            request.setAttribute("menteeList", menteeList);
+            request.setAttribute("listUser", listUser);
             
             Map<String, Integer> monthlyRatings = cvd.getRatingMapbyMentorId(mentorid);
-            System.out.println(monthlyRatings.keySet() + ", " + monthlyRatings.values());
+            //System.out.println(monthlyRatings.keySet() + ", " + monthlyRatings.values());
             List<String> keys = new ArrayList<>(monthlyRatings.keySet());
             List<Integer> values = new ArrayList<>(monthlyRatings.values());
             

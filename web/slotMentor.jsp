@@ -1,11 +1,8 @@
 <%-- 
-    Document   : managerPayment
-    Created on : 16 thg 10, 2024, 20:24:15
+    Document   : slot
+    Created on : 15 thg 10, 2024, 18:47:37
     Author     : ADMIN
 --%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -355,252 +352,22 @@
                     </ul>
                 </div>	
                 <!-- Card -->
-                
+                 
                 <!-- Card END -->
                 <div class="row">
                     <!-- Your Profile Views Chart -->
-                    <div class="col-lg-9 m-b30">
-                        <div class="widget-box">
 
-                            <div class="wc-title d-flex align-items-center">
-                                <h4 class="d-inline-block" >Mentee Request List</h4>
-                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
-
-                                    <div>
-                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="new-user-list" >
-                                    <table class="table table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th scope="col">STT</th>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Mentee Uname</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Start Time</th>
-                                                <th scope="col">Framework</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Status</th>
-
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <c:forEach items="${requestScope.requestList}" var="c"  varStatus="status">
-
-                                                <tr>
-                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
-                                                    <td class="align-middle">${c.title}</td>
-                                                    <c:forEach items="${requestScope.menteeList}" var="v">
-                                                        <c:if test="${c.menteeId==v.menteeId}">
-                                                            <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
-                                                            <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${v.email}</td>
-                                                        </c:if>
-                                                    </c:forEach>
-
-                                                    <td class="align-middle">${c.startDate}</td>
-                                                    <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
-                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
-                                                        <c:choose>
-                                                            <c:when test="${c.status.equals('Processing')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red">Processing</a>
-                                                                </span>
-                                                            </c:when>
-                                                            <c:when test="${c.status.equals('Studying')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm orange">Studying</a>
-                                                                </span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                ${c.status}
-                                                            </c:otherwise>
-                                                        </c:choose>
-
-
-                                                    </td>     
-
-                                                    <td class="align-middle">
-                                                        <span class="new-users-btn">
-                                                            <a href="paymentmanagercate?id=${c.requestId}" class="btn button-sm outline">Detail</a>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Your Profile Views Chart END-->
-                    <div class="col-lg-3 m-b30">
+
+
+
+                    <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Step 1: Mentee to Manager</h4>
+                                <h4>Schedule</h4>
                             </div>
                             <div class="widget-inner">
-                                <div class="orders-list">
-                                    <ul>
-                                        <c:forEach items="${requestScope.paymentList}" var="p">
-
-                                            <li>
-                                                <span class="orders-title">
-                                                    <a href="#" class=""><b>${p.sender}</b></a> 
-                                                    to <a href="#" class="text-black-50"><b>You</b></a> <br/>
-                                                    <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
-                                                        at ${p.paymentDate}</span>
-                                                </span>
-                                                <c:choose>
-                                                    <c:when test="${p.status.equals('Paid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">Paid</a>
-                                                        </span>
-                                                    </c:when>
-                                                    <c:when test="${p.status.equals('Unpaid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm red">Unpaid</a>
-                                                        </span>
-                                                    </c:when>
-                                                </c:choose>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-9 m-b30">
-                        <div class="widget-box">
-
-                            <div class="wc-title d-flex align-items-center">
-                                <h4 class="d-inline-block" >Completed Request List</h4>
-                                <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
-
-                                    <div>
-                                        <input type="text" class="form-control" placeholder="Search" name="mentor">
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="new-user-list" >
-                                    <table class="table table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th scope="col">STT</th>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Mentor Uname</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">End Time</th>
-                                                <th scope="col">Framework</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Status</th>
-
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <c:forEach items="${requestScope.completeRequestList}" var="c"  varStatus="status">
-
-                                                <tr>
-                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
-                                                    <td class="align-middle">${c.title}</td>
-                                                    <c:forEach items="${requestScope.mentorList}" var="v">
-                                                        <c:if test="${c.mentorId==v.mentorId}">
-                                                            <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
-                                                            <c:forEach items="${requestScope.listUser}" var="u">
-                                                                <c:if test="${v.username==u.username}">                                                                
-                                                            <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${u.email}</td>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </c:if>
-                                                    </c:forEach>
-
-                                                    <td class="align-middle">${c.endDate}</td>
-                                                    <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
-                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
-                                                        <c:choose>
-                                                            <c:when test="${c.status.equals('Completed')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="statuspaidmentorrequest?id=${c.requestId}" class="btn button-sm green">Completed</a>
-                                                                </span>
-                                                            </c:when>
-                                                            <c:when test="${c.status.equals('Paid')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="statuspaidmentorrequest?id=${c.requestId}" class="btn button-sm purple">Paid</a>
-                                                                </span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                ${c.status}
-                                                            </c:otherwise>
-                                                        </c:choose>
-
-
-                                                    </td>     
-
-                                                    <td class="align-middle">
-                                                        <span class="new-users-btn">
-                                                            <a href="#" class="btn button-sm outline">Detail</a>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Your Profile Views Chart END-->
-                    <div class="col-lg-3 m-b30">
-                        <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Step 2: Manager to Mentor </h4>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="orders-list">
-                                    <ul>
-                                        <c:forEach items="${requestScope.paymentList}" var="p">
-
-                                            <li>
-                                                <span class="orders-title">
-                                                    <a href="#" class="text-black-50"><b>You</b></a> 
-                                                    to <a href="#" class=""><b>${p.receiver}</b></a> <br/>
-                                                    <span class="text-black"><b class="text-red">-<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
-                                                        at ${p.paymentDate}</span>
-                                                </span>
-                                                <c:choose>
-                                                    <c:when test="${p.status.equals('Paid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">Paid</a>
-                                                        </span>
-                                                    </c:when>
-                                                    <c:when test="${p.status.equals('Unpaid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm red">Unpaid</a>
-                                                        </span>
-                                                    </c:when>
-                                                </c:choose>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
+                                <div id="calendar"></div>
                             </div>
                         </div>
                     </div>
@@ -628,16 +395,29 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
+
         <script>
             $(document).ready(function () {
-
+                var status = JSON.parse('${requestScope.status}');
+                var values = JSON.parse('${requestScope.values}');
+                var endDate = JSON.parse('${requestScope.endDateconverted}');
+                
+                var eventsArray = [];
+                for (var i = 0; i < values.length; i++) {
+                    eventsArray.push({
+                        title: status[i],
+                        start: values[i],
+                        end:endDate[i]
+                    });
+                }
                 $('#calendar').fullCalendar({
                     header: {
                         left: 'prev,next today',
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     },
-                    defaultDate: '2019-03-12',
+                    defaultDate: values[0],
+                    defaultView: 'month',
                     navLinks: true, // can click day/week names to navigate views
 
                     weekNumbers: true,
@@ -646,62 +426,8 @@
 
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
-                    events: [
-                        {
-                            title: 'All Day Event',
-                            start: '2019-03-01'
-                        },
-                        {
-                            title: 'Long Event',
-                            start: '2019-03-07',
-                            end: '2019-03-10'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-09T16:00:00'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-16T16:00:00'
-                        },
-                        {
-                            title: 'Conference',
-                            start: '2019-03-11',
-                            end: '2019-03-13'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T10:30:00',
-                            end: '2019-03-12T12:30:00'
-                        },
-                        {
-                            title: 'Lunch',
-                            start: '2019-03-12T12:00:00'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T14:30:00'
-                        },
-                        {
-                            title: 'Happy Hour',
-                            start: '2019-03-12T17:30:00'
-                        },
-                        {
-                            title: 'Dinner',
-                            start: '2019-03-12T20:00:00'
-                        },
-                        {
-                            title: 'Birthday Party',
-                            start: '2019-03-13T07:00:00'
-                        },
-                        {
-                            title: 'Click for Google',
-                            url: 'http://google.com/',
-                            start: '2019-03-28'
-                        }
-                    ]
+                    events: eventsArray,
+                    height: 800 
                 });
 
             });
