@@ -408,9 +408,9 @@
                                                     <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
-                                                            <c:when test="${c.status.equals('Pending')}">
+                                                            <c:when test="${c.status.equals('Processing')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red">Pending</a>
+                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red">Processing</a>
                                                                 </span>
                                                             </c:when>
                                                             <c:when test="${c.status.equals('Studying')}">

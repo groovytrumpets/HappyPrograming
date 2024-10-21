@@ -63,13 +63,13 @@ public class StatusStudyingRequestServlet extends HttpServlet {
             requestId=Integer.parseInt(requestId_raw);
             CVDAO cvd = new CVDAO();
             Request rq = cvd.getRequestbyRequestId(requestId);
-            if (rq.getStatus().equalsIgnoreCase("Pending")) {
+            if (rq.getStatus().equalsIgnoreCase("Processing")) {
                 //System.out.println("pending");
                 cvd.setStatusStudyingRequestId(requestId);
                 response.sendRedirect("paymentmanagercate?id="+requestId);
             }else if (rq.getStatus().equalsIgnoreCase("Studying")) {
                 //System.out.println("studying");
-                cvd.setStatusPendingRequestId(requestId);
+                cvd.setStatusProcessingRequestId(requestId);
                 response.sendRedirect("paymentmanagercate?id="+requestId);
             }
         } catch (Exception e) {

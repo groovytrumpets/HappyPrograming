@@ -1166,8 +1166,8 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void setStatusPendingRequestId(int requestId) {
-        String sql = "Update Request set Status ='Pending' where RequestID =?";
+    public void setStatusProcessingRequestId(int requestId) {
+        String sql = "Update Request set Status ='Processing' where RequestID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, requestId);

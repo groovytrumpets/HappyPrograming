@@ -110,7 +110,7 @@ public class MentorSlotViewServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
