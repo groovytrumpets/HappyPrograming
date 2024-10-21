@@ -146,7 +146,7 @@
                                                     <!-- Mentor Profile Image and Name -->
                                                     <li class="card-courses-user">
                                                         <div class="card-courses-user-pic">
-                                                            <img src="assets/images/testimonials/pic3.jpg" alt="Mentor Picture" />
+                                                            <img src="getCVimage?id=${mentors.cv.cvId}" alt="Mentor Picture" />
                                                         </div>
                                                         <div class="card-courses-user-info">
                                                             <h5>Mentor Name</h5>
