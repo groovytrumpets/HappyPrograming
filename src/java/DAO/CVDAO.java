@@ -1008,7 +1008,7 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofCompleteRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where Status='Paid' or Status='Complete'";
+        String sql = "select * from Request where Status='Paid' or Status='Completed'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -1189,7 +1189,7 @@ public class CVDAO extends DBContext {
     }
 
     public void setStatusCompleteRequestId(int requestId) {
-        String sql = "Update Request set Status ='Complete' where RequestID =?";
+        String sql = "Update Request set Status ='Completed' where RequestID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, requestId);

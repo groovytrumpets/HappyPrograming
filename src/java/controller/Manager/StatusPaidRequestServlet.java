@@ -63,7 +63,7 @@ public class StatusPaidRequestServlet extends HttpServlet {
             requestId=Integer.parseInt(requestId_raw);
             CVDAO cvd = new CVDAO();
             Request rq = cvd.getRequestbyRequestId(requestId);
-            if (rq.getStatus().equalsIgnoreCase("Complete")) {
+            if (rq.getStatus().equalsIgnoreCase("Completed")) {
                // System.out.println("Complete");
                 cvd.setStatusPaidRequestId(requestId);
                 response.sendRedirect("paymentmanagercate?id="+requestId);

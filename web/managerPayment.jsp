@@ -484,7 +484,7 @@
                         <div class="widget-box">
 
                             <div class="wc-title d-flex align-items-center">
-                                <h4 class="d-inline-block" >Complete Request List</h4>
+                                <h4 class="d-inline-block" >Completed Request List</h4>
                                 <form action="managersearch" class="d-inline-block ml-auto" style="width: 300px">
 
                                     <div>
@@ -533,9 +533,9 @@
                                                     <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
-                                                            <c:when test="${c.status.equals('Complete')}">
+                                                            <c:when test="${c.status.equals('Completed')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="statuspaidmentorrequest?id=${c.requestId}" class="btn button-sm green">Complete</a>
+                                                                    <a href="statuspaidmentorrequest?id=${c.requestId}" class="btn button-sm green">Completed</a>
                                                                 </span>
                                                             </c:when>
                                                             <c:when test="${c.status.equals('Paid')}">
