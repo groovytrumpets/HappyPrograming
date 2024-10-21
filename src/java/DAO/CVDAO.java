@@ -599,6 +599,11 @@ public class CVDAO extends DBContext {
         return 0;
     }
 
+    public static void main(String[] args) {
+        CVDAO c = new CVDAO();
+        System.out.println(c.getCVbyMentorId(7));
+    }
+
     public void deleteCV(int id) {
 
         String sql = "delete from CV where CVID =? ";
@@ -757,24 +762,6 @@ public class CVDAO extends DBContext {
     }
 
     public int countInvitedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Pending'";
-        //cach 2: vao sql phai chuot vao bang chon scriptable as
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, mentorid);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("");
-
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        return 0;
-    }
-
-    public int countAcceptedRequestbyMentorId(int mentorid) {
         String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -792,8 +779,45 @@ public class CVDAO extends DBContext {
         return 0;
     }
 
+    public int countAcceptedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Pending'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int countCompletedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Complete'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
     public int countCanceledRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=1 and Status ='Canceled'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Canceled'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -915,10 +939,44 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "SELECT *"
-                + "  FROM [dbo].[Request]\n";
+        String sql = "select * from Request";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
+
+    public List<Request> getListofRequestbyMentorId(int mentorId) {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "select * from Request where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
@@ -1108,8 +1166,8 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void setStatusPendingRequestId(int requestId) {
-        String sql = "Update Request set Status ='Pending' where RequestID =?";
+    public void setStatusProcessingRequestId(int requestId) {
+        String sql = "Update Request set Status ='Processing' where RequestID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, requestId);
@@ -1146,11 +1204,11 @@ public class CVDAO extends DBContext {
         String sql = "select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,\n"
                 + "r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate\n"
                 + "from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID\n"
-                + "where r.MenteeID=2";
+                + "where r.MenteeID=?";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            //st.setInt(1, menteeId);
+            st.setInt(1, menteeId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -1182,7 +1240,49 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-    
+
+    public List<SlotRequest> getSlotRequestbyMentorId(int mentorId) {
+        List<SlotRequest> srList = new ArrayList<>();
+        String sql = "select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,\n"
+                + "r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate\n"
+                + "from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID\n"
+                + "where r.MentorID=?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                SlotRequest sr = new SlotRequest();
+                sr.setSlotID(rs.getInt("slotID"));
+                sr.setStartTime(rs.getTime("startTime").toLocalTime());
+                sr.setEndTime(rs.getTime("endTime").toLocalTime());
+                sr.setDayInWeek(rs.getString("dayInWeek"));
+                sr.setRequestId(rs.getInt("RequestID"));
+                sr.setMentorId(rs.getInt("MentorID"));
+                sr.setMenteeId(rs.getInt("MenteeID"));
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setStatus(rs.getString("Status"));
+                sr.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                sr.setStartDate(start);
+                sr.setEndDate(end);
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setFramework(rs.getString("Framework"));
+
+                //System.out.println(sr.getMenteeId());
+                srList.add(sr);
+            }
+            return srList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
     public List<Mentor> getListofMentorWithStatus() {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
@@ -1209,10 +1309,4 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-    
-    public static void main(String[] args) {
-        CVDAO c = new CVDAO();
-        System.out.println(c.getListofMentorWithStatus());
-    }
-
 }
