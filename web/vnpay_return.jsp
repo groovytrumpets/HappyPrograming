@@ -1,18 +1,5 @@
-<%@page import="java.net.URLEncoder"%>
-<%@page import="java.nio.charset.StandardCharsets"%>
-<%@page import="com.vnpay.common.Config"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Collections"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="your.package.name.WalletDAO"%> <!-- Import your WalletDAO class -->
-<%@page import="your.package.name.Wallet"%> <!-- Import your Wallet model class -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,104 +7,143 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>KẾT QUẢ THANH TOÁN</title>
+        <title>PAYMENT RESULT</title>
         <link href="/vnpay_jsp/assets/bootstrap.min.css" rel="stylesheet"/>
-        <script src="/vnpay_jsp/assets/jquery-1.11.3.min.js"></script>
     </head>
     <body>
         <header class="header rs-nav">
             <jsp:include page="header.jsp" />
         </header>
-        <%
-            // Begin process return from VNPAY
-            Map<String, String> fields = new HashMap<>();
-            for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements();) {
-                String fieldName = URLEncoder.encode(params.nextElement(), StandardCharsets.US_ASCII.toString());
-                String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
-                if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                    fields.put(fieldName, fieldValue);
-                }
-            }
 
-            String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-            fields.remove("vnp_SecureHashType");
-            fields.remove("vnp_SecureHash");
-            String signValue = Config.hashAllFields(fields);
-
-            // Wallet update logic
-            if (signValue.equals(vnp_SecureHash)) {
-                if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                    // Extract relevant information
-                    String username = request.getParameter("username"); // Assuming you have this parameter
-                    double amount = Double.parseDouble(request.getParameter("vnp_Amount")) / 100; // Amount is usually in cents
-                    WalletDAO walletDAO = new WalletDAO();
-                    
-                    // Get the current wallet by username
-                    Wallet wallet = walletDAO.getWalletByUsername(username);
-                    if (wallet != null) {
-                        double newBalance = wallet.getBalance() + amount; // Update the balance
-                        walletDAO.updateWalletBalanceByUsername(username, newBalance); // Update wallet in the database
-                    }
-                }
-            }
-        %>
-        <!--Begin display -->
+        <!-- Display Transaction Result -->
         <div class="container">
             <div class="header clearfix">
-                <h3 class="text-muted">KẾT QUẢ THANH TOÁN</h3>
+                <h3 class="text-muted">PAYMENT RESULT</h3>
             </div>
-            <div class="table-responsive">
-                <div class="form-group">
-                    <label >Mã giao dịch thanh toán:</label>
-                    <label><%=request.getParameter("vnp_TxnRef")%></label>
-                </div>    
-                <div class="form-group">
-                    <label >Số tiền:</label>
-                    <label><%=request.getParameter("vnp_Amount")%></label>
-                </div>  
-                <div class="form-group">
-                    <label >Mô tả giao dịch:</label>
-                    <label><%=request.getParameter("vnp_OrderInfo")%></label>
-                </div> 
-                <div class="form-group">
-                    <label >Mã lỗi thanh toán:</label>
-                    <label><%=request.getParameter("vnp_ResponseCode")%></label>
-                </div> 
-                <div class="form-group">
-                    <label >Mã giao dịch tại CTT VNPAY-QR:</label>
-                    <label><%=request.getParameter("vnp_TransactionNo")%></label>
-                </div> 
-                <div class="form-group">
-                    <label >Mã ngân hàng thanh toán:</label>
-                    <label><%=request.getParameter("vnp_BankCode")%></label>
-                </div> 
-                <div class="form-group">
-                    <label >Thời gian thanh toán:</label>
-                    <label><%=request.getParameter("vnp_PayDate")%></label>
-                </div> 
-                <div class="form-group">
-                    <label >Tình trạng giao dịch:</label>
-                    <label>
-                        <%
-                            if (signValue.equals(vnp_SecureHash)) {
-                                if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                                    out.print("Thành công");
-                                } else {
-                                    out.print("Không thành công");
-                                }
 
-                            } else {
-                                out.print("invalid signature");
-                            }
-                        %></label>
-                </div> 
+            <div class="container">
+                <div class="header clearfix">
+
+                </div>
+                <div class="table-responsive" style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
+                    <h4 style="text-align: center;">Transaction Details</h4>
+                    <hr style="border-top: 2px solid #007BFF;">
+
+                    <!-- Display Transaction Information -->
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Transaction Reference:</label>
+                        <label>${vnp_TxnRef}</label>
+                    </div>    
+
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Transaction Amount:</label>
+                        <label id="amountDisplay"></label> <!-- Placeholder for transaction amount -->
+                    </div>  
+
+
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Balance:</label>
+                        <label id="walletDisplay"></label> <!-- Placeholder for wallet balance -->
+                    </div>  
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Order Description:</label>
+                        <label>Charge money</label>
+                    </div> 
+
+                    <div class="form-group">
+                        <label style="font-weight: bold;">VNPAY Transaction No:</label>
+                        <label>${vnp_TransactionNo}</label>
+                    </div> 
+
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Bank Code:</label>
+                        <label>NCB</label>
+                    </div> 
+
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Payment Date:</label>
+                        <label id="formattedPayDateLabel">${vnp_PayDate}</label>
+                    </div> 
+
+                    <hr style="border-top: 2px solid #007BFF;">
+
+                    <!-- Display Transaction Status -->
+                    <div class="form-group">
+                        <label style="font-weight: bold;">Transaction Status:</label>
+                        <label>
+                            <%
+                                String status = (String) request.getAttribute("status");
+                                if ("success".equals(status)) {
+                                    out.print("<span style='color: green; font-weight: bold;'>Success</span>");
+                                } else if ("failed".equals(status)) {
+                                    out.print("<span style='color: red; font-weight: bold;'>Failed</span>");
+                                } else if ("error".equals(status)) {
+                                    out.print("<span style='color: orange; font-weight: bold;'>" + request.getAttribute("message") + "</span>");
+                                }
+                            %>
+                        </label>
+                    </div> 
+                </div>
+
+                <footer class="footer" style="text-align: center; margin-top: 20px;">
+                    <p>&copy; VNPAY 2024. All rights reserved.</p>
+                </footer>
             </div>
-            <p>
-                &nbsp;
-            </p>
+
             <footer class="footer">
-                <p>&copy; VNPAY 2020</p>
+                <jsp:include  page="footer.jsp"/>
             </footer>
-        </div>  
+            <script>
+                // Assuming wallet and amount are numbers
+                let amount = ${amount}; // Example transaction amount from backend
+                let wallet = ${newBalance}; // Example wallet amount from backend
+
+                // Format and display the amounts in VND
+                document.getElementById("amountDisplay").innerText = amount.toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+
+                document.getElementById("walletDisplay").innerText = wallet.toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+            </script>
+            <script>
+                // Get the payment date from the label
+                const payDateString = "${vnp_PayDate}"; // This will be in the format yyyyMMddHHmmss
+
+                // Function to format the date
+                function formatPaymentDate(payDateStr) {
+                    // Check if payDateStr is valid
+                    if (payDateStr && payDateStr.length === 14) {
+                        // Extract year, month, day, hour, minute, second
+                        const year = payDateStr.substring(0, 4);
+                        const month = payDateStr.substring(4, 6) - 1; // Month is 0-indexed in JS
+                        const day = payDateStr.substring(6, 8);
+                        const hour = payDateStr.substring(8, 10);
+                        const minute = payDateStr.substring(10, 12);
+                        const second = payDateStr.substring(12, 14);
+
+                        // Create a new date object
+                        const date = new Date(year, month, day, hour, minute, second);
+
+                        // Format date to a more readable format (e.g., dd-mm-yyyy hh:mm:ss)
+                        return date.toLocaleString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                    }
+                    return 'Invalid date';
+                }
+
+                // Set the formatted date to the label
+                document.getElementById("formattedPayDateLabel").innerText = formatPaymentDate(payDateString);
+            </script>
+        </div>
     </body>
 </html>
