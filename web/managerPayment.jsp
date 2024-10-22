@@ -355,7 +355,7 @@
                     </ul>
                 </div>	
                 <!-- Card -->
-                
+
                 <!-- Card END -->
                 <div class="row">
                     <!-- Your Profile Views Chart -->
@@ -453,33 +453,35 @@
                                     <ul>
                                         <c:forEach items="${requestScope.paymentList}" var="p">
 
-                                            <li>
-                                                <span class="orders-title">
-                                                    <a href="#" class=""><b>${p.sender}</b></a> 
-                                                    to <a href="#" class="text-black-50"><b>You</b></a> <br/>
-                                                    <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
-                                                        at ${p.paymentDate}</span>
-                                                </span>
-                                                <c:choose>
-                                                    <c:when test="${p.status.equals('Paid')}">
+                                            <c:choose>
+                                                <c:when test="${p.status.equals('1')}">
+                                                    <li>
+                                                        <span class="orders-title">
+                                                            <a href="#" class=""><b>${p.sender}</b></a>
+                                                            to <a href="#" class="text-black-50"><b>You</b></a> <br/>
+                                                            <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
+                                                                at ${p.paymentDate}</span>
+                                                        </span>
                                                         <span class="orders-btn">
                                                             <a href="#" class="btn button-sm green">Paid</a>
                                                         </span>
-                                                    </c:when>
-                                                    <c:when test="${p.status.equals('Unpaid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm red">Unpaid</a>
-                                                        </span>
-                                                    </c:when>
-                                                </c:choose>
-                                            </li>
+                                                        <!--
+                                                           
+                                                                <span class="orders-btn">
+                                                                    <a href="#" class="btn button-sm red">Unpaid</a>
+                                                                </span>
+                                                            
+                                                        -->
+                                                    </li>
+                                                </c:when>
+                                            </c:choose>
                                         </c:forEach>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-9 m-b30">
                         <div class="widget-box">
 
@@ -520,9 +522,9 @@
                                                     <c:forEach items="${requestScope.mentorList}" var="v">
                                                         <c:if test="${c.mentorId==v.mentorId}">
                                                             <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
-                                                            <c:forEach items="${requestScope.listUser}" var="u">
-                                                                <c:if test="${v.username==u.username}">                                                                
-                                                            <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${u.email}</td>
+                                                                <c:forEach items="${requestScope.listUser}" var="u">
+                                                                    <c:if test="${v.username==u.username}">                                                                
+                                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${u.email}</td>
                                                                 </c:if>
                                                             </c:forEach>
                                                         </c:if>
@@ -575,29 +577,50 @@
                             </div>
                             <div class="widget-inner">
                                 <div class="orders-list">
-                                    <ul>
-                                        <c:forEach items="${requestScope.paymentList}" var="p">
-
-                                            <li>
+                                            <c:if test="${paymentList2.isEmpty()}">
+                                                <c:forEach items="${requestScope.paymentList}" var="p">
+                                                    <c:forEach items="${requestScope.completeRequestList}" var="c">
+                                                    <c:if test="${p.requestId==c.requestId}">
+                                                        
                                                 <span class="orders-title">
                                                     <a href="#" class="text-black-50"><b>You</b></a> 
-                                                    to <a href="#" class=""><b>${p.receiver}</b></a> <br/>
-                                                    <span class="text-black"><b class="text-red">-<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
-                                                        at ${p.paymentDate}</span>
+                                                    <c:forEach items="${requestScope.mentorList}" var="v">
+                                                            <c:if test="${c.mentorId==v.mentorId}">
+                                                    to <a href="#" class=""><b>${v.username}</b></a> <br/>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> $ </b>
+                                                        </span>
                                                 </span>
-                                                <c:choose>
-                                                    <c:when test="${p.status.equals('Paid')}">
+                                                <span class="orders-btn">
+                                                    <a href="#" class="btn button-sm red">Unpaid</a>
+                                                </span>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+                                            </c:if>
+                                    <ul>
+                                        <c:forEach items="${requestScope.paymentList2}" var="p">
+                                            <c:choose>
+                                                <c:when test="${p.status.equals('2')}">
+                                                    <li>
+                                                        <span class="orders-title">
+                                                            <a href="#" class="text-black-50"><b>You</b></a> 
+                                                            to <a href="#" class=""><b>${p.receiver}</b></a> <br/>
+                                                            <span class="text-black"><b class="text-red">-<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
+                                                                at ${p.paymentDate}</span>
+                                                        </span>
                                                         <span class="orders-btn">
                                                             <a href="#" class="btn button-sm green">Paid</a>
                                                         </span>
-                                                    </c:when>
-                                                    <c:when test="${p.status.equals('Unpaid')}">
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm red">Unpaid</a>
-                                                        </span>
-                                                    </c:when>
-                                                </c:choose>
-                                            </li>
+                                                        <!--
+                                                            <span class="orders-btn">
+                                                                <a href="#" class="btn button-sm red">Unpaid</a>
+                                                            </span>
+                                                        -->
+                                                    </li>
+                                                </c:when>
+                                            </c:choose>
                                         </c:forEach>
                                     </ul>
                                 </div>

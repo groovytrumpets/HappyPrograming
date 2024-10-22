@@ -1118,7 +1118,66 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
+        List<Payment> paymentList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Payment where RequestID =? and Status='1'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
 
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setRequestId(rs.getInt("requestId"));
+                p.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime());
+                p.setTotalAmount(rs.getFloat("totalAmount"));
+                p.setStatus(rs.getString("status"));
+                p.setSender(rs.getString("sender"));
+                p.setReceiver(rs.getString("receiver"));
+
+                paymentList.add(p);
+
+            }
+            return paymentList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
+        List<Payment> paymentList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Payment where RequestID =? and Status='2'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setRequestId(rs.getInt("requestId"));
+                p.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime());
+                p.setTotalAmount(rs.getFloat("totalAmount"));
+                p.setStatus(rs.getString("status"));
+                p.setSender(rs.getString("sender"));
+                p.setReceiver(rs.getString("receiver"));
+
+                paymentList.add(p);
+
+            }
+            return paymentList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
     public Request getRequestbyRequestId(int requestId) {
         String sql = "select * from Request where RequestID =?;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as

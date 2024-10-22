@@ -71,7 +71,9 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             CVDAO cvd = new CVDAO();
             List<Request> requestList = cvd.getListofRequest();
             List<Mentee> menteeList = cvd.getListofMentee();
-            List<Payment> paymentList = cvd.getListofPaymentbyRequestId(requestId);
+            List<Payment> paymentList1 = cvd.getListofPaymentbyRequestIdStep1(requestId);
+            List<Payment> paymentList2 = cvd.getListofPaymentbyRequestIdStep2(requestId);
+            
             List<Mentor> mentorList = cvd.getListofMentor();
             List<User> listUser = cvd.getListofUser();
             List<Request> completeRequestList = cvd.getListofCompleteRequest();
@@ -82,7 +84,9 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             request.setAttribute("listUser", listUser);
             request.setAttribute("completeRequestList", completeRequestList);
 
-            request.setAttribute("paymentList", paymentList);
+            request.setAttribute("paymentList", paymentList1);
+            request.setAttribute("paymentList2", paymentList2);
+            System.out.println(paymentList2.isEmpty());
 
             request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
         } catch (Exception e) {
