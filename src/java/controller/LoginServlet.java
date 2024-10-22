@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/loginAdmin"})
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -85,7 +85,7 @@ public class LoginServlet extends HttpServlet {
 
             if (a == null) {
                 request.setAttribute("notify", "Wrong username or password");
-                request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+                request.getRequestDispatcher("loginAd.jsp").forward(request, response);
             } else {
                 if (a != null) {
                     HttpSession session = request.getSession();
@@ -122,7 +122,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             request.setAttribute("notify", "Error occured ");
-            request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+            request.getRequestDispatcher("loginAd.jsp").forward(request, response);
         }
     }
 

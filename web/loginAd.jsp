@@ -39,7 +39,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                             <h3 class="mb-4 text-center">Admin Login</h3>
-                            <form action="login" class="signin-form" method="post">
+                            <p style="color: white">${notify}</p>
+                            <form action="loginAdmin" class="signin-form" method="post">
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="username" required name="username">
                                 </div>
