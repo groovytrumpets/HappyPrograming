@@ -1,12 +1,21 @@
+package controller;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+<<<<<<<< HEAD:src/java/controller/Admin/DeleteSkillServlet.java
 
 package controller.Admin;
 
 import DAO.SkillDAO;
 import Model.Skill;
+========
+import DAO.PaymentDAO;
+import DAO.WalletDAO;
+import Model.Payment;
+import Model.User;
+>>>>>>>> d98d727e978c449005eea11b7c2ed8e3a383f121:src/java/controller/PaymentHistorySV.java
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +23,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+<<<<<<<< HEAD:src/java/controller/Admin/DeleteSkillServlet.java
+========
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+>>>>>>>> d98d727e978c449005eea11b7c2ed8e3a383f121:src/java/controller/PaymentHistorySV.java
 import java.util.List;
 
 /**
@@ -56,6 +70,7 @@ public class DeleteSkillServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
+<<<<<<<< HEAD:src/java/controller/Admin/DeleteSkillServlet.java
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SkillDAO act = new SkillDAO();
@@ -88,6 +103,51 @@ public class DeleteSkillServlet extends HttpServlet {
     }
 
     /** 
+========
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        WalletDAO walletDAO = new WalletDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
+        User user = (User) session.getAttribute("acc");
+        String page = request.getParameter("page");
+        int currentPage = 1;
+        if (page != null) {
+            try {
+                currentPage = Integer.parseInt(page);
+            } catch (NumberFormatException e) {
+                currentPage = 1;
+            }
+        }
+
+        int totalItems, totalPages = 0;
+        List<Payment> list = new ArrayList<>();
+        if (user.getRoleId() == 2) {
+            totalItems = paymentDAO.getAllPaymentsByMenteeUserName(user.getUsername()).size();
+            totalPages = totalItems / 9;
+            if (totalItems % 9 != 0) {
+                totalPages++;
+            }
+            list = paymentDAO.getAllPaymentsByMenteeUserNamePagnition(user.getUsername(), currentPage, 9);
+        } else {
+            totalItems = paymentDAO.getAllPaymentsByMentorUserName(user.getUsername()).size();
+            totalPages = totalItems / 9;
+            if (totalItems % 9 != 0) {
+                totalPages++;
+            }
+            list = paymentDAO.getAllPaymentsByMentorUserNamePagnition(user.getUsername(), currentPage, 9);
+        }
+
+        // Set attributes to be used in the JSP
+        request.setAttribute("list", list);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+
+        // Forward to the JSP
+        request.getRequestDispatcher("PaymentHistory.jsp").forward(request, response);
+    }
+
+    /**
+>>>>>>>> d98d727e978c449005eea11b7c2ed8e3a383f121:src/java/controller/PaymentHistorySV.java
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
