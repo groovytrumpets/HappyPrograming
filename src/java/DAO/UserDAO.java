@@ -201,9 +201,24 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    public static void main(String[] args) {
+         UserDAO u = new UserDAO();
+         String password = u.encrypt("yVMkvELb");
+         System.out.println(password);
+         System.out.println(u.findUserPass("User1", password));
+    }
+    public String encrypt(String password) {
+        StringBuilder encrypted = new StringBuilder();
 
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            encrypted.append((char) (c + 5)); // Shift character by key
+        }
+
+        return encrypted.toString();
+    }
     // Main method for testing
-//    public static void main(String[] args) throws SQLException {
+//   public static void main(String[] args) throws SQLException {
 //        UserDAO u = new UserDAO();
         /*User newUser = new User();
         newUser.setRoleId(1);

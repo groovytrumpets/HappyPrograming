@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author tuong
+ * @author asus
  */
 @WebServlet(name = "UpdateProfileSevlet", urlPatterns = {"/updateProfile"})
 @MultipartConfig
@@ -149,7 +149,7 @@ public class UpdateProfileSevlet extends HttpServlet {
         } catch (ParseException ex) {
             System.out.println(ex);
         }
-        //xoa email
+        //delete email
         curMentee.setPhone(request.getParameter("phone"));
         curMentee.setGender(request.getParameter("gender"));
         curMentee.setAddress(request.getParameter("address"));

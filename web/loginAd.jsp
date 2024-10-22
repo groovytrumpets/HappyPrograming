@@ -39,12 +39,13 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                             <h3 class="mb-4 text-center">Admin Login</h3>
-                            <form action="#" class="signin-form">
+                            <p style="color: white">${notify}</p>
+                            <form action="loginAdmin" class="signin-form" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Username" required>
+                                    <input type="text" class="form-control" placeholder="username" required name="username">
                                 </div>
                                 <div class="form-group">
-                                    <input id="password-field" type="password" class="form-control" placeholder="Password" required>
+                                    <input id="password-field" type="password" class="form-control" placeholder="Password" required name="pass">
                                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
                                 <div class="form-group">
@@ -53,7 +54,7 @@
                                 <div class="form-group d-md-flex">
                                     <div class="w-50">
                                         <label class="checkbox-wrap checkbox-primary">Remember Me
-                                            <input type="checkbox" >
+                                            <input type="checkbox" name="rememberMe" >
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>

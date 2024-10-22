@@ -115,25 +115,35 @@
                                                 <td>${payments.paymentId}</td>
                                                 <td>${payments.paymentDate}</td>
                                                 <td>
-                                                    <c:choose>
-                                                        <c:when test="${payments.receiver == 'admin'}">
-                                                            Charging Money
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            Paying for Mentor
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <c:if test="${sessionScope.acc.roleId == 2}">
+                                                        <c:choose>
+                                                            <c:when test="${payments.receiver == 'admin'}">
+                                                                Charging Money
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                Paying for Mentor
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:if>
+                                                    <c:if test="${sessionScope.acc.roleId == 1}">
+                                                        Mentee Payment
+                                                        </c:if>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <c:choose>
-                                                            <c:when test="${payments.receiver == 'admin'}">
-                                                                <span><i class="fa fa-arrow-up green" aria-hidden="true"></i></span>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                <span><i class="fa fa-arrow-down red" aria-hidden="true"></i></span>
-                                                                </c:otherwise>
-                                                            </c:choose>
+                                                        <c:if test="${sessionScope.acc.roleId == 2}">
+                                                            <c:choose>
+                                                                <c:when test="${payments.receiver == 'admin' && sessionScope.acc.roleId == 2}">
+                                                                    <span><i class="fa fa-arrow-up green" aria-hidden="true"></i></span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                    <span><i class="fa fa-arrow-down red" aria-hidden="true"></i></span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:if>
+                                                            <c:if test="${sessionScope.acc.roleId == 1}">
+                                                            <span><i class="fa fa-arrow-up green" aria-hidden="true"></i></span>
+                                                            </c:if>
 
                                                         <span class="amount" data-amount="${payments.totalAmount}">${payments.totalAmount}</span> <!-- Use a data attribute -->
                                                     </div>

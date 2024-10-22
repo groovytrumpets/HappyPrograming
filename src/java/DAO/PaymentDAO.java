@@ -93,7 +93,33 @@ public class PaymentDAO extends DBContext {
         }
         return payments;
     }
-     public List<Payment> getAllPaymentsByUserName(String username) {
+
+    public List<Payment> getAllPaymentsByMenteeUserName(String username) {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payment\n"
+                + "Where sender = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
+     public List<Payment> getAllPaymentsByMentorUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
                 + "Where sender = ?";
@@ -119,10 +145,39 @@ public class PaymentDAO extends DBContext {
         return payments;
     }
 
+    public List<Payment> getAllPaymentsByMentorUserNamePagnition(String username, int pageNumber, int pageSize) {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payment WHERE receiver = ? ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
 
+            // Calculate the offset for pagination
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(2, offset);
+            st.setInt(3, pageSize);
 
-    public List<Payment> getAllPaymentsByUserNamePagnition(String username, int pageNumber, int pageSize) {
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
+
+    public List<Payment> getAllPaymentsByMenteeUserNamePagnition(String username, int pageNumber, int pageSize) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment WHERE sender = ? ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
@@ -176,10 +231,10 @@ public class PaymentDAO extends DBContext {
          samplePayments.setStatus("0");
          samplePayments.setTotalAmount(10000);*/
         PaymentDAO a = new PaymentDAO();
-        System.out.println(a.getAllPaymentsByUserName("hoanganhgp23").size());
-       /* for (int i = 0; i < 8; i++) {
+        System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
+        /* for (int i = 0; i < 8; i++) {
              System.out.println(a.getAllPaymentsByUserNamePagnition("hoanganhgp23", 1, 9).get(i));
         }*/
-       
+
     }
 }

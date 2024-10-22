@@ -83,15 +83,13 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                 String action = request.getParameter("action");
                 int slotId = requestDAO.getSlotIdByRequestId(requestId);
 
-                if (slotId == -1) {
-                    // Handle the case when no slot is associated with the request
-                    response.sendRedirect("errorPage.jsp");
-                    return;
-                }
-
                 switch (action) {
                     case "accept":
+                        //Buoc 1: Cap nhat trang thai accept
                         requestDAO.updateStatusByMentor(requestId, "Processing");
+                        //Buoc 2: Tu choi tat ca Mentee requests cung slot
+                        requestDAO.rejectOtherMenteesForSameSlots(requestId);
+                        //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
                         slotDAO.updateSlotStatusToUnavailable(slotId);
                         break;
                     case "reject":

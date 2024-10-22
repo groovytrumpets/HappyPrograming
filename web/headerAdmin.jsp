@@ -274,7 +274,7 @@
 		                </a>
 		                <ul>
 		                	<li>
-		                		<a href="SkillList" class="ttr-material-button"><span class="ttr-label">Skills</span></a>
+		                		<a href="SkillListAdmin" class="ttr-material-button"><span class="ttr-label">Skills</span></a>
 		                	</li>
 		                	<li>
 		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Skill List</span></a>
@@ -289,10 +289,10 @@
 		                </a>
 		                <ul>
 		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentee List</span></a>
+		                		<a href="menteeListAdmin" class="ttr-material-button"><span class="ttr-label">Mentee List</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Mentor List</span></a>
+		                		<a href="mentorListAdmin" class="ttr-material-button"><span class="ttr-label">Mentor List</span></a>
 		                	</li>
                                         <li>
 		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Manager List</span></a>
@@ -306,7 +306,7 @@
 		                </a>
 		            </li>
 					<li>
-						<a href="add-listing.html" class="ttr-material-button">
+						<a href="requestListAdmin" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
 		                	<span class="ttr-label">Request List</span>
 		                </a>
