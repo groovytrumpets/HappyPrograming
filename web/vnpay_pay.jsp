@@ -87,25 +87,25 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Username</label>
-                                        <input  class="form-control valid-character" value="${sessionScope.acc.username}"/>
+                                        <input  class="form-control valid-character" value="${sessionScope.acc.username}" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Email Address</label>
-                                        <input class="form-control" value="${sessionScope.acc.email}" />
+                                        <input class="form-control" value="${sessionScope.acc.email}" disabled=""/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Phone</label>
-                                        <input class="form-control int-value" value="${mentee.phone}"/>
+                                        <input class="form-control int-value" value="${mentee.phone}" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Balance</label>
-                                        <div id="walletDisplay" class="form-control"></div>
+                                        <div id="walletDisplay" class="form-control" disabled></div>
                                     </div>
                                 </div>
 

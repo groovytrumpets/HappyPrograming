@@ -103,7 +103,7 @@ public class AdminFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         //Start
-        /*
+        
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
@@ -138,7 +138,7 @@ public class AdminFilter implements Filter {
             httpResponse.sendRedirect("home");
             return;
         }
-        */
+        
         //End
         if (debug) {
             log("AdminFilter:doFilter()");
@@ -186,7 +186,7 @@ public class AdminFilter implements Filter {
         return url.contains("slotmentor")|| url.contains("mentorStatisticRequest")
                || url.contains("slotview") || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
-                || url.contains("viewprofilecv") ;
+                ;
     }
 
     // Boolean function to check if the URL is for mentee
@@ -204,7 +204,7 @@ public class AdminFilter implements Filter {
         return url.contains("manager")|| url.contains("Manager")
                || url.contains("activecv") || url.contains("statuspaidmentorrequest")
                 || url.contains("activementeerequest") || url.contains("cvupdate")
-                || url.contains("viewprofilecv");
+                ;
     }
 
     /**
