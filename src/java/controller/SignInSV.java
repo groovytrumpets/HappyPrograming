@@ -87,7 +87,7 @@ public class SignInSV extends HttpServlet {
                 request.setAttribute("notify", "Wrong username or password");
                 request.getRequestDispatcher("SignIn.jsp").forward(request, response);
             } else {
-                if (a != null && a.getStatus().equals("active")) {
+                if (a != null && a.getStatus().equalsIgnoreCase("active")) {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     if (rememberMe != null) {  // Checkbox was checked
@@ -114,7 +114,7 @@ public class SignInSV extends HttpServlet {
                         response.addCookie(passwordCookie);
                     }
                     response.sendRedirect("home");
-                } else if (a != null && a.getStatus().equals("inactive")) {
+                } else if (a != null && a.getStatus().equalsIgnoreCase("inactive")) {
                     request.setAttribute("notify", "Your account is not active, please active by link in your email");
                     request.getRequestDispatcher("SignIn.jsp").forward(request, response);
                 }
