@@ -1,8 +1,9 @@
+package controller;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 import DAO.PaymentDAO;
 import DAO.WalletDAO;
 import Model.Payment;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,40 +62,47 @@ public class PaymentHistorySV extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    WalletDAO walletDAO = new WalletDAO();
-    PaymentDAO paymentDAO = new PaymentDAO();
-    User user = (User) session.getAttribute("acc");
-    String page = request.getParameter("page");
-    int currentPage = 1;
-    if (page != null) {
-        try {
-            currentPage = Integer.parseInt(page);
-        } catch (NumberFormatException e) {
-            currentPage = 1; 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        WalletDAO walletDAO = new WalletDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
+        User user = (User) session.getAttribute("acc");
+        String page = request.getParameter("page");
+        int currentPage = 1;
+        if (page != null) {
+            try {
+                currentPage = Integer.parseInt(page);
+            } catch (NumberFormatException e) {
+                currentPage = 1;
+            }
         }
+
+        int totalItems, totalPages = 0;
+        List<Payment> list = new ArrayList<>();
+        if (user.getRoleId() == 2) {
+            totalItems = paymentDAO.getAllPaymentsByMenteeUserName(user.getUsername()).size();
+            totalPages = totalItems / 9;
+            if (totalItems % 9 != 0) {
+                totalPages++;
+            }
+            list = paymentDAO.getAllPaymentsByMenteeUserNamePagnition(user.getUsername(), currentPage, 9);
+        } else {
+            totalItems = paymentDAO.getAllPaymentsByMentorUserName(user.getUsername()).size();
+            totalPages = totalItems / 9;
+            if (totalItems % 9 != 0) {
+                totalPages++;
+            }
+            list = paymentDAO.getAllPaymentsByMentorUserNamePagnition(user.getUsername(), currentPage, 9);
+        }
+
+        // Set attributes to be used in the JSP
+        request.setAttribute("list", list);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+
+        // Forward to the JSP
+        request.getRequestDispatcher("PaymentHistory.jsp").forward(request, response);
     }
-
-    // Count total payments for the user
-    int totalItems = paymentDAO.getAllPaymentsByUserName(user.getUsername()).size();
-    int totalPages = totalItems / 9;
-    if(totalItems % 9 != 0)
-        totalPages++;
-
-
-    // Retrieve the payments for the current page
-    List<Payment> list = paymentDAO.getAllPaymentsByUserNamePagnition(user.getUsername(), currentPage, 9);
-
-    // Set attributes to be used in the JSP
-    request.setAttribute("list", list);
-    request.setAttribute("currentPage", currentPage);
-    request.setAttribute("totalPages", totalPages);
-
-    // Forward to the JSP
-    request.getRequestDispatcher("PaymentHistory.jsp").forward(request, response);
-}
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
