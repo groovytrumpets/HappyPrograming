@@ -1205,6 +1205,19 @@ public class RequestDAO extends DBContext {
         return listReq;
     }
 
+    public void rejectOtherMenteesForSameSlots(int requestId) throws SQLException {
+        String sql = "UPDATE Request SET Status = 'Reject' "
+                + "WHERE RequestID IN (SELECT rsi.RequestID FROM RequestSlotItem rsi "
+                + "JOIN Slot s ON rsi.SlotID = s.SlotID "
+                + "WHERE rsi.SlotID IN (SELECT SlotID FROM RequestSlotItem WHERE RequestID = ?) "
+                + "AND rsi.RequestID <> ? ) AND Status = 'Open'";
+
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, requestId);
+        ps.setInt(2, requestId);
+        ps.executeUpdate();
+    }
+
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
         System.out.println(act.getSuggestMentorCVByMentee(0));
