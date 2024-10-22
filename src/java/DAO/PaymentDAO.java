@@ -93,6 +93,66 @@ public class PaymentDAO extends DBContext {
         }
         return payments;
     }
+     public List<Payment> getAllPaymentsByUserName(String username) {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payment\n"
+                + "Where sender = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
+
+
+
+
+    public List<Payment> getAllPaymentsByUserNamePagnition(String username, int pageNumber, int pageSize) {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payment WHERE sender = ? ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+
+            // Calculate the offset for pagination
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(2, offset);
+            st.setInt(3, pageSize);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
 
     // Method to update payment status
     public boolean updatePaymentStatus(int paymentId, String newStatus) {
@@ -107,24 +167,19 @@ public class PaymentDAO extends DBContext {
             return false; // Return false if there was an error
         }
     }
-    
-     public static void main(String[] args) {
-         List<Payment> samplePayments = new ArrayList<>();
-        
-        // Create sample payments using the parameterized constructor
-        samplePayments.add(new Payment(1, 30, LocalDateTime.now(), 150.00, "1", "hoanganhgp23", "hoanganhgp2"));
-        samplePayments.add(new Payment(2, 33, LocalDateTime.now(), 200.00, "1", "hoanganhgp23", "hoanganhgp2"));
-        samplePayments.add(new Payment(3, 36, LocalDateTime.now(), 300.00, "1", "hoanganhgp23", "hoanganhgp2"));
 
-        // Assume we have an instance of the class containing the addPayment method, named `paymentService`
-        PaymentDAO paymentService = new PaymentDAO(); // Replace with your actual instance creation
-
-        // Add each payment to the database
-        for (Payment payment : samplePayments) {
-            boolean isAdded = paymentService.addPayment(payment);
-            System.out.println("Payment with paymentId " + payment.getPaymentId() + " added: " + isAdded);
-        
-        
-        }
-}
+    public static void main(String[] args) {
+        /*Payment samplePayments = new Payment();
+         samplePayments.setPaymentDate(LocalDateTime.now());
+         samplePayments.setSender("hoanganhgp23");
+         samplePayments.setReceiver("admin");
+         samplePayments.setStatus("0");
+         samplePayments.setTotalAmount(10000);*/
+        PaymentDAO a = new PaymentDAO();
+        System.out.println(a.getAllPaymentsByUserName("hoanganhgp23").size());
+       /* for (int i = 0; i < 8; i++) {
+             System.out.println(a.getAllPaymentsByUserNamePagnition("hoanganhgp23", 1, 9).get(i));
+        }*/
+       
+    }
 }
