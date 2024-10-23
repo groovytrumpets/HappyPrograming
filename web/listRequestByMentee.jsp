@@ -327,7 +327,7 @@
                                                         <c:choose>
                                                             <c:when test="${r.status == 'Open'}">
                                                                 <span class="orders-btn">
-                                                                    <a href="UpdateRequestOfMentee?action=update&requestId=${r.requestId}" class="btn button-sm blue">Update</a>
+                                                                    <a href="updateRequest?id=${r.requestId}" class="btn button-sm blue">Update</a>
                                                                 </span>
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusofmentee?action=cancel&requestId=${r.requestId}" class="btn button-sm red">Cancel</a>

@@ -1,6 +1,6 @@
 
 import DAO.PaymentDAO;
-import DAO.Wallet;
+import Model.Wallet;
 import DAO.WalletDAO;
 import Model.Payment;
 import Model.User;

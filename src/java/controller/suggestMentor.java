@@ -92,7 +92,7 @@ public class suggestMentor extends HttpServlet {
 
         // Fetch mentors based on the mentee's preference
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
-        List<CV> mentorCvList = requestDAO.getSuggestMentorCVByMentee(mentee.getMenteeId());
+        List<CV> mentorCvList = requestDAO.getSuggestMentorCVByMentee();
         List<MentorRating> mentorRatingList = new ArrayList<>();
 
         // Populate the list with MentorRating objects
@@ -120,10 +120,6 @@ public class suggestMentor extends HttpServlet {
                 CV cv = ((MentorRating) mr).getCv(); 
                 return (cv != null) ? cv.getPrice() : Double.MAX_VALUE; 
             }).reversed());
-        } else if ("totalRequestsAsc".equals(sortBy)) {
-            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getNumReq));
-        } else if ("totalRequestsDesc".equals(sortBy)) {
-            mentorRatingList.sort(Comparator.comparingInt(MentorRating::getNumReq).reversed());
         } else if ("ratingAsc".equals(sortBy)) {
             mentorRatingList.sort(Comparator.comparingInt(MentorRating::getRating));
         } else if ("ratingDesc".equals(sortBy)) {

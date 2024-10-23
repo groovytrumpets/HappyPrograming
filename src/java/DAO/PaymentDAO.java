@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -94,6 +95,39 @@ public class PaymentDAO extends DBContext {
         return payments;
     }
 
+    public List<Payment> getPaymentsByDateRange(String username, Date startDate, Date endDate) {
+        List<Payment> list = new ArrayList<>();
+        String sql = "SELECT * FROM payments WHERE username = ? AND paymentDate BETWEEN ? AND ?";
+
+        try {
+            // Convert java.util.Date to java.sql.Date
+            java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+            java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setDate(2, sqlStartDate);
+            st.setDate(3, sqlEndDate);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                list.add(payment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Payment> getAllPaymentsByMenteeUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
@@ -119,7 +153,8 @@ public class PaymentDAO extends DBContext {
         }
         return payments;
     }
-     public List<Payment> getAllPaymentsByMentorUserName(String username) {
+
+    public List<Payment> getAllPaymentsByMentorUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
                 + "Where sender = ?";
