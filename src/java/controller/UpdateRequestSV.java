@@ -10,7 +10,7 @@ import DAO.MentorDAO;
 import DAO.PaymentDAO;
 import DAO.RequestDAO;
 import DAO.SlotDAO;
-import DAO.Wallet;
+import Model.Wallet;
 import DAO.WalletDAO;
 import Model.Request;
 import Model.RequestSlotItem;

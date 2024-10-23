@@ -186,7 +186,7 @@ public class AdminFilter implements Filter {
         return url.contains("slotmentor")|| url.contains("mentorStatisticRequest")
                || url.contains("slotview") || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
-                ;
+                 || url.contains("updatestatusbymentor");
     }
 
     // Boolean function to check if the URL is for mentee
@@ -195,7 +195,7 @@ public class AdminFilter implements Filter {
                || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
                 || url.contains("statisticrequest") || url.contains("updateProfile") 
-                || url.contains("updateRequest") || url.contains("updatestatusbymentor")
+                || url.contains("updateRequest")
                 || url.contains("updatestatusofmentee")|| url.contains("slotmentee");
     }
 

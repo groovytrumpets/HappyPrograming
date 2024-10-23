@@ -915,24 +915,19 @@ public class RequestDAO extends DBContext {
 
     }
 
-    public List<CV> getSuggestMentorCVByMentee(int menteeId) {
+    public List<CV> getSuggestMentorCVByMentee() {
         List<Integer> mentorIds = new ArrayList<>();
         List<CV> mentor = new ArrayList<>();
         CVDAO m = new CVDAO();
         String sql = """
-            SELECT DISTINCT sl.MentorID
-            FROM SkillList sl
-            JOIN Request r ON sl.SkillID = r.SkillID
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM Request r2
-                WHERE r2.MenteeID = ?
-                AND r2.MentorID = sl.MentorID
-            );
+            SELECT m.MentorID, COUNT(r.RequestID) AS RequestCount
+            FROM Mentor m
+            LEFT JOIN Request r ON m.MentorID = r.MentorID
+            GROUP BY m.MentorID
+            ORDER BY RequestCount DESC;
         """;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, menteeId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -1219,7 +1214,6 @@ public class RequestDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        RequestDAO act = new RequestDAO();
-        System.out.println(act.getSuggestMentorCVByMentee(0));
+
     }
 }
