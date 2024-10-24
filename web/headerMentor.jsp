@@ -288,7 +288,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="skillhome" class="ttr-material-button">
+                            <a href="listrequestofmentor" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-exchange-vertical"></i></span>
                                 <span class="ttr-label">Inviting Request</span>
                             </a>

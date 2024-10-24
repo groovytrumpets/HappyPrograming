@@ -60,6 +60,31 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    public Mentor getMentorByUsername(String username) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Mentor where Username = ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"),
+                        rs.getString("username"),
+                        rs.getDate("createDate"),
+                        rs.getString("phone"), rs.getString("address"),
+                        rs.getDate("dateOfBirth"), rs.getString("fullName"),
+                        rs.getString("gender"), rs.getString("status"));
+                //System.out.println("founded");
+                return mentor;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public CV getCVbyMentorId(int id) {
         //lenh sql select * from categories cach 1:
