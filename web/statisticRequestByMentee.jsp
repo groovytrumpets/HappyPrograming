@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -198,31 +199,31 @@
                                 <h4>Statistic</h4>
                             </div>
                             <div class="widget-inner">
-                                <table border="1">
+
+                                <p>Total Hours: ${totalHours}</p>
+
+                                <table>
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Total Requests</th>
-                                            <th>Total Hours</th>
-                                            <th>Total Mentors</th>
+                                            <th>Request Title</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Total Hours for Request</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="stat" items="${statistics}">
+                                        <c:forEach var="request" items="${listRequests}" varStatus="status">
                                             <tr>
-                                                <td>${stat.title}</td>
-                                                <td>${stat.totalRequests}</td>
-                                                <td>${stat.totalHours}</td>
-                                                <td>${stat.totalMentors}</td>
+                                                <td>${request.title}</td>
+                                                <td>${request.startDate}</td>
+                                                <td>${request.endDate}</td>
+                                                <td>${hoursPerRequestList[status.index]}</td>
                                             </tr>
                                         </c:forEach>
-                                        <c:if test="${empty statistics}">
-                                            <tr>
-                                                <td colspan="4">No requests found.</td>
-                                            </tr>
-                                        </c:if>
                                     </tbody>
                                 </table>
+
+
                             </div>
                         </div>
                     </div>

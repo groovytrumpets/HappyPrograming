@@ -86,13 +86,13 @@ public class UpdateStatusByMentorSV extends HttpServlet {
         Request requests = requestDAO.getRequestByID(requestId);
         WalletDAO walletDAO = new WalletDAO();
         MenteeDAO menteeDAO = new MenteeDAO();
-        //
+        
         
         try {
             if (roleID == 1) { // Mentor actions
                 String action = request.getParameter("action");
                 int slotId = requestDAO.getSlotIdByRequestId(requestId);
-                Payment payment = new Payment(1, requestId, LocalDateTime.now(), requests.getPrice(), "1", curUser.getUsername(), "manager");
+                //Payment payment = new Payment(1, requestId, LocalDateTime.now(), requests.getPrice(), "1", curUser.getUsername(), "manager");
                 Mentee menteeName =  menteeDAO.getMenteeByID(requests.getMenteeId());
                 
                 switch (action) {
@@ -103,12 +103,16 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         requestDAO.rejectOtherMenteesForSameSlots(requestId);
                         //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
                         slotDAO.updateSlotStatusToUnavailable(slotId);
-                        //Buoc 4: Gui request payment toi Manager
-                        paymentDAO.addPayment(payment);
-                        //Buoc 5: Tru tien cua Mentee
-                        walletDAO.updateWalletBalanceByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
-                        //Buoc 6: Cong tien vao Manager
-                        walletDAO.updateWalletBalanceByUsername("manager", walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
+                        
+//                        //Buoc 4: Gui request payment toi Manager
+//                        paymentDAO.addPayment(payment);
+//                        //Buoc 5: Tru tien cua Mentee
+//                        walletDAO.updateWalletBalanceByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
+//                        //Buoc 6: Cong tien vao Manager
+//                        walletDAO.updateWalletBalanceByUsername("manager", walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
+                        
+                        //Buoc 4: Update Hold
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         break;
                     case "reject":
                         requestDAO.updateStatusByMentor(requestId, "Reject");
