@@ -103,42 +103,42 @@ public class AdminFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         //Start
-        
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String url = httpRequest.getServletPath();
-        HttpSession session = httpRequest.getSession(false);
-
-        User user = (session != null) ? (User) session.getAttribute("acc") : null;
-        //Check if user are login and go to loginpage
-        if (isSignInUrl(url) && user != null) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-        // Check access for admin pages
-        if (isUrlAdmin(url) && (user == null || user.getRoleId() != 3)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for mentor pages
-        if (isUrlMentor(url) && (user == null || user.getRoleId() != 1)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for mentee pages
-        if (isUrlMentee(url) && (user == null || user.getRoleId() != 2)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for manager pages
-        if (isUrlManager(url) && (user == null || user.getRoleId() != 4)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-        
+//        
+//        HttpServletRequest httpRequest = (HttpServletRequest) request;
+//        HttpServletResponse httpResponse = (HttpServletResponse) response;
+//        String url = httpRequest.getServletPath();
+//        HttpSession session = httpRequest.getSession(false);
+//
+//        User user = (session != null) ? (User) session.getAttribute("acc") : null;
+//        //Check if user are login and go to loginpage
+//        if (isSignInUrl(url) && user != null) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//        // Check access for admin pages
+//        if (isUrlAdmin(url) && (user == null || user.getRoleId() != 3)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for mentor pages
+//        if (isUrlMentor(url) && (user == null || user.getRoleId() != 1)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for mentee pages
+//        if (isUrlMentee(url) && (user == null || user.getRoleId() != 2)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for manager pages
+//        if (isUrlManager(url) && (user == null || user.getRoleId() != 4)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//        
         //End
         if (debug) {
             log("AdminFilter:doFilter()");
