@@ -1105,7 +1105,7 @@ public class RequestDAO extends DBContext {
 
         List<Request> requests = new ArrayList<>();
         try (
-            PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, menteeId);
             ResultSet rs = ps.executeQuery();
 
