@@ -16,6 +16,7 @@ import Model.Slot;
 import Model.SlotRequest;
 import Model.StatisticSkills;
 import Model.User;
+import Model.Wallet;
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -1118,10 +1119,11 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
+
+    public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='1'";
+        String sql = "select * from Payment where RequestID =? and Status='1' or Status='3'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1148,7 +1150,8 @@ public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
 
         return null;
     }
-public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
+
+    public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
         String sql = "select * from Payment where RequestID =? and Status='2'";
@@ -1178,6 +1181,7 @@ public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
 
         return null;
     }
+
     public Request getRequestbyRequestId(int requestId) {
         String sql = "select * from Request where RequestID =?;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
@@ -1367,5 +1371,56 @@ public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
         }
 
         return null;
+    }
+
+    public Wallet getManagerWallet() {
+        String sql = "select * from Wallet\n"
+                + "where Wallet.Username = 'manager'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Wallet s = new Wallet();
+                s.setBalance(rs.getDouble("Balance"));
+                s.setUsername(rs.getString("Username"));
+                s.setWalletID(rs.getInt("WalletID"));
+                return s;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public boolean addPayment(Payment payment) {
+        String sql = "INSERT INTO payment (requestId, paymentDate, totalAmount, status, sender, receiver) VALUES (?, GETDATE(), ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, payment.getRequestId());
+            pstmt.setDouble(2, payment.getTotalAmount());
+            pstmt.setString(3, payment.getStatus());
+            pstmt.setString(4, payment.getSender());
+            pstmt.setString(5, payment.getReceiver());
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
+
+    public void setWalletTransactionbyManager(float price, String mentorname) {
+        String sql = "update Wallet set Balance =Balance+? where Username like ?\n"
+                + "update Wallet set Balance =Balance-? where Username like 'manager'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, price);
+            st.setString(2, mentorname);
+            st.setFloat(3, price);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

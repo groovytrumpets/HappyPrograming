@@ -11,6 +11,7 @@ import Model.Mentor;
 import Model.Payment;
 import Model.Request;
 import Model.User;
+import Model.Wallet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -68,13 +69,14 @@ public class ManagerPaymentServlet extends HttpServlet {
         List<Mentor> mentorList = cvd.getListofMentor();
         List<User> listUser = cvd.getListofUser();
         List<Request> completeRequestList = cvd.getListofCompleteRequest();
+        Wallet wallet =cvd.getManagerWallet();
         //List<Payment> paymentList = cvd.getListofPaymentbyRequestId(id);
         request.setAttribute("requestList", requestList);
         request.setAttribute("menteeList", menteeList);
         request.setAttribute("mentorList", mentorList);
         request.setAttribute("listUser", listUser);
         request.setAttribute("completeRequestList", completeRequestList);
-        
+        request.setAttribute("wallet", wallet);
         //request.setAttribute("paymentList", paymentList);
         
         request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
