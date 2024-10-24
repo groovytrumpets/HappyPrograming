@@ -218,6 +218,9 @@ public class CreateRequestSV extends HttpServlet {
             Request newRequest = new Request(0, id, mentee.getMenteeId(), totalP,
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
             requestDAO.insertRequest(newRequest);
+            int idReq = requestDAO.getNewestRequest();
+            Payment payment = new Payment(1, idReq, LocalDateTime.now(), totalP, "Pending", a.getUsername(), "manager");
+            paymentDAO.addPayment(payment);
             requestDAO.addItemByRequestID(selectedSlot);
             walletDAO.updateHoldByUsername(mentee.getUsername(), wallet.getHold() + totalP);
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");

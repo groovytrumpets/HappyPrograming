@@ -147,12 +147,13 @@
                         </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center bg-light border-0">
                             <span class="font-weight-bold">Price per Slot:</span>
-                            <span class="font-weight-bold text-info">${cv.price} VND</span>
+                            <span class="font-weight-bold text-info" id="pricePerSlot"></span>
                         </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded-bottom border-0">
                             <span class="font-weight-bold">Your Balance:</span>
-                            <span class="font-weight-bold text-info">${wallet.balance} VND</span>
+                            <span class="font-weight-bold text-info" id="yourBalance"></span>
                         </div>
+
                     </div>
                     <div class="text-muted mt-3 text-center">
                         <small>Please ensure you have sufficient balance to create your request.</small>
@@ -325,6 +326,29 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="list-group-item d-flex justify-content-between align-items-center bg-light border-0">
+        <span class="font-weight-bold">Price per Slot:</span>
+        <span class="font-weight-bold text-info" id="pricePerSlot"></span>
+    </div>
+    <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded-bottom border-0">
+        <span class="font-weight-bold">Your Balance:</span>
+        <span class="font-weight-bold text-info" id="yourBalance"></span>
+    </div>
+
+    <script>
+    // JavaScript to format numbers as VND
+        const price = ${cv.price}; // Example: Replace with `cv.price` value
+        const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
+
+    // Function to format as VND with commas
+        function formatVND(value) {
+            return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
+        }
+
+    // Update the spans with formatted values
+        document.getElementById('pricePerSlot').textContent = formatVND(price);
+        document.getElementById('yourBalance').textContent = formatVND(balance);
+    </script>
 
     <script>
         // Pricing add

@@ -131,7 +131,7 @@ public class PaymentDAO extends DBContext {
     public List<Payment> getAllPaymentsByMenteeUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
-                + "Where sender = ?";
+                + "WHERE sender = '?' AND status != 'pending';";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
@@ -214,7 +214,7 @@ public class PaymentDAO extends DBContext {
 
     public List<Payment> getAllPaymentsByMenteeUserNamePagnition(String username, int pageNumber, int pageSize) {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT * FROM payment WHERE sender = ? ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM payment WHERE sender = ? AND status != 'pending' ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);

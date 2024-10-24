@@ -212,6 +212,22 @@ public class RequestDAO extends DBContext {
         }
     }
 
+    public int getNewestRequest() {
+        String sql1 = "SELECT TOP 1 RequestID FROM [dbo].[Request] ORDER BY RequestID DESC";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql1);
+            ResultSet rs = st.executeQuery();
+            int lastRequestId = 0;
+            if (rs.next()) {
+                lastRequestId = rs.getInt("RequestID");
+            }
+            return lastRequestId;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
     public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT*"
