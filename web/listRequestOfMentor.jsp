@@ -368,6 +368,7 @@
                                             <tr>
                                                 <th scope="col">STT</th>
                                                 <th scope="col">Title</th>
+                                                <th scope="col">Price</th>                                               
                                                 <th scope="col">Start Date</th>
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Note</th>
@@ -384,7 +385,7 @@
                                                 <tr>
                                                     <th class="align-middle" scope="row">${status.index + 1}</th>
                                                     <td class="align-middle">${c.title}</td>
-
+                                                    <td class="align-middle">${c.price}</td>
 
                                                     <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${c.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.endDate}</td>

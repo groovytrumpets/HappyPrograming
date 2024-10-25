@@ -125,8 +125,30 @@
                                             <li>
 
                                                 <div data-toggle="dropdown" aria-expanded="false">
-
-                                                    <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets/images/testimonials/pic3.jpg" width="45" height="45"></span>
+                                                    <c:choose>
+                                                        <c:when test="${sessionScope.acc.roleId == 1}">
+                                                            <c:if test="${sessionScope.cvactive.cvId==null}">
+                                                                <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets\images\userprofile.png" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                                </c:if>
+                                                                <c:if test="${sessionScope.cvactive.cvId!=null}">
+                                                                <span  class="ttr-user-avatar"><img class="rounded-circle" src="getCVimage?id=${sessionScope.cvactive.cvId}" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                                </c:if>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc.roleId == 2}">
+                                                                <c:if test="${mentee.base64FileImage==null}">
+                                                                <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets\images\userprofile.png" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                                </c:if>
+                                                                <c:if test="${mentee.base64FileImage!=null}">
+                                                                <span  class="ttr-user-avatar"><img class="rounded-circle" src="data:image/jpeg;base64,${mentee.base64FileImage}" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                                </c:if>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc.roleId == 3}">
+                                                            <span  class="ttr-user-avatar"><img class="rounded-circle" src="#" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                            exception!!
+                                                        </c:otherwise>
+                                                    </c:choose>
 
                                                     &nbsp;&nbsp;<span>${sessionScope.acc.username}</span>
                                                 </div>
@@ -207,7 +229,7 @@
                                         </ul>
                                     </li>
                                     <c:choose>
-                                        <c:when test="${sessionScope.acc.roleId == 3}">
+                                        <c:when test="${sessionScope.acc.roleId == 4}">
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
                                                     <li><a href="paymentmanager">Dashboard</a></li>
@@ -222,24 +244,17 @@
                                             <!-- Mentee Dashboard -->
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="admin/index.html">Dashboard</a></li>
+                                                    <li><a href="statisticrequestbymentee">Statistic Request</a></li>
                                                     <li><a href="skillhome">Courses</a></li>
-                                                    <li><a href="admin/bookmark.html">Wishlist</a></li>
-                                                    <li><a href="admin/courses.html">Rate & Comment</a></li>
-                                                    <li><a href="admin/review.html">View Profile</a></li>
-                                                    <li><a href="admin/teacher-profile.html">Update Profile</a></li>
-                                                    <li><a href="admin/user-profile.html">User Profile</a></li>
+
+                                                    <li><a href="updateProfile">View Profile</a></li>
+                                                    <li><a href="updateProfile">Update Profile</a></li>
+                                                    <li><a href="listmentor">Rate & Comment</a></li>
+                                                    <li><a href="#">Wishlist</a></li>
                                                     <li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
                                                         <ul class="sub-menu">
                                                             <li><a href="admin/basic-calendar.html">Basic Calendar</a></li>
                                                             <li><a href="admin/list-view-calendar.html">List View Calendar</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="javascript:;">Mailbox<i class="fa fa-angle-right"></i></a>
-                                                        <ul class="sub-menu">
-                                                            <li><a href="admin/mailbox.html">Mailbox</a></li>
-                                                            <li><a href="admin/mailbox-compose.html">Compose</a></li>
-                                                            <li><a href="admin/mailbox-read.html">Mail Read</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -253,12 +268,11 @@
                                             <!-- Mentor Dashboard -->
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="admin/index.html">Dashboard</a></li>
-                                                    <li><a href="admin/add-listing.html">Statistic Request</a></li>
-                                                    <li><a href="admin/add-listing.html">Inviting Request</a></li>
-                                                    <li><a href="admin/bookmark.html">CV</a></li>
-                                                    <li><a href="admin/courses.html">Rating List</a></li>
-                                                    <li><a href="admin/review.html">My Profile</a></li>
+                                                    <li><a href="mentorStatisticRequest?id=${sessionScope.mentor.mentorId}">Statistic Request</a></li>
+                                                    <li><a href="listrequestofmentor">Inviting Request</a></li>
+                                                    <li><a href="cvlist?id=${sessionScope.mentor.mentorId}">CV</a></li>
+                                                    <li><a href="#">Rating List</a></li>
+                                                    <li><a href="viewprofilecv?id=${sessionScope.mentor.mentorId}">My Profile</a></li>
                                                 </ul>
                                             </li>
                                         </c:when>

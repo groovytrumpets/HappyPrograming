@@ -69,7 +69,7 @@ public class WalletDAO extends DBContext {
 
     public static void main(String[] args) {
         WalletDAO act = new WalletDAO();
-        System.out.println(act.getWalletByUsername("hoanganhgp23"));
+        System.out.println(act.getWalletByUsername(""));
         act.updateWalletBalanceByUsername("hoanganhgp23", 3000000);
         System.out.println(act.getWalletByUsername("hoanganhgp23"));
     }

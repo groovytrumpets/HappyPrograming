@@ -64,7 +64,9 @@ public class CVListServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             id = Integer.parseInt(id_raw);
             List<CV> listcv = cvd.getListofCVbyMentorId(id);
-            
+            if (true) {
+                
+            }
             request.setAttribute("listcv", listcv);
             request.setAttribute("id", id);
             

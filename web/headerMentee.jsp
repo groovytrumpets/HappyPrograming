@@ -282,6 +282,12 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="listrequestbymentee" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                <span class="ttr-label">List request</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
                                 <span class="ttr-label">Wishlist</span>
