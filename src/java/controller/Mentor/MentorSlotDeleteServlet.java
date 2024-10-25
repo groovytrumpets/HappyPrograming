@@ -61,6 +61,18 @@ public class MentorSlotDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String slotId_raw = request.getParameter("requestid");
+        String all = request.getParameter("all");
+        if (all.equalsIgnoreCase("all")) {
+            String mentorid = request.getParameter("mentorid");
+            System.out.println(mentorid);
+            SlotDAO sld = new SlotDAO();
+            if (sld.deleteAllInactiveSlot()) {
+                response.sendRedirect("slotdraft?id=" + mentorid +"&mess=Your all slot has been deleted successfully!");
+            }else{
+                response.sendRedirect("slotdraft?id=" + mentorid +"&error=Your slot has been deleted all unsuccessfully!");
+            }
+            return;
+        }
         int slotId;
         try {
             SlotDAO sld = new SlotDAO();
@@ -79,8 +91,8 @@ public class MentorSlotDeleteServlet extends HttpServlet {
             if (slot.getStatus().equalsIgnoreCase("inactive")) {
                 sld.deleteSlot(slotId);
             }
-            System.out.println(slotId);
-            response.sendRedirect("createslot?id=" + slot.getMentorID());
+            //System.out.println(slotId);
+            response.sendRedirect("slotdraft?id=" + slot.getMentorID() +"&mess=Your slot has been deleted all successfully!");
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

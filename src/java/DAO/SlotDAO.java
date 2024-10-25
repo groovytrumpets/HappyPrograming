@@ -350,4 +350,16 @@ public class SlotDAO extends DBContext {
             return false;
         }
     }
+
+    public boolean deleteAllInactiveSlot() {
+        String sql = "DELETE FROM [dbo].[Slot] WHERE Status='inactive'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int query = st.executeUpdate();
+            return query>0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 }

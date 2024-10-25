@@ -178,7 +178,7 @@ public class MentorSlotDraftServlet extends HttpServlet {
             if (cvd.addSlot(slot)) {
                 response.sendRedirect("slotdraft?id=" + mentorId_raw + "&mess=Your slot has been created successfully!");
             } else {
-                response.sendRedirect("slotdraft?id=" + mentorId_raw + "&mess=Unable to create your slot. Please try again.");
+                response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create your slot. Please try again.");
             }
 
         } catch (NumberFormatException e) {

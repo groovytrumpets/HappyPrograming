@@ -353,48 +353,68 @@
                     </ul>
                 </div>	
                 <div class="row">
+
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
+
                         <div class="widget-box">
                             <div class="wc-title">
                                 <h4>List CV of mentor </h4>
+
                             </div>
                             <div class="widget-inner">
                                 <a href="cvcreate?id=${requestScope.id}" class="btn btn-secondry" style="">Create CV+</a>
+                                <div style="display: flex;justify-content: center">
+                                    <c:if test="${not empty requestScope.error}">
+                                        <div class="alert alert-danger text-center d-inline-block" role="alert" >
+                                            ${requestScope.error}
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.mess}">
+                                        <a href="#" class="alert alert-success text-center d-inline-block" role="alert" >
+                                            ${requestScope.mess}
+                                        </a>
+                                    </c:if>
+                                    <c:if test="${empty requestScope.listcv}">
+                                        <a href="#" class="alert alert-primary text-center d-inline-block" role="alert" >
+                                            You currently do not have any CVs. Please create a new CV to get started.
+                                        </a>
+                                    </c:if>
+                                </div>
                                 <div class="courses-filter">
                                     <div class="clearfix">
                                         <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
                                             <c:forEach items="${requestScope.listcv}" var="c">
-                                            <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
-                                                <div class="cours-bx">
-                                                    <div class="action-box" style="height: 300px">
-                                                        <img src="getCVimage?id=${c.cvId}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-                                                        
+                                                <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
+                                                    <div class="cours-bx">
+                                                        <div class="action-box" style="height: 300px;">
+                                                            <img src="getCVimage?id=${c.cvId}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+
+                                                        </div>
+                                                        <div class="info-bx text-center" >
+                                                            <c:if test="${c.status==('active')}">
+                                                                <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-green">${c.status}</span></h5>
+                                                                </c:if>
+                                                                <c:if test="${c.status==('inactive')}">
+                                                                <h5><a href="#">Draft: ${c.cvId} </a><span class="text-red">${c.status}</span></h5>
+                                                                </c:if>
+                                                            <span>Last change:</span>
+                                                            <br/>
+                                                            <span> ${c.createDate}</span>
+                                                        </div>
+                                                        <div class="cours-more-info" style="height: 50px">
+                                                            <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
+                                                                Update
+                                                            </a>
+                                                            <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
+                                                                Delete
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                    <div class="info-bx text-center">
-                                                        <c:if test="${c.status==('active')}">
-                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-green">${c.status}</span></h5>
-                                                        </c:if>
-                                                        <c:if test="${c.status==('inactive')}">
-                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-red">${c.status}</span></h5>
-                                                        </c:if>
-                                                        <span>Last change:</span>
-                                                        <br/>
-                                                        <span> ${c.createDate}</span>
-                                                    </div>
-                                                    <div class="cours-more-info" style="height: 50px">
-                                                        <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
-                                                           Update
-                                                        </a>
-                                                        <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
-                                                            Delete
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            
+                                                </li>
+
                                             </c:forEach>
-                                            
+
 
                                         </ul>
                                     </div>
@@ -428,11 +448,11 @@
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
         <script>
-            function delete1(id) {
-        if (confirm('are u sure to delete id' + id + '?')) {
-            window.location = '/happy_programming/cvdelete?id=' + id;
-        }
-    }
+                                                                function delete1(id) {
+                                                                    if (confirm('are u sure to delete id' + id + '?')) {
+                                                                        window.location = '/happy_programming/cvdelete?id=' + id;
+                                                                    }
+                                                                }
         </script>
         <script>
             // Pricing add

@@ -99,7 +99,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;">
                                     <table class="table">
                                         <thead class="thead-light">
                                             <tr>
@@ -112,6 +112,33 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach items="${requestScope.mentorList}" var="c">
+
+                                                <tr>
+                                                    <th class="align-middle" scope="row">${c.mentorId}</th>
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="viewprofilecv?id=${c.mentorId}" class="text-primary">${c.username}</a></td>
+                                                    <td class="align-middle">
+                                                        <c:forEach items="${requestScope.listActiveCV}" var="cv">
+                                                            <c:if test="${c.mentorId==cv.mentorId}">                                                            ${u.email}
+                                                                <img src="getCVimage?id=${cv.cvId}" alt="" class="" style=" width: 75px;height: 75px;object-fit: cover;"/>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </td>
+                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
+                                                        <c:forEach items="${requestScope.listUser}" var="u">
+                                                            <c:if test="${c.username==u.username}">
+                                                                ${u.email}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </td>                                                
+                                                    <td class="align-middle">
+                                                        <span class="new-users-btn">
+                                                            <a href="cvmanagercate?id=${c.mentorId}" class="btn button-sm outline">View CV List</a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                                
+                                                <c:forEach items="${requestScope.mentorList}" var="c">
 
                                                 <tr>
                                                     <th class="align-middle" scope="row">${c.mentorId}</th>
@@ -159,7 +186,7 @@
 
                             </div>
                             <div class="widget-inner">
-                                <div class="orders-list">
+                                <div class="orders-list" style="max-height: 600px; overflow-y: auto;">
                                     <c:if test="${not empty requestScope.error}">
                                         <div class="alert alert-danger" role="alert">
                                             ${requestScope.error}

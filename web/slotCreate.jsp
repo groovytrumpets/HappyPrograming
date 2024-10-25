@@ -89,6 +89,11 @@
                             ${requestScope.mess}
                         </a>
                     </c:if>
+                    <c:if test="${empty requestScope.slotList}">
+                        <a href="#" class="alert alert-primary text-center d-inline-block" role="alert" >
+                            It looks like you don't have any slots. Please create a new slot to get started.
+                        </a>
+                    </c:if>
                 </div>
                 <!-- Card END -->
                 <div class="row">
@@ -96,11 +101,14 @@
 
                     <div class="col-lg-6 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Create Slot:&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+</a></h4>
+                            <div class="wc-title d-flex align-items-center">
+                                <h4 class="d-inline-block">Create Slot:&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+</a></h4>
+                                <div class="d-inline-block ml-auto">
+                                    <a href="deleteslot?all=all&mentorid=${uFound.mentorId}" class="btn button-layout red">Delete All</a>
+                                </div>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="new-user-list" style="max-height: 600px; overflow-y: auto;" >
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>

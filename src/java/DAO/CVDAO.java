@@ -167,7 +167,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCVbyMentorId(int id) {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV where MentorID=?;";
+        String sql = "select*from CV where MentorID=? order by CVID desc;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -281,8 +281,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public int updateCV(CV c, int cvid) {
-        int CVid = -1;
+    public boolean updateCV(CV c, int cvid) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
@@ -304,15 +303,15 @@ public class CVDAO extends DBContext {
             st.setBytes(8, c.getAvatar());
             st.setFloat(9, c.getPrice());
             st.setInt(10, cvid);
-            st.executeUpdate();
+            int queryLine = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
-            if (rs.next()) {
-                CVid = rs.getInt(1); // Lấy CVid tự động tạo
-            }
+            
+            return queryLine>0;
+            
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return CVid;
+        return false;
     }
 
     public void updateUser(String userid, String username, String email) {
@@ -415,7 +414,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
+    public boolean insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
         String sql = "INSERT INTO [dbo].[SkillList]\n"
                 + "           ([SkillID]\n"
                 + "           ,[MentorID]\n"
@@ -431,14 +430,14 @@ public class CVDAO extends DBContext {
                 st.setInt(2, MentorId);
                 st.setInt(3, cvId);
 
-                st.executeUpdate();
-
+                int rowExcute = st.executeUpdate();
+                return rowExcute > 0;
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
-
+        return false;
     }
 
     public String getUserEmail(int MentorId) {
@@ -656,16 +655,18 @@ public class CVDAO extends DBContext {
         System.out.println(c.getCVbyMentorId(7));
     }
 
-    public void deleteCV(int id) {
+    public boolean deleteCV(int id) {
 
         String sql = "delete from CV where CVID =? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            st.executeUpdate();
+            int query= st.executeUpdate();
+            return query>0;
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return false;
 
     }
 
