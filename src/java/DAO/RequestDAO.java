@@ -963,12 +963,13 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestOfMentor(String mentorName) {
         List<Request> requestlist = new ArrayList<>();
-        String sql = "SELECT r.* FROM Request r\n"
-                + "  JOIN RequestSlotItem rsi ON rsi.RequestID = r.RequestID\n"
-                + "  JOIN Slot sl ON sl.SlotID = rsi.SlotID\n"
-                + "  JOIN Mentor m ON m.MentorID = r.MentorID\n"
-                + "  WHERE CONVERT(DATETIME, r.EndDate) + CAST(sl.EndTime AS DATETIME) >\n"
-                + "  GETDATE() AND m.Username = ?";
+        String sql = "SELECT r.*\n"
+                + "FROM Request r\n"
+                + "WHERE r.MentorID = (\n"
+                + "    SELECT MentorID\n"
+                + "    FROM Mentor\n"
+                + "    WHERE Username = ?\n"
+                + ");";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, mentorName);

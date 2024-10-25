@@ -87,14 +87,14 @@ public class UpdateStatusByMentorSV extends HttpServlet {
         WalletDAO walletDAO = new WalletDAO();
         MenteeDAO menteeDAO = new MenteeDAO();
         //
-        
+
         try {
             if (roleID == 1) { // Mentor actions
                 String action = request.getParameter("action");
                 int slotId = requestDAO.getSlotIdByRequestId(requestId);
                 Payment payment = new Payment(1, requestId, LocalDateTime.now(), requests.getPrice(), "1", curUser.getUsername(), "manager");
-                Mentee menteeName =  menteeDAO.getMenteeByID(requests.getMenteeId());
-                
+                Mentee menteeName = menteeDAO.getMenteeByID(requests.getMenteeId());
+
                 switch (action) {
                     case "accept":
                         //Buoc 1: Cap nhat trang thai accept
@@ -109,15 +109,19 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         walletDAO.updateWalletBalanceByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
                         //Buoc 6: Cong tien vao Manager
                         walletDAO.updateWalletBalanceByUsername("manager", walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
+                        response.sendRedirect("listrequestofmentor");
                         break;
                     case "reject":
                         requestDAO.updateStatusByMentor(requestId, "Reject");
+                        response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":
                         requestDAO.updateStatusByMentor(requestId, "Completed");
                         slotDAO.updateSlotStatusToAvailable(slotId);
+                        response.sendRedirect("listrequestofmentor");
                         break;
                     default:
+                        response.sendRedirect("listrequestofmentor");
                         break;
                 }
                 response.sendRedirect("listrequestofmentor");
@@ -125,9 +129,11 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                 response.sendRedirect("home");
                 return;
             }
+            response.sendRedirect("listrequestofmentor");
 
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("listrequestofmentor");
         }
     }
 

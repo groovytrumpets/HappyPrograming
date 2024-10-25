@@ -196,7 +196,7 @@ public class AdminFilter implements Filter {
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
                 || url.contains("statisticrequest") || url.contains("updateProfile") 
                 || url.contains("updateRequest")
-                || url.contains("updatestatusofmentee")|| url.contains("slotmentee");
+                || url.contains("updatestatusofmentee")|| url.contains("slotmentee")||url.contains("admin") || url.contains("Admin");
     }
 
     // Boolean function to check if the URL is for manager

@@ -183,8 +183,7 @@
                                                 <h5 class="menu-adv-title">Our Courses</h5>
                                                 <ul>
                                                     <li><a href="skillhome">Courses </a></li>
-
-                                                    <li><a href="profile.html">Instructor Profile</a></li>
+                                                    <li><a href="suggestMentor">Suggest mentor</a></li>
                                                     <li><a href="event.html">Upcoming Event</a></li>
                                                 </ul>
                                             </li>
@@ -222,10 +221,10 @@
                                             <!-- Mentee Dashboard -->
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="admin/index.html">Dashboard</a></li>
+                                                    <li><a href="paymentHistory">History payment</a></li>
                                                     <li><a href="skillhome">Courses</a></li>
-                                                    <li><a href="admin/bookmark.html">Wishlist</a></li>
-                                                    <li><a href="admin/courses.html">Rate & Comment</a></li>
+                                                    <li><a href="payment">Payment</a></li>
+                                                    <li><a href="listmentor">Rate & Comment</a></li>
                                                     <li><a href="admin/review.html">View Profile</a></li>
                                                     <li><a href="admin/teacher-profile.html">Update Profile</a></li>
                                                     <li><a href="admin/user-profile.html">User Profile</a></li>
