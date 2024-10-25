@@ -125,6 +125,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                 response.sendRedirect("home");
                 return;
             }
+            response.sendRedirect("listrequestofmentor");
 
         } catch (Exception e) {
             e.printStackTrace();
