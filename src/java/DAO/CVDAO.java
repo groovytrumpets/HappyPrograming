@@ -111,6 +111,32 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    
+    public CV getNewestCVbyMentorId(int id) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select top (1) * from [dbo].[CV] where MentorID =? order by CreateDate desc;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
+                return cv;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public CV getCVbyCVId(int id) {
         //lenh sql select * from categories cach 1:
@@ -1477,5 +1503,22 @@ public class CVDAO extends DBContext {
         }
 
         return null;
+    }
+    public boolean addSlot(Slot slot) {
+        String sql = "INSERT INTO [dbo].[Slot] ([MentorID],[StartTime],[EndTime],[DayInWeek],[Status],[CVID]) \n"
+                + "VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setInt(1, slot.getMentorID());
+            rs.setTime(2, java.sql.Time.valueOf(slot.getStartTime()));
+            rs.setTime(3, java.sql.Time.valueOf(slot.getEndTime()));
+            rs.setString(4, slot.getDayInWeek());
+            rs.setString(5, slot.getStatus());
+            rs.setInt(6, slot.getCVID());
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
     }
 }

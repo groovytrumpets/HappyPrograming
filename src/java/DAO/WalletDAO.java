@@ -38,6 +38,17 @@ public class WalletDAO extends DBContext {
 
         return wallet;
     }
+    public boolean addNewWallet(String username) {
+        String sql = "INSERT INTO [dbo].[Wallet] ([Balance],[Username],[Hold])   VALUES (0,?,0)";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setString(1, username);
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
 
     public boolean updateWalletBalanceByUsername(String username, double newBalance) {
         String sql = "UPDATE Wallet SET Balance = ? WHERE Username = ?";
