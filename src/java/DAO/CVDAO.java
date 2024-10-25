@@ -1476,7 +1476,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public List<Mentor> getListofMentorByMenteeWithStatus(String username) {
+    public List<Mentor> getListofMentorByMenteeWithStatus(String  username) {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
         String sql = "select mr.* from [Mentor] mr join Request r on mr.MentorID = r.MentorID \n"
