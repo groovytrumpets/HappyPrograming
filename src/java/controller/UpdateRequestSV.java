@@ -172,7 +172,7 @@ public class UpdateRequestSV extends HttpServlet {
                 return;
             }
 
-            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(menteeid);
+            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(menteeid, id);
             if (listSlot != null) {
                 for (int i = 0; i < listSlot.size(); i++) {
                     if (listSlot.get(i).getRequestId() != id) {

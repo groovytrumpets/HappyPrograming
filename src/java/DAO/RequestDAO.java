@@ -33,18 +33,18 @@ import java.util.Set;
  */
 public class RequestDAO extends DBContext {
 
-    public List<RequestSlotItem> getDuplicateSlot(int id) {
+    public List<RequestSlotItem> getDuplicateSlot(int id, int id2) {
         List<RequestSlotItem> requests = new ArrayList<>();
 
-        String sql = "select *\n"
-                + "from RequestSlotItem rq\n"
-                + "join Request r on rq.RequestID = r.RequestID\n"
-                + "where r.MenteeID = ?";
+        String sql = "SELECT * FROM RequestSlotItem r\n"
+                + "join Request rq on r.RequestID = rq.RequestID\n"
+                + "where rq.Status = 'Open' and rq.MenteeID=? and MentorID=?";
 
         try {
 
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
+             st.setInt(2, id2);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 

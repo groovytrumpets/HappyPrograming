@@ -56,86 +56,29 @@
 
         <!-- header start -->
         <header class="header rs-nav" >
-            <jsp:include page="header.jsp" />
+            <jsp:include page="headerMentee.jsp" />
         </header >
         <!-- header end -->
         <!-- Left sidebar menu start -->
-        <div class="ttr-sidebar">
-            <div class="ttr-sidebar-wrapper content-scroll">
-                <!-- side menu logo start -->
-                <div class="ttr-sidebar-logo">
-                    <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
-                    <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
-                            <i class="material-icons ttr-fixed-icon">gps_fixed</i>
-                            <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
-                    </div> -->
-                    <div class="ttr-sidebar-toggle-button">
-                        <i class="ti-arrow-left"></i>
-                    </div>
-                </div>
-                <!-- side menu logo end -->
-                <!-- sidebar menu start -->
-                <nav class="ttr-sidebar-navi">
-                    <ul>
 
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-email"></i></span>
-                                <span class="ttr-label">Mailbox</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li>
-                            <a href="review.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-comments"></i></span>
-                                <span class="ttr-label">Review</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="add-listing.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
-                                <span class="ttr-label">Create request</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-user"></i></span>
-                                <span class="ttr-label">My Profile</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ttr-seperate"></li>
-                    </ul>
-                    <!-- sidebar menu end -->
-                </nav>
-                <!-- sidebar menu end -->
-            </div>
-        </div>
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
+            <div class="container mt-4">
+
+
+                <div class="row mb-4">
+                    <div class="col-auto">
+                        <!-- User Balance Section -->
+                        <div class="balance-box border border-primary rounded p-2" style="max-width: 150px;">
+                            <h6 class="text-primary mb-1">Your Balance</h6>
+                            <p id="userBalance" class="text-success mb-0"></p> <!-- Replace with dynamic balance -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="container mt-4">
                 <div class="card p-4 shadow-sm border-light">
@@ -149,14 +92,13 @@
                             <span class="font-weight-bold">Price per Slot:</span>
                             <span class="font-weight-bold text-info" id="pricePerSlot"></span>
                         </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded-bottom border-0">
-                            <span class="font-weight-bold">Your Balance:</span>
-                            <span class="font-weight-bold text-info" id="yourBalance"></span>
-                        </div>
+
 
                     </div>
                     <div class="text-muted mt-3 text-center">
-                        <small>Please ensure you have sufficient balance to create your request.</small>
+                        <c:if test="${wallet.balance < cv.price}">
+                            <p>Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
+                                        </c:if>
                     </div>
                 </div>
             </div>  
@@ -166,10 +108,6 @@
                     <div class="widget-box">
                         <div class="wc-title">
                             <p style="color: red"> ${error}</p>
-                            <c:if test="${pay != null}">
-                                <p>Click <a href="payment?pay=${pay}" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
-
-                            </c:if>
                             <p style="color: blue"> ${notify}</p>
                         </div>
                         <div class="widget-inner">
@@ -195,13 +133,13 @@
                                     <div class="form-group col-6">
                                         <label class="col-form-label">Start Date</label>
                                         <div>
-                                            <input class="form-control" type="date" value="${sessionScope.start != null ? sessionScope.content : ''}" name="start" id="start" required>
+                                            <input class="form-control" type="date" value="${sessionScope.start}" name="start" id="start" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
                                         <label class="col-form-label">End Date</label>
                                         <div>
-                                            <input class="form-control" type="date" value="${sessionScope.end != null ? sessionScope.content : ''}" name="end" id="end" required>
+                                            <input class="form-control" type="date"  value="${sessionScope.end}" name="end" id="end" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
@@ -261,36 +199,84 @@
                                                     </thead>
                                                     <tbody>
                                                         <c:forEach items="${slotList}" var="s">
+                                                            <!-- Initialize isDisabled and isSelected for each slot -->
+                                                            <c:set var="isDisabled" value="false" />
+                                                            <c:set var="isSelected" value="" />
+
+                                                            <!-- Check if status is 'Unavailable' -->
+                                                            <c:if test="${s.status == 'Unavaiable'}">
+                                                                <c:set var="isDisabled" value="true" />
+                                                            </c:if>
+
+                                                            <!-- Check if slot is selected in another request -->
+                                                            <c:forEach items="${selectedSlot}" var="sl">
+                                                                <c:if test="${s.slotID == sl.slotId}">
+                                                                    <c:set var="isDisabled" value="true" />
+                                                                    <c:set var="isSelected" value="Selected" />
+                                                                </c:if>
+                                                            </c:forEach>
+
+                                                            <!-- Render the input with the disabled attribute based on isDisabled -->
                                                             <tr>
                                                                 <td>
-                                                                    <input type="checkbox" class="checkbox slot-checkbox" name="addSlot" value="${s.slotID}" data-day="${s.dayInWeek}" 
-                                                                           <c:if test="${s.status == 'inavaiable'}" >
-                                                                               disabled
-                                                                           </c:if>
-                                                                           >
+                                                                    <input type="checkbox" class="checkbox slot-checkbox" name="addSlot" value="${s.slotID}" data-day="${s.dayInWeek}"
+                                                                           ${isDisabled ? 'disabled' : ''} />
                                                                 </td>
                                                                 <td>${s.dayInWeek}</td>
                                                                 <td>${s.startTime}</td>
                                                                 <td>${s.endTime}</td>
-                                                                <td>${s.status}</td>
+                                                                <td>
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty isSelected}">
+                                                                            ${isSelected}
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            ${s.status}
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </td>
                                                             </tr>
                                                         </c:forEach>
+
+
+
                                                     </tbody> 
                                                 </table>
-                                                <div class="col-12" style="margin-left: -15px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                                                    <h3 style="font-size: 24px; color: #333; margin-bottom: 15px;">
-                                                        Total Price: <span id="totalPrice" style="color: #28a745;">$0</span>
-                                                    </h3>
-                                                    <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
-                                                    <button type="submit" class="btn-secondry add-item m-r5">
-                                                        <i class="fa fa-fw fa-plus-circle"></i>Create request
-                                                    </button>
-
-                                                </div>
-
                                             </div>
                                         </div>
+                                        <div class="summary-section border rounded p-3 mt-3 bg-light">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Slot Price per Day:</strong></p>
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <p id="pricePerSlot1" class="text-success">$0</p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Selected Slot Count:</strong></p>
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <p id="daysCount">0</p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Total Price:</strong></p>
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <p id="totalPrice" class="text-success">$0</p>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-plus-circle me-2"></i>Create Request
+                                        </button>
+
                                     </div>
+
                                 </div>
                             </form>
 
@@ -301,126 +287,122 @@
                 </div>
                 <!-- Your Profile Views Chart END-->
             </div>
-        </div>
-    </main>
-    <div class="ttr-overlay"></div>
+        </main>
+        <div class="ttr-overlay"></div>
 
-    <!-- External JavaScripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-    <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-    <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-    <script src="assets/vendors/counter/waypoints-min.js"></script>
-    <script src="assets/vendors/counter/counterup.min.js"></script>
-    <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-    <script src="assets/vendors/masonry/masonry.js"></script>
-    <script src="assets/vendors/masonry/filter.js"></script>
-    <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-    <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-    <script src="assets/js/functions.js"></script>
-    <script src="assets/vendors/chart/chart.min.js"></script>
-    <script src="assets/js/admin.js"></script>
-    <script src='assets/vendors/switcher/switcher.js'></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <div class="list-group-item d-flex justify-content-between align-items-center bg-light border-0">
-        <span class="font-weight-bold">Price per Slot:</span>
-        <span class="font-weight-bold text-info" id="pricePerSlot"></span>
-    </div>
-    <div class="list-group-item d-flex justify-content-between align-items-center bg-light rounded-bottom border-0">
-        <span class="font-weight-bold">Your Balance:</span>
-        <span class="font-weight-bold text-info" id="yourBalance"></span>
-    </div>
+        <!-- External JavaScripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/vendors/chart/chart.min.js"></script>
+        <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/switcher/switcher.js'></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-    // JavaScript to format numbers as VND
-        const price = ${cv.price}; // Example: Replace with `cv.price` value
-        const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
+        <script>
+            // JavaScript to format numbers as VND
+            const price = ${cv.price}; // Example: Replace with `cv.price` value
+            const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
 
-    // Function to format as VND with commas
-        function formatVND(value) {
-            return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
-        }
-
-    // Update the spans with formatted values
-        document.getElementById('pricePerSlot').textContent = formatVND(price);
-        document.getElementById('yourBalance').textContent = formatVND(balance);
-    </script>
-
-    <script>
-        // Pricing add
-        function newMenuItem() {
-            var newElem = $('tr.list-item').first().clone();
-            newElem.find('input').val('');
-            newElem.appendTo('table#item-add');
-        }
-        if ($("table#item-add").is('*')) {
-            $('.add-item').on('click', function (e) {
-                e.preventDefault();
-                newMenuItem();
-            });
-            $(document).on("click", "#item-add .delete", function (e) {
-                e.preventDefault();
-                $(this).parent().parent().parent().parent().remove();
-            });
-        }
-    </script>
-    <script>
-        // Price per selected day (for example purposes, let's assume each selected day costs $10)
-        document.addEventListener('DOMContentLoaded', function () {
-            // Price per selected day (make sure this variable is set correctly in your backend)
-            const pricePerDay = ${cv.price};
-
-
-            // Function to calculate the price based on selected days and date range
-            function calculatePrice() {
-                const startDateInput = document.getElementById('start');
-                const endDateInput = document.getElementById('end');
-                const startDate = new Date(startDateInput.value);
-                const endDate = new Date(endDateInput.value);
-                const selectedDays = Array.from(document.querySelectorAll('.slot-checkbox:checked'))
-                        .map(el => el.getAttribute('data-day'));
-                const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-                // Validate date inputs
-                if (isNaN(startDate) || isNaN(endDate) || startDate > endDate || selectedDays.length === 0) {
-                    document.getElementById('totalPrice').textContent = '0';
-                    return;
-                }
-
-                let totalDays = 0;
-
-                let currentDate = new Date(startDate);
-
-                // Count occurrences of selected days within the date range
-                while (currentDate <= endDate) {
-                    const dayName = dayNames[currentDate.getDay()];
-                    if (selectedDays.includes(dayName)) {
-                        totalDays++;
-                    }
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-                // Calculate total price
-                const totalPrice = totalDays * pricePerDay;
-                document.getElementById('totalPrice').textContent = totalPrice;
-                document.getElementById('totalPriceInput').value = totalPrice; // Set hidden input value
+            // Function to format as VND with commas
+            function formatVND(value) {
+                return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
             }
 
-            // Event listeners for date inputs
-            document.getElementById('start').addEventListener('change', calculatePrice);
-            document.getElementById('end').addEventListener('change', calculatePrice);
+            // Update the spans with formatted values
+            document.getElementById('pricePerSlot').textContent = formatVND(price);
+            document.getElementById('userBalance').textContent = formatVND(balance);
+            document.getElementById('pricePerSlot1').textContent = formatVND(price);
+            document.getElementById('yourBalance').textContent = formatVND(balance);
+        </script>
 
-            // Event listeners for slot checkboxes
-            document.querySelectorAll('.slot-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', calculatePrice);
+        <script>
+            // Pricing add
+            function newMenuItem() {
+                var newElem = $('tr.list-item').first().clone();
+                newElem.find('input').val('');
+                newElem.appendTo('table#item-add');
+            }
+            if ($("table#item-add").is('*')) {
+                $('.add-item').on('click', function (e) {
+                    e.preventDefault();
+                    newMenuItem();
+                });
+                $(document).on("click", "#item-add .delete", function (e) {
+                    e.preventDefault();
+                    $(this).parent().parent().parent().parent().remove();
+                });
+            }
+        </script>
+        <script>
+            // Price per selected day (for example purposes, let's assume each selected day costs $10)
+            document.addEventListener('DOMContentLoaded', function () {
+                // Price per selected day (make sure this variable is set correctly in your backend)
+                const pricePerDay = ${cv.price};
+
+                // Function to calculate the price based on selected days and date range
+                function calculatePrice() {
+                    const startDateInput = document.getElementById('start');
+                    const endDateInput = document.getElementById('end');
+                    const startDate = new Date(startDateInput.value);
+                    const endDate = new Date(endDateInput.value);
+                    const selectedDays = Array.from(document.querySelectorAll('.slot-checkbox:checked'))
+                            .map(el => el.getAttribute('data-day'));
+                    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+                    // Validate date inputs
+                    if (isNaN(startDate) || isNaN(endDate) || startDate > endDate || selectedDays.length === 0) {
+                        document.getElementById('totalPrice').textContent = '0';
+                        document.getElementById('daysCount').textContent = '0';
+                        return;
+                    }
+
+                    let totalDays = 0;
+                    let currentDate = new Date(startDate);
+
+                    // Count occurrences of selected days within the date range
+                    while (currentDate <= endDate) {
+                        const dayName = dayNames[currentDate.getDay()];
+                        // Count each selected day
+                        totalDays += selectedDays.filter(day => day === dayName).length;
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+
+                    // Calculate total price
+                    const totalPrice = totalDays * pricePerDay;
+                    document.getElementById('totalPrice').textContent = totalPrice;
+                    document.getElementById('totalPriceInput').value = totalPrice; // Set hidden input value
+                    document.getElementById('daysCount').textContent = totalDays;
+                }
+
+                // Event listeners for date inputs
+                document.getElementById('start').addEventListener('change', calculatePrice);
+                document.getElementById('end').addEventListener('change', calculatePrice);
+
+                // Event listeners for slot checkboxes
+                document.querySelectorAll('.slot-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', calculatePrice);
+                });
             });
-        });
+        </script>
 
-    </script>
-</body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+
+
+    </body>
+
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

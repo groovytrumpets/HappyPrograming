@@ -259,14 +259,15 @@ public class PaymentDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        /*Payment samplePayments = new Payment();
+        Payment samplePayments = new Payment();
          samplePayments.setPaymentDate(LocalDateTime.now());
          samplePayments.setSender("hoanganhgp23");
          samplePayments.setReceiver("admin");
          samplePayments.setStatus("0");
-         samplePayments.setTotalAmount(10000);*/
+         samplePayments.setTotalAmount(10000);
         PaymentDAO a = new PaymentDAO();
-        System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
+        a.addPayment(samplePayments);
+        //System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
         /* for (int i = 0; i < 8; i++) {
              System.out.println(a.getAllPaymentsByUserNamePagnition("hoanganhgp23", 1, 9).get(i));
         }*/
