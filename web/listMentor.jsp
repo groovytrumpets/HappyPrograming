@@ -61,8 +61,8 @@
                     <div class="clearfix" style="padding-left: 70px">
 
                         <c:if test="${empty mentorlist}">
-                            <div class="alert alert-warning">
-                                <strong>You need to complete a course before reviewing!</strong>
+                            <div class="alert alert-warning" style="width: 425px">
+                                <strong>You need to complete at least a course before reviewing!</strong>
                             </div>
                         </c:if>
 
