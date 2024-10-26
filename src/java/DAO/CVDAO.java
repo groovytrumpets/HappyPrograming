@@ -199,7 +199,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCV() {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV";
+        String sql = "select*from CV order by CVID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -652,7 +652,7 @@ public class CVDAO extends DBContext {
 
     public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getCVbyMentorId(7));
+        System.out.println(c.getSlotRequestbyMentorId(7));
     }
 
     public boolean deleteCV(int id) {
@@ -673,7 +673,7 @@ public class CVDAO extends DBContext {
     public List<Mentor> getListofMentor() {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from [Mentor]";
+        String sql = "select * from [Mentor] order by MentorID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
