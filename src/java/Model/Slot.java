@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.time.LocalTime;
+
 /**
  *
  * @author nhhag
@@ -15,6 +17,7 @@ public class Slot {
     private java.time.LocalTime endTime;
     private String dayInWeek;
     private String status;
+    private int CVID;
 
     public Slot() {
     }
@@ -27,6 +30,24 @@ public class Slot {
         this.endTime = endTime;
         this.dayInWeek = dayInWeek;
         this.status = status;
+    }
+
+    public Slot(int slotID, int mentorID, LocalTime startTime, LocalTime endTime, String dayInWeek, String status, int CVID) {
+        this.slotID = slotID;
+        this.mentorID = mentorID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.dayInWeek = dayInWeek;
+        this.status = status;
+        this.CVID = CVID;
+    }
+
+    public int getCVID() {
+        return CVID;
+    }
+
+    public void setCVID(int CVID) {
+        this.CVID = CVID;
     }
 
     // Getters and Setters

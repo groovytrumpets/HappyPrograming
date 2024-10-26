@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -94,10 +95,43 @@ public class PaymentDAO extends DBContext {
         return payments;
     }
 
+    public List<Payment> getPaymentsByDateRange(String username, Date startDate, Date endDate) {
+        List<Payment> list = new ArrayList<>();
+        String sql = "SELECT * FROM payments WHERE username = ? AND paymentDate BETWEEN ? AND ?";
+
+        try {
+            // Convert java.util.Date to java.sql.Date
+            java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+            java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setDate(2, sqlStartDate);
+            st.setDate(3, sqlEndDate);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("requestId"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime(),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("status"),
+                        rs.getString("sender"),
+                        rs.getString("receiver")
+                );
+                list.add(payment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Payment> getAllPaymentsByMenteeUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
-                + "Where sender = ?";
+                + "WHERE sender = '?' AND status != 'pending';";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
@@ -119,7 +153,8 @@ public class PaymentDAO extends DBContext {
         }
         return payments;
     }
-     public List<Payment> getAllPaymentsByMentorUserName(String username) {
+
+    public List<Payment> getAllPaymentsByMentorUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
                 + "Where sender = ?";
@@ -179,7 +214,7 @@ public class PaymentDAO extends DBContext {
 
     public List<Payment> getAllPaymentsByMenteeUserNamePagnition(String username, int pageNumber, int pageSize) {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT * FROM payment WHERE sender = ? ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM payment WHERE sender = ? AND status != 'pending' ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -224,14 +259,15 @@ public class PaymentDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        /*Payment samplePayments = new Payment();
+        Payment samplePayments = new Payment();
          samplePayments.setPaymentDate(LocalDateTime.now());
          samplePayments.setSender("hoanganhgp23");
          samplePayments.setReceiver("admin");
          samplePayments.setStatus("0");
-         samplePayments.setTotalAmount(10000);*/
+         samplePayments.setTotalAmount(10000);
         PaymentDAO a = new PaymentDAO();
-        System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
+        a.addPayment(samplePayments);
+        //System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
         /* for (int i = 0; i < 8; i++) {
              System.out.println(a.getAllPaymentsByUserNamePagnition("hoanganhgp23", 1, 9).get(i));
         }*/

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +57,27 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <style>
+            .important-balance {
+                font-size: 1.0em;             /* Increase the font size for prominence */
+                font-weight: bold;            /* Bold text */
+                color: #2c3e50;              /* Darker, more sophisticated text color */
+                background-color: #ecf0f1;   /* Light background for contrast */
+                padding: 15px;                /* More padding for a comfortable feel */
+                border: 2px solid #3498db;   /* Bright blue border for emphasis */
+                border-radius: 10px;         /* Rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+                text-align: center;           /* Centered text */
+                margin-top: 10px;            /* Space above the display */
+            }
+
+            .important-balance label {
+                font-size: 1.2em;             /* Slightly larger label */
+                color: #34495e;               /* Darker color for the label */
+                display: block;               /* Make label a block element */
+                margin-bottom: 8px;           /* Space below the label */
+            }
+        </style>
 
     </head>
 
@@ -87,27 +109,30 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Username</label>
-                                        <input  class="form-control valid-character" value="${sessionScope.acc.username}"/>
+                                        <input  class="form-control valid-character" value="${sessionScope.acc.username}" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Email Address</label>
-                                        <input class="form-control" value="${sessionScope.acc.email}" />
+                                        <input class="form-control" value="${sessionScope.acc.email}" disabled=""/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Your Phone</label>
-                                        <input class="form-control int-value" value="${mentee.phone}"/>
+                                        <input class="form-control int-value" value="${mentee.phone}" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Balance</label>
-                                        <div id="walletDisplay" class="form-control"></div>
+                                        <label for="walletDisplay">Balance</label>
+                                        <div id="walletDisplay" class="important-balance" disabled>
+                                          
+                                        </div>
                                     </div>
                                 </div>
+
 
                                 <script>
                                     // Assuming wallet is a number
@@ -137,9 +162,7 @@
                                     data-val="true" 
                                     data-val-number="The field Amount must be a number." 
                                     data-val-required="The Amount field is required." 
-                                    id="amount" 
-                                    max="100000000" 
-                                    min="1" 
+                                    id="amount"  
                                     name="amount" 
                                     type="number" 
                                     required 

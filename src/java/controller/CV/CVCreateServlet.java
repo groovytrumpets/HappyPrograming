@@ -28,8 +28,8 @@ import java.util.List;
  */
 @WebServlet(name = "CVCreateServlet", urlPatterns = {"/cvcreate"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
-    maxFileSize = 1024 * 1024 * 5,   // 5 MB
-    maxRequestSize = 1024 * 1024 * 10 // 10 MB
+        maxFileSize = 1024 * 1024 * 5, // 5 MB
+        maxRequestSize = 1024 * 1024 * 10 // 10 MB
 )
 
 public class CVCreateServlet extends HttpServlet {
@@ -112,7 +112,7 @@ public class CVCreateServlet extends HttpServlet {
         String profession = request.getParameter("profession");
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
-        
+
         String activity = request.getParameter("activity");
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
@@ -122,7 +122,7 @@ public class CVCreateServlet extends HttpServlet {
 
         int userid;
         float price;
-                
+
         try {
             userid = Integer.parseInt(userId_raw);
             price = Float.parseFloat(price_raw);
@@ -135,18 +135,21 @@ public class CVCreateServlet extends HttpServlet {
 
             CVDAO cvdao = new CVDAO();
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession, serviceDescription, framework, avatar,price);
+                    professionIntroduction, profession, serviceDescription, framework, avatar, price);
             int cvId = cvdao.createCV(newCv);
             //System.out.println(cvId);
             //add skills
             if (addSkills != null) {
-                cvdao.insertMentorSkills(userid, addSkills,cvId);
+                cvdao.insertMentorSkills(userid, addSkills, cvId);
                 //System.out.println("Add !null");
             }
-            response.sendRedirect("cvlist?id=" + userid);
+            if (cvId == -1) {
+                response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to create your CV. Please try again.");
+
+            }
+            response.sendRedirect("cvlist?id=" + userid + "&mess=Your CV has been created successfully!");
         } catch (Exception e) {
             System.out.println(e);
-
         }
 
     }
@@ -161,6 +164,4 @@ public class CVCreateServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-
 }
-

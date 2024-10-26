@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.Mentor;
 
-import DAO.RequestDAO;
-import Model.Mentee;
-import Model.User;
+import DAO.SlotDAO;
+import Model.Slot;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
- * @author asus
+ * @author ADMIN
  */
-@WebServlet(name = "StatisticRequestSV", urlPatterns = {"/statisticrequest"})
-public class StatisticRequestSV extends HttpServlet {
+@WebServlet(name = "MentorSlotDeleteServlet", urlPatterns = {"/deleteslot"})
+public class MentorSlotDeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +39,10 @@ public class StatisticRequestSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StatisticRequestSV</title>");
+            out.println("<title>Servlet MentorSlotDeleteServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StatisticRequestSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MentorSlotDeleteServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,31 +60,40 @@ public class StatisticRequestSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String slotId_raw = request.getParameter("requestid");
+//        String all = request.getParameter("all");
+//        if (all.equalsIgnoreCase("all")) {
+//            String mentorid = request.getParameter("mentorid");
+//            System.out.println(mentorid);
+//            SlotDAO sld = new SlotDAO();
+//            if (sld.deleteAllInactiveSlot()) {
+//                response.sendRedirect("slotdraft?id=" + mentorid +"&mess=Your all slot has been deleted successfully!");
+//            }else{
+//                response.sendRedirect("slotdraft?id=" + mentorid +"&error=Your slot has been deleted all unsuccessfully!");
+//            }
+//            return;
+//        }
+        int slotId;
         try {
-            HttpSession session = request.getSession();
-            User curUser = (User) session.getAttribute("acc");
-//            MenteeDAO actMentee = new MenteeDAO();
-//            MentorDAO actMentor = new MentorDAO();
-            RequestDAO requestdao = new RequestDAO();
-            if (curUser == null) {
-                response.sendRedirect("signin");
-                return;
+            SlotDAO sld = new SlotDAO();
+            slotId = Integer.parseInt(slotId_raw);
+            Slot slot = sld.getSlotsById2(slotId);
+            if (slot.getStatus().equalsIgnoreCase("active")) {
+                List<Slot> slotActive = sld.getListofActiveSlotsByMentorId(slot.getMentorID());
+                for (Slot slot1 : slotActive) {
+                    //re-add another slot except slot wantto delet
+                    if (slot1.getSlotID() != slot.getSlotID()) {
+                        slot1.setStatus("inactive");
+                        sld.addSlot(slot1);
+                    }
+                }
             }
-            PrintWriter out = response.getWriter();
-            int roleID = curUser.getRoleId();
-            Mentee curMentee = new Mentee();
-            if (roleID == 2) {
-                //curMentee = requestdao.getAllRequest();
-                //curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
-                //request.setAttribute("mentee", curMentee);
-            } else if (roleID == 1) {
-                //Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
-                //request.getRequestDispatcher("cvlist?id=" + curMentor.getMentorId()).forward(request, response);
-                return;
+            if (slot.getStatus().equalsIgnoreCase("inactive")) {
+                sld.deleteSlot(slotId);
             }
-
-            request.getRequestDispatcher("updateProfileMentee.jsp").forward(request, response);
-        } catch (Exception e) {
+            //System.out.println(slotId);
+            response.sendRedirect("slotdraft?id=" + slot.getMentorID() +"&mess=Your slot has been deleted all successfully!");
+        } catch (NumberFormatException e) {
             System.out.println(e);
         }
     }

@@ -79,6 +79,44 @@ public class SlotDAO extends DBContext {
         return null;
     }
 
+    public Slot getSlotsById2(int Id) {
+        String sql = "SELECT * FROM Slot WHERE SlotID = ? ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, Id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int mentorId = rs.getInt("mentorID");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                return slot;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public void deleteSlot(int Id) {
+        String sql = "DELETE FROM [dbo].[Slot] WHERE SlotID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, Id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public List<Slot> getSlotByRequestId(int requestId) {
         List<Slot> listSlot = new ArrayList<>();
         String sql = "SELECT s.[SlotID]\n"
@@ -159,7 +197,7 @@ public class SlotDAO extends DBContext {
     public void updateSlotStatusToUnavailable(int slotId) throws SQLException {
         String query = "UPDATE Slot SET status = 'Unavailable' WHERE slotID = ?";
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, slotId);
             ps.executeUpdate();
         }
@@ -168,7 +206,7 @@ public class SlotDAO extends DBContext {
     public void updateSlotStatusToAvailable(int slotId) throws SQLException {
         String query = "UPDATE Slot SET status = 'Available' WHERE slotID = ?";
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, slotId);
             ps.executeUpdate();
         }
@@ -187,5 +225,141 @@ public class SlotDAO extends DBContext {
         // Printing the fetched slots
         // Assuming getSlotsById is a method that retrieves slots by request ID
         System.out.println(slots.get(3).getDayInWeek());
+    }
+
+    public List<Slot> getListofSlotsByMentorId(int cvId) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "select * from Slot where CVID=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, cvId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                int mentorId = rs.getInt("MentorID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public List<Slot> getListofActiveSlotsByMentorId(int id) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "select * from Slot where MentorID=? and Status = 'active'";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                int mentorId = rs.getInt("MentorID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public List<Slot> getListofInactiveSlotsByMentorId(int id) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "select * from Slot where MentorID=? and Status = 'inactive'";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                int mentorId = rs.getInt("MentorID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public boolean addSlot(Slot slot) {
+        String sql = "INSERT INTO [dbo].[Slot] ([MentorID],[StartTime],[EndTime],[DayInWeek],[Status],[CVID]) \n"
+                + "VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setInt(1, slot.getMentorID());
+            rs.setTime(2, java.sql.Time.valueOf(slot.getStartTime()));
+            rs.setTime(3, java.sql.Time.valueOf(slot.getEndTime()));
+            rs.setString(4, slot.getDayInWeek());
+            rs.setString(5, slot.getStatus());
+            rs.setInt(6, slot.getCVID());
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+
+    }
+
+    public boolean updateSlot(Slot slot) {
+        String sql = "UPDATE [dbo].[Slot]\n"
+                + "   SET [MentorID] = ?\n"
+                + "      ,[StartTime] = ?\n"
+                + "      ,[EndTime] = ?\n"
+                + "      ,[DayInWeek] = ?\n"
+                + "      ,[Status] = ?\n"
+                + "      ,[CVID] = ?\n"
+                + " WHERE SlotID =?";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setInt(1, slot.getMentorID());
+            rs.setTime(2, java.sql.Time.valueOf(slot.getStartTime()));
+            rs.setTime(3, java.sql.Time.valueOf(slot.getEndTime()));
+            rs.setString(4, slot.getDayInWeek());
+            rs.setString(5, slot.getStatus());
+            rs.setInt(6, slot.getCVID());
+            rs.setInt(7, slot.getSlotID());
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteAllInactiveSlot() {
+        String sql = "DELETE FROM [dbo].[Slot] WHERE Status='inactive'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int query = st.executeUpdate();
+            return query>0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 }

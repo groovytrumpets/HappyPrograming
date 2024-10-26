@@ -75,6 +75,7 @@ public class PaymentSV extends HttpServlet {
         if (a == null) {
             response.sendRedirect("signin");
         }
+        String pay = request.getParameter("pay");
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
         double balance = walletDAO.getWalletByUsername(a.getUsername()).getBalance();
         request.setAttribute("mentee", mentee);

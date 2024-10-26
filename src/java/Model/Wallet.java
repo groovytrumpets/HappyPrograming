@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAO;
+package Model;
 
 /**
  *
@@ -13,18 +13,28 @@ public class Wallet {
     private int walletID;
     private double balance;
     private String username;
+    private double hold;
 
     // Constructor
     public Wallet() {
     }
 
-    public Wallet(int walletID, double balance, String username) {
+    public Wallet(int walletID, double balance, String username, double hold) {
         this.walletID = walletID;
         this.balance = balance;
         this.username = username;
+        this.hold = hold;
+    }
+    
+    public double getHold() {
+        return hold;
     }
 
     // Getters and Setters
+    public void setHold(double hold) {    
+        this.hold = hold;
+    }
+
     public int getWalletID() {
         return walletID;
     }

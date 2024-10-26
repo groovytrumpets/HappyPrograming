@@ -311,7 +311,7 @@
                                                     <td class="align-middle">${r.title}</td>
 
 
-                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${r.startDate}</a></td>
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${r.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>
 
 
@@ -327,7 +327,7 @@
                                                         <c:choose>
                                                             <c:when test="${r.status == 'Open'}">
                                                                 <span class="orders-btn">
-                                                                    <a href="UpdateRequestOfMentee?action=update&requestId=${r.requestId}" class="btn button-sm blue">Update</a>
+                                                                    <a href="updateRequest?id=${r.requestId}" class="btn button-sm blue">Update</a>
                                                                 </span>
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusofmentee?action=cancel&requestId=${r.requestId}" class="btn button-sm red">Cancel</a>
@@ -338,7 +338,7 @@
                                                         </c:choose>
 
                                                         <span class="new-users-btn">
-                                                            <a href="requestDetailAdmin?requestID=${r.requestId}" class="btn button-sm outline">Detail</a>
+                                                            <a href="requestdetailmentormentee?requestID=${r.requestId}" class="btn button-sm outline">Detail</a>
                                                         </span>
                                                     </td>
                                                 </tr>

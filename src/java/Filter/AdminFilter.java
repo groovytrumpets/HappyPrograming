@@ -103,47 +103,42 @@ public class AdminFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         //Start
-        /*
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String url = httpRequest.getServletPath();
-        HttpSession session = httpRequest.getSession(false);
 
-        User user = (session != null) ? (User) session.getAttribute("acc") : null;
-        //Check if user input jsp file
-        if (url.contains(".jsp")) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-        //Check if user are login and go to loginpage
-        if (isSignInUrl(url) && user != null) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-        // Check access for admin pages
-        if (isUrlAdmin(url) && (user == null || user.getRoleId() != 3)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for mentor pages
-        if (isUrlMentor(url) && (user == null || user.getRoleId() != 1)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for mentee pages
-        if (isUrlMentee(url) && (user == null || user.getRoleId() != 2)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-
-        // Check access for manager pages
-        if (isUrlManager(url) && (user == null || user.getRoleId() != 4)) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
-         */
+//        HttpServletRequest httpRequest = (HttpServletRequest) request;
+//        HttpServletResponse httpResponse = (HttpServletResponse) response;
+//        String url = httpRequest.getServletPath();
+//        HttpSession session = httpRequest.getSession(false);
+//
+//        User user = (session != null) ? (User) session.getAttribute("acc") : null;
+//        //Check if user are login and go to loginpage
+//        if (isSignInUrl(url) && user != null) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//        // Check access for admin pages
+//        if (isUrlAdmin(url) && (user == null || user.getRoleId() != 3)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for mentor pages
+//        if (isUrlMentor(url) && (user == null || user.getRoleId() != 1)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for mentee pages
+//        if (isUrlMentee(url) && (user == null || user.getRoleId() != 2)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//
+//        // Check access for manager pages
+//        if (isUrlManager(url) && (user == null || user.getRoleId() != 4)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
+//        
         //End
         if (debug) {
             log("AdminFilter:doFilter()");
@@ -191,7 +186,7 @@ public class AdminFilter implements Filter {
         return url.contains("slotmentor") || url.contains("mentorStatisticRequest")
                 || url.contains("slotview") || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
-                || url.contains("viewprofilecv") || url.contains("updatestatusbymentor");
+                 || url.contains("updatestatusbymentor");
     }
 
     // Boolean function to check if the URL is for mentee
@@ -199,17 +194,16 @@ public class AdminFilter implements Filter {
         return url.contains("createrequest") || url.contains("deleterequestbymentee")
                 || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
-                || url.contains("statisticrequest") || url.contains("updateProfile")
+               || url.contains("statisticrequest") || url.contains("updateProfile")
                 || url.contains("updateRequest")
-                || url.contains("updatestatusofmentee") || url.contains("slotmentee");
+                || url.contains("updatestatusofmentee") || url.contains("slotmentee") || url.contains("admin") || url.contains("Admin");
     }
 
     // Boolean function to check if the URL is for manager
     private boolean isUrlManager(String url) {
         return url.contains("manager") || url.contains("Manager")
                 || url.contains("activecv") || url.contains("statuspaidmentorrequest")
-                || url.contains("activementeerequest") || url.contains("cvupdate")
-                || url.contains("viewprofilecv");
+                || url.contains("activementeerequest") || url.contains("cvupdate");
     }
 
     /**

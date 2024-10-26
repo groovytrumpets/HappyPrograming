@@ -97,8 +97,6 @@
                     <label for="sortBy" style="font-weight: bold; color: #555;">Sort By</label>
                     <select id="sortBy" name="sortBy" class="form-control" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
                         <option value="">Select Sort Option</option>
-                        <option value="totalRequestsAsc">Total Requests (Ascending)</option>
-                        <option value="totalRequestsDesc">Total Requests (Descending)</option>
                         <option value="ratingAsc">Rating (Ascending)</option>
                         <option value="ratingDesc">Rating (Descending)</option>
                         <option value="priceAsc">Price (Ascending)</option>

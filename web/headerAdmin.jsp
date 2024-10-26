@@ -295,7 +295,7 @@
 		                		<a href="mentorListAdmin" class="ttr-material-button"><span class="ttr-label">Mentor List</span></a>
 		                	</li>
                                         <li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Manager List</span></a>
+		                		<a href="#" class="ttr-material-button"><span class="ttr-label">Manager List</span></a>
 		                	</li>
 		                </ul>
 		            </li>

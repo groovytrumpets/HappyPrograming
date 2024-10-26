@@ -5,11 +5,13 @@
 package controller.Manager;
 
 import DAO.CVDAO;
+
 import Model.Mentee;
 import Model.Mentor;
 import Model.Payment;
 import Model.Request;
 import Model.User;
+import Model.Wallet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -71,18 +73,25 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             CVDAO cvd = new CVDAO();
             List<Request> requestList = cvd.getListofRequest();
             List<Mentee> menteeList = cvd.getListofMentee();
+            List<Payment> paymentList1 = cvd.getListofPaymentbyRequestIdStep1(requestId);
+            List<Payment> paymentList2 = cvd.getListofPaymentbyRequestIdStep2(requestId);
             List<Payment> paymentList = cvd.getListofPaymentbyRequestId(requestId);
             List<Mentor> mentorList = cvd.getListofMentor();
             List<User> listUser = cvd.getListofUser();
             List<Request> completeRequestList = cvd.getListofCompleteRequest();
-
+            Wallet wallet =cvd.getManagerWallet();
             request.setAttribute("requestList", requestList);
             request.setAttribute("menteeList", menteeList);
             request.setAttribute("mentorList", mentorList);
             request.setAttribute("listUser", listUser);
             request.setAttribute("completeRequestList", completeRequestList);
 
-            request.setAttribute("paymentList", paymentList);
+            request.setAttribute("paymentList1", paymentList1);
+            request.setAttribute("paymentList2", paymentList2);
+            
+            request.setAttribute("wallet", wallet);
+
+            System.out.println(paymentList2.isEmpty());
 
             request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
         } catch (Exception e) {

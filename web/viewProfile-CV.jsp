@@ -19,20 +19,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>View profile-cv of mentor</title>
+        <title>Happy Programing: CV of Mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,15 +53,17 @@
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body id="bg">
         <div class="page-wraper">
             <div id="loading-icon-bx"></div>
             <!-- Header Top ==== -->
-            <jsp:include page="header.jsp" />
+            <header class="header rs-nav">
+                <jsp:include page="header.jsp" />
+            </header>
             <!-- header END ==== -->
             <!-- Content -->
             <div class="page-content bg-white">
@@ -92,7 +94,12 @@
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
                                     <div class="profile-bx text-center">
                                         <div class="user-profile-thumb">
-                                            <img src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" width: 100%;height: 100%;object-fit: cover;"/>
+                                            <c:if test="${requestScope.cvFound.cvId==null}">
+                                                <img src="assets\images\userprofile.png" class="rounded-circle" alt="" style=" width: 100%;height: 100%;object-fit: cover;"/>
+                                            </c:if>
+                                            <c:if test="${requestScope.cvFound.cvId!=null}">
+                                                <img src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" width: 100%;height: 100%;object-fit: cover;"/>
+                                            </c:if>
                                         </div>
                                         <div class="profile-info">
 
@@ -418,14 +425,17 @@
                 var eventsArray = [];
                 for (var i = 0; i < start.length; i++) {
                     var eventColor = '';
-                    if (titleClass[i].toLowerCase() === 'inavaiable') {eventColor = '#c22d2d';}
-                    else {eventColor = '#2dc22d';}
+                    if (titleClass[i].toLowerCase() === 'inavaiable') {
+                        eventColor = '#c22d2d';
+                    } else {
+                        eventColor = '#2dc22d';
+                    }
                     console.log(titleClass[i]);
                     console.log(titleClass[i].toLowerCase() === 'inactive');
                     eventsArray.push({
                         title: titleClass[i],
                         start: start[i],
-                        end:end[i],
+                        end: end[i],
                         color: eventColor
                     });
                 }
@@ -446,7 +456,7 @@
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
                     events: eventsArray,
-                    height: 500 
+                    height: 500
                 });
 
             });

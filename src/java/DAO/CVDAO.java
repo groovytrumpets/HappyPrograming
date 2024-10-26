@@ -16,6 +16,7 @@ import Model.Slot;
 import Model.SlotRequest;
 import Model.StatisticSkills;
 import Model.User;
+import Model.Wallet;
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,61 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    public Mentor getMentorByUsername(String username) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Mentor where Username = ?";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Mentor mentor = new Mentor(rs.getInt("mentorId"), rs.getInt("roleId"),
+                        rs.getString("username"),
+                        rs.getDate("createDate"),
+                        rs.getString("phone"), rs.getString("address"),
+                        rs.getDate("dateOfBirth"), rs.getString("fullName"),
+                        rs.getString("gender"), rs.getString("status"));
+                //System.out.println("founded");
+                return mentor;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public CV getCVbyMentorId(int id) {
         //lenh sql select * from categories cach 1:
         String sql = "select*from [dbo].[CV] where MentorID =? and Status='active';";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
+                return cv;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    
+    public CV getNewestCVbyMentorId(int id) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select top (1) * from [dbo].[CV] where MentorID =? order by CreateDate desc;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -115,7 +167,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCVbyMentorId(int id) {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV where MentorID=?;";
+        String sql = "select*from CV where MentorID=? order by CVID desc;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -147,7 +199,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCV() {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV";
+        String sql = "select*from CV order by CVID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -229,8 +281,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public int updateCV(CV c, int cvid) {
-        int CVid = -1;
+    public boolean updateCV(CV c, int cvid) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
@@ -252,15 +303,15 @@ public class CVDAO extends DBContext {
             st.setBytes(8, c.getAvatar());
             st.setFloat(9, c.getPrice());
             st.setInt(10, cvid);
-            st.executeUpdate();
+            int queryLine = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
-            if (rs.next()) {
-                CVid = rs.getInt(1); // Lấy CVid tự động tạo
-            }
+            
+            return queryLine>0;
+            
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return CVid;
+        return false;
     }
 
     public void updateUser(String userid, String username, String email) {
@@ -363,7 +414,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
+    public boolean insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
         String sql = "INSERT INTO [dbo].[SkillList]\n"
                 + "           ([SkillID]\n"
                 + "           ,[MentorID]\n"
@@ -379,14 +430,14 @@ public class CVDAO extends DBContext {
                 st.setInt(2, MentorId);
                 st.setInt(3, cvId);
 
-                st.executeUpdate();
-
+                int rowExcute = st.executeUpdate();
+                return rowExcute > 0;
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
-
+        return false;
     }
 
     public String getUserEmail(int MentorId) {
@@ -601,26 +652,28 @@ public class CVDAO extends DBContext {
 
     public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getCVbyMentorId(7));
+        System.out.println(c.getSlotRequestbyMentorId(7));
     }
 
-    public void deleteCV(int id) {
+    public boolean deleteCV(int id) {
 
         String sql = "delete from CV where CVID =? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            st.executeUpdate();
+            int query= st.executeUpdate();
+            return query>0;
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return false;
 
     }
 
     public List<Mentor> getListofMentor() {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from [Mentor]";
+        String sql = "select * from [Mentor] order by MentorID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1119,6 +1172,68 @@ public class CVDAO extends DBContext {
         return null;
     }
 
+    public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
+        List<Payment> paymentList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Payment where RequestID =? and Status='1' or Status='3'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setRequestId(rs.getInt("requestId"));
+                p.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime());
+                p.setTotalAmount(rs.getFloat("totalAmount"));
+                p.setStatus(rs.getString("status"));
+                p.setSender(rs.getString("sender"));
+                p.setReceiver(rs.getString("receiver"));
+
+                paymentList.add(p);
+
+            }
+            return paymentList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
+        List<Payment> paymentList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select * from Payment where RequestID =? and Status='2'";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setRequestId(rs.getInt("requestId"));
+                p.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime());
+                p.setTotalAmount(rs.getFloat("totalAmount"));
+                p.setStatus(rs.getString("status"));
+                p.setSender(rs.getString("sender"));
+                p.setReceiver(rs.getString("receiver"));
+
+                paymentList.add(p);
+
+            }
+            return paymentList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
     public Request getRequestbyRequestId(int requestId) {
         String sql = "select * from Request where RequestID =?;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
@@ -1308,5 +1423,103 @@ public class CVDAO extends DBContext {
         }
 
         return null;
+    }
+
+    public Wallet getManagerWallet() {
+        String sql = "select * from Wallet\n"
+                + "where Wallet.Username = 'manager'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Wallet s = new Wallet();
+                s.setBalance(rs.getDouble("Balance"));
+                s.setUsername(rs.getString("Username"));
+                s.setWalletID(rs.getInt("WalletID"));
+                return s;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public boolean addPayment(Payment payment) {
+        String sql = "INSERT INTO payment (requestId, paymentDate, totalAmount, status, sender, receiver) VALUES (?, GETDATE(), ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, payment.getRequestId());
+            pstmt.setDouble(2, payment.getTotalAmount());
+            pstmt.setString(3, payment.getStatus());
+            pstmt.setString(4, payment.getSender());
+            pstmt.setString(5, payment.getReceiver());
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
+
+    public void setWalletTransactionbyManager(float price, String mentorname) {
+        String sql = "update Wallet set Balance =Balance+? where Username like ?\n"
+                + "update Wallet set Balance =Balance-? where Username like 'manager'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, price);
+            st.setString(2, mentorname);
+            st.setFloat(3, price);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public List<Mentor> getListofMentorByMenteeWithStatus(String username) {
+        List<Mentor> mentorList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = "select mr.* from [Mentor] mr join Request r on mr.MentorID = r.MentorID \n"
+                + "join Mentee mt on  mt.MenteeID = r.MenteeID\n"
+                + "where r.[Status] = 'Completed' and mt.Username = ? ";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Mentor mentor = new Mentor(rs.getInt("mentorId"),
+                        rs.getInt("roleId"), rs.getString("username"),
+                        rs.getDate("createDate"), rs.getString("phone"),
+                        rs.getString("address"), rs.getDate("dateOfBirth"),
+                        rs.getString("fullName"), rs.getString("gender"),
+                        rs.getString("status"));
+                mentorList.add(mentor);
+            }
+            
+            return mentorList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    public boolean addSlot(Slot slot) {
+        String sql = "INSERT INTO [dbo].[Slot] ([MentorID],[StartTime],[EndTime],[DayInWeek],[Status],[CVID]) \n"
+                + "VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setInt(1, slot.getMentorID());
+            rs.setTime(2, java.sql.Time.valueOf(slot.getStartTime()));
+            rs.setTime(3, java.sql.Time.valueOf(slot.getEndTime()));
+            rs.setString(4, slot.getDayInWeek());
+            rs.setString(5, slot.getStatus());
+            rs.setInt(6, slot.getCVID());
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
     }
 }
