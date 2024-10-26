@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.CV;
+package controller.Mentor;
 
-import DAO.CVDAO;
-import Model.CV;
+import DAO.SlotDAO;
+import Model.Slot;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +19,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name = "CVDeleteServlet", urlPatterns = {"/cvdelete"})
-public class CVDeleteServlet extends HttpServlet {
+@WebServlet(name = "MentorSlotDeleteServlet", urlPatterns = {"/deleteslot"})
+public class MentorSlotDeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class CVDeleteServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CVDeleteServlet</title>");
+            out.println("<title>Servlet MentorSlotDeleteServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CVDeleteServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MentorSlotDeleteServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +60,42 @@ public class CVDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        int id;
+        String slotId_raw = request.getParameter("requestid");
+//        String all = request.getParameter("all");
+//        if (all.equalsIgnoreCase("all")) {
+//            String mentorid = request.getParameter("mentorid");
+//            System.out.println(mentorid);
+//            SlotDAO sld = new SlotDAO();
+//            if (sld.deleteAllInactiveSlot()) {
+//                response.sendRedirect("slotdraft?id=" + mentorid +"&mess=Your all slot has been deleted successfully!");
+//            }else{
+//                response.sendRedirect("slotdraft?id=" + mentorid +"&error=Your slot has been deleted all unsuccessfully!");
+//            }
+//            return;
+//        }
+        int slotId;
         try {
-            CVDAO cvd = new CVDAO();
-            id = Integer.parseInt(id_raw);
-            CV cv = cvd.getCVbyCVId(id);
-            if (cvd.deleteCV(id)) {
-                response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&mess=Your CV has been deleted successfully!");
-            } else {
-                response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV. Please try again.");
+            SlotDAO sld = new SlotDAO();
+            slotId = Integer.parseInt(slotId_raw);
+            Slot slot = sld.getSlotsById2(slotId);
+            if (slot.getStatus().equalsIgnoreCase("active")) {
+                List<Slot> slotActive = sld.getListofActiveSlotsByMentorId(slot.getMentorID());
+                for (Slot slot1 : slotActive) {
+                    //re-add another slot except slot wantto delet
+                    if (slot1.getSlotID() != slot.getSlotID()) {
+                        slot1.setStatus("inactive");
+                        sld.addSlot(slot1);
+                    }
+                }
             }
-        } catch (Exception e) {
+            if (slot.getStatus().equalsIgnoreCase("inactive")) {
+                sld.deleteSlot(slotId);
+            }
+            //System.out.println(slotId);
+            response.sendRedirect("slotdraft?id=" + slot.getMentorID() +"&mess=Your slot has been deleted all successfully!");
+        } catch (NumberFormatException e) {
             System.out.println(e);
         }
-
     }
 
     /**

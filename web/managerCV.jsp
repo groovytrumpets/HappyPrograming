@@ -99,14 +99,14 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
-                                    <table class="table">
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;">
+                                    <table class="table table-hover" id="mentorTable">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col">id#</th>
-                                                <th scope="col">Account Name</th>
-                                                <th scope="col">Avatar</th>
-                                                <th scope="col">Email</th>
+                                                <th scope="col" onclick="sortTable(0)"><a href="#" >Id#</a></th>
+                                                <th scope="col" onclick="sortTable(1)"><a href="#" >Account Name</a></th>
+                                                <th scope="col" onclick="sortTable(2)"><a href="#" >Avatar</a></th>
+                                                <th scope="col" onclick="sortTable(3)"><a href="#" >Email</a></th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
@@ -159,7 +159,7 @@
 
                             </div>
                             <div class="widget-inner">
-                                <div class="orders-list">
+                                <div class="orders-list" style="max-height: 600px; overflow-y: auto;">
                                     <c:if test="${not empty requestScope.error}">
                                         <div class="alert alert-danger" role="alert">
                                             ${requestScope.error}
@@ -170,8 +170,13 @@
 
                                             <li>
                                                 <span class="orders-title">
-                                                    <a href="#" class="orders-title-name">${v.mentorId}</a>
-                                                    <span class="orders-info">CV #${v.cvId} | Last change ${v.createDate}</span>
+                                                    <c:forEach items="${requestScope.mentorList}" var="m">
+                                                        <c:if test="${v.mentorId==m.mentorId}">
+                                                            
+                                                    <a href="#" class="orders-title-name">${m.username}</a>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <span class="orders-info">CV # ${v.cvId} | Last change ${v.createDate}</span>
                                                 </span>
                                                 <c:if test="${v.status.equals('inactive')}">
                                                     <span class="orders-btn">
@@ -410,8 +415,54 @@
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
 
-
     </body>
 
+        <script>
+            function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("mentorTable");
+    switching = true;
+    dir = "asc"; // Hướng sắp xếp ban đầu là tăng dần (asc)
+
+    // Vòng lặp sẽ chạy cho đến khi không còn cần chuyển đổi vị trí các hàng
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        // Lặp qua tất cả các hàng, trừ hàng tiêu đề
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[columnIndex];
+            y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+            // So sánh các hàng dựa trên hướng sắp xếp
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+
+        if (shouldSwitch) {
+            // Đổi vị trí các hàng
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+        } else {
+            // Nếu không có chuyển đổi nào, đổi hướng sắp xếp
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+}
+
+        </script>
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

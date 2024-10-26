@@ -111,6 +111,32 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    
+    public CV getNewestCVbyMentorId(int id) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select top (1) * from [dbo].[CV] where MentorID =? order by CreateDate desc;";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
+                return cv;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public CV getCVbyCVId(int id) {
         //lenh sql select * from categories cach 1:
@@ -141,7 +167,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCVbyMentorId(int id) {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV where MentorID=?;";
+        String sql = "select*from CV where MentorID=? order by CVID desc;";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -173,7 +199,7 @@ public class CVDAO extends DBContext {
     public List<CV> getListofCV() {
         List<CV> cvList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select*from CV";
+        String sql = "select*from CV order by CVID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -255,8 +281,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public int updateCV(CV c, int cvid) {
-        int CVid = -1;
+    public boolean updateCV(CV c, int cvid) {
         String sql = "UPDATE [dbo].[CV]\n"
                 + "   SET [Education] = ?\n"
                 + "      ,[Experience] = ?\n"
@@ -278,15 +303,15 @@ public class CVDAO extends DBContext {
             st.setBytes(8, c.getAvatar());
             st.setFloat(9, c.getPrice());
             st.setInt(10, cvid);
-            st.executeUpdate();
+            int queryLine = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
-            if (rs.next()) {
-                CVid = rs.getInt(1); // Lấy CVid tự động tạo
-            }
+            
+            return queryLine>0;
+            
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return CVid;
+        return false;
     }
 
     public void updateUser(String userid, String username, String email) {
@@ -389,7 +414,7 @@ public class CVDAO extends DBContext {
         }
     }
 
-    public void insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
+    public boolean insertMentorSkills(int MentorId, String[] addSkills, int cvId) {
         String sql = "INSERT INTO [dbo].[SkillList]\n"
                 + "           ([SkillID]\n"
                 + "           ,[MentorID]\n"
@@ -405,14 +430,14 @@ public class CVDAO extends DBContext {
                 st.setInt(2, MentorId);
                 st.setInt(3, cvId);
 
-                st.executeUpdate();
-
+                int rowExcute = st.executeUpdate();
+                return rowExcute > 0;
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
-
+        return false;
     }
 
     public String getUserEmail(int MentorId) {
@@ -627,29 +652,28 @@ public class CVDAO extends DBContext {
 
     public static void main(String[] args) {
         CVDAO c = new CVDAO();
-       for(int i=0; i<c.getCVSkillList(17).size(); i++)
-       {
-           System.out.println(c.getCVSkillList(17).get(i));
-       }
+        System.out.println(c.getSlotRequestbyMentorId(7));
     }
 
-    public void deleteCV(int id) {
+    public boolean deleteCV(int id) {
 
         String sql = "delete from CV where CVID =? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            st.executeUpdate();
+            int query= st.executeUpdate();
+            return query>0;
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return false;
 
     }
 
     public List<Mentor> getListofMentor() {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from [Mentor]";
+        String sql = "select * from [Mentor] order by MentorID desc";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1480,5 +1504,22 @@ public class CVDAO extends DBContext {
         }
 
         return null;
+    }
+    public boolean addSlot(Slot slot) {
+        String sql = "INSERT INTO [dbo].[Slot] ([MentorID],[StartTime],[EndTime],[DayInWeek],[Status],[CVID]) \n"
+                + "VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement rs = connection.prepareStatement(sql)) {
+            rs.setInt(1, slot.getMentorID());
+            rs.setTime(2, java.sql.Time.valueOf(slot.getStartTime()));
+            rs.setTime(3, java.sql.Time.valueOf(slot.getEndTime()));
+            rs.setString(4, slot.getDayInWeek());
+            rs.setString(5, slot.getStatus());
+            rs.setInt(6, slot.getCVID());
+            int rowsInserted = rs.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
     }
 }

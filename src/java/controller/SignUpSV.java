@@ -7,6 +7,7 @@ package controller;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.UserDAO;
+import DAO.WalletDAO;
 import Model.Mentee;
 import Model.Mentor;
 import util.Email;
@@ -96,6 +97,7 @@ public class SignUpSV extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         MentorDAO mentorDAO = new MentorDAO();
         MenteeDAO menteeDAO = new MenteeDAO();
+        WalletDAO walletDAO = new WalletDAO();
         try {
 
             LocalDate localDob = LocalDate.parse(dob_raw);
@@ -128,8 +130,10 @@ public class SignUpSV extends HttpServlet {
 
                 if (role == 1) {
                     mentorDAO.insertMentor(role, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                    walletDAO.addNewWallet(username);
                 } else {
                     menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                    walletDAO.addNewWallet(username);
                 }
 
                 String subject = "Confirm Your Signup";

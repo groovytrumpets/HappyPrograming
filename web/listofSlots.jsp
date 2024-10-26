@@ -1,14 +1,15 @@
 <%-- 
-    Document   : adminHeader
-    Created on : 11 thg 10, 2024, 01:42:40
+    Document   : updateCV
+    Created on : 17 thg 9, 2024, 12:33:22
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
     <head>
 
         <!-- META ============================================= -->
@@ -32,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Admin </title>
+        <title>List Slot of mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,8 +74,8 @@
                 <div class="ttr-logo-box">
                     <div>
                         <a href="index.html" class="ttr-logo">
-                            <img class="ttr-logo-mobile" alt="" src="assets/images/fptuLogo.png" width="30" height="30">
-                            <img class="ttr-logo-desktop" alt="" src="assets/images/fptuLogo.png" width="160" height="27">
+                            <img alt="" class="ttr-logo-mobile" src="assets/images/logo-mobile.png" width="30" height="30">
+                            <img alt="" class="ttr-logo-desktop" src="assets/images/logo-white.png" width="160" height="27">
                         </a>
                     </div>
                 </div>
@@ -83,15 +84,15 @@
                     <!-- header left menu start -->
                     <ul class="ttr-header-navigation">
                         <li>
-                            <a href="home" class="ttr-material-button ttr-submenu-toggle">HOME</a>
+                            <a href="../index.html" class="ttr-material-button ttr-submenu-toggle">HOME</a>
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
                             <div class="ttr-header-submenu">
                                 <ul>
-                                    <li><a href="skillhome">Our Courses</a></li>
-                                    <li><a href="faq.jsp">FAQ</a></li>
-                                    <li><a href="contact.jsp">Contact Us</a></li>
+                                    <li><a href="../courses.html">Our Courses</a></li>
+                                    <li><a href="../event.html">New Event</a></li>
+                                    <li><a href="../membership.html">Membership</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -179,12 +180,12 @@
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-                            <div class="ttr-header-submenu">
+                            <div class="ttr-header-submenu">src="assets/images/testimonials/pic3.jpg
                                 <ul>
                                     <li><a href="user-profile.html">My profile</a></li>
                                     <li><a href="list-view-calendar.html">Activity</a></li>
-                                    <li><a href="changeloggingpassword">Change Pass</a></li>
-                                    <li><a href="logout">Logout</a></li>
+                                    <li><a href="mailbox.html">Messages</a></li>
+                                    <li><a href="../login.html">Logout</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -241,7 +242,7 @@
             <div class="ttr-sidebar-wrapper content-scroll">
                 <!-- side menu logo start -->
                 <div class="ttr-sidebar-logo">
-                    <a href="#" ><img alt="" src="https://ci3.googleusercontent.com/mail-sig/AIorK4yyJXi_e8ZCsuxgejpNKMHcTRy_Lzwrt1dOV12KKbYbIOpX1Q7wSBFYH9_t4lvhSn3afFhVecA" width="122" height="27"></a>
+                    <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
                     <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
                             <i class="material-icons ttr-fixed-icon">gps_fixed</i>
                             <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
@@ -261,60 +262,60 @@
                             </a>
                         </li>
                         <li>
-                            <a href="skillhome" class="ttr-material-button">
+                            <a href="courses.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-book"></i></span>
                                 <span class="ttr-label">Courses</span>
                             </a>
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-email"></i></span>
+                                <span class="ttr-label">Mailbox</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Schedule</span>
+                                <span class="ttr-label">Calendar</span>
                                 <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
                                 </li>
                                 <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Slot Draft</span></a>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="skillhome" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-bar-chart"></i></span>
-                                <span class="ttr-label">Statistic Request</span>
+                            <a href="bookmark.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                <span class="ttr-label">Bookmarks</span>
                             </a>
                         </li>
                         <li>
-                            <a href="listrequestofmentor" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-exchange-vertical"></i></span>
-                                <span class="ttr-label">Inviting Request</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-files"></i></span>
-                                <span class="ttr-label">CV</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">CV List</span></a>
-                                </li>
-                                <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Create CV</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
+                            <a href="review.html" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
-                                <span class="ttr-label">Rating List</span>
+                                <span class="ttr-label">Review</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="add-listing.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+                                <span class="ttr-label">Add listing</span>
                             </a>
                         </li>
                         <li>
@@ -325,10 +326,10 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
+                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
+                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Create CV of mentor</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -341,13 +342,126 @@
         </div>
         <!-- Left sidebar menu end -->
 
+        <!--Main container start -->
+        <main class="ttr-wrapper">
+            <div class="container-fluid">
+                <div class="db-breadcrumb">
+                    <h4 class="breadcrumb-title">List Slot of mentor</h4>
+                    <ul class="db-breadcrumb-list">
+                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+                        <li>List Slot of mentor</li>
+                    </ul>
+                </div>	
+                <div class="row">
+                    <!-- Your Profile Views Chart -->
+                    <div class="col-lg-12 m-b30">
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>List Slot of mentor </h4>
+                            </div>
+                            <div class="widget-inner">
+                                <a href="cvcreate?id=${requestScope.id}" class="btn btn-secondry" style="">Create CV+</a>
+                                <div class="courses-filter">
+                                    <div class="clearfix">
+                                        <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
+                                            <c:forEach items="${requestScope.listcv}" var="c">
+                                            <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
+                                                <div class="cours-bx">
+                                                    <div class="action-box" style="height: 300px">
+                                                        <img src="getCVimage?id=${c.cvId}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                                        
+                                                    </div>
+                                                    <div class="info-bx text-center">
+                                                        <c:if test="${c.status==('active')}">
+                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-green">${c.status}</span></h5>
+                                                        </c:if>
+                                                        <c:if test="${c.status==('inactive')}">
+                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-red">${c.status}</span></h5>
+                                                        </c:if>
+                                                        <span>Last change:</span>
+                                                        <br/>
+                                                        <span> ${c.createDate}</span>
+                                                    </div>
+                                                    <div class="cours-more-info" style="height: 50px">
+                                                        <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
+                                                           Update
+                                                        </a>
+                                                        <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
+                                                            Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            </c:forEach>
+                                            
 
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Your Profile Views Chart END-->
+                </div>
+            </div>
+        </main>
+        <div class="ttr-overlay"></div>
 
         <!-- External JavaScripts -->
-      
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/vendors/chart/chart.min.js"></script>
+        <script src="assets/js/admin.js"></script>
+        <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
+        <script>
+            function delete1(id) {
+        if (confirm('are u sure to delete id' + id + '?')) {
+            window.location = '/happy_programming/cvdelete?id=' + id;
+        }
+    }
+        </script>
+        <script>
+            // Pricing add
+            function newMenuItem() {
+                var newElem = $('tr.list-item').first().clone();
+                newElem.find('input').val('');
+                newElem.appendTo('table#item-add');
+            }
+            if ($("table#item-add").is('*')) {
+                $('.add-item').on('click', function (e) {
+                    e.preventDefault();
+                    newMenuItem();
+                });
+                $(document).on("click", "#item-add .delete", function (e) {
+                    e.preventDefault();
+                    $(this).parent().parent().parent().parent().remove();
+                });
+            }
+            //file path
+            const input = document.getElementById('avatar');
+            const filePathDisplay = document.getElementById('file-path');
 
+            input.addEventListener('change', function () {
+                const fileName = input.files[0].name; // Lấy tên file được chọn
+                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+            });
 
+        </script>
     </body>
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>
