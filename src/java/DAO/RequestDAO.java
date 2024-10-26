@@ -32,18 +32,18 @@ import java.util.Set;
  */
 public class RequestDAO extends DBContext {
 
-    public List<RequestSlotItem> getDuplicateSlot(int id) {
+    public List<RequestSlotItem> getDuplicateSlot(int id, int id2) {
         List<RequestSlotItem> requests = new ArrayList<>();
 
-        String sql = "select *\n"
-                + "from RequestSlotItem rq\n"
-                + "join Request r on rq.RequestID = r.RequestID\n"
-                + "where r.MenteeID = ?";
+        String sql = "SELECT * FROM RequestSlotItem r\n"
+                + "join Request rq on r.RequestID = rq.RequestID\n"
+                + "where rq.Status = 'Open' and rq.MenteeID=? and MentorID=?";
 
         try {
 
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
+             st.setInt(2, id2);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -209,6 +209,22 @@ public class RequestDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getNewestRequest() {
+        String sql1 = "SELECT TOP 1 RequestID FROM [dbo].[Request] ORDER BY RequestID DESC";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql1);
+            ResultSet rs = st.executeQuery();
+            int lastRequestId = 0;
+            if (rs.next()) {
+                lastRequestId = rs.getInt("RequestID");
+            }
+            return lastRequestId;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1;
     }
 
     public List<Request> getAllRequestByStatus(String status) {
@@ -919,10 +935,13 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestOfMentor(String mentorName) {
         List<Request> requestlist = new ArrayList<>();
-        String sql = "SELECT r.* \n"
+        String sql = "SELECT r.*\n"
                 + "FROM Request r\n"
-                + "JOIN Mentor m ON m.MentorID = r.MentorID\n"
-                + "WHERE m.Username = ?";
+                + "WHERE r.MentorID = (\n"
+                + "    SELECT MentorID\n"
+                + "    FROM Mentor\n"
+                + "    WHERE Username = ?\n"
+                + ");";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, mentorName);

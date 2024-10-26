@@ -138,16 +138,21 @@ public class SignUpSV extends HttpServlet {
 
                 String subject = "Confirm Your Signup";
                 String content = "Dear " + fname + ",\n\n"
-                        + "Thank you for signing up. Please review the information below and click the link to confirm your email address:\n\n"
+                        + "Thank you for signing up with us! We're excited to have you on board. Please review your information below and click the link to confirm your email address.\n\n"
+                        + "------------------------\n"
                         + "Full Name: " + fname + "\n"
                         + "Email: " + mail + "\n"
                         + "Phone: " + phone + "\n"
                         + "Date of Birth: " + dob_raw + "\n"
                         + "Gender: " + sex + "\n"
-                        + "Address: " + address + "\n\n"
+                        + "Address: " + address + "\n"
+                        + "------------------------\n\n"
                         + "Please click the link below to confirm your email address:\n"
                         + "http://14.177.86.215:9999/happy_programming/confirm?email=" + mail + "\n\n"
-                        + "If you did not sign up for this account, please ignore this email.\n\n";
+                        + "If you did not sign up for this account, please disregard this email.\n\n"
+                        + "Best regards,\n"
+                        + "The Happy Programming Team";
+
                 Email.sendEmail(mail, subject, content);
 
                 request.getRequestDispatcher("success.jsp").forward(request, response);
@@ -190,7 +195,7 @@ public class SignUpSV extends HttpServlet {
 
         return false;
     }
-    
+
     private String encrypt(String password) {
         StringBuilder encrypted = new StringBuilder();
 
@@ -202,7 +207,6 @@ public class SignUpSV extends HttpServlet {
         return encrypted.toString();
     }
 
-    
     /**
      * Returns a short description of the servlet.
      *
