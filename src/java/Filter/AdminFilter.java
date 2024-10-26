@@ -110,6 +110,11 @@ public class AdminFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
 
         User user = (session != null) ? (User) session.getAttribute("acc") : null;
+        //Check if user input jsp file
+        if (url.contains(".jsp")) {
+            httpResponse.sendRedirect("home");
+            return;
+        }
         //Check if user are login and go to loginpage
         if (isSignInUrl(url) && user != null) {
             httpResponse.sendRedirect("home");
@@ -138,7 +143,7 @@ public class AdminFilter implements Filter {
             httpResponse.sendRedirect("home");
             return;
         }
-        */
+         */
         //End
         if (debug) {
             log("AdminFilter:doFilter()");
@@ -183,26 +188,26 @@ public class AdminFilter implements Filter {
 
     // Boolean function to check if the URL is for mentor
     private boolean isUrlMentor(String url) {
-        return url.contains("slotmentor")|| url.contains("mentorStatisticRequest")
-               || url.contains("slotview") || url.contains("cvdelete")
+        return url.contains("slotmentor") || url.contains("mentorStatisticRequest")
+                || url.contains("slotview") || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
-                || url.contains("viewprofilecv") ;
+                || url.contains("viewprofilecv") || url.contains("updatestatusbymentor");
     }
 
     // Boolean function to check if the URL is for mentee
     private boolean isUrlMentee(String url) {
-        return url.contains("createrequest")|| url.contains("deleterequestbymentee")
-               || url.contains("listmentor") || url.contains("listrequestbymentee")
+        return url.contains("createrequest") || url.contains("deleterequestbymentee")
+                || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
-                || url.contains("statisticrequest") || url.contains("updateProfile") 
-                || url.contains("updateRequest") || url.contains("updatestatusbymentor")
-                || url.contains("updatestatusofmentee")|| url.contains("slotmentee");
+                || url.contains("statisticrequest") || url.contains("updateProfile")
+                || url.contains("updateRequest")
+                || url.contains("updatestatusofmentee") || url.contains("slotmentee");
     }
 
     // Boolean function to check if the URL is for manager
     private boolean isUrlManager(String url) {
-        return url.contains("manager")|| url.contains("Manager")
-               || url.contains("activecv") || url.contains("statuspaidmentorrequest")
+        return url.contains("manager") || url.contains("Manager")
+                || url.contains("activecv") || url.contains("statuspaidmentorrequest")
                 || url.contains("activementeerequest") || url.contains("cvupdate")
                 || url.contains("viewprofilecv");
     }
