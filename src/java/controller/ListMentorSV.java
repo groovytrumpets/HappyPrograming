@@ -69,31 +69,32 @@ public class ListMentorSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            CVDAO cvdao = new CVDAO();
+            HttpSession session = request.getSession();
+            User curUser = (User) session.getAttribute("acc");
             RequestDAO requestdao = new RequestDAO();
-            
-            List<CV> cvlist = cvdao.getListofActiveCV();
-            List<Mentor> mentorlist = cvdao.getListofMentorWithStatus();
-            
-            
-            request.setAttribute("cvlist", cvlist);
-            request.setAttribute("mentorlist", mentorlist);
+            CVDAO cvdao = new CVDAO();
+            if (curUser == null) {
+                response.sendRedirect("signin");
+                return;
+            }
+            int roleID = curUser.getRoleId();
+            Mentee curMentee = new Mentee();
+
+            if (roleID == 2) {
+                List<CV> cvlist = cvdao.getListofActiveCV();
+                List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
+
+                request.setAttribute("cvlist", cvlist);
+                request.setAttribute("mentorlist", mentorlist);
+            } else if (roleID == 1) {
+                response.sendRedirect("home");
+                return;
+            }
 
             request.getRequestDispatcher("listMentor.jsp").forward(request, response);
         } catch (Exception e) {
-            // Log the error (optional)
             System.err.println("Error retrieving mentors: " + e.getMessage());
-
-            // Optionally set an error message
-            request.setAttribute("errorMessage", "Unable to retrieve mentor list. Please try again later.");
-
-            // Forward to an error page or a specific JSP
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return; // Stop further processing
         }
-
-        // Forward the request to listMentors.jsp to display the mentor list
-        
     }
 
     /**

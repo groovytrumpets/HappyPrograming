@@ -311,7 +311,7 @@
                                                     <td class="align-middle">${r.title}</td>
 
 
-                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${r.startDate}</a></td>
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${r.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>
 
 
@@ -338,7 +338,7 @@
                                                         </c:choose>
 
                                                         <span class="new-users-btn">
-                                                            <a href="requestDetailAdmin?requestID=${r.requestId}" class="btn button-sm outline">Detail</a>
+                                                            <a href="requestdetailmentormentee?requestID=${r.requestId}" class="btn button-sm outline">Detail</a>
                                                         </span>
                                                     </td>
                                                 </tr>

@@ -6,9 +6,11 @@ package controller;
 
 import DAO.MenteeDAO;
 import DAO.RequestDAO;
+import DAO.SlotDAO;
 import Model.Mentee;
+import Model.Request;
 import Model.RequestSlotData;
-import Model.StatisticRequests;
+import Model.Slot;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,9 +25,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -75,6 +75,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
 
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
+
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
@@ -82,18 +83,66 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
 
         MenteeDAO menteeDAO = new MenteeDAO();
         RequestDAO requestDAO = new RequestDAO();
-        int roleID = curUser.getRoleId();
 
-        if (roleID == 2) {  // Only allow mentees
+        // Check if the user is a Mentee (roleID 2)
+        if (curUser.getRoleId() == 2) {
             Mentee curMentee = menteeDAO.findMenteeByUsername(curUser.getUsername());
             int menteeId = curMentee.getMenteeId();
 
-            List<StatisticRequests> statistics = requestDAO.getRequestStatisticsTotal(menteeId);
-            request.setAttribute("statistics", statistics);
+            // Get all requests for this mentee
+            List<Request> listRequests = requestDAO.getRequestByMenteeID(menteeId);
+
+            // Initialize list to store hours for each request
+            List<Float> hoursPerRequestList = new ArrayList<>();
+
+            // Calculate total hours for all requests and each individual request
+            float totalHours = 0;
+            for (Request req : listRequests) {
+                float hoursForRequest = getTotalHourOfRequest(req); // Calculate hours for each request
+                hoursPerRequestList.add(hoursForRequest);  // Add to list
+                totalHours += hoursForRequest;  // Accumulate total hours
+            }
+
+            // Round the total hours to 2 decimal places
+            totalHours = (float) Math.round(totalHours * 100) / 100;
+
+            // Set attributes for JSP
+            request.setAttribute("totalHours", totalHours);
+            request.setAttribute("listRequests", listRequests);
+            request.setAttribute("hoursPerRequestList", hoursPerRequestList); // Set hours for each request
+
+            // Forward to JSP page for displaying the statistics
             request.getRequestDispatcher("statisticRequestByMentee.jsp").forward(request, response);
-        } else if (roleID == 1) {
+        } else {
             response.sendRedirect("home");
         }
+    }
+
+    //calculate total hours of a request
+    public float getTotalHourOfRequest(Request request) {
+        SlotDAO slotDAO = new SlotDAO();
+        List<Slot> listSlots = slotDAO.getSlotByRequestId(request.getRequestId());
+        float totalHours = 0;
+        LocalDate startDate = request.getStartDate();
+        LocalDate endDate = request.getEndDate();
+
+        // Loop over all days between startDate and endDate
+        while (!startDate.isAfter(endDate)) {
+            String currentDayOfWeek = startDate.getDayOfWeek().toString();
+
+            for (Slot slot : listSlots) {
+                if (slot.getDayInWeek().equalsIgnoreCase(currentDayOfWeek)) {
+                    LocalTime startTime = slot.getStartTime();
+                    LocalTime endTime = slot.getEndTime();
+                    float durationInHours = Duration.between(startTime, endTime).toMinutes() / 60.0f;
+                    totalHours += durationInHours;
+                }
+            }
+
+            startDate = startDate.plusDays(1);  // Move to the next day
+        }
+
+        return totalHours;
     }
 
     /**

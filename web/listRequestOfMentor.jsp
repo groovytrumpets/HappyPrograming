@@ -368,7 +368,7 @@
                                             <tr>
                                                 <th scope="col">STT</th>
                                                 <th scope="col">Title</th>
-                                                <th scope="col">Price</th>
+                                                <th scope="col">Price</th>                                               
                                                 <th scope="col">Start Date</th>
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Note</th>
@@ -387,7 +387,7 @@
                                                     <td class="align-middle">${c.title}</td>
                                                     <td class="align-middle">${c.price}</td>
 
-                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${c.startDate}</a></td>
+                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${c.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.endDate}</td>
 
 
@@ -416,7 +416,7 @@
                                                             </c:when>
                                                         </c:choose>
                                                         <span class="new-users-btn">
-                                                            <a href="requestDetailAdmin?requestID=${c.requestId}" class="btn button-sm outline">Detail</a>
+                                                            <a href="requestdetailmentormentee?requestID=${c.requestId}" class="btn button-sm outline">Detail</a>
                                                         </span>
                                                     </td>
                                                 </tr>

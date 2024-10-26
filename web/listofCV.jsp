@@ -372,7 +372,12 @@
                                                         
                                                     </div>
                                                     <div class="info-bx text-center">
-                                                        <h5><a href="#">CV id: ${c.cvId}</a></h5>
+                                                        <c:if test="${c.status==('active')}">
+                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-green">${c.status}</span></h5>
+                                                        </c:if>
+                                                        <c:if test="${c.status==('inactive')}">
+                                                            <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-red">${c.status}</span></h5>
+                                                        </c:if>
                                                         <span>Last change:</span>
                                                         <br/>
                                                         <span> ${c.createDate}</span>

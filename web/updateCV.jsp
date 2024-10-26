@@ -405,7 +405,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Account name</label>
                                             <div>
-                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}"required>
+                                                <input class="form-control" type="text" name="username" value="${requestScope.uFound.username}" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -418,10 +418,10 @@
                                             <label class="col-form-label">Email</label>
                                             <div>
                                                 <c:if test="${requestScope.error==email_exists}">
-                                                    <input class="form-control" type="email" name="email" value="${requestScope.email}" required>
+                                                    <input class="form-control" type="email" name="email" value="${requestScope.email}" readonly>
                                                 </c:if>
                                                 <c:if test="${requestScope.error!=email_exists}">
-                                                    <input class="form-control" type="email" name="email" value="" required>
+                                                    <input class="form-control" type="email" name="email" value="" readonly>
                                                     <span class="help" style="color: red">Your email used by another user !</span>
                                                 </c:if>
                                             </div>

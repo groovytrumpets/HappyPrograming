@@ -176,12 +176,16 @@
                                                         <div  class="review"style=" display: flex; align-items: center; justify-content: center ">
 
                                                             <ul class="cours-star">
-                                                                <c:forEach var="i" begin="1" end="${s.rating}">
-                                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                                    </c:forEach>
-                                                                    <c:forEach var="j" begin="1" end="${5-s.rating}">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    </c:forEach>
+                                                                <c:if test="${s.rating!=null}">
+
+
+                                                                    <c:forEach var="i" begin="1" end="${s.rating}">
+                                                                        <li class="active"><i class="fa fa-star"></i></li>
+                                                                        </c:forEach>
+                                                                        <c:forEach var="j" begin="1" end="${5-s.rating}">
+                                                                        <li><i class="fa fa-star"></i></li>
+                                                                        </c:forEach>
+                                                                    </c:if>
 
                                                             </ul>
                                                         </div>
@@ -379,7 +383,7 @@
             </div>
             <!-- Content END-->
             <!-- Footer ==== -->
-              <jsp:include page="footer.jsp" />
+            <jsp:include page="footer.jsp" />
             <!-- Footer END ==== -->
             <button class="back-to-top fa fa-chevron-up" ></button>
         </div>

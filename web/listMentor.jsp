@@ -59,6 +59,13 @@
 
                 <div class="courses-filter">
                     <div class="clearfix" style="padding-left: 70px">
+
+                        <c:if test="${empty mentorlist}">
+                            <div class="alert alert-warning">
+                                <strong>You need to complete a course before reviewing!</strong>
+                            </div>
+                        </c:if>
+
                         <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
 
                             <c:forEach items="${requestScope.cvlist}" var="c">

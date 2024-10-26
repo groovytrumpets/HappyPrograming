@@ -4,7 +4,12 @@
  */
 package controller;
 
+import DAO.CVDAO;
+import DAO.MenteeDAO;
 import DAO.UserDAO;
+import Model.CV;
+import Model.Mentee;
+import Model.Mentor;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -90,6 +95,24 @@ public class SignInSV extends HttpServlet {
                 if (a != null && a.getStatus().equalsIgnoreCase("active")) {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
+                    //mentor avatar process
+                    
+                    if (a.getRoleId() == 1) {
+                        CVDAO cvd = new CVDAO();
+                        Mentor mentor = cvd.getMentorByUsername(a.getUsername());
+                        CV cvactive = cvd.getCVbyMentorId(mentor.getMentorId());
+                        session.setAttribute("mentor", mentor);
+                        session.setAttribute("cvactive", cvactive);
+                    }//mentee avatar process
+                    
+                    if (a.getRoleId() == 2) {
+                        MenteeDAO mtd = new MenteeDAO();
+                        System.out.println(a.getUsername());
+                        Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
+                        System.out.println(mentee.getFullName());
+                        
+                        session.setAttribute("mentee", mentee);
+                    }
                     if (rememberMe != null) {  // Checkbox was checked
                         Cookie usernameCookie = new Cookie("username", username);
                         Cookie passwordCookie = new Cookie("pass", pass);
@@ -120,6 +143,7 @@ public class SignInSV extends HttpServlet {
                 }
             }
         } catch (Exception e) {
+            System.out.println(e);
             request.setAttribute("notify", "Error occured ");
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
