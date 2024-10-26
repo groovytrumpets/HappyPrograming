@@ -627,7 +627,10 @@ public class CVDAO extends DBContext {
 
     public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getCVbyMentorId(7));
+       for(int i=0; i<c.getCVSkillList(17).size(); i++)
+       {
+           System.out.println(c.getCVSkillList(17).get(i));
+       }
     }
 
     public void deleteCV(int id) {

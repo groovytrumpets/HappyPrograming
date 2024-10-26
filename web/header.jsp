@@ -205,8 +205,7 @@
                                                 <h5 class="menu-adv-title">Our Courses</h5>
                                                 <ul>
                                                     <li><a href="skillhome">Courses </a></li>
-
-                                                    <li><a href="profile.html">Instructor Profile</a></li>
+                                                    <li><a href="suggestMentor">Suggest mentor</a></li>
                                                     <li><a href="event.html">Upcoming Event</a></li>
                                                 </ul>
                                             </li>
@@ -229,7 +228,7 @@
                                         </ul>
                                     </li>
                                     <c:choose>
-                                        <c:when test="${sessionScope.acc.roleId == 4}">
+                                        <c:when test="${sessionScope.acc.roleId == 3}">
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
                                                     <li><a href="paymentmanager">Dashboard</a></li>
