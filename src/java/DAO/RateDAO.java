@@ -10,6 +10,7 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -73,17 +74,22 @@ public class RateDAO extends DBContext {
         return listRate;
     }
 
-    public void saveRating(int menteeId, int mentorId, int rate, String comment) {
-        String sql = "INSERT INTO Rate (MentorID, MenteeID, CreateDate, Status, Comment, Rate) VALUES (?, ?, GETDATE(), ?, ?, ?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, mentorId);
-            st.setInt(2, menteeId);
-            st.setString(3, "active"); // Assuming status is set to 'active' when a rating is made
-            st.setString(4, comment);
-            st.setInt(5, rate);
-            st.executeUpdate();
-        } catch (Exception e) {
+    public void saveRating(int menteeId, int mentorId, int requestId, int rate, String comment) {
+        String query = "INSERT INTO Rate (MentorID, MenteeID, RequestID, Rate, Comment, CreateDate, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, mentorId);
+            ps.setInt(2, menteeId);
+            ps.setInt(3, requestId);
+            ps.setInt(4, rate);
+            ps.setString(5, comment);
+            ps.setDate(6, new java.sql.Date(new Date().getTime())); //current date
+            ps.setString(7, "Active");
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -130,6 +136,27 @@ public class RateDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean checkExistingRating(int menteeId, int mentorId, int requestId) {
+        String query = "SELECT COUNT(*) FROM Rate WHERE MenteeID = ? AND MentorID = ? AND RequestID = ?";
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, menteeId);
+            ps.setInt(2, mentorId);
+            ps.setInt(3, requestId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // If count > 0, it means a rating already exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // No existing rating found or query failed
     }
 
     public static void main(String[] args) {

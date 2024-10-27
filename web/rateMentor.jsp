@@ -110,22 +110,39 @@
                                     <div class="col-lg-20 m-b30">
                                         <div class="widget-box p-4 shadow">
                                             <div class="widget-inner text-center">
+                                                <c:choose>
+                                                    <c:when test="${param.error == 'alreadyRated'}">
+                                                        <div style="color: red;">
+                                                            You have already rated this mentor for this request.
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${param.success == 'ratingSaved'}">
+                                                        <div style="color: green;">
+                                                            Your rating has been successfully saved!
+                                                        </div>
+                                                    </c:when>
+                                                </c:choose>
+
                                                 <form action="ratementor" method="POST">
                                                     <input type="hidden" name="menteeId" value="${mentee.menteeId}" />
                                                     <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
+                                                    <input type="hidden" name="requestId" value="${param.requestId}" />
 
                                                     <!-- Rating Section -->
                                                     <c:if test="${requestScope.mentor.mentorId==requestScope.cvmentor.mentorId}">
-                                                        <div class=" text-center">
-                                                            <img id="userAvatar" src="getCVimage?id=${requestScope.cvmentor.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                                                        <div class="text-center">
+                                                            <img id="userAvatar" src="getCVimage?id=${requestScope.cvmentor.cvId}" 
+                                                                 class="rounded-circle" alt="" 
+                                                                 style="margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
                                                         </div>
                                                         <h3>Mentor: ${mentor.fullName}</h3>
                                                         <h5>Education: ${cvmentor.education}</h5>
                                                         <h5>Framework: ${cvmentor.framework}</h5>
                                                     </c:if>
 
+                                                    <!-- Star Rating -->
                                                     <div class="star-rating">
-                                                        <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
+                                                        <input type="radio" id="5-stars" name="rating" value="5" required><label for="5-stars">★</label>
                                                         <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
                                                         <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
                                                         <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
@@ -134,7 +151,7 @@
 
                                                     <!-- Comment Section -->
                                                     <h5>Comment:</h5>
-                                                    <textarea name="comment" rows="5" cols="40" placeholder="Leave your comment here..."></textarea><br>
+                                                    <textarea name="comment" rows="5" cols="40" placeholder="Leave your comment here..." required></textarea><br>
 
                                                     <input type="submit" class="btn button-m green" value="Submit Rating">
                                                 </form>

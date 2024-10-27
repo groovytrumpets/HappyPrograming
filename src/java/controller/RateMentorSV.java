@@ -72,20 +72,17 @@ public class RateMentorSV extends HttpServlet {
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
         CVDAO cvdao = new CVDAO();
-        RateDAO ratedao = new RateDAO();
 
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
         }
-        PrintWriter out = response.getWriter();
         int roleID = curUser.getRoleId();
         Mentee curMentee = new Mentee();
         if (roleID == 2) {
             curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
             request.setAttribute("mentee", curMentee);
         } else if (roleID == 1) {
-            Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
             response.sendRedirect("home");
             return;
         }
@@ -103,7 +100,6 @@ public class RateMentorSV extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
             return;
         }
-        
 
         request.setAttribute("cvmentor", cvdao.getCVbyMentorId(mentorId));
         request.setAttribute("mentor", mentor);
@@ -121,40 +117,53 @@ public class RateMentorSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get the session
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
+        RateDAO rateDAO = new RateDAO();
+
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
         }
-        PrintWriter out = response.getWriter();
+
         int roleID = curUser.getRoleId();
-        Mentee curMentee = new Mentee();
-        if (roleID == 2) {
-            curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
-            request.setAttribute("mentee", curMentee);
-        } else if (roleID == 1) {
-            Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
+        if (roleID != 2) {  // Ensure only mentees can rate
             response.sendRedirect("home");
             return;
         }
 
-        int menteeId = curMentee.getMenteeId(); // Get the menteeId from the current mentee
+        Mentee curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
+        int menteeId = curMentee.getMenteeId();
 
-        // Retrieve the mentor ID from the request
-        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-        int rate = Integer.parseInt(request.getParameter("rating"));
-        String comment = request.getParameter("comment");
+        int mentorId, rate, requestId;
+        String comment;
 
-        // Use RateDAO to save the rating
-        RateDAO rateDAO = new RateDAO();
-        rateDAO.saveRating(menteeId, mentorId, rate, comment);
+        try {
+            mentorId = Integer.parseInt(request.getParameter("mentorId"));
+            rate = Integer.parseInt(request.getParameter("rating"));
+            requestId = Integer.parseInt(request.getParameter("requestId"));
+            comment = request.getParameter("comment");
 
-        // Redirect back to the mentor profile or success page
-        response.sendRedirect("viewprofilecv?id=" + mentorId);
+            // Check for existing rating for this specific request
+            if (rateDAO.checkExistingRating(menteeId, mentorId, requestId)) {
+                // Redirect to the profile with an error indicating a rating already exists
+                response.sendRedirect("viewprofilecv?id=" + mentorId + "&error=alreadyRated");
+                return;
+            }
+
+            // Save the new rating if no existing rating is found
+            rateDAO.saveRating(menteeId, mentorId, requestId, rate, comment);
+
+            // Redirect with a success message
+            response.sendRedirect("viewprofilecv?id=" + mentorId + "&success=ratingSaved");
+
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input for rating.");
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while saving the rating.");
+        }
     }
 
     /**
