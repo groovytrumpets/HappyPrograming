@@ -4,9 +4,11 @@
  */
 package controller;
 
+import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RateDAO;
+import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.User;
@@ -18,6 +20,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
@@ -68,6 +71,8 @@ public class RateMentorSV extends HttpServlet {
         User curUser = (User) session.getAttribute("acc");
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
+        CVDAO cvdao = new CVDAO();
+        
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
@@ -80,7 +85,7 @@ public class RateMentorSV extends HttpServlet {
             request.setAttribute("mentee", curMentee);
         } else if (roleID == 1) {
             Mentor curMentor = actMentor.findMentorByUsername(curUser.getUsername());
-            response.sendRedirect("Home.jsp");
+            response.sendRedirect("home");
             return;
         }
         String mentorId_raw = request.getParameter("mentorId");
@@ -97,7 +102,9 @@ public class RateMentorSV extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
             return;
         }
-
+        //cvdao.getCVbyMentorId(mentorId);
+        
+        request.setAttribute("cvmentor", cvdao.getCVbyMentorId(mentorId));
         request.setAttribute("mentor", mentor);
         request.getRequestDispatcher("rateMentor.jsp").forward(request, response);
     }

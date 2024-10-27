@@ -4,6 +4,8 @@
     Author     : asus
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -211,8 +213,11 @@
                                     <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
 
                                     <!-- Rating Section -->
-                                    <h3>Mentor: ${mentor.fullName}</h3>
-                                    <h4>FPT University</h4>
+                                    <c:if test="${requestScope.mentor.mentorId==requestScope.cvmentor.mentorId}">
+                                        <h3>Mentor: ${mentor.fullName}</h3>
+                                        <h5>Education: ${cvmentor.education}</h5>
+                                        <h5>Education: ${cvmentor.framework}</h5>
+                                    </c:if>
 
                                     <div class="star-rating">
                                         <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
@@ -223,7 +228,7 @@
                                     </div>
 
                                     <!-- Comment Section -->
-                                    <h3>Comment:</h3>
+                                    <h5>Comment:</h5>
                                     <textarea name="comment" rows="4" cols="50" placeholder="Leave your comment here..."></textarea><br>
 
                                     <input type="submit" class="btn button-m green" value="Submit Rating">
