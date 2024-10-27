@@ -170,7 +170,9 @@ public class MentorSlotCreateServlet extends HttpServlet {
         try {
             mentorId = Integer.parseInt(mentorId_raw);
             CVDAO cvd = new CVDAO();
+            SlotDAO sld = new SlotDAO();
             CV cv = cvd.getNewestCVbyMentorId(mentorId);
+            List<Slot> listDraftSlot = sld.getListofInactiveSlotsByMentorId(mentorId);
             Slot slot = new Slot();
             slot.setMentorID(mentorId);
             slot.setStartTime(LocalTime.parse(start));
@@ -178,10 +180,18 @@ public class MentorSlotCreateServlet extends HttpServlet {
             slot.setDayInWeek(dayinweek);
             slot.setStatus("inactive");
             slot.setCVID(cv.getCvId());
+            for (Slot slot1 : listDraftSlot) {
+                if (slot1.getStartTime().equals(slot.getStartTime())) {
+                    //System.out.println("giong nhau roii");
+                    response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create the slot because a duplicate start time was found. Please choose a different time!");
+                    return;
+                }
+                
+            }
             if (cvd.addSlot(slot)) {
                 response.sendRedirect("slotdraft?id=" + mentorId_raw + "&mess=Your slot has been created successfully!");
             } else {
-                response.sendRedirect("slotdraft?id=" + mentorId_raw + "&mess=Unable to create your slot in the Slot draft. Please try again.");
+                response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create your slot in the Slot draft. Please try again.");
             }
 
         } catch (NumberFormatException e) {
