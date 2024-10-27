@@ -1174,7 +1174,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='1' or Status='3'";
+        String sql = "select * from Payment where RequestID =? and Status='2' or Status='4'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1205,7 +1205,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='2'";
+        String sql = "select * from Payment where RequestID =? and Status='3'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);

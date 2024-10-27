@@ -213,7 +213,7 @@
                                         <c:forEach items="${requestScope.paymentList1}" var="p">
 
                                             <c:choose>
-                                                <c:when test="${p.status.equals('1')}">
+                                                <c:when test="${p.status.equals('2')}">
                                                     <li>
                                                         <span class="orders-title">
                                                             <a href="#" class=""><b>${p.sender}</b></a>
