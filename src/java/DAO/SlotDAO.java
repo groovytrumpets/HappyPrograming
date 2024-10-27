@@ -117,7 +117,7 @@ public class SlotDAO extends DBContext {
         }
     }
 
-    public List<Slot> getSlotByRequestId(int requestId) {
+    public List<Slot> getValidSlotByRequestId(int requestId) {
         List<Slot> listSlot = new ArrayList<>();
         String sql = "SELECT s.[SlotID]\n"
                 + "      ,[MentorID]\n"

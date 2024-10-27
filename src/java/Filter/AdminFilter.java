@@ -110,6 +110,10 @@ public class AdminFilter implements Filter {
 //        HttpSession session = httpRequest.getSession(false);
 //
 //        User user = (session != null) ? (User) session.getAttribute("acc") : null;
+//        if (isJspPage(url)) {
+//            httpResponse.sendRedirect("home");
+//            return;
+//        }
 //        //Check if user are login and go to loginpage
 //        if (isSignInUrl(url) && user != null) {
 //            httpResponse.sendRedirect("home");
@@ -172,6 +176,10 @@ public class AdminFilter implements Filter {
         }
     }
 
+    private boolean isJspPage(String url) {
+        return url.contains("jsp");
+    }
+
     private boolean isSignInUrl(String url) {
         return url.contains("signin") || url.contains("passwordreset") || url.contains("signup");
     }
@@ -186,7 +194,7 @@ public class AdminFilter implements Filter {
         return url.contains("slotmentor") || url.contains("mentorStatisticRequest")
                 || url.contains("slotview") || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
-                 || url.contains("updatestatusbymentor");
+                || url.contains("updatestatusbymentor");
     }
 
     // Boolean function to check if the URL is for mentee
@@ -194,7 +202,7 @@ public class AdminFilter implements Filter {
         return url.contains("createrequest") || url.contains("deleterequestbymentee")
                 || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
-               || url.contains("statisticrequest") || url.contains("updateProfile")
+                || url.contains("statisticrequest") || url.contains("updateProfile")
                 || url.contains("updateRequest")
                 || url.contains("updatestatusofmentee") || url.contains("slotmentee") || url.contains("admin") || url.contains("Admin");
     }

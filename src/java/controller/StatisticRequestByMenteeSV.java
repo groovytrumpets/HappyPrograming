@@ -90,7 +90,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
             int menteeId = curMentee.getMenteeId();
 
             // Get all requests for this mentee
-            List<Request> listRequests = requestDAO.getRequestByMenteeID(menteeId);
+            List<Request> listRequests = requestDAO.getValidRequestByMenteeID(menteeId);
 
             // Initialize list to store hours for each request
             List<Float> hoursPerRequestList = new ArrayList<>();
@@ -121,7 +121,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
     //calculate total hours of a request
     public float getTotalHourOfRequest(Request request) {
         SlotDAO slotDAO = new SlotDAO();
-        List<Slot> listSlots = slotDAO.getSlotByRequestId(request.getRequestId());
+        List<Slot> listSlots = slotDAO.getValidSlotByRequestId(request.getRequestId());
         float totalHours = 0;
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();

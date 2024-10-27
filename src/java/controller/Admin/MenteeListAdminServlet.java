@@ -92,8 +92,7 @@ public class MenteeListAdminServlet extends HttpServlet {
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listMent", listMentee);
-        List<Request> listRequest = actRequest.getAllRequest();
-        request.setAttribute("listRequest", listRequest);
+       
         int[] arrayNumMentor = getNumOfMentorOfMentee(listMentee);
         request.setAttribute("numMentor", arrayNumMentor);
         int[] arrayNumSkill = getNumOfSkillEachMentee(listMentee);
@@ -108,7 +107,7 @@ public class MenteeListAdminServlet extends HttpServlet {
         int[] arrayCount = new int[listMentee.size()];
         for (int i = 0; i < listMentee.size(); i++) {
             int menteeId = listMentee.get(i).getMenteeId();
-            arrayCount[i] = actReq.getNumOfMentorEachMentee(menteeId);
+            arrayCount[i] = actReq.getNumOfValidMentorEachMentee(menteeId);
         }
         return arrayCount;
     }
@@ -118,7 +117,7 @@ public class MenteeListAdminServlet extends HttpServlet {
         int[] arrayCount = new int[listMentee.size()];
         for (int i = 0; i < listMentee.size(); i++) {
             int menteeId = listMentee.get(i).getMenteeId();
-            arrayCount[i] = actReq.getNumOfSkillEachMentee(menteeId);
+            arrayCount[i] = actReq.getNumOfValidSkillEachMentee(menteeId);
         }
         return arrayCount;
     }
@@ -130,7 +129,7 @@ public class MenteeListAdminServlet extends HttpServlet {
         //Loop for each mentee
         for (int i = 0; i < listMentee.size(); i++) {
             int menteeId = listMentee.get(i).getMenteeId();
-            List<Request> listReq = actReq.getRequestByMenteeID(menteeId);
+            List<Request> listReq = actReq.getValidRequestByMenteeID(menteeId);
             float hourOfMentee = 0;
             //Loop for each request of mentee
             for (int j = 0; j < listReq.size(); j++) {
@@ -149,7 +148,7 @@ public class MenteeListAdminServlet extends HttpServlet {
     public float getTotalHourOfRequest(Request request) {
         SlotDAO actSlot = new SlotDAO();
         float sum = 0;
-        List<Slot> listSlot = actSlot.getSlotByRequestId(request.getRequestId());
+        List<Slot> listSlot = actSlot.getValidSlotByRequestId(request.getRequestId());
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
 
