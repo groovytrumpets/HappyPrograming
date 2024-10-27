@@ -72,7 +72,8 @@ public class RateMentorSV extends HttpServlet {
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
         CVDAO cvdao = new CVDAO();
-        
+        RateDAO ratedao = new RateDAO();
+
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
@@ -102,8 +103,8 @@ public class RateMentorSV extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
             return;
         }
-        //cvdao.getCVbyMentorId(mentorId);
         
+
         request.setAttribute("cvmentor", cvdao.getCVbyMentorId(mentorId));
         request.setAttribute("mentor", mentor);
         request.getRequestDispatcher("rateMentor.jsp").forward(request, response);
