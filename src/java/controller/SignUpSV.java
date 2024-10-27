@@ -129,7 +129,7 @@ public class SignUpSV extends HttpServlet {
                 userDAO.insertUser(newUser);
 
                 if (role == 1) {
-                    mentorDAO.insertMentor(role, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                    mentorDAO.insertMentor(role, username,  dob, phone, address, dob, fname, sex, "inactive");
                     walletDAO.addNewWallet(username);
                 } else {
                     menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");

@@ -21,16 +21,19 @@ public class SlotDAO extends DBContext {
 
     public List<Slot> getSlotsByMentorId(int mentorId) {
         List<Slot> slots = new ArrayList<>();
-        String sql = "SELECT SlotID, MentorID, StartTime, EndTime, DayInWeek, Status FROM Slot WHERE MentorID = ? "
-                + "ORDER BY CASE DayInWeek "
-                + "WHEN 'Monday' THEN 1 "
-                + "WHEN 'Tuesday' THEN 2 "
-                + "WHEN 'Wednesday' THEN 3 "
-                + "WHEN 'Thursday' THEN 4 "
-                + "WHEN 'Friday' THEN 5 "
-                + "WHEN 'Saturday' THEN 6 "
-                + "WHEN 'Sunday' THEN 7 "
-                + "ELSE 8 END";
+        String sql = "SELECT SlotID, MentorID, StartTime, EndTime, DayInWeek, Status\n"
+                + "FROM Slot \n"
+                + "WHERE MentorID = ? and Status like 'unavaiable' or  Status like 'avaiable'\n"
+                + "\n"
+                + "               ORDER BY CASE DayInWeek \n"
+                + "                WHEN 'Monday' THEN 1 \n"
+                + "                WHEN 'Tuesday' THEN 2 \n"
+                + "                WHEN 'Wednesday' THEN 3 \n"
+                + "                WHEN 'Thursday' THEN 4 \n"
+                + "                WHEN 'Friday' THEN 5 \n"
+                + "                WHEN 'Saturday' THEN 6 \n"
+                + "                WHEN 'Sunday' THEN 7 \n"
+                + "                ELSE 8 END";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, mentorId);
@@ -280,6 +283,7 @@ public class SlotDAO extends DBContext {
         }
         return null;
     }
+
     public List<Slot> getListofInactiveSlotsByMentorId(int id) {
         List<Slot> slots = new ArrayList<>();
         String sql = "select * from Slot where MentorID=? and Status = 'inactive'";
@@ -356,7 +360,7 @@ public class SlotDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             int query = st.executeUpdate();
-            return query>0;
+            return query > 0;
         } catch (SQLException e) {
             System.out.println(e);
         }

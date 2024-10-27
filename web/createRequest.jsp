@@ -96,8 +96,8 @@
 
                     </div>
                     <div class="text-muted mt-3 text-center">
-                        <c:if test="${wallet.balance < cv.price}">
-                            <p>Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
+                        <c:if test="${wallet.balance < cv.price || pay != null}">
+                            <p style="color: red">Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
                                         </c:if>
                     </div>
                 </div>
@@ -108,6 +108,7 @@
                     <div class="widget-box">
                         <div class="wc-title">
                             <p style="color: red"> ${error}</p>
+                            <p style="color: red"> ${pay}</p>
                             <p style="color: blue"> ${notify}</p>
                         </div>
                         <div class="widget-inner">
@@ -204,7 +205,7 @@
                                                             <c:set var="isSelected" value="" />
 
                                                             <!-- Check if status is 'Unavailable' -->
-                                                            <c:if test="${s.status == 'Unavaiable'}">
+                                                            <c:if test="${s.status == 'unavaiable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
 

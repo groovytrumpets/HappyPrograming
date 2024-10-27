@@ -103,7 +103,7 @@
                         <form class="contact-bx ajax-form">
                             <div class="ajax-message"></div>
                             <div class="heading-bx left">
-                                <h2 class="title-head">User<span> Detail</span></h2>
+                                <h2 class="title-head">Wallet<span> Detail</span></h2>
                             </div>
                             <div class="row placeani">
                                 <div class="col-lg-12">
@@ -114,34 +114,23 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Your Email Address</label>
-                                        <input class="form-control" value="${sessionScope.acc.email}" disabled=""/>
+                                        <label for="holdDisplay">Hold</label>
+                                        <div id="holdDisplay" class="important-balance" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>Your Phone</label>
-                                        <input class="form-control int-value" value="${mentee.phone}" disabled/>
-                                    </div>
-                                </div>
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="walletDisplay">Balance</label>
                                         <div id="walletDisplay" class="important-balance" disabled>
-                                          
                                         </div>
                                     </div>
                                 </div>
 
 
-                                <script>
-                                    // Assuming wallet is a number
-                                    let wallet = ${wallet}; // Example wallet amount
-                                    document.getElementById("walletDisplay").innerText = wallet.toLocaleString('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    });
-                                </script>
+
+
 
 
                             </div>
@@ -205,6 +194,125 @@
 
             <p>&nbsp;</p>
 
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white text-center">
+                                <h5 class="mb-0">Payment History</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-striped mb-0">
+                                        <thead class="table-light text-uppercase small">
+                                            <tr>
+                                                <th class="sortable" data-column-index="0">Payment ID</th>
+                                                <th class="sortable" data-column-index="1">Payment Date</th>
+                                                <th class="sortable" data-column-index="2">Payment Type</th>
+                                                <th class="sortable" data-column-index="3">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="paymentTableBody">
+                                            <c:forEach var="payments" items="${list}">
+                                                <tr>
+                                                    <td>${payments.paymentId}</td>
+                                                    <td >${payments.paymentDate}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${sessionScope.acc.roleId == 2}">
+                                                                <c:choose>
+                                                                    <c:when test="${payments.receiver == 'admin'}">Charging Money</c:when>
+                                                                    <c:otherwise>Paying for Mentor</c:otherwise>
+                                                                </c:choose>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc.roleId == 1}">Mentee Payment</c:when>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <c:choose>
+                                                                <c:when test="${sessionScope.acc.roleId == 2}">
+                                                                    <c:choose>
+                                                                        <c:when test="${payments.receiver == 'admin'}">
+                                                                            <span class="text-success"><i class="ti-arrow-up"></i></span>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                            <span class="text-danger"><i class="ti-arrow-down"></i></span>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </c:when>
+                                                                    <c:when test="${sessionScope.acc.roleId == 1}">
+                                                                    <span class="text-success"><i class="ti-arrow-up"></i></span>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            <span class="ms-2">${payments.totalAmount}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+
+                                    <script>
+                                        // JavaScript to handle column sorting
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const tableBody = document.getElementById("paymentTableBody");
+                                            const headers = document.querySelectorAll("th.sortable");
+
+                                            headers.forEach(header => {
+                                                header.addEventListener("click", function () {
+                                                    const columnIndex = this.getAttribute("data-column-index");
+                                                    const order = this.getAttribute("data-order") === "asc" ? "desc" : "asc";
+                                                    this.setAttribute("data-order", order);
+
+                                                    sortTable(tableBody, columnIndex, order);
+                                                });
+                                            });
+
+                                            function sortTable(tableBody, columnIndex, order) {
+                                                const rows = Array.from(tableBody.querySelectorAll("tr"));
+
+                                                // Sort rows based on column index and order
+                                                rows.sort((a, b) => {
+                                                    const cellA = a.cells[columnIndex].innerText;
+                                                    const cellB = b.cells[columnIndex].innerText;
+
+                                                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                                                        return (order === "asc" ? cellA - cellB : cellB - cellA);
+                                                    }
+                                                    return (order === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA));
+                                                });
+
+                                                // Reattach sorted rows
+                                                rows.forEach(row => tableBody.appendChild(row));
+                                            }
+                                        });
+                                    </script>
+
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-center">
+                                <nav>
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="payment?page=${currentPage - 1}">Previous</a>
+                                        </li>
+                                        <c:forEach begin="1" end="${totalPages}" var="i">
+                                            <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                                <a class="page-link" href="payment?page=${i}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                            <a class="page-link" href="payment?page=${currentPage + 1}">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -212,31 +320,45 @@
         <script src="https://pay.vnpay.vn/lib/vnpay/vnpay.min.js"></script>
         <jsp:include page="footer.jsp" />
         <script type="text/javascript">
-                                    $("#frmCreateOrder").submit(function () {
-                                        var postData = $("#frmCreateOrder").serialize();
-                                        var submitUrl = $("#frmCreateOrder").attr("action");
-
-                                        $.ajax({
-                                            type: "POST",
-                                            url: submitUrl,
-                                            data: postData,
-                                            dataType: 'JSON',
-                                            success: function (x) {
-                                                if (x.code === '00') {
-                                                    if (window.vnpay) {
-                                                        vnpay.open({width: 768, height: 600, url: x.data});
+                                        $("#frmCreateOrder").submit(function () {
+                                            var postData = $("#frmCreateOrder").serialize();
+                                            var submitUrl = $("#frmCreateOrder").attr("action");
+                                            $.ajax({
+                                                type: "POST",
+                                                url: submitUrl,
+                                                data: postData,
+                                                dataType: 'JSON',
+                                                success: function (x) {
+                                                    if (x.code === '00') {
+                                                        if (window.vnpay) {
+                                                            vnpay.open({width: 768, height: 600, url: x.data});
+                                                        } else {
+                                                            location.href = x.data;
+                                                        }
+                                                        return false;
                                                     } else {
-                                                        location.href = x.data;
+                                                        alert(x.Message);
                                                     }
-                                                    return false;
-                                                } else {
-                                                    alert(x.Message);
                                                 }
-                                            }
+                                            });
+                                            return false;
                                         });
-
-                                        return false;
-                                    });
         </script>
+        <script>
+            // JavaScript to format numbers as VND
+            const hold = ${wallet.hold}; // Example: Replace with `cv.price` value
+            const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
+
+            // Function to format as VND with commas
+            function formatVND(value) {
+                return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
+            }
+
+            // Update the spans with formatted values
+            document.getElementById('walletDisplay').textContent = formatVND(balance);
+            document.getElementById('holdDisplay').textContent = formatVND(hold);
+
+        </script>
+
     </body>
 </html>
