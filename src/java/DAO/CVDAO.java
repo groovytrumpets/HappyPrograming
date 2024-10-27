@@ -429,10 +429,9 @@ public class CVDAO extends DBContext {
                 st.setInt(1, Integer.parseInt(addSkill));
                 st.setInt(2, MentorId);
                 st.setInt(3, cvId);
-
-                int rowExcute = st.executeUpdate();
-                return rowExcute > 0;
+                st.executeUpdate();
             }
+                return true;
 
         } catch (SQLException e) {
             System.out.println(e);
