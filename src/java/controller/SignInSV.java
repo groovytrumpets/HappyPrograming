@@ -96,21 +96,25 @@ public class SignInSV extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     //mentor avatar process
-                    
+
                     if (a.getRoleId() == 1) {
                         CVDAO cvd = new CVDAO();
                         Mentor mentor = cvd.getMentorByUsername(a.getUsername());
-                        CV cvactive = cvd.getCVbyMentorId(mentor.getMentorId());
+                        if (mentor.getStatus().equalsIgnoreCase("active"));
+                        {
+                            CV cvactive = cvd.getCVbyMentorId(mentor.getMentorId());
+                            session.setAttribute("cvactive", cvactive);
+                        }
                         session.setAttribute("mentor", mentor);
-                        session.setAttribute("cvactive", cvactive);
+
                     }//mentee avatar process
-                    
+
                     if (a.getRoleId() == 2) {
                         MenteeDAO mtd = new MenteeDAO();
                         System.out.println(a.getUsername());
                         Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
                         System.out.println(mentee.getFullName());
-                        
+
                         session.setAttribute("mentee", mentee);
                     }
                     if (rememberMe != null) {  // Checkbox was checked

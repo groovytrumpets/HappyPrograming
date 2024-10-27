@@ -138,7 +138,6 @@ public class CreateRequestSV extends HttpServlet {
             throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-        out.println(1);
         RequestDAO requestDAO = new RequestDAO();
         MenteeDAO menteeDAO = new MenteeDAO();
         CVDAO cvDAO = new CVDAO();
@@ -160,9 +159,8 @@ public class CreateRequestSV extends HttpServlet {
         String[] selectedSlot;
         if (request.getParameterValues("addSlot") == null || request.getParameterValues("addSlot").length == 0) {
             response.sendRedirect("createrequest?id=" + id_raw + "&error=You can't creqte request without slot");
-        } else {
-            selectedSlot = request.getParameterValues("addSlot");
-        }
+            return;
+        } 
         selectedSlot = request.getParameterValues("addSlot");
         HttpSession session = request.getSession();
         session.setAttribute("title", title);
@@ -181,8 +179,22 @@ public class CreateRequestSV extends HttpServlet {
             session.setAttribute("end", selectedEndDate);
             LocalDateTime now = LocalDateTime.now();
             LocalDate creaDate = LocalDate.now();
-            out.print(selectedSlot.length);
+
+            if (selectedEndDate.isBefore(selectedStartDate)) {
+                response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
+                return;
+            }
+
             Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+            if (wallet == null || wallet.getBalance() < totalP) {
+                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money");
+                return;
+            }
+            
+            if (wallet.getBalance() < (totalP + wallet.getHold())) {
+                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money to created more request");
+                return;
+            }
 
             Request newRequest = new Request(0, id, mentee.getMenteeId(), totalP,
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
