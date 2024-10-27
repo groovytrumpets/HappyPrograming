@@ -52,7 +52,7 @@ public class SkillDAO extends DBContext {
     public List<Skill> getListOfAllSkill() {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT *    FROM [dbo].[Skill]\n"
-                + "			   where Status = 'active'";
+                     + "where Status = 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -86,16 +86,16 @@ public class SkillDAO extends DBContext {
     public List<Skill> getListOfSkillPaging(int page, int numShow) {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"
-                + "                   ,[SkillName]\n"
-                + "                    ,[CreateDate]\n"
-                + "                  ,[Description]\n"
-                + "                  ,[Status]\n"
-                + "                    ,[Img]\n"
-                + "                 FROM [dbo].[Skill]\n"
-                + "				 where Status = 'active'\n"
-                + "              order by Skill.SkillName asc\n"
-                + "                offset ? rows\n"
-                + "                fetch next ? row only";
+                + "             ,[SkillName]\n"
+                + "             ,[CreateDate]\n"
+                + "             ,[Description]\n"
+                + "             ,[Status]\n"
+                + "             ,[Img]\n"
+                + "             FROM [dbo].[Skill]\n"
+                + "		where Status = 'active'\n"
+                + "             order by Skill.SkillName asc\n"
+                + "             offset ? rows\n"
+                + "             fetch next ? row only";
         int start = (page - 1) * numShow;
         try {
             PreparedStatement st = connection.prepareStatement(sql);

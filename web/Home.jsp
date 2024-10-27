@@ -138,17 +138,17 @@
                                 </div>
                                 <div class="col-md-4 feature-filters style1 ml-auto" style="text-align: center;align-self: end">
                                     <ul class="filters" data-toggle="buttons">
-                                        <li data-filter="" class="btn active">
+                                        <li data-filter="toprate" class="btn active">
                                             <input type="radio">
                                             <a href="#"><span>Top Rate</span></a> 
                                         </li>
                                         <li data-filter="publish" class="btn">
                                             <input type="radio">
-                                            <a href="#"><span>Cheapest</span></a> 
+                                            <a href="#"><span>Newest</span></a> 
                                         </li>
                                         <li data-filter="pending" class="btn">
                                             <input type="radio">
-                                            <a href="#"><span>Newest</span></a> 
+                                            <a href="#"><span>Most Learn</span></a> 
                                         </li>
                                     </ul>
                                 </div>
@@ -161,7 +161,7 @@
                                         <c:forEach items="${requestScope.skill}" var="s"  >
 
 
-                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 pending">
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 toprate">
                                                 <div class="cours-bx">
                                                     <div class="action-box">
                                                         <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
@@ -172,28 +172,43 @@
                                                         <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
                                                             ${s.description}</span>
                                                     </div>
-                                                    <div class="cours-more-info">
-                                                        <div  class="review"style=" display: flex; align-items: center; justify-content: center ">
 
-                                                            <ul class="cours-star">
-                                                                <c:if test="${s.rating!=null}">
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                        <c:forEach items="${requestScope.skillListNewest}" var="s"  >
 
 
-                                                                    <c:forEach var="i" begin="1" end="${s.rating}">
-                                                                        <li class="active"><i class="fa fa-star"></i></li>
-                                                                        </c:forEach>
-                                                                        <c:forEach var="j" begin="1" end="${5-s.rating}">
-                                                                        <li><i class="fa fa-star"></i></li>
-                                                                        </c:forEach>
-                                                                    </c:if>
-
-                                                            </ul>
-                                                        </div>
-                                                        <div class="price">
-                                                            <del>$190</del>
-                                                            <h5>$120</h5>
-                                                        </div>
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 publish">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
+                                                        <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
+                                                    <div class="info-bx text-center" style="height: 140px">
+                                                        <h5><a href="#">${s.skillName}</a></h5>
+                                                        <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
+                                                            ${s.description}</span>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                        <c:forEach items="${requestScope.skillListMostLearn}" var="s"  >
+
+
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 pending">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
+                                                        <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
+                                                    </div>
+                                                    <div class="info-bx text-center" style="height: 140px">
+                                                        <h5><a href="#">${s.skillName}</a></h5>
+                                                        <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
+                                                            ${s.description}</span>
+                                                    </div>
+
                                                 </div>
                                             </li>
                                         </c:forEach>
@@ -316,7 +331,7 @@
                                         <div class="text-white">
                                             <span class="counter">${requestScope.requestCount}</span><span>+</span>
                                         </div>
-                                        <span class="counter-text">Ordered Coffee's</span>
+                                        <span class="counter-text">Request Total</span>
                                     </div>
                                 </div>
                             </div>
@@ -324,6 +339,7 @@
                     </div>
                     <!-- Testimonials END -->
                     <!-- Testimonials ==== -->
+                    
                     <div class="section-area section-sp2">
                         <div class="container">
                             <div class="row">
@@ -406,7 +422,42 @@
         <script src="assets/js/contact.js"></script>
         <!-- comment <script src='assets/vendors/switcher/switcher.js'></script>-->
     </body>
+    <script>
+        $(document).ready(function () {
+            // Kích hoạt masonry cho phần tử có id 'masonry'
+            var $masonryContainer = $('#masonry').masonry({
+                itemSelector: '.action-card',
+                percentPosition: true,
+                columnWidth: '.action-card'
+            });
 
+            // Thiết lập bộ lọc ban đầu (toprate)
+            $masonryContainer.masonryFilter({
+                filter: function () {
+                    return $(this).hasClass('toprate');
+                }
+            });
+
+            // Xử lý khi người dùng nhấn vào các bộ lọc
+            $('.filters li').on('click', function () {
+                // Xóa class 'active' và thêm cho phần tử hiện tại
+                $('.filters li').removeClass('active');
+                $(this).addClass('active');
+
+                // Lấy giá trị filter từ 'data-filter'
+                var filterValue = $(this).data('filter');
+
+                // Cập nhật bộ lọc cho Masonry
+                $masonryContainer.masonryFilter({
+                    filter: function () {
+                        return $(this).hasClass(filterValue);
+                    }
+                });
+            });
+        });
+
+    </script>
+    
 </html>
 
 

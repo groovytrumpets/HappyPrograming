@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -178,11 +179,16 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
+                            <c:if test="${sessionScope.cvactive.cvId==null}">
+                                <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets\images\userprofile.png" style="width: 32px;height: 32px;object-fit: cover;"></span></a>
+                            </c:if>
+                            <c:if test="${sessionScope.cvactive.cvId!=null}">
+                                <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="getCVimage?id=${sessionScope.cvactive.cvId}" style="width: 32px;height: 32px;object-fit: cover;"></span></a>
+                                    </c:if>
                             <div class="ttr-header-submenu">
                                 <ul>
-                                    <li><a href="user-profile.html">My profile</a></li>
-                                    <li><a href="list-view-calendar.html">Activity</a></li>
+                                    <li><a href="viewprofilecv?id=${sessionScope.mentor.mentorId}">My profile</a></li>
+                                    <li><a href="createslot?id=${sessionScope.mentor.mentorId}">Activity</a></li>
                                     <li><a href="changeloggingpassword">Change Pass</a></li>
                                     <li><a href="logout">Logout</a></li>
                                 </ul>
@@ -267,35 +273,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Schedule</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">Slot Draft</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="skillhome" class="ttr-material-button">
+                            <a href="mentorStatisticRequest?id=${sessionScope.mentor.mentorId}" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-bar-chart"></i></span>
                                 <span class="ttr-label">Statistic Request</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="listrequestofmentor" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-exchange-vertical"></i></span>
-                                <span class="ttr-label">Inviting Request</span>
-                            </a>
-                        </li>
+
                         <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-files"></i></span>
@@ -304,13 +287,39 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">CV List</span></a>
+                                    <a href="cvlist?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">CV List</span></a>
                                 </li>
                                 <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Create CV</span></a>
+                                    <a href="cvcreate?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Create CV</span></a>
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
+                                <span class="ttr-label">Schedule</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
+                                </li>
+                                <li>
+                                    <a href="createslot?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
+                                </li>
+                                <li>
+                                    <a href="slotdraft?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Draft</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="listrequestofmentor" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-exchange-vertical"></i></span>
+                                <span class="ttr-label">Inviting Request</span>
+                            </a>
+                        </li>
+
+
                         <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
@@ -318,20 +327,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button">
+                            <a href="viewprofilecv?id=${sessionScope.mentor.mentorId}" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-user"></i></span>
                                 <span class="ttr-label">My Profile</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
-                            <ul>
-                                <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-                                </li>
-                            </ul>
                         </li>
+
                         <li class="ttr-seperate"></li>
                     </ul>
                     <!-- sidebar menu end -->
@@ -344,7 +345,7 @@
 
 
         <!-- External JavaScripts -->
-      
+
 
 
     </body>

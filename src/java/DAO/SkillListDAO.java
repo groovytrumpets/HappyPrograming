@@ -52,7 +52,11 @@ public class SkillListDAO extends DBContext {
 
     public List<CV> getCVbySkill(int id) {
         List<CV> list = new ArrayList<>();
-        String sql = "select DISTINCT CV.* from CV join SkillList s on CV.MentorID = s.MentorID where s.SkillID =? and cv.Status like 'active'";
+        String sql = "select DISTINCT CV.* \n"
+                + "from CV \n"
+                + "join SkillList s on CV.MentorID = s.MentorID \n"
+                + "join Mentor m on cv.MentorID = m.MentorID\n"
+                + "where s.SkillID =? and m.Status like 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);

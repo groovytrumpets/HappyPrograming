@@ -69,7 +69,7 @@
             <!-- Content -->
             <div class="page-content bg-white">
                 <!-- inner page banner -->
-                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
+                <div class="page-banner ovbl-dark" style="background-image:url(https://i0.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2023/08/bg-why.jpg?fit=1920&ssl=1);">
                     <div class="container">
                         <div class="page-banner-entry">
                             <h1 class="text-white">Our Courses</h1>
