@@ -46,6 +46,29 @@ public class PaymentDAO extends DBContext {
         }
     }
 
+    public boolean addPayments(Payment payment) {
+        String sql = "INSERT INTO payment (paymentDate, totalAmount, status, sender, receiver) VALUES ( ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            LocalDateTime paymentDate = payment.getPaymentDate();
+            if (paymentDate != null) {
+                st.setTimestamp(1, java.sql.Timestamp.valueOf(paymentDate));
+            } else {
+                st.setNull(1, java.sql.Types.TIMESTAMP);
+            }
+            st.setDouble(2, payment.getTotalAmount());
+            st.setString(3, payment.getStatus());
+            st.setString(4, payment.getSender());
+            st.setString(5, payment.getReceiver());
+
+            int rowsInserted = st.executeUpdate();
+            return rowsInserted > 0; // Returns true if the payment was added successfully
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
+
     // Method to retrieve a payment by its ID
     public Payment getPaymentById(int paymentId) {
         String sql = "SELECT * FROM payment WHERE paymentId = ?";
@@ -260,11 +283,11 @@ public class PaymentDAO extends DBContext {
 
     public static void main(String[] args) {
         Payment samplePayments = new Payment();
-         samplePayments.setPaymentDate(LocalDateTime.now());
-         samplePayments.setSender("hoanganhgp23");
-         samplePayments.setReceiver("admin");
-         samplePayments.setStatus("0");
-         samplePayments.setTotalAmount(10000);
+        samplePayments.setPaymentDate(LocalDateTime.now());
+        samplePayments.setSender("hoanganhgp23");
+        samplePayments.setReceiver("admin");
+        samplePayments.setStatus("0");
+        samplePayments.setTotalAmount(10000);
         PaymentDAO a = new PaymentDAO();
         a.addPayment(samplePayments);
         //System.out.println(a.getAllPaymentsByMenteeUserName("hoanganhgp23").size());
