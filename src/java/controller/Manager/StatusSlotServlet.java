@@ -3,14 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.Manager;
 
-import DAO.CVDAO;
-import DAO.HomeDAO;
-import Model.Mentee;
-import Model.Mentor;
-import Model.Rate;
-import Model.Skill;
+import DAO.SlotDAO;
+import Model.Slot;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,8 +20,8 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="HomeServlet", urlPatterns={"/home"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name="StatusSlotServlet", urlPatterns={"/slotstatus"})
+public class StatusSlotServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +38,10 @@ public class HomeServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeServlet</title>");  
+            out.println("<title>Servlet StatusSlotServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet StatusSlotServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,51 +58,34 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HomeDAO hdao = new HomeDAO();
-        CVDAO cvd= new CVDAO();
-        List<Skill> skillList = hdao.getListofSkill();
-        List<Skill> skillListNewest = hdao.getListofSkillNewest();
-        List<Skill> skillListMostLearn = hdao.getListofSkillMostLearn();
+        String action = request.getParameter("action");
+        String id_raw = request.getParameter("id");
         
-        
-        List<Rate> rateList = cvd.getRateList();
-        List<Mentor> mentorList = hdao.getListofMentor();
-        List<Mentee> menteeList = hdao.getListofMentee();
-        
-        
-        //List<Mentor> mentors = cvd.getMentorList();
-        //System.out.println(rateList.get(0).getRate());
-        //System.out.println(rateList.get(0).getMenteeId());
-        int userNumb = hdao.countUsers();
-        int mentorNumb = hdao.countMentor();
-        int menteeCount = hdao.countMentee();
-        int requestCount = hdao.countRequest();
-        //System.out.println(menteeList.get(0));
-        
-        int skillCount = hdao.skillCount();
-        float rateAve = hdao.getRateAve();
-        //System.out.println(rateAve);
-        request.setAttribute("rate", rateList);
-        request.setAttribute("rateAve", rateAve);
-        request.setAttribute("skillCount", skillCount);
-        request.setAttribute("menteeCount", menteeCount);
-         request.setAttribute("requestCount", requestCount);
-         
-        request.setAttribute("mentorList", mentorList);
-        request.setAttribute("menteeList", menteeList);
-         
-        
-        request.setAttribute("skill", skillList);
-        request.setAttribute("skillListNewest", skillListNewest);
-        request.setAttribute("skillListMostLearn", skillListMostLearn);
-        
+ 
 
+        int id;
+        try {
+            SlotDAO sld = new SlotDAO();
+           id=Integer.parseInt(id_raw);
+            if (action.equalsIgnoreCase("active")) {
+                
+                sld.deleteAllActiveSlot(id);
+                sld.setSlotInactiveToActivebyMentorId(id);
+            }
+            if (action.equalsIgnoreCase("deactive")) {
+                
+                sld.deleteAllInactiveSlot(id);
+                sld.setSlotActiveToInctivebyMentorId(id);
+            }
+           
+           
+           
+           response.sendRedirect("slotmanagercate?id="+id);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
         
-        request.setAttribute("userNum", userNumb);
-        request.setAttribute("mentorNum", mentorNumb);
-        
-        request.getRequestDispatcher("Home.jsp").forward(request, response);
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -118,7 +97,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /** 

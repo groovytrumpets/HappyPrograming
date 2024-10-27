@@ -61,8 +61,8 @@ public class MentorSlotDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String slotId_raw = request.getParameter("requestid");
-//        String all = request.getParameter("all");
-//        if (all.equalsIgnoreCase("all")) {
+        String all = request.getParameter("all");
+//        if (all!=null && all.equalsIgnoreCase("all")) {
 //            String mentorid = request.getParameter("mentorid");
 //            System.out.println(mentorid);
 //            SlotDAO sld = new SlotDAO();

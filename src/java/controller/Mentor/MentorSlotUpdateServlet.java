@@ -121,7 +121,7 @@ public class MentorSlotUpdateServlet extends HttpServlet {
             slot.setStatus("inactive");
             slot.setCVID(cv.getCvId());
             
-            if (getSlot.getStatus().equalsIgnoreCase("active")) {
+            if (getSlot.getStatus().equalsIgnoreCase("available")) {
                 System.out.println("active");
                 List<Slot> slotActive = sld.getListofActiveSlotsByMentorId(getSlot.getMentorID());
                 for (Slot slot1 : slotActive) {
