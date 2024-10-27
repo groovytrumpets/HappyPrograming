@@ -208,7 +208,7 @@ public class CreateRequestSV extends HttpServlet {
             response.sendRedirect("createrequest?id=" + id + "&notify=Create request succesfully");
 
         } catch (Exception e) {
-            //response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
+            response.sendRedirect("createrequest?id=" + id_raw + "&error=An error occured during create request");
         }
 
     }
