@@ -10,7 +10,6 @@ import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 /**
  *
@@ -56,6 +55,26 @@ public class RateDAO extends DBContext {
                 + "      ,[RequestID]\n"
                 + "      ,[RateID]\n"
                 + "  FROM [Rate]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Rate curRate = new Rate();
+                curRate.setMentorId(rs.getInt("MentorID"));
+                curRate.setMenteeId(rs.getInt("MenteeID"));
+                curRate.setCreateDate(rs.getDate("CreateDate"));
+                curRate.setStatus(rs.getString("Status"));
+                curRate.setComment(rs.getString("Comment"));
+                curRate.setRate(rs.getInt("Rate"));
+                listRate.add(curRate);
+            }
+        } catch (Exception e) {
+        }
+        return listRate;
+    }
+
+    public void saveRating(int menteeId, int mentorId, int rate, String comment) {
+        String sql = "INSERT INTO Rate (MentorID, MenteeID, CreateDate, Status, Comment, Rate) VALUES (?, ?, GETDATE(), ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();

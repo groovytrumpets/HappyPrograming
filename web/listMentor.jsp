@@ -86,13 +86,20 @@
                                                                 <div class="action-box" style="height: 250px" >
                                                                     <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
                                                                 </div>
-                                                                <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
-                                                                <span>Framework: ${c.framework}</span>
-                                                                <br/>
-                                                                <span>Education: ${c.education}</span> 
-                                                                <a href="ratementor?mentorId=${c.mentorId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                                    Review
-                                                                </a>
+                                                                <div style="margin: 15px 0px">
+                                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
+                                                                    <span>Framework: ${c.framework}</span>
+                                                                    <br/>
+                                                                    <span>Education: ${c.education}</span> 
+
+                                                                </div>
+                                                                <c:forEach items="${requestScope.requestlist}" var="r">
+                                                                    <c:if test="${m.mentorId==r.mentorId}">
+                                                                        <a href="ratementor?mentorId=${c.mentorId}&requestId=${r.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                            Review
+                                                                        </a>
+                                                                    </c:if>
+                                                                </c:forEach>
                                                             </div>
                                                         </div>
                                                     </div>
