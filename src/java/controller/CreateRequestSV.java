@@ -201,7 +201,7 @@ public class CreateRequestSV extends HttpServlet {
             out.print(newRequest);
             requestDAO.insertRequest(newRequest);
             int idReq = requestDAO.getNewestRequest();
-            Payment payment = new Payment(1, idReq, LocalDateTime.now(), totalP, "Pending", a.getUsername(), "manager");
+            Payment payment = new Payment(1, idReq, LocalDateTime.now(), totalP, "1", a.getUsername(), "manager");
             paymentDAO.addPayment(payment);
             requestDAO.addItemByRequestID(selectedSlot);
             walletDAO.updateHoldByUsername(mentee.getUsername(), wallet.getHold() + totalP);
