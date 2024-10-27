@@ -67,6 +67,10 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String requestId_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+        
+        
         int requestId;
         try {
             requestId = Integer.parseInt(requestId_raw);
@@ -89,8 +93,13 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             request.setAttribute("paymentList1", paymentList1);
             request.setAttribute("paymentList2", paymentList2);
             
+            
             request.setAttribute("wallet", wallet);
-
+            
+            request.setAttribute("error", error);
+            request.setAttribute("mess", mess);
+            
+            
             System.out.println(paymentList2.isEmpty());
 
             request.getRequestDispatcher("managerPayment.jsp").forward(request, response);

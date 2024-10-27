@@ -65,7 +65,7 @@
         <!-- header start -->
         <jsp:include page="headerManager.jsp" />
         <!-- header end -->
-        
+
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
@@ -80,80 +80,22 @@
                 </div>	
                 <!-- Card -->
                 <div class="row">
-                    <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
-                        <div class="widget-card widget-bg1">					 
-                            <div class="wc-item">
-                                <h4 class="wc-title">
-                                    Currently Open Request
-                                </h4>
-                                <span class="wc-des">
-                                    Number of currently Open request
-                                </span>
-                                <span class="wc-stats">
-                                    <span class="counter">99</span> 
-                                </span>		
-                                <div class="progress wc-progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="col-md-0 col-lg-12 col-xl-12 col-sm-0 col-12">
+                        <div style="display: flex;justify-content: center">
+                            <c:if test="${not empty requestScope.error}">
+                                <div class="alert alert-danger text-center d-inline-block" role="alert" >
+                                    ${requestScope.error}
                                 </div>
-
-                            </div>				      
+                            </c:if>
+                            <c:if test="${not empty requestScope.mess}">
+                                <a href="#" class="alert alert-success text-center d-inline-block" role="alert" >
+                                    ${requestScope.mess}
+                                </a>
+                            </c:if>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
-                        <div class="widget-card widget-bg2">					 
-                            <div class="wc-item">
-                                <h4 class="wc-title">
-                                    Currently Accepted Request
-                                </h4>
-                                <span class="wc-des">
-                                    Number of currently accepted request
-                                </span>
-                                <span class="wc-stats counter">
-                                    99
-                                </span>		
-                                <div class="progress wc-progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>				      
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
-                        <div class="widget-card widget-bg3">					 
-                            <div class="wc-item">
-                                <h4 class="wc-title">
-                                    Canceled Request
-                                </h4>
-                                <span class="wc-des">
-                                    Number of canceled request 
-                                </span>
-                                <span class="wc-stats counter">
-                                    9999 
-                                </span>		
-                                <div class="progress wc-progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>				      
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
-                        <div class="widget-card widget-bg4">					 
-                            <div class="wc-item">
-                                <h4 class="wc-title">
-                                    Wallet 
-                                </h4>
-                                <span class="wc-des">                                    
-                                    Wallet of Manager
-                                </span>
-                                <span class="wc-stats">
-                                    <span class="counter">${wallet.balance}</span>$
-                                </span>	
 
 
-
-
-                            </div>				      
-                        </div>
-                    </div>
                 </div>
                 <!-- Card END -->
                 <div class="row">
@@ -172,7 +114,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;" >
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -209,12 +151,16 @@
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Processing')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red">Processing</a>
+                                                                    <a href="#" class="btn button-sm red">Processing</a>
+                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm orange"><i class="ti-check"></i></a>
                                                                 </span>
+
                                                             </c:when>
                                                             <c:when test="${c.status.equals('Studying')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm orange">Studying</a>
+                                                                    <a href="#" class="btn button-sm orange">Studying</a>
+                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red"><i class="ti-close"></i></a>
+
                                                                 </span>
                                                             </c:when>
                                                             <c:otherwise>
@@ -241,9 +187,23 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Your Profile Views Chart END-->
                     <div class="col-lg-3 m-b30">
-                        <div class="widget-box">
+                        <div class="widget-card widget-bg4">					 
+                            <div class="wc-item">
+                                <h4 class="wc-title">
+                                    Wallet 
+                                </h4>
+                                <span class="wc-des">                                    
+                                    Wallet of Manager
+                                </span>
+                                <span class="wc-stats">
+                                    <span class="counter">${wallet.balance}</span>$
+                                </span>	
+                            </div>				      
+                        </div>
+                        <div class="widget-box" style="height: auto">
                             <div class="wc-title">
                                 <h4>Step 1: Mentee to Manager</h4>
                             </div>
@@ -295,7 +255,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;">
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -436,7 +396,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </ul>
-                                    
+
                                 </div>
                             </div>
                         </div>

@@ -43,7 +43,7 @@ public class RequestDAO extends DBContext {
 
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-             st.setInt(2, id2);
+            st.setInt(2, id2);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -908,11 +908,11 @@ public class RequestDAO extends DBContext {
         List<CV> mentor = new ArrayList<>();
         CVDAO m = new CVDAO();
         String sql = """
-            SELECT m.MentorID, COUNT(r.RequestID) AS RequestCount
-            FROM Mentor m
-            LEFT JOIN Request r ON m.MentorID = r.MentorID
-            GROUP BY m.MentorID
-            ORDER BY RequestCount DESC;
+            SELECT TOP 10 m.MentorID, COUNT(r.RequestID) AS RequestCount
+                        FROM Mentor m
+                        LEFT JOIN Request r ON m.MentorID = r.MentorID where m.Status='active'
+                        GROUP BY m.MentorID
+                        ORDER BY RequestCount DESC;
         """;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1000,6 +1000,47 @@ public class RequestDAO extends DBContext {
             }
         }
         return -1; // If no slot is found for the request
+    }
+
+    public boolean setSlotStatusbyRequestSlotItemUnavailable(int requestId) throws SQLException {
+        String query = """
+                   UPDATE Slot
+                   SET status = 'Unavailable'
+                   WHERE slotID IN (
+                       SELECT s.slotID
+                       FROM RequestSlotItem rqs
+                       JOIN Slot s ON rqs.SlotID = s.SlotID
+                       WHERE rqs.RequestID = ?);
+                   """;
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, requestId);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0; // Return true if any rows were updated
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean setSlotStatusbyRequestSlotItemAvailable(int requestId) throws SQLException {
+        String query = """
+                   UPDATE Slot
+                   SET status = 'Available'
+                   WHERE slotID IN (
+                       SELECT s.slotID
+                       FROM RequestSlotItem rqs
+                       JOIN Slot s ON rqs.SlotID = s.SlotID
+                       WHERE rqs.RequestID = ?);
+                   """;
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, requestId);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0; // Return true if any rows were updated
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<Mentor> getSuggestMentorByMentee(int menteeId) {

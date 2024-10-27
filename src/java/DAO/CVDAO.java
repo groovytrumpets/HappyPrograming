@@ -1521,4 +1521,25 @@ public class CVDAO extends DBContext {
             return false; // Return false if there was an error
         }
     }
+
+    public void setStatusInactiveMentor(int mentorId) {
+        String sql = "update Mentor set Status='inactive' where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public void setStatusActiveMentor(int mentorId) {
+        String sql = "update Mentor set Status='active' where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }
