@@ -41,63 +41,73 @@
     <body id="bg">
         <div class="page-wraper">
             <!-- Header Top ==== -->
-             <jsp:include  page="header.jsp"/>
+            <jsp:include  page="header.jsp"/>
 
             <!-- Content -->
             <div class="page-content bg-white">
-                <!-- Breadcrumb -->
-                <div class="breadcrumb-row">
+                <!-- inner page banner -->
+                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
                     <div class="container">
-                        <ul class="list-inline">
-                            <li><a href="index.html">Home</a></li>
-                            <li>Mentor List</li>
-                        </ul>
+                        <div class="page-banner-entry">
+                            <h1 class="text-white">Rate & Comment</h1>
+                        </div>
                     </div>
                 </div>
+                <!-- inner page banner END -->
                 <!-- Mentor List Section -->
-
-
                 <div class="courses-filter">
-                    <div class="clearfix" style="padding-left: 70px">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-8 col-sm-12">
+                                <div class="container">
+                                    <ul class="list-inline">
+                                        <h3>Mentor List</h3>
+                                    </ul>
+                                </div>
+                                <div class="clearfix">
 
-                        <c:if test="${empty mentorlist}">
-                            <div class="alert alert-warning" style="width: 425px">
-                                <strong>You need to complete at least a course before reviewing!</strong>
-                            </div>
-                        </c:if>
-
-                        <ul id="masonry" class="ttr-gallery-listing magnific-image row ">
-
-                            <c:forEach items="${requestScope.cvlist}" var="c">
-                                <c:forEach items="${requestScope.mentorlist}" var="m">
-                                    <c:if test="${c.mentorId==m.mentorId}">
-                                        <li class="action-card col-xl-2 col-lg-6 col-md-12 col-sm-6">
-                                            <div class="cours-bx">
-
-                                                <div class="info-bx text-center">
-
-                                                    <div class="action-box" style="height: 250px" >
-                                                        <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
-                                                    </div>
-                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
-                                                    <span>Framework: ${c.framework}</span>
-                                                    <br/>
-                                                    <span>Education: ${c.education}</span> 
-                                                    <a href="ratementor?mentorId=${c.mentorId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                        Review
-                                                    </a>
-
+                                    <div class="container">
+                                        <div class="list-inline">
+                                            <c:if test="${empty mentorlist}">
+                                                <div class="alert alert-warning" style="width: 425px">
+                                                    <strong>You need to complete at least a course before reviewing!</strong>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    </c:if>
-                                </c:forEach>
-                            </c:forEach>
-                        </ul>
+                                            </c:if>
+                                        </div>
+                                    </div>
+
+                                    <ul id="masonry" class="ttr-gallery-listing magnific-image row">
+                                        <c:forEach items="${requestScope.cvlist}" var="c">
+                                            <c:forEach items="${requestScope.mentorlist}" var="m">
+                                                <c:if test="${c.mentorId==m.mentorId}">
+                                                    <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
+                                                        <div class="cours-bx">
+                                                            <div class="info-bx text-center">
+                                                                <div class="action-box" style="height: 250px" >
+                                                                    <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                                </div>
+                                                                <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
+                                                                <span>Framework: ${c.framework}</span>
+                                                                <br/>
+                                                                <span>Education: ${c.education}</span> 
+                                                                <a href="ratementor?mentorId=${c.mentorId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                    Review
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
-
+            <!-- Mentor List Section END-->
             <!-- Footer ==== -->
             <footer>
                 <div class="footer-top">

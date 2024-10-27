@@ -1,18 +1,16 @@
 <%-- 
-    Document   : rateMentor
-    Created on : Oct 6, 2024, 8:01:59 AM
-    Author     : asus
+    Document   : SkillList
+    Created on : Oct 1, 2024, 3:12:48 PM
+    Author     : nhhag
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html lang="en">
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+
+
     <head>
-        <title>Rate Mentor</title>
 
         <!-- META ============================================= -->
         <meta charset="utf-8">
@@ -31,11 +29,11 @@
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Create CV of mentor</title>
+        <title>EduChamp : Education HTML Template </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,7 +45,6 @@
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
-        <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
 
         <!-- TYPOGRAPHY ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
@@ -57,10 +54,8 @@
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-        <!-- Star Rating CSS -->
         <style>
             .star-rating {
                 direction: rtl;
@@ -84,166 +79,93 @@
             }
         </style>
     </head>
+    <body id="bg">
+        <div class="page-wraper">
+            <div id="loading-icon-bx"></div>
 
-    <body class="ttr-opened-sidebar ttr-pinned-sidebar">
-        <!-- header start -->
-        <jsp:include  page="header.jsp"/>
-        <!-- header end -->
-        <!-- Left sidebar menu start -->
-        <div class="ttr-sidebar">
-            <div class="ttr-sidebar-wrapper content-scroll">
-                <!-- side menu logo start -->
-                <div class="ttr-sidebar-logo">
-                    <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
-                    <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
-                            <i class="material-icons ttr-fixed-icon">gps_fixed</i>
-                            <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
-                    </div> -->
-                    <div class="ttr-sidebar-toggle-button">
-                        <i class="ti-arrow-left"></i>
+            <!-- Header Top ==== -->
+            <header class="header rs-nav">
+                <jsp:include page="header.jsp" />
+            </header>
+            <!-- header END ==== -->
+            <!-- Content -->
+            <div class="page-content bg-white">
+                <!-- inner page banner -->
+                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
+                    <div class="container">
+                        <div class="page-banner-entry">
+                            <h1 class="text-white">Rate Mentor</h1>
+                        </div>
                     </div>
                 </div>
-                <!-- side menu logo end -->
-                <!-- sidebar menu start -->
-                <nav class="ttr-sidebar-navi">
-                    <ul>
-                        <li>
-                            <a href="index.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="courses.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-book"></i></span>
-                                <span class="ttr-label">Courses</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-email"></i></span>
-                                <span class="ttr-label">Mailbox</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-                                </li>
-                                <li>
-                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Calendar</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-                                </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="bookmark.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-                                <span class="ttr-label">Bookmarks</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="review.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-comments"></i></span>
-                                <span class="ttr-label">Review</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="add-listing.html" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
-                                <span class="ttr-label">Add listing</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-user"></i></span>
-                                <span class="ttr-label">My Profile</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="ttr-seperate"></li>
-                    </ul>
-                    <!-- sidebar menu end -->
-                </nav>
-                <!-- sidebar menu end -->
-            </div>
-        </div>
-        <!-- Left sidebar menu end -->
+                <!-- inner page banner END -->
+                <div class="content-block">
+                    <!-- About Us -->
+                    <div class="section-area section-sp1 align-items-center justify-content-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="db-breadcrumb col-lg-4">
+                                </div>  
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-20 m-b30">
+                                        <div class="widget-box p-4 shadow">
+                                            <div class="widget-inner text-center">
+                                                <form action="ratementor" method="POST">
+                                                    <input type="hidden" name="menteeId" value="${mentee.menteeId}" />
+                                                    <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
 
-        <!--Main container start-->
-        <main class="ttr-wrapper">
-            <div class="container-fluid">
-                <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Rate Mentor</h4>
-                    <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Rate Mentor</li>
-                    </ul>
-                </div>  
-                <div class="row">
-                    <div class="col-lg-12 m-b30">
-                        <div class="widget-box">
-                            <div class="widget-inner">
-                                <form action="ratementor" method="POST">
-                                    <input type="hidden" name="menteeId" value="${mentee.menteeId}" />
-                                    <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
+                                                    <!-- Rating Section -->
+                                                    <c:if test="${requestScope.mentor.mentorId==requestScope.cvmentor.mentorId}">
+                                                        <div class=" text-center">
+                                                            <img id="userAvatar" src="getCVimage?id=${requestScope.cvmentor.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                                                        </div>
+                                                        <h3>Mentor: ${mentor.fullName}</h3>
+                                                        <h5>Education: ${cvmentor.education}</h5>
+                                                        <h5>Framework: ${cvmentor.framework}</h5>
+                                                    </c:if>
 
-                                    <!-- Rating Section -->
-                                    <c:if test="${requestScope.mentor.mentorId==requestScope.cvmentor.mentorId}">
-                                        <h3>Mentor: ${mentor.fullName}</h3>
-                                        <h5>Education: ${cvmentor.education}</h5>
-                                        <h5>Education: ${cvmentor.framework}</h5>
-                                    </c:if>
+                                                    <div class="star-rating">
+                                                        <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
+                                                        <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
+                                                        <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
+                                                        <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
+                                                        <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+                                                    </div>
 
-                                    <div class="star-rating">
-                                        <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
-                                        <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
-                                        <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
-                                        <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
-                                        <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+                                                    <!-- Comment Section -->
+                                                    <h5>Comment:</h5>
+                                                    <textarea name="comment" rows="5" cols="40" placeholder="Leave your comment here..."></textarea><br>
+
+                                                    <input type="submit" class="btn button-m green" value="Submit Rating">
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <!-- Comment Section -->
-                                    <h5>Comment:</h5>
-                                    <textarea name="comment" rows="4" cols="50" placeholder="Leave your comment here..."></textarea><br>
-
-                                    <input type="submit" class="btn button-m green" value="Submit Rating">
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-        <!--Main container end-->
+        </div>
+        <!-- contact area END -->
+        <!-- Content END-->
+        <!-- Footer ==== -->
 
-        <div class="ttr-overlay"></div>
+        <jsp:include page="footer.jsp" />
 
+        <!-- Footer END ==== -->
+        <button class="back-to-top fa fa-chevron-up" ></button>
         <!-- External JavaScripts -->
+        <script>
+            document.querySelectorAll('.description').forEach(function (element) {
+                let maxLength = 50; // Set the character limit
+                let text = element.innerText;
+                if (text.length > maxLength) {
+                    element.innerText = text.substring(0, maxLength) + '...';
+                }
+            });
+        </script>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
         <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
@@ -256,9 +178,8 @@
         <script src="assets/vendors/masonry/masonry.js"></script>
         <script src="assets/vendors/masonry/filter.js"></script>
         <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
         <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
+        <script src="assets/js/contact.js"></script>
     </body>
+
 </html>

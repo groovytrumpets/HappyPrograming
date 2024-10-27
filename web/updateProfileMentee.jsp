@@ -176,7 +176,90 @@
                         <i class="ti-arrow-left"></i>
                     </div>
                 </div>
-
+                <!-- side menu logo end -->
+                <!-- sidebar menu start -->
+                <nav class="ttr-sidebar-navi">
+                    <ul>
+                        <li>
+                            <a href="index.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-home"></i></span>
+                                <span class="ttr-label">Dashborad</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="courses.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-book"></i></span>
+                                <span class="ttr-label">Courses</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-email"></i></span>
+                                <span class="ttr-label">Mailbox</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
+                                </li>
+                                <li>
+                                    <a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-calendar"></i></span>
+                                <span class="ttr-label">Calendar</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
+                                </li>
+                                <li>
+                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="bookmark.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                <span class="ttr-label">Bookmarks</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="review.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-comments"></i></span>
+                                <span class="ttr-label">Review</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="add-listing.html" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
+                                <span class="ttr-label">Add listing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="ttr-material-button">
+                                <span class="ttr-icon"><i class="ti-user"></i></span>
+                                <span class="ttr-label">My Profile</span>
+                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="user-profile.html" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="ttr-seperate"></li>
+                    </ul>
+                    <!-- sidebar menu end -->
+                </nav>
+                <!-- sidebar menu end -->
             </div>
         </div>
         <!-- Left sidebar menu end -->
@@ -195,24 +278,21 @@
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Update Profile</h4>
-                            </div>
                             <div class="widget-inner">
                                 <form class="edit-profile m-b30" action="updateProfile" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
-                                                <h3>1. Personal Details</h3>
+                                                <h3>Personal Details</h3>
                                             </div>
                                         </div>
                                         <div>
                                             <input class="form-control" type="hidden" name="menteeId" value="${mentee.menteeId}" >
                                         </div>
                                         <div class="form-group col-12">
-                                            
+
                                             <div class=" text-center">
-                                                <img src="data:image/jpeg;base64,${mentee.base64FileImage}" class="rounded-circle" style=" margin: 50px 10px;width: 150px">
+                                                <img src="data:image/jpeg;base64,${mentee.base64FileImage}" class="rounded-circle" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
                                             </div>
                                             <div>
                                                 <div style="text-align: center">
@@ -232,13 +312,13 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Account name</label>
                                             <div>
-                                                <input class="form-control" type="text" name="username" value="${mentee.username}"required>
+                                                <input class="form-control" type="text" name="username" value="${mentee.username}" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Date of Birth</label>
                                             <div>
-                                                <input class="form-control" type="date" name="dob" value="${mentee.dateOfBirth}"required>
+                                                <input class="form-control" type="date" name="dob" value="${mentee.dateOfBirth}" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -276,7 +356,7 @@
                                                     <input class="form-control" type="text" name="address" value="${mentee.address}" required>
                                             </div>
                                         </div>
-                                                    <div><p style="color: green">${requestScope.message}</p></div>
+                                        <div><p style="color: green">${requestScope.message}</p></div>
                                         <div class="col-12">
                                             <button type="submit" class="btn">Save changes</button>
                                             <button type="reset" class="btn-secondry">Cancel</button>
