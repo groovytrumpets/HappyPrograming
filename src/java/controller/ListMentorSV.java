@@ -68,6 +68,10 @@ public class ListMentorSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+        
+        
         try {
             HttpSession session = request.getSession();
             User curUser = (User) session.getAttribute("acc");
@@ -88,6 +92,8 @@ public class ListMentorSV extends HttpServlet {
                 request.setAttribute("cvlist", cvlist);
                 request.setAttribute("mentorlist", mentorlist);
                 request.setAttribute("requestlist", requestlist);
+                request.setAttribute("error", error);
+                request.setAttribute("mess", mess);
             } else if (roleID == 1) {
                 response.sendRedirect("home");
                 return;
