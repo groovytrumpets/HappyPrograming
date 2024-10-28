@@ -64,7 +64,7 @@
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
         <!-- header start -->
-          <jsp:include page="headerAdmin.jsp" />
+        <jsp:include page="headerAdmin.jsp" />
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
@@ -88,12 +88,14 @@
                                     <h4>Request List</h4>
                                 </div>
                                 <div class="mail-search-bar col-md-4">
+
                                     <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
+                                        <input type="hidden" value="${status}"  name="status">
                                         <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
+                                        <button type="submit" class="fa fa-search" style="padding: 10px;"/>
                                     </form>
                                 </div>
-                                <div class="col-md-4 " >
+                                <div class="col-md-2 " >
                                     <form method="post" action="requestListAdmin">
                                         <input type="hidden" name="page" value="${requestScope.indexPage}">
                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
@@ -103,10 +105,16 @@
                                                 <option value="${s}" ${requestScope.status eq s ? 'selected' : ''}>${s}</option>
                                             </c:forEach>
                                         </select>
+
                                     </form>
                                 </div>
-
-
+                            </div>
+                            <div>
+                                <form method="get" action="searchRequestListAdmin"  align-items: center;">
+                                    <label> Start time:</label><input type="date" name="start" value="${start}" required></br>
+                                    <label> End time:</label><input type="date" name="end" value="${end}" required>
+                                    <button type="submit" class="fa fa-search" style="padding: 10px;"/>
+                                </form> 
                             </div>
 
                             <div class="widget-inner">

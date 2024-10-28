@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -62,41 +63,54 @@ public class searchRequestListAdmin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
         MenteeDAO actMentee = new MenteeDAO();
         RequestDAO actRequest = new RequestDAO();
-        List<Request> listReq = actRequest.getAllRequest();
+
+        // Retrieve filter parameters
+        String status = request.getParameter("status") != null ? request.getParameter("status") : "";
+        status = status.equalsIgnoreCase("all") ? "" : status;
+        String search = request.getParameter("search") != null ? request.getParameter("search").trim().replaceAll("\\s+", " ") : "";
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
-        }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 10;
-        }
+        String start_raw = request.getParameter("start");
+        String end_raw = request.getParameter("end");
 
+        // Set default values for pagination
+        int page = (page_raw != null) ? Integer.parseInt(page_raw) : 1;
+        int numDis = (numDis_raw != null) ? Integer.parseInt(numDis_raw) : 10;
         int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
-        String search = request.getParameter("search");
-        if (search != null) {
-            request.setAttribute("search", search);
-            listReq = actRequest.getAllRequestBySearch(search);
-        }
-        int numMent = listReq.size();
+        LocalDate start = (start_raw != null && start_raw != "") ? LocalDate.parse(start_raw) : null;
+        LocalDate end = (end_raw != null && end_raw != "") ? LocalDate.parse(end_raw) : null;
+        out.print(start);
+        out.print("null");
+
+        // Pass filters to DAO for retrieval and filtering
+        List<Request> listReq = actRequest.getRequestByStatusAndSearchPagination(search, page, numDis, status, start, end);
+
+        // Calculate number of pages based on filtered list size
+        int numMent = actRequest.getCountRequestByStatusAndSearch(search, status, start, end);
+        out.print(numMent);
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
+
+        // Set attributes for use in JSP
+        request.setAttribute("stt", stt);
+        request.setAttribute("search", search);
+        request.setAttribute("status", status);
         request.setAttribute("numOfPage", numOfPage);
-        listReq = actRequest.getAllRequestBySearchPagination(search, page, numDis);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listReq", listReq);
+        request.setAttribute("start", start);
+        request.setAttribute("end", end);
+        // Retrieve mentee names and statuses to display alongside filtered data
         String[] listNameMentee = getRequestMenteeName(listReq);
         request.setAttribute("listName", listNameMentee);
         String[] listStatus = actRequest.getAllStatusInRequest();
         request.setAttribute("listStatus", listStatus);
+
+        // Forward to JSP
         request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
     }
 
@@ -125,58 +139,48 @@ public class searchRequestListAdmin extends HttpServlet {
         PrintWriter out = response.getWriter();
         MenteeDAO actMentee = new MenteeDAO();
         RequestDAO actRequest = new RequestDAO();
-        List<Request> listReq = actRequest.getAllRequest();
-       
-        String status = request.getParameter("status");
-       
+
+        // Retrieve filter parameters
+        String status = request.getParameter("status") != null ? request.getParameter("status") : "";
+        status = status.equalsIgnoreCase("all") ? "" : status;
+        String search = request.getParameter("search") != null ? request.getParameter("search").trim().replaceAll("\\s+", " ") : "";
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
-        }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 10;
-        }
+        String start_raw = request.getParameter("start");
+        String end_raw = request.getParameter("end");
+        // Set default values for pagination
+        int page = (page_raw != null) ? Integer.parseInt(page_raw) : 1;
+        int numDis = (numDis_raw != null) ? Integer.parseInt(numDis_raw) : 10;
         int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
-        String search = request.getParameter("search");
-        if (search != null) {
-            search = search.trim().replaceAll("\\s+", " ");
-            out.print(search.length());
-            request.setAttribute("search", search);
-            listReq = actRequest.getAllRequestBySearch(search);
-        } else {
-            response.sendRedirect("requestListAdmin");
-            return;
-        }
-        if (status != null) {
-            if (!status.equalsIgnoreCase("all")) {
-                listReq = actRequest.getRequestByStatusAndSearch(search, status);
-                request.setAttribute("status", status);
-            } else {
-                response.sendRedirect("requestListAdmin");
-                return;
-            }
+        LocalDate start = (start_raw != null && start_raw != "") ? LocalDate.parse(start_raw) : null;
+        LocalDate end = (end_raw != null && end_raw != "") ? LocalDate.parse(end_raw) : null;
 
-        }
-        int numMent = listReq.size();
+        // Pass filters to DAO for retrieval and filtering
+        List<Request> listReq = actRequest.getRequestByStatusAndSearchPagination(search, page, numDis, status, start, end);
+
+        // Calculate number of pages based on filtered list size
+        int numMent = actRequest.getCountRequestByStatusAndSearch(search, status, start, end);
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
-        request.setAttribute("numOfPage", numOfPage);
 
-        listReq = actRequest.getRequestByStatusAndSearchPagination(search, page, numDis, status);
+        // Set attributes for use in JSP
+        request.setAttribute("stt", stt);
+        request.setAttribute("search", search);
+        request.setAttribute("status", status);
+        request.setAttribute("numOfPage", numOfPage);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listReq", listReq);
+        request.setAttribute("start", start);
+        request.setAttribute("end", end);
+
+        // Retrieve mentee names and statuses to display alongside filtered data
         String[] listNameMentee = getRequestMenteeName(listReq);
         request.setAttribute("listName", listNameMentee);
         String[] listStatus = actRequest.getAllStatusInRequest();
         request.setAttribute("listStatus", listStatus);
-        request.getRequestDispatcher("RequestListAdmin.jsp").forward(request, response);
+
+        // Forward to JSP
+        request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
     }
 
     /**
