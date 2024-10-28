@@ -520,25 +520,7 @@
         </main>
         <div class="ttr-overlay"></div>
 
-        <!-- External JavaScripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-        <script src="assets/vendors/counter/waypoints-min.js"></script>
-        <script src="assets/vendors/counter/counterup.min.js"></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-        <script src="assets/vendors/masonry/masonry.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/calendar/moment.min.js'></script>
-        <script src='assets/vendors/calendar/fullcalendar.js'></script>
+       
 
     </body>
     <script>
@@ -656,12 +638,12 @@
                     y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
 
                     // So sánh các hàng dựa trên hướng sắp xếp
-                    if (dir == "asc") {
+                    if (dir === "asc") {
                         if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
                             shouldSwitch = true;
                             break;
                         }
-                    } else if (dir == "desc") {
+                    } else if (dir === "desc") {
                         if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                             shouldSwitch = true;
                             break;
@@ -676,7 +658,7 @@
                     switchcount++;
                 } else {
                     // Nếu không có chuyển đổi nào, đổi hướng sắp xếp
-                    if (switchcount == 0 && dir == "asc") {
+                    if (switchcount === 0 && dir === "asc") {
                         dir = "desc";
                         switching = true;
                     }
@@ -685,5 +667,23 @@
         }
 
     </script>
+    <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/vendors/chart/chart.min.js"></script>
+        <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/calendar/moment.min.js'></script>
+        <script src='assets/vendors/calendar/fullcalendar.js'></script>
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

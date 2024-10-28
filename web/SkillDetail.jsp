@@ -162,9 +162,10 @@
                                     <h4>Mentor</h4>
                                     <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
-                                            <c:forEach items="${mentor}" var="mentors" varStatus="loop">
-                    
-                                                <c:forEach items="${cv}" var="cvs">
+                                            
+                                            <c:forEach items="${requestScope.mentor}" var="mentors" varStatus="loop">
+                                                
+                                                <c:forEach items="${requestScope.cv}" var="cvs">
                                                     <c:if test="${mentors.mentorId == cvs.mentorId}">
                                                         <c:if test="${loop.index % 2 == 0}">
                                                             <div class="carousel-item ${loop.index == 0 ? 'active' : ''}" >
@@ -206,7 +207,7 @@
                                             <span class="sr-only">Next</span>
                                         </a>
                                     </div>
-                                </div>             
+                                </div>                   
 
                                 <div id="instructor">
                                     <h5 class="widget-title style-1">Other Skills</h5>

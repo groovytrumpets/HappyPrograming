@@ -399,15 +399,15 @@
         <script>
             $(document).ready(function () {
                 var status = JSON.parse('${requestScope.status}');
-                var values = JSON.parse('${requestScope.values}');
-                var endDate = JSON.parse('${requestScope.endDateconverted}');
+                var start = JSON.parse('${requestScope.values}');
+                var end = JSON.parse('${requestScope.endDateconverted}');
                 
                 var eventsArray = [];
-                for (var i = 0; i < values.length; i++) {
+                for (var i = 0; i < start.length; i++) {
                     eventsArray.push({
                         title: status[i],
-                        start: values[i],
-                        end:endDate[i]
+                        start: start[i],
+                        end:end[i]
                     });
                 }
                 $('#calendar').fullCalendar({
@@ -416,7 +416,7 @@
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     },
-                    defaultDate: values[0],
+                    defaultDate: start[0],
                     defaultView: 'month',
                     navLinks: true, // can click day/week names to navigate views
 
