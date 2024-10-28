@@ -163,6 +163,7 @@
                                     <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
                                             <c:forEach items="${mentor}" var="mentors" varStatus="loop">
+                    
                                                 <c:forEach items="${cv}" var="cvs">
                                                     <c:if test="${mentors.mentorId == cvs.mentorId}">
                                                         <c:if test="${loop.index % 2 == 0}">

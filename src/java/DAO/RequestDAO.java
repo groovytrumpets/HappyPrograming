@@ -61,6 +61,39 @@ public class RequestDAO extends DBContext {
         return requests;
     }
 
+    public List<RequestSlotItem> getDuplicateSlotByRequestID(int id, int id2, int id3) {
+        List<RequestSlotItem> requests = new ArrayList<>();
+
+        String sql = "SELECT * \n"
+                + "FROM RequestSlotItem r\n"
+                + "JOIN Request rq ON r.RequestID = rq.RequestID\n"
+                + "WHERE rq.Status = 'Open' \n"
+                + "  AND rq.MenteeID = ? \n"
+                + "  AND MentorID = ?\n"
+                + "  AND rq.RequestID != ?;";
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.setInt(2, id2);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                RequestSlotItem s = new RequestSlotItem();
+                s.setRequestId(rs.getInt("RequestID"));
+                s.setRequestSlotItemId(rs.getInt("RequestSlotItem"));
+                s.setSlotId(rs.getInt("SlotID"));
+                requests.add(s);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return requests;
+    }
+
     public List<RequestSlotItem> getSlotByRequestID(int id) {
         List<RequestSlotItem> requests = new ArrayList<>();
 
@@ -478,7 +511,7 @@ public class RequestDAO extends DBContext {
         String sql = "SELECT COUNT(*) FROM Request WHERE MenteeID = ? ";
 
         try (
-            PreparedStatement stmt = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, menteeId);
             ResultSet rs = stmt.executeQuery();
 
@@ -859,14 +892,14 @@ public class RequestDAO extends DBContext {
             }
 
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                count= rs.getInt(1);
+            if (rs.next()) {
+                count = rs.getInt(1);
             }
         } catch (NumberFormatException | SQLException e) {
             e.printStackTrace();
         }
 
-       return count;
+        return count;
     }
 
     public List<Request> getRequestByStatusAndSearchPagination(String search, int page, int disNum, String status, LocalDate startDate, LocalDate endDate) {
