@@ -356,7 +356,7 @@
                                                     <input class="form-control" type="text" name="address" value="${mentee.address}" required>
                                             </div>
                                         </div>
-                                        <div><p style="color: green">${requestScope.message}</p></div>
+                                        <div class="col-12"><p style="color: green">${requestScope.message}</p></div>
                                         <div class="col-12">
                                             <button type="submit" class="btn">Save changes</button>
                                             <button type="reset" class="btn-secondry">Cancel</button>

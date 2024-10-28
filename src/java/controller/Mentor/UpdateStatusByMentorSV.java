@@ -2,9 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.Mentor;
 
+import DAO.MenteeDAO;
+import DAO.MentorDAO;
+import DAO.PaymentDAO;
 import DAO.RequestDAO;
+import DAO.SlotDAO;
+import DAO.WalletDAO;
+import Model.Mentee;
+import Model.Payment;
+import Model.Request;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +22,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "UpdateStatusOfMenteeSV", urlPatterns = {"/updatestatusofmentee"})
-public class UpdateStatusOfMenteeSV extends HttpServlet {
+@WebServlet(name = "UpdateStatusByMentorSV", urlPatterns = {"/updatestatusbymentor"})
+public class UpdateStatusByMentorSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +49,10 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateStatusOfMenteeSV</title>");
+            out.println("<title>Servlet UpdateStatusByMentorSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateStatusOfMenteeSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateStatusByMentorSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -71,28 +81,60 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
         int roleID = curUser.getRoleId();
         int requestId = Integer.parseInt(request.getParameter("requestId"));
         RequestDAO requestDAO = new RequestDAO();
-
+        SlotDAO slotDAO = new SlotDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
+        Request requests = requestDAO.getRequestByID(requestId);
+        WalletDAO walletDAO = new WalletDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
+        
+        
         try {
-            if (roleID == 2) {
+            if (roleID == 1) { // Mentor actions
                 String action = request.getParameter("action");
-
+                int slotId = requestDAO.getSlotIdByRequestId(requestId);
+                //Payment payment = new Payment(1, requestId, LocalDateTime.now(), requests.getPrice(), "1", curUser.getUsername(), "manager");
+                Mentee menteeName =  menteeDAO.getMenteeByID(requests.getMenteeId());
+                
                 switch (action) {
-                    case "update":
-                        response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
+                    case "accept":
+                        //Buoc 1: Cap nhat trang thai accept
+                        requestDAO.updateStatusByMentor(requestId, "Processing");
+                        //Buoc 2: Tu choi tat ca Mentee requests cung slot
+                        requestDAO.rejectOtherMenteesForSameSlots(requestId);
+                        //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
+                        //slotDAO.updateSlotStatusToUnavailable(slotId);
+                        //Buoc 4: update balance                      
+                        //Buoc 5: update payment
+                        paymentDAO.updatePaymentStatus(requestId, "2");
+                        //Buoc 6: Update Hold
+                        //walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        response.sendRedirect("listrequestofmentor");
                         break;
-                    case "cancel":
-                        requestDAO.updateRequestStatus(requestId, "Canceled");
+                    case "reject":
+                        //Buoc 1: cap nhat trang thai reject
+                        requestDAO.updateStatusByMentor(requestId, "Reject");
+                        //Buoc 2: Update Hold
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() + requests.getPrice());
+                        response.sendRedirect("listrequestofmentor");
+                        break;
+                    case "complete":
+                        requestDAO.updateStatusByMentor(requestId, "Completed");
+                        slotDAO.updateSlotStatusToAvailable(slotId);
+                        response.sendRedirect("listrequestofmentor");
                         break;
                     default:
+                        response.sendRedirect("listrequestofmentor");
                         break;
                 }
-                response.sendRedirect("listrequestbymentee");
-            } else if (roleID == 1) {
+            } else if (roleID == 2) {
                 response.sendRedirect("home");
                 return;
             }
+            response.sendRedirect("listrequestofmentor");
+
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("listrequestofmentor");
         }
     }
 
@@ -108,6 +150,7 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
     }
 
     /**

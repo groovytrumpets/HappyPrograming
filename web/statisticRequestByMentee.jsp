@@ -62,125 +62,7 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <!-- header start -->
-        <header class="ttr-header">
-            <div class="ttr-header-wrapper">
-                <!--sidebar menu toggler start -->
-
-                <!--sidebar menu toggler end -->
-                <!--logo start -->
-                <div class="ttr-logo-box">
-                    <div>
-                        <a href="index.html" class="ttr-logo">
-                            <img alt="" class="ttr-logo-mobile" src="assets/images/logo-mobile.png" width="30" height="30">
-                            <img alt="" class="ttr-logo-desktop" src="assets/images/logo-white.png" width="160" height="27">
-                        </a>
-                    </div>
-                </div>
-                <!--logo end -->
-                <div class="ttr-header-menu">
-                    <!-- header left menu start -->
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="../index.html" class="ttr-material-button ttr-submenu-toggle">HOME</a>
-                        </li>
-
-                    </ul>
-                    <!-- header left menu end -->
-                </div>
-                <div class="ttr-header-right ttr-with-seperator">
-                    <!-- header right menu start -->
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-search-toggle"><i class="fa fa-search"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell"></i></a>
-                            <div class="ttr-header-submenu noti-menu">
-                                <div class="ttr-notify-header">
-                                    <span class="ttr-notify-text-top">9 New</span>
-                                    <span class="ttr-notify-text">User Notifications</span>
-                                </div>
-
-                            </div>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
-                            <div class="ttr-header-submenu">
-                                <ul>
-                                    <li><a href="user-profile.html">My profile</a></li>
-                                    <li><a href="list-view-calendar.html">Activity</a></li>
-                                    <li><a href="mailbox.html">Messages</a></li>
-                                    <li><a href="../login.html">Logout</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="ttr-hide-on-mobile">
-                            <a href="#" class="ttr-material-button"><i class="ti-layout-grid3-alt"></i></a>
-                            <div class="ttr-header-submenu ttr-extra-menu">
-                                <a href="#">
-                                    <i class="fa fa-music"></i>
-                                    <span>Musics</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-youtube-play"></i>
-                                    <span>Videos</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-envelope"></i>
-                                    <span>Emails</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-book"></i>
-                                    <span>Reports</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-smile-o"></i>
-                                    <span>Persons</span>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-picture-o"></i>
-                                    <span>Pictures</span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- header right menu end -->
-                </div>
-                <!--header search panel start -->
-                <div class="ttr-search-bar">
-                    <form class="ttr-search-form">
-                        <div class="ttr-search-input-wrapper">
-                            <input type="text" name="qq" placeholder="search something..." class="ttr-search-input">
-                            <button type="submit" name="search" class="ttr-search-submit"><i class="ti-arrow-right"></i></button>
-                        </div>
-                        <span class="ttr-search-close ttr-search-toggle">
-                            <i class="ti-close"></i>
-                        </span>
-                    </form>
-                </div>
-                <!--header search panel end -->
-            </div>
-        </header>
-        <!-- header end -->
-        <!-- Left sidebar menu start -->
-        <div class="ttr-sidebar">
-            <div class="ttr-sidebar-wrapper content-scroll">
-                <!-- side menu logo start -->
-                <div class="ttr-sidebar-logo">
-                    <a href="#"><img alt="" src="assets/images/logo.png" width="122" height="27"></a>
-                    <!-- <div class="ttr-sidebar-pin-button" title="Pin/Unpin Menu">
-                            <i class="material-icons ttr-fixed-icon">gps_fixed</i>
-                            <i class="material-icons ttr-not-fixed-icon">gps_not_fixed</i>
-                    </div> -->
-                    <div class="ttr-sidebar-toggle-button">
-                        <i class="ti-arrow-left"></i>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!-- Left sidebar menu end -->
+        <jsp:include page="headerMentee.jsp" />
 
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -196,12 +78,12 @@
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Statistic</h4>
+                                <h4>Statistic</h4><br>
+                                <p>Total Requests: ${totalRequests}</p>
+                                <p>Total Hours: ${totalHours}</p>                           
+                                <p>Total Mentors: ${totalMentors}</p>                           
                             </div>
                             <div class="widget-inner">
-
-                                <p>Total Hours: ${totalHours}</p>
-
                                 <table>
                                     <thead>
                                         <tr>
@@ -222,8 +104,6 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
                     </div>
