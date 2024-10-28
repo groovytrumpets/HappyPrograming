@@ -86,15 +86,14 @@ public class UpdateStatusByMentorSV extends HttpServlet {
         Request requests = requestDAO.getRequestByID(requestId);
         WalletDAO walletDAO = new WalletDAO();
         MenteeDAO menteeDAO = new MenteeDAO();
-        
-        
+
         try {
             if (roleID == 1) { // Mentor actions
                 String action = request.getParameter("action");
                 int slotId = requestDAO.getSlotIdByRequestId(requestId);
                 //Payment payment = new Payment(1, requestId, LocalDateTime.now(), requests.getPrice(), "1", curUser.getUsername(), "manager");
-                Mentee menteeName =  menteeDAO.getMenteeByID(requests.getMenteeId());
-                
+                Mentee menteeName = menteeDAO.getMenteeByID(requests.getMenteeId());
+
                 switch (action) {
                     case "accept":
                         //Buoc 1: Cap nhat trang thai accept
@@ -114,7 +113,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 1: cap nhat trang thai reject
                         requestDAO.updateStatusByMentor(requestId, "Reject");
                         //Buoc 2: Update Hold
-                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() + requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":

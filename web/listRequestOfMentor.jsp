@@ -123,7 +123,7 @@
                                                                     <a href="updatestatusbymentor?action=reject&requestId=${c.requestId}" class="btn button-sm red">Reject</a>
                                                                 </span>
                                                             </c:when>
-                                                            <c:when test="${c.status == 'Processing'}">
+                                                            <c:when test="${c.status == 'Studying'}">
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Complete</a>
                                                                 </span>
