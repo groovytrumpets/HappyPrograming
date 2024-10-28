@@ -119,7 +119,7 @@
                                     <input type="hidden" name="status" value="${requestScope.status}">
                                     <label> Start time:</label><input type="date" name="start" value="${requestScope.start}"></br>
                                     <label> End time:</label><input type="date" name="end" value="${requestScope.end}">
-                                     <input type="reset" value="Reset Filters">
+                                   
                                     <button type="submit" class="fa fa-search" style="padding: 10px;"/>
                                    
                                 </form> 
@@ -144,7 +144,7 @@
                                             <c:set value="${stt +1}" var="stt"/>
                                             <tr>
                                                 <td>${stt}</td>
-                                                <td>${c.requestId}</td>
+                                                <td><a href="requestDetailAdmin?requestID=${c.requestId}">${c.requestId}</a></td>
                                                 <td>${listName[stt-((indexPage-1)*numDis)-1]}</td>
                                                 <td>${c.title}</td>
                                                 <td>${c.status}</td>
