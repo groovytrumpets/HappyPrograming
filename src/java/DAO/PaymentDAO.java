@@ -280,6 +280,18 @@ public class PaymentDAO extends DBContext {
             return false; // Return false if there was an error
         }
     }
+     public boolean updatePaymentAmount(int paymentId, double newAmount) {
+        String sql = "UPDATE payment SET TotalAmount = ? WHERE paymentId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setDouble(1, newAmount);
+            pstmt.setInt(2, paymentId);
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // Returns true if the update was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
 
     public static void main(String[] args) {
         Payment samplePayments = new Payment();
