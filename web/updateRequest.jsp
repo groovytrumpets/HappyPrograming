@@ -212,7 +212,7 @@
                                                             <c:set var="isDisabled" value="false" />
                                                             <c:set var="isSelected" value="" />
 
-                                                            <c:if test="${s.status == 'unavaiable'}">
+                                                            <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
 

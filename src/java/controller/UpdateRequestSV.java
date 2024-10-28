@@ -103,7 +103,7 @@ public class UpdateRequestSV extends HttpServlet {
             List<Skill> list1 = cvd.getMentorSkillListByMentorID(requests.getMentorId());
             List<Slot> slotList = slotDAO.getSlotsByMentorId(requests.getMentorId());
             List<RequestSlotItem> checkedSlot = requestDAO.getSlotByRequestID(id);
-            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(mentee.getMenteeId(), id);
+            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlotByRequestID(mentee.getMenteeId(), requests.getMentorId(), requests.getRequestId());
             request.setAttribute("selectedSlot", listSlot);
             request.setAttribute("cv", cvd.getCVbyMentorId(requests.getMentorId()));
             request.setAttribute("mid", id);
