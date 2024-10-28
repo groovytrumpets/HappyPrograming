@@ -79,13 +79,15 @@
                         <div class="widget-box">
                             <div class="wc-title">
                                 <h4>Statistic</h4><br>
-                                <p>Total Requests: ${totalRequests}</p>
-                                <p>Total Hours: ${totalHours}</p>                           
-                                <p>Total Mentors: ${totalMentors}</p>                           
+                                <div style="display: flex; gap: 2rem;">
+                                    <span>Total Requests: ${totalRequests}</span>
+                                    <span>Total Hours: ${totalHours}</span>
+                                    <span>Total Mentors: ${totalMentors}</span>
+                                </div>
                             </div>
                             <div class="widget-inner">
-                                <table>
-                                    <thead>
+                                <table class="table table-hover">
+                                    <thead class="thead-light">
                                         <tr>
                                             <th>Request Title</th>
                                             <th>Mentor Name</th>
