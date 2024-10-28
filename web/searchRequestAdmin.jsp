@@ -85,15 +85,16 @@
                         <div class="widget-box" >
                             <div class="wc-title" style="display: flex">
                                 <div class="col-md-4">
-                                    <h4>Mentor List</h4>
+                                    <h4>Request List</h4>
                                 </div>
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
+
                                         <input type="text" name="search" placeholder="Search" value="${search}" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
-                                <div class="col-md-4 " >
+                                <div class="col-md-2 " >
                                     <form method="post" action="searchRequestListAdmin">
                                         <input type="hidden" name="page" value="${requestScope.indexPage}">
                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
@@ -109,7 +110,16 @@
 
 
                             </div>
-
+                            <div>
+                                <form method="get" action="searchRequestListAdmin"  align-items: center;">
+                                    <input type="hidden" name="page" value="${requestScope.indexPage}">
+                                    <input type="hidden" name="numDis" value="${requestScope.numDis}">
+                                    <input type="hidden" name="search" value="${requestScope.search}">
+                                    <label> Start time:</label><input type="date" name="start" value="${start}"></br>
+                                    <label> End time:</label><input type="date" name="end" value="${end}">
+                                    <button type="submit" class="fa fa-search" style="padding: 10px;"/>
+                                </form> 
+                            </div>
                             <div class="widget-inner">
                                 <table class="table-bordered">
                                     <tr>

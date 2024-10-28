@@ -86,6 +86,7 @@ public class searchRequestListAdmin extends HttpServlet {
             request.setAttribute("search", search);
             listReq = actRequest.getAllRequestBySearch(search);
         }
+        
         int numMent = listReq.size();
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
         request.setAttribute("numOfPage", numOfPage);
@@ -99,7 +100,7 @@ public class searchRequestListAdmin extends HttpServlet {
         request.setAttribute("listStatus", listStatus);
         request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
     }
-
+    
     public String[] getRequestMenteeName(List<Request> listReq) {
         MenteeDAO actMentee = new MenteeDAO();
         String[] listName = new String[listReq.size()];
