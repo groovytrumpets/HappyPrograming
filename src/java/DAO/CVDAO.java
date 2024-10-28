@@ -1478,9 +1478,11 @@ public class CVDAO extends DBContext {
     public List<Mentor> getListofMentorByMenteeWithStatus(String username) {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select mr.* from [Mentor] mr join Request r on mr.MentorID = r.MentorID \n"
-                + "join Mentee mt on  mt.MenteeID = r.MenteeID\n"
-                + "where r.[Status] = 'Completed' and mt.Username = ? ";
+        String sql = """
+                     select mr.*, r.RequestID from [Mentor] mr join Request r on mr.MentorID = r.MentorID
+                     join Mentee mt on  mt.MenteeID = r.MenteeID
+                     where r.[Status] = 'Completed' or r.[Status] = 'Paid' and mt.Username = ? 
+                     """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);

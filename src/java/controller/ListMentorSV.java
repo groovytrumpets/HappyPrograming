@@ -71,6 +71,7 @@ public class ListMentorSV extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User curUser = (User) session.getAttribute("acc");
+            Mentee curMentee = (Mentee) session.getAttribute("mentee");
             RequestDAO requestdao = new RequestDAO();
             CVDAO cvdao = new CVDAO();
             if (curUser == null) {
@@ -78,14 +79,15 @@ public class ListMentorSV extends HttpServlet {
                 return;
             }
             int roleID = curUser.getRoleId();
-            Mentee curMentee = new Mentee();
 
             if (roleID == 2) {
                 List<CV> cvlist = cvdao.getListofActiveCV();
                 List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
+                List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
 
                 request.setAttribute("cvlist", cvlist);
                 request.setAttribute("mentorlist", mentorlist);
+                request.setAttribute("requestlist", requestlist);
             } else if (roleID == 1) {
                 response.sendRedirect("home");
                 return;
