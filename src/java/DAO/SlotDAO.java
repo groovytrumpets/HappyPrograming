@@ -230,7 +230,7 @@ public class SlotDAO extends DBContext {
 //        System.out.println(slots.get(3).getDayInWeek());
     }
 
-    public List<Slot> getListofSlotsByMentorId(int cvId) {
+    public List<Slot> getListofSlotsByCVID(int cvId) {
         List<Slot> slots = new ArrayList<>();
         String sql = "select * from Slot where CVID=?";
 

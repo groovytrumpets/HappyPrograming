@@ -67,6 +67,10 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String requestId_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+        
+        
         int requestId;
         try {
             requestId = Integer.parseInt(requestId_raw);
@@ -74,7 +78,7 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             List<Request> requestList = cvd.getListofRequest();
             List<Mentee> menteeList = cvd.getListofMentee();
             List<Payment> paymentList1 = cvd.getListofPaymentbyRequestIdStep1(requestId);
-            List<Payment> paymentList2 = cvd.getListofPaymentbyRequestIdStep2(requestId);
+            List<Payment> paymentListStatus4 = cvd.getListofPaymentbyRequestIdStep2(requestId);
             List<Payment> paymentList = cvd.getListofPaymentbyRequestId(requestId);
             List<Mentor> mentorList = cvd.getListofMentor();
             List<User> listUser = cvd.getListofUser();
@@ -87,11 +91,16 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             request.setAttribute("completeRequestList", completeRequestList);
 
             request.setAttribute("paymentList1", paymentList1);
-            request.setAttribute("paymentList2", paymentList2);
+            request.setAttribute("paymentList2", paymentListStatus4);
+            
             
             request.setAttribute("wallet", wallet);
-
-            System.out.println(paymentList2.isEmpty());
+            
+            request.setAttribute("error", error);
+            request.setAttribute("mess", mess);
+            
+            
+            System.out.println(paymentListStatus4.isEmpty());
 
             request.getRequestDispatcher("managerPayment.jsp").forward(request, response);
         } catch (Exception e) {

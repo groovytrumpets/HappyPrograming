@@ -6,6 +6,7 @@
 package controller.Manager;
 
 import DAO.CVDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,10 +80,21 @@ public class ActiveMentorCVServlet extends HttpServlet {
             }else{
                 if (cv.getStatus().equalsIgnoreCase("inactive")) {
                     cvd.setStatusActiveCvId(cvid);
+                    SlotDAO sld = new SlotDAO();
+                    //check slot of mentor aviable or not to set mentor status to active or inactive
+                    if(!sld.getListofActiveSlotsByMentorId(cv.getMentorId()).isEmpty()){
+                        //System.out.println("active ne");
+                        cvd.setStatusActiveMentor(cv.getMentorId());
+                    }
+                    if(sld.getListofActiveSlotsByMentorId(cv.getMentorId()).isEmpty()){
+                        //System.out.println("deactive rui");
+                        cvd.setStatusInactiveMentor(cv.getMentorId());
+                    }
             response.sendRedirect("cvmanagercate?id="+mentorId);
                 }
                 if (cv.getStatus().equalsIgnoreCase("active")) {
                     cvd.setStatusInactiveCvId(cvid);
+                    cvd.setStatusInactiveMentor(cv.getMentorId());
             response.sendRedirect("cvmanagercate?id="+mentorId);
                 }
             }

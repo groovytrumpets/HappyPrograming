@@ -1174,7 +1174,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='1' or Status='3'";
+        String sql = "select * from Payment where RequestID =? and Status='3' or Status='4'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1205,7 +1205,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='2'";
+        String sql = "select * from Payment where RequestID =? and Status='4'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1478,9 +1478,11 @@ public class CVDAO extends DBContext {
     public List<Mentor> getListofMentorByMenteeWithStatus(String username) {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select mr.* from [Mentor] mr join Request r on mr.MentorID = r.MentorID \n"
-                + "join Mentee mt on  mt.MenteeID = r.MenteeID\n"
-                + "where r.[Status] = 'Completed' and mt.Username = ? ";
+        String sql = """
+                     select mr.*, r.RequestID from [Mentor] mr join Request r on mr.MentorID = r.MentorID
+                     join Mentee mt on  mt.MenteeID = r.MenteeID
+                     where r.[Status] = 'Completed' or r.[Status] = 'Paid' and mt.Username = ? 
+                     """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1519,6 +1521,27 @@ public class CVDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
             return false; // Return false if there was an error
+        }
+    }
+
+    public void setStatusInactiveMentor(int mentorId) {
+        String sql = "update Mentor set Status='inactive' where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public void setStatusActiveMentor(int mentorId) {
+        String sql = "update Mentor set Status='active' where MentorID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 }

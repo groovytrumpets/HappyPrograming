@@ -1,4 +1,5 @@
-    package VNpay;
+package VnPay;
+
 import DAO.PaymentDAO;
 import DAO.RequestDAO;
 import Model.Wallet;
@@ -78,7 +79,7 @@ public class PaymentReturnSV extends HttpServlet {
                     samplePayment.setReceiver("admin");
                     samplePayment.setStatus("0");
                     samplePayment.setTotalAmount(amount);
-                    paymentDAO.addPayment(samplePayment);
+                    paymentDAO.addPayments(samplePayment);
                     // Set attributes to forward to the JSP
                     request.setAttribute("newBalance", newBalance);
                     request.setAttribute("vnp_TxnRef", request.getParameter("vnp_TxnRef"));

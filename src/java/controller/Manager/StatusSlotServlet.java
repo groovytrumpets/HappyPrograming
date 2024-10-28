@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.Manager;
 
+import DAO.CVDAO;
 import DAO.SlotDAO;
 import Model.Slot;
 import java.io.IOException;
@@ -20,36 +20,39 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="StatusSlotServlet", urlPatterns={"/slotstatus"})
+@WebServlet(name = "StatusSlotServlet", urlPatterns = {"/slotstatus"})
 public class StatusSlotServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StatusSlotServlet</title>");  
+            out.println("<title>Servlet StatusSlotServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StatusSlotServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet StatusSlotServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,38 +60,45 @@ public class StatusSlotServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         String id_raw = request.getParameter("id");
-        
- 
 
         int id;
         try {
             SlotDAO sld = new SlotDAO();
-           id=Integer.parseInt(id_raw);
+            CVDAO cvd = new CVDAO();
+            id = Integer.parseInt(id_raw);
             if (action.equalsIgnoreCase("active")) {
-                
+
                 sld.deleteAllActiveSlot(id);
                 sld.setSlotInactiveToActivebyMentorId(id);
+                //check slot of mentor aviable or not to set mentor status to active or inactive
+                if (cvd.getCVbyMentorId(id)!=null) {
+                    //System.out.println("active ne");
+                    cvd.setStatusActiveMentor(id);
+                }
+                if (cvd.getCVbyMentorId(id)==null) {
+                    //System.out.println("deactive rui");
+                    cvd.setStatusInactiveMentor(id);
+                }
             }
             if (action.equalsIgnoreCase("deactive")) {
-                
+                cvd.setStatusInactiveMentor(id);
                 sld.deleteAllInactiveSlot(id);
                 sld.setSlotActiveToInctivebyMentorId(id);
             }
-           
-           
-           
-           response.sendRedirect("slotmanagercate?id="+id);
+
+            response.sendRedirect("slotmanagercate?id=" + id);
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
-        
-    } 
 
-    /** 
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -96,12 +106,13 @@ public class StatusSlotServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

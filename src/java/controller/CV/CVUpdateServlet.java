@@ -33,8 +33,8 @@ import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
  */
 @WebServlet(name = "CVUpdateServlet", urlPatterns = {"/cvupdate"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
-        maxFileSize = 1024 * 1024 * 5, // 5 MB
-        maxRequestSize = 1024 * 1024 * 10 // 10 MB
+        maxFileSize = 1024 * 1024 * 300, // 5 MB
+        maxRequestSize = 1024 * 1024 * 1000 // 10 MB
 )
 public class CVUpdateServlet extends HttpServlet {
 
@@ -148,13 +148,9 @@ public class CVUpdateServlet extends HttpServlet {
 
         float price;
         Part filePart = null;
-        try {
+        if (request.getPart("avatar").getSize()< (1024 * 1024 * 5)) {
+            System.out.println("nahnha");
             filePart = request.getPart("avatar");
-        } catch (Exception e) {
-            System.out.println("big");
-            userid = Integer.parseInt(userId_raw);
-            response.sendRedirect("cvupdate?id=15&errorMessage=File%20too%20large");
-            return;
         }
 
         try {
@@ -165,11 +161,7 @@ public class CVUpdateServlet extends HttpServlet {
             price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
-            if (filePart.getSize() > 1024 * 1024 * 5) {
-                System.out.println("big");
-                response.sendRedirect("cvupdate?id=" + userid + "&error=file_toobig");
-                return;
-            }
+            
 
             CVDAO cvdao = new CVDAO();
             String nameId = cvdao.getMentorByID(userid).getUsername();
@@ -236,9 +228,12 @@ public class CVUpdateServlet extends HttpServlet {
                 }
                 response.sendRedirect("cvlist?id=" + userid + "&mess=Your active CV has been updated and successfully saved as a draft!");
             }
-        } catch (Exception e) {
+        }catch (NullPointerException e) {
             System.out.println(e);
-
+            response.sendRedirect("cvlist?id=" + userId_raw + "&error=File size exceeds the 5 MB limit. Please upload a smaller file.");
+        }catch (Exception e) {
+            System.out.println(e);
+            response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to update your CV. Please try again.");
         }
 
     }

@@ -103,19 +103,19 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         requestDAO.rejectOtherMenteesForSameSlots(requestId);
                         //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
                         slotDAO.updateSlotStatusToUnavailable(slotId);
+//                      //Buoc 4: update balance
                         
-//                        //Buoc 4: Gui request payment toi Manager
-//                        paymentDAO.addPayment(payment);
-//                        //Buoc 5: Tru tien cua Mentee
-//                        walletDAO.updateWalletBalanceByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
-//                        //Buoc 6: Cong tien vao Manager
-//                        walletDAO.updateWalletBalanceByUsername("manager", walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
-                        
-                        //Buoc 4: Update Hold
+//                      //Buoc 5: update payment
+                        paymentDAO.updatePaymentStatus(requestId, "");
+                        //Buoc 6: Update Hold
                         walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        response.sendRedirect("listrequestofmentor");
                         break;
                     case "reject":
+                        //Buoc 1: cap nhat trang thai reject
                         requestDAO.updateStatusByMentor(requestId, "Reject");
+                        //Buoc 2: Update Hold
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() + requests.getPrice());
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":
@@ -127,7 +127,6 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         response.sendRedirect("listrequestofmentor");
                         break;
                 }
-                response.sendRedirect("listrequestofmentor");
             } else if (roleID == 2) {
                 response.sendRedirect("home");
                 return;

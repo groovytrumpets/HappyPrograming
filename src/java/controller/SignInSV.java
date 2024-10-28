@@ -111,9 +111,9 @@ public class SignInSV extends HttpServlet {
 
                     if (a.getRoleId() == 2) {
                         MenteeDAO mtd = new MenteeDAO();
-                        System.out.println(a.getUsername());
+                        //System.out.println(a.getUsername());
                         Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
-                        System.out.println(mentee.getFullName());
+                        //System.out.println(mentee.getFullName());
 
                         session.setAttribute("mentee", mentee);
                     }
