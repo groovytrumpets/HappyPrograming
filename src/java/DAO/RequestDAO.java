@@ -755,78 +755,51 @@ public class RequestDAO extends DBContext {
         }
     }
 
-    public List<Request> getRequestByStatusAndSearch(String search, String status) {
-        List<Request> listReq = new ArrayList<>();
-        String sql = " SELECT DISTINCT [RequestID]\n"
-                + "      ,[MentorID]\n"
-                + "      ,r.[MenteeID]\n"
-                + "      ,[Price]\n"
-                + "      ,[Note]\n"
-                + "      ,r.[CreateDate]\n"
-                + "      ,r.[Status]\n"
-                + "      ,[Title]\n"
-                + "      ,[Framework]\n"
-                + "      ,[StartDate]\n"
-                + "      ,[EndDate]\n"
-                + "      ,[SkillID]\n"
-                + "  FROM [dbo].[Request] r LEFT JOIN Mentee m \n"
-                + "  on r.MenteeID = m.MenteeID\n"
-                + "  Where (RequestID like ? \n"
-                + "  OR Title like ?\n"
-                + "  OR m.Username like ?)\n"
-                + "  and r.Status like ? \n"
-                + "  ORDER BY RequestID";
+    public int getCountRequestByStatusAndSearch(String search, String status, LocalDate startDate, LocalDate endDate) {
+        int count = 0;
+        String sql = "SELECT COUNT(DISTINCT r.RequestID) "
+                + "FROM [dbo].[Request] r LEFT JOIN Mentee m "
+                + "ON r.MenteeID = m.MenteeID "
+                + "WHERE (r.RequestID LIKE ? "
+                + "OR r.Title LIKE ? "
+                + "OR m.Username LIKE ?) "
+                + "AND r.Status LIKE ?";
+
+        sql += (startDate != null) ? " AND r.StartDate >= ?" : "";
+        sql += (endDate != null) ? " AND r.EndDate <= ?" : "";
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, 0);
+            int paramIndex = 1;
+            st.setInt(paramIndex++, 0);
             if (converSearch(search)) {
-                st.setInt(1, Integer.parseInt(search));
+                st.setInt(paramIndex, Integer.parseInt(search));
             }
+
             String searchPattern = "%" + search + "%";
-            st.setString(2, searchPattern);
-            st.setString(3, searchPattern);
+            st.setString(paramIndex++, searchPattern);
+            st.setString(paramIndex++, searchPattern);
             String statusPattern = "%" + status + "%";
-            st.setString(4, statusPattern);
+            st.setString(paramIndex++, statusPattern);
+            if (startDate != null) {
+                st.setDate(paramIndex++, java.sql.Date.valueOf(startDate));
+            }
+            if (endDate != null) {
+                st.setDate(paramIndex++, java.sql.Date.valueOf(endDate));
+            }
+
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Request curRequest = new Request();
-                curRequest.setRequestId(rs.getInt("RequestID"));
-                curRequest.setMentorId(rs.getInt("MentorID"));
-                curRequest.setMenteeId(rs.getInt("MenteeID"));
-                curRequest.setPrice(rs.getFloat("Price"));
-                curRequest.setNote(rs.getString("Note"));
-
-                Date createDateSql = rs.getDate("CreateDate");
-                if (createDateSql != null) {
-                    curRequest.setCreateDate(createDateSql.toLocalDate());
-                }
-
-                Date startDateSql = rs.getDate("StartDate");
-                if (startDateSql != null) {
-                    curRequest.setStartDate(startDateSql.toLocalDate());
-                }
-
-                Date endDateSql = rs.getDate("EndDate");
-                if (endDateSql != null) {
-                    curRequest.setEndDate(endDateSql.toLocalDate());
-                }
-
-                curRequest.setStatus(rs.getString("Status"));
-                curRequest.setTitle(rs.getString("Title"));
-                curRequest.setSkillId(rs.getInt("SkillID"));
-                curRequest.setPrice(rs.getFloat("Price"));
-                curRequest.setFramework(rs.getString("Framework"));
-
-                listReq.add(curRequest);
+            if(rs.next()){
+                count= rs.getInt(1);
             }
         } catch (NumberFormatException | SQLException e) {
             e.printStackTrace();
         }
 
-        return listReq;
+       return count;
     }
 
-    public List<Request> getRequestByStatusAndSearchPagination(String search, int page, int disNum, String status) {
+    public List<Request> getRequestByStatusAndSearchPagination(String search, int page, int disNum, String status, LocalDate startDate, LocalDate endDate) {
         List<Request> listReq = new ArrayList<>();
         String sql = "  SELECT DISTINCT [RequestID]\n"
                 + "      ,[MentorID]\n"
@@ -845,24 +818,35 @@ public class RequestDAO extends DBContext {
                 + "  Where (RequestID like ? \n"
                 + "  OR Title like ?\n"
                 + "  OR m.Username like ?)\n"
-                + "  and r.Status like ? \n"
-                + "  ORDER BY RequestID\n"
+                + "  and r.Status like ? \n";
+
+        sql += (startDate != null) ? " and r.StartDate >= ?" : "";
+        sql += (endDate != null) ? " and r.EndDate <= ?" : "";
+        sql += "  ORDER BY RequestID\n"
                 + "  OFFSET ? ROWS\n"
                 + "  FETCH NEXT ? ROW ONLY";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, 0);
+            int paramIndex = 1;
+            st.setInt(paramIndex++, 0);
             if (converSearch(search)) {
-                st.setInt(1, Integer.parseInt(search));
+                st.setInt(paramIndex, Integer.parseInt(search));
             }
+
             String searchPattern = "%" + search + "%";
-            st.setString(2, searchPattern);
-            st.setString(3, searchPattern);
+            st.setString(paramIndex++, searchPattern);
+            st.setString(paramIndex++, searchPattern);
             String statusPattern = "%" + status + "%";
-            st.setString(4, statusPattern);
+            st.setString(paramIndex++, statusPattern);
+            if (startDate != null) {
+                st.setDate(paramIndex++, java.sql.Date.valueOf(startDate));
+            }
+            if (endDate != null) {
+                st.setDate(paramIndex++, java.sql.Date.valueOf(endDate));
+            }
             int numOffSet = (page - 1) * disNum;
-            st.setInt(5, numOffSet);
-            st.setInt(6, disNum);
+            st.setInt(paramIndex++, numOffSet);
+            st.setInt(paramIndex++, disNum);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
@@ -1022,6 +1006,7 @@ public class RequestDAO extends DBContext {
             return false;
         }
     }
+
     public boolean setSlotStatusbyRequestSlotItemAvailable(int requestId) throws SQLException {
         String query = """
                    UPDATE Slot
@@ -1213,6 +1198,11 @@ public class RequestDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-
+        RequestDAO act = new RequestDAO();
+        LocalDate start = LocalDate.parse("2024-10-19");
+        LocalDate end = LocalDate.parse("2024-11-09");
+        List<Request> list = act.getRequestByStatusAndSearchPagination("b", 1, 10, "", start, end);
+        int count = act.getCountRequestByStatusAndSearch("a", "", start, end);
+        System.out.println(count);
     }
 }

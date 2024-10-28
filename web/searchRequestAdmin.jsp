@@ -89,8 +89,9 @@
                                 </div>
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
-
-                                        <input type="text" name="search" placeholder="Search" value="${search}" class="form-control" style="flex: 1; margin-right: 10px;">
+                                        <input type="hidden" name="status" value="${requestScope.status}">
+                                        <input type="hidden" name="page" value="${requestScope.indexPage}">
+                                        <input type="text" name="search" placeholder="Search"  value="${search}" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
@@ -115,9 +116,12 @@
                                     <input type="hidden" name="page" value="${requestScope.indexPage}">
                                     <input type="hidden" name="numDis" value="${requestScope.numDis}">
                                     <input type="hidden" name="search" value="${requestScope.search}">
-                                    <label> Start time:</label><input type="date" name="start" value="${start}"></br>
-                                    <label> End time:</label><input type="date" name="end" value="${end}">
+                                    <input type="hidden" name="status" value="${requestScope.status}">
+                                    <label> Start time:</label><input type="date" name="start" value="${requestScope.start}"></br>
+                                    <label> End time:</label><input type="date" name="end" value="${requestScope.end}">
+                                     <input type="reset" value="Reset Filters">
                                     <button type="submit" class="fa fa-search" style="padding: 10px;"/>
+                                   
                                 </form> 
                             </div>
                             <div class="widget-inner">
@@ -167,11 +171,14 @@
                                         <c:choose>
                                             <c:when test="${requestScope.status != null}">
                                                 <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <form action="searchRequestListAdmin" method="post" style="display: inline;">
+                                                    <form action="searchRequestListAdmin" method="get" style="display: inline;">
                                                         <input type="hidden" name="search" value="${requestScope.search}">
                                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
                                                         <input type="hidden" name="status" value="${requestScope.status}">
+                                                        <input type="hidden" name="start" value="${requestScope.start}">
+                                                        <input type="hidden" name="end" value="${requestScope.end}">
                                                         <button type="submit" name="page" value="${i}">${i}</button>
+                                                        
                                                     </form>
                                                 </c:forEach>
                                             </c:when>

@@ -111,8 +111,8 @@
                             </div>
                             <div>
                                 <form method="get" action="searchRequestListAdmin"  align-items: center;">
-                                    <label> Start time:</label><input type="date" name="start" value="${start}"></br>
-                                    <label> End time:</label><input type="date" name="end" value="${end}">
+                                    <label> Start time:</label><input type="date" name="start" value="${start}" required></br>
+                                    <label> End time:</label><input type="date" name="end" value="${end}" required>
                                     <button type="submit" class="fa fa-search" style="padding: 10px;"/>
                                 </form> 
                             </div>
