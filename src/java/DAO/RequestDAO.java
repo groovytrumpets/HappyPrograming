@@ -338,7 +338,7 @@ public class RequestDAO extends DBContext {
         }
     }
 
-    public int getNumOfMentorEachMentee(int menteeId) {
+    public int getNumOfValidMentorEachMentee(int menteeId) {
         int count = 0;
         String sql = "select COUNT(DISTINCT MentorID) from Request \n"
                 + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
@@ -356,7 +356,7 @@ public class RequestDAO extends DBContext {
         return count;
     }
 
-    public int getNumOfSkillEachMentee(int menteeId) {
+    public int getNumOfValidSkillEachMentee(int menteeId) {
         int count = 0;
         String sql = "select COUNT(DISTINCT SkillID) from Request \n"
                 + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
@@ -374,7 +374,7 @@ public class RequestDAO extends DBContext {
         return count;
     }
 
-    public List<Request> getRequestByMenteeID(int menteeId) {
+    public List<Request> getValidRequestByMenteeID(int menteeId) {
         List<Request> listReq = new ArrayList<>();
         String sql = "SELECT [RequestID]\n"
                 + "      ,[MentorID]\n"

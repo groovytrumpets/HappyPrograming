@@ -85,6 +85,7 @@ public class MentorDAO extends DBContext {
                 mentor.setFullName(rs.getString("FullName"));
                 mentor.setGender(rs.getString("Gender"));
                 mentor.setStatus(rs.getString("Status"));
+                mentor.setMentorId(rs.getInt("MentorID"));
             }
         } catch (SQLException e) {
 
