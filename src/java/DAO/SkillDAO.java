@@ -52,7 +52,7 @@ public class SkillDAO extends DBContext {
     public List<Skill> getListOfAllSkill() {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT *    FROM [dbo].[Skill]\n"
-                     + "where Status = 'active'";
+                + "where Status = 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -78,6 +78,41 @@ public class SkillDAO extends DBContext {
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
+        }
+
+        return listSkill;
+    }
+
+    public List<Skill> getListOfAllSkillExceptId(int excludedId) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Skill] WHERE Status = 'active' AND SkillID <> ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, excludedId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider proper logging here
         }
 
         return listSkill;

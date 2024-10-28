@@ -205,7 +205,7 @@
                                                             <c:set var="isSelected" value="" />
 
                                                             <!-- Check if status is 'Unavailable' -->
-                                                            <c:if test="${s.status == 'unavaiable'}">
+                                                            <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
 
