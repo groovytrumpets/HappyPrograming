@@ -23,7 +23,7 @@ public class SlotDAO extends DBContext {
         List<Slot> slots = new ArrayList<>();
         String sql = "SELECT SlotID, MentorID, StartTime, EndTime, DayInWeek, Status\n"
                 + "                 FROM Slot \n"
-                + "                 WHERE MentorID = ? and Status like 'unavailable' or  Status like 'available'\n"
+                + "                 WHERE MentorID = ? and (Status like 'unavailable' or  Status like 'available')\n"
                 + "                \n"
                 + "                              ORDER BY CASE DayInWeek \n"
                 + "                                WHEN 'Monday' THEN 1 \n"

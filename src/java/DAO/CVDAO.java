@@ -991,7 +991,7 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request";
+        String sql = "select * from Request order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -1060,9 +1060,44 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofCompleteRequest() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where Status='Paid' or Status='Completed'";
+        String sql = "select * from Request where Status='Paid' or Status='Completed' order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
+    
+    public List<Request> getListofCompleteRequestbyRequestId(int id) {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "select * from Request where RequestID =? and (Status='Paid' or Status='Completed') order by RequestID desc";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
@@ -1174,7 +1209,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep1(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='3' or Status='4'";
+        String sql = "select * from Payment where RequestID =? and Status='2'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1205,7 +1240,7 @@ public class CVDAO extends DBContext {
     public List<Payment> getListofPaymentbyRequestIdStep2(int id) {
         List<Payment> paymentList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select * from Payment where RequestID =? and Status='4'";
+        String sql = "select * from Payment where RequestID =? and Status='3'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
