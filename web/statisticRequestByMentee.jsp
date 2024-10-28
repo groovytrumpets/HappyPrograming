@@ -88,19 +88,28 @@
                                     <thead>
                                         <tr>
                                             <th>Request Title</th>
+                                            <th>Mentor Name</th>
+                                            <th>Price</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
-                                            <th>Total Hours for Request</th>
+                                            <th>Total Hours each Request</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:forEach var="request" items="${listRequests}" varStatus="status">
-                                            <tr>
-                                                <td>${request.title}</td>
-                                                <td>${request.startDate}</td>
-                                                <td>${request.endDate}</td>
-                                                <td>${hoursPerRequestList[status.index]}</td>
-                                            </tr>
+                                            <c:forEach var="m" items="${mentorlist}" varStatus="status">
+                                                <c:if test="${request.mentorId==m.mentorId}">
+                                                    <tr>
+                                                        <td>${request.title}</td>
+                                                        <td>${m.fullName}</td>
+                                                        <td>${request.price}</td>
+                                                        <td>${request.startDate}</td>
+                                                        <td>${request.endDate}</td>
+                                                        <td>${hoursPerRequestList[status.index]}</td>
+                                                    </tr> 
+                                                </c:if>
+
+                                            </c:forEach>
                                         </c:forEach>
                                     </tbody>
                                 </table>
