@@ -62,9 +62,7 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <!-- header start -->
-        <jsp:include page="headerAdmin.jsp" />
-        <!-- Left sidebar menu end -->
+        <jsp:include page="headerMentee.jsp" />
 
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -89,10 +87,7 @@
                             </div>
 
                             <div class="widget-inner">
-                                <div class="breadcrumb-title"> Request ID: ${request.requestId}</div>
-                                <div>Request Status: ${request.status}</div>
-                                <div class="seperator"></div>
-                                <br>
+                                <div>Course Process: ${request.status}</div><br>
                                 <div style="display: flex" class="row">
                                     <div class="col-md-6">
                                         <h6>Mentor</h6>
@@ -115,68 +110,63 @@
                                             <h6>Skill info</h6>
                                         </div>
                                     </div>
-                                    <div class="form-group col-6">
-                                        <p>Skill ID: ${skill.skillId}</p>
-                                    </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-12">
                                         <p>Skill Name: ${skill.skillName}</p>
                                     </div>
-                                    <div class="form-group col-6">
-                                        <p>Status: ${skill.status}</p>
-                                    </div>
-                                    <div>
-                                        <label>Image: </label>&nbsp;
-                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px">
+                                    <div class="form-group col-12">
+                                        <p>Image: <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></p>&nbsp;                                      
                                     </div>
                                 </div>
                                 <div class="seperator"></div>
-                                <div class="header" style="text-align: center"><h5>Schedule</h5></div>
+                                <div class="header"><h5>Schedule</h5></div><br>
                                 <div>
                                     <p>Start date: ${request.startDate}</p>
                                     <p>End date: ${request.endDate}</p></div>
 
                                 <div class="row">
-                                    <form action="requestDetailAdmin" method="get">
-                                        <input type="hidden" name="requestID" value="${request.requestId}">
-                                        <label>Start date:</label>
-                                        <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
-                                    </form>
-                                    <table>
-                                        <thead>
-                                            <tr>
+                                    <div class="col-12">
+                                        <div class="ml-auto">
+                                            <form action="requestDetailAdmin" method="get">
+                                                <input type="hidden" name="requestID" value="${request.requestId}">
+                                                <label>Start date:</label>
+                                                <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
+                                            </form><br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Monday</th>
+                                                        <th>Tuesday</th>
+                                                        <th>Wednesday</th>
+                                                        <th>Thursday</th>
+                                                        <th>Friday</th>
+                                                        <th>Saturday</th>
+                                                        <th>Sunday</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <c:forEach var="day" items="${daysOfWeek}">
+                                                            <td>
+                                                                <c:if test="${not empty dateStartDay[day]}">
+                                                                    <div>${dateStartDay[day]}</div>
+                                                                </c:if>
+                                                                <c:if test="${not empty slotsByDay[day]}">
+                                                                    <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                        <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                    </c:forEach>
 
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <c:forEach var="day" items="${daysOfWeek}">
-                                                    <td>
-                                                        <c:if test="${not empty dateStartDay[day]}">
-                                                            <div>${dateStartDay[day]}</div>
-                                                        </c:if>
-                                                        <c:if test="${not empty slotsByDay[day]}">
-                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                <div>${slot.startTime} - ${slot.endTime}</div>
-                                                            </c:forEach>
-
-                                                        </c:if>
-                                                        <c:if test="${empty slotsByDay[day]}">
-                                                            No slots available
-                                                        </c:if>
-                                                    </td>
-                                                </c:forEach>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                                </c:if>
+                                                                <c:if test="${empty slotsByDay[day]}">
+                                                                    No slots available
+                                                                </c:if>
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
