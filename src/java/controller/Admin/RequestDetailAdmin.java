@@ -109,7 +109,7 @@ public class RequestDetailAdmin extends HttpServlet {
         CV curCV = actCV.getCVbyMentorId(curMentor.getMentorId());
         request.setAttribute("cv", curCV);
         String date_raw = request.getParameter("start");
-        LocalDate date = curRequest.getCreateDate();
+        LocalDate date = curRequest.getStartDate();
         if (date_raw != null && !date_raw.isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
