@@ -180,7 +180,7 @@
                                                                             <p class="m-b0">Description: ${cvs.professionIntroduction}</p>
                                                                             <p class="m-b0">Year of experience: ${cvs.yearOfExperience} years</p>
                                                                             <p class="m-b0">Price: ${cvs.price} VND</p>
-                                                                            <div class="instructor-info">
+                                                                            <div class="instructor-info" style="margin-left: 60px">
                                                                                 <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
                                                                                 <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
                                                                             </div>
