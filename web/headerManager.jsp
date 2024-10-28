@@ -83,7 +83,7 @@
                     <!-- header left menu start -->
                     <ul class="ttr-header-navigation">
                         <li>
-                            <a href="home" class="ttr-material-button ttr-submenu-toggle">HOME</a>
+                            <a href="cvmanager" class="ttr-material-button ttr-submenu-toggle">MANAGER</a>
                         </li>
                         <li>
                             <a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
@@ -178,7 +178,7 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
+                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets\images\userprofile.png" width="32" height="32"></span></a>
                             <div class="ttr-header-submenu">
                                 <ul>
                                     <li><a href="user-profile.html">My profile</a></li>
@@ -255,9 +255,9 @@
                 <nav class="ttr-sidebar-navi">
                     <ul>
                         <li>
-                            <a href="index.html" class="ttr-material-button">
+                            <a href="home" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
+                                <span class="ttr-label">DashBoard</span>
                             </a>
                         </li>
                         <li>
@@ -269,34 +269,34 @@
                         <li>
                             <a href="cvmanager" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-file"></i></span>
-                                <span class="ttr-label">CV Manager</span>
+                                <span class="ttr-label">Mentor Management</span>
                             </a>
                         </li>
                         <li>
                             <a href="paymentmanager" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-money"></i></span>
-                                <span class="ttr-label">Payment Manager</span>
+                                <span class="ttr-label">Payment Management</span>
                             </a>
                         </li>
-                        <li>
+<!--                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-                                <span class="ttr-label">Request Manager</span>
+                                <span class="ttr-label">Request Management</span>
                             </a>
-                        </li>
-                        <li>
+                        </li>-->
+<!--                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
-                                <span class="ttr-label">Feedback manager</span>
+                                <span class="ttr-label">Feedback Management</span>
                             </a>
-                        </li>
+                        </li>-->
                         <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
                                 <span class="ttr-label">Add listing</span>
                             </a>
                         </li>
-                        <li>
+<!--                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-user"></i></span>
                                 <span class="ttr-label">My Profile</span>
@@ -310,7 +310,7 @@
                                     <a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Teacher Profile</span></a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li class="ttr-seperate"></li>
                     </ul>
                     <!-- sidebar menu end -->
