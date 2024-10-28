@@ -125,7 +125,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
     //tinh tong so gio cua 1 request
     public float getTotalHourOfRequest(Request request) {
         SlotDAO slotDAO = new SlotDAO();
-        List<Slot> listSlots = slotDAO.getSlotByRequestId(request.getRequestId());
+        List<Slot> listSlots = slotDAO.getValidSlotByRequestId(request.getRequestId());
         float totalHours = 0;
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();

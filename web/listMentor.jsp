@@ -57,6 +57,25 @@
                 <!-- Mentor List Section -->
                 <div class="courses-filter">
                     <div class="container">
+                        <div style="display: flex;justify-content: center">
+                            <c:if test="${not empty requestScope.error}">
+                                <div class="alert alert-danger text-center d-inline-block" role="alert" >
+                                    ${requestScope.error}
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty requestScope.mess}">
+                                <a href="#" class="alert alert-success text-center d-inline-block" role="alert" >
+                                    ${requestScope.mess}
+                                </a>
+                            </c:if>
+                        </div>
+                        <div class="list-inline">
+                            <c:if test="${empty mentorlist}">
+                                <div class="alert alert-warning" style="width: 425px">
+                                    <strong>You need to complete at least a course before reviewing!</strong>
+                                </div>
+                            </c:if>
+                        </div>
                         <div class="row">
                             <div class="col-lg-9 col-md-8 col-sm-12">
                                 <div class="container">
@@ -67,13 +86,7 @@
                                 <div class="clearfix">
 
                                     <div class="container">
-                                        <div class="list-inline">
-                                            <c:if test="${empty mentorlist}">
-                                                <div class="alert alert-warning" style="width: 425px">
-                                                    <strong>You need to complete at least a course before reviewing!</strong>
-                                                </div>
-                                            </c:if>
-                                        </div>
+
                                     </div>
 
                                     <ul id="masonry" class="ttr-gallery-listing magnific-image row">
