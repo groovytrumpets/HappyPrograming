@@ -54,37 +54,86 @@
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <style>
+            .instructor-bx {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%; /* Ensure cards stretch to fill the space */
+                border: 1px solid #ddd; /* Optional: add a border for clarity */
+                border-radius: 5px; /* Optional: round the corners */
+                padding: 15px; /* Add some padding */
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+            }
 
+            .instructor-author img {
+                max-height: 150px; /* Set a max height for images */
+                object-fit: cover; /* Ensure images maintain their aspect ratio */
+                width: 100%; /* Ensure images fill the container */
+                border-radius: 5px; /* Round the corners of the image */
+            }
+
+            .instructor-info {
+                flex-grow: 1; /* Allow info section to grow and take available space */
+            }
+
+            .instructor-info h6 {
+                margin-top: 10px; /* Add some margin to the title */
+                margin-bottom: 10px; /* Add some margin to the title */
+            }
+
+            .instructor-info p {
+                margin-bottom: 5px; /* Reduce spacing between paragraphs */
+            }
+
+            .btn {
+                margin-right: 5px; /* Space between buttons */
+            }
+        </style>
     </head>
     <body id="bg">
         <div class="page-wraper">
             <div id="loading-icon-bx"></div>
             <!-- Header Top ==== -->
-            header class="header rs-nav">
-            <jsp:include page="header.jsp" />
-        </header>
-        <!-- header END ==== -->
-        <!-- Content -->
-        <div class="page-content bg-white">
-            <!-- inner page banner -->
-            <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
-                <div class="container">
-                    <div class="page-banner-entry">
-                        <h1 class="text-white">Skill Details</h1>
+            <header class="header rs-nav">
+                <jsp:include page="header.jsp" />
+            </header>
+            <!-- header END ==== -->
+            <!-- Content -->
+            <div class="page-content bg-white">
+                <!-- inner page banner -->
+                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
+                    <div class="container">
+                        <div class="page-banner-entry">
+                            <h1 class="text-white">Skill Details</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Breadcrumb row -->
-            <div class="breadcrumb-row">
-                <div class="container">
-                    <ul class="list-inline">
+                <!-- Breadcrumb row -->
+                <div class="breadcrumb-row">
+                    <div class="container">
+                        <ul class="list-inline">
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <!-- Breadcrumb row END -->
-            <!-- inner page banner END -->
-            <div class="content-block">
+                <!-- Breadcrumb row END -->
+
+
+                <!-- inner page banner END -->
+                <div class="content-block">
+
+
+                    <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#recentCoursesCarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
                 <!-- About Us -->
                 <div class="section-area section-sp1">
                     <div class="container">
@@ -108,40 +157,108 @@
                                     </div>
                                 </div>
 
+
                                 <div class="" id="instructor">
                                     <h4>Mentor</h4>
-                                    <c:forEach items="${mentor}" var="mentors">
-                                        <c:forEach items="${cv}" var="cvs">
-                                            <c:if test="${mentors.mentorId == cvs.mentorId}">
-                                                <div class="instructor-bx">
-                                                    <div class="instructor-author">
-                                                        <img src="getCVimage?id=${cvs.cvId}" alt="mentor image">
-                                                    </div>
-                                                    <div class="instructor-info">
-                                                        <h6>${mentors.fullName} </h6>
-                                                        <p class="m-b0">
-                                                            Education: ${cvs.education}
-                                                        </p>
-                                                        <p class="m-b0">
-                                                            Description: ${cvs.professionIntroduction}
-                                                        </p>
-                                                        <p class="m-b0">
-                                                            Year of experience: ${cvs.yearOfExperience} years
-                                                        </p>
-                                                        <p class="m-b0">
-                                                            Price: ${cvs.price} VND
-                                                        </p>
-                                                        <div class="instructor-info">
-                                                            <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
-                                                            <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl ">Rent mentor</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:forEach>
+                                    <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <c:forEach items="${mentor}" var="mentors" varStatus="loop">
+                                                <c:forEach items="${cv}" var="cvs">
+                                                    <c:if test="${mentors.mentorId == cvs.mentorId}">
+                                                        <c:if test="${loop.index % 2 == 0}">
+                                                            <div class="carousel-item ${loop.index == 0 ? 'active' : ''}" >
+                                                                <div class="row">
+                                                                </c:if>
+                                                                <div class="col-md-6">
+                                                                    <div class="instructor-bx" >
+                                                                        <div class="instructor-author">
+                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100">
+                                                                        </div>
+                                                                        <div class="instructor-info">
+                                                                            <h6>${mentors.fullName}</h6>
+                                                                            <p class="m-b0">Education: ${cvs.education}</p>
+                                                                            <p class="m-b0">Description: ${cvs.professionIntroduction}</p>
+                                                                            <p class="m-b0">Year of experience: ${cvs.yearOfExperience} years</p>
+                                                                            <p class="m-b0">Price: ${cvs.price} VND</p>
+                                                                            <div class="instructor-info" style="margin-left: 60px">
+                                                                                <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
+                                                                                <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <c:if test="${loop.index % 2 == 1 || loop.index == mentor.size() - 1}">
+                                                                </div> 
+                                                            </div> 
+                                                        </c:if>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:forEach>
+                                        </div>
 
-                                </div>                       
+                                        <a class="carousel-control-prev" href="#mentorCarousel" role="button" data-slide="prev">
+                                            <span class="ti-arrow-left black" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#mentorCarousel" role="button" data-slide="next">
+                                            <span class="ti-arrow-right black" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </div>             
+
+                                <div id="instructor">
+                                    <h5 class="widget-title style-1">Other Skills</h5>
+                                    <div id="recentCoursesCarousel" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <c:forEach items="${skill}" var="list2" varStatus="status">
+                                                <!-- Start a new carousel item for every 4 items -->
+                                                <c:if test="${status.index % 4 == 0}">
+                                                    <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
+                                                        <div class="row">
+                                                        </c:if>
+
+                                                        <div class="col-6 col-md-3">
+                                                            <div class="widget-post clearfix">
+                                                                <div class="ttr-post-media">
+                                                                    <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">
+                                                                        <img src="data:image/jpeg;base64,${list2.base64ImageFile}" style="width: 200px; height: 200px" alt="${list2.skillName}">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="ttr-post-info">
+                                                                    <div class="ttr-post-header">
+                                                                        <h6 class="post-title">
+                                                                            <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">${list2.skillName}</a>
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="ttr-post-meta">
+                                                                        <div style="display: flex; align-items: center;">
+                                                                            <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}" class="btn-outline-primary btn-success">Read More</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Close the carousel item after every 4 items or if it's the last item -->
+                                                        <c:if test="${(status.index + 1) % 4 == 0 || status.index == skill.size() - 1}">
+                                                        </div> <!-- Close row -->
+                                                    </div> <!-- Close carousel-item -->
+                                                </c:if>
+                                            </c:forEach>
+                                        </div> <!-- Close carousel-inner -->
+
+                                        <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-slide="prev">
+                                            <span class="ti-arrow-left black" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#recentCoursesCarousel" role="button" data-slide="next">
+                                            <span class="ti-arrow-right black" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </div>
+
 
                             </div>
 
@@ -178,23 +295,6 @@
                 </div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-12 col-sm-12 footer-col-4">
-                            <div class="widget">
-                                <h5 class="footer-title">Sign Up For A Newsletter</h5>
-                                <p class="text-capitalize m-b20">Weekly Breaking news analysis and cutting edge advices on job searching.</p>
-                                <div class="subscribe-form m-b20">
-                                    <form class="subscription-form" action="http://educhamp.themetrades.com/demo/assets/script/mailchamp.php" method="post">
-                                        <div class="ajax-message"></div>
-                                        <div class="input-group">
-                                            <input name="email" required="required"  class="form-control" placeholder="Your Email Address" type="email">
-                                            <span class="input-group-btn">
-                                                <button name="submit" value="Submit" type="submit" class="btn"><i class="fa fa-arrow-right"></i></button>
-                                            </span> 
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-12 col-lg-5 col-md-7 col-sm-12">
                             <div class="row">
                                 <div class="col-4 col-lg-4 col-md-4 col-sm-4">

@@ -22,18 +22,18 @@ public class SlotDAO extends DBContext {
     public List<Slot> getSlotsByMentorId(int mentorId) {
         List<Slot> slots = new ArrayList<>();
         String sql = "SELECT SlotID, MentorID, StartTime, EndTime, DayInWeek, Status\n"
-                + "FROM Slot \n"
-                + "WHERE MentorID = ? and Status like 'unavaiable' or  Status like 'avaiable'\n"
-                + "\n"
-                + "               ORDER BY CASE DayInWeek \n"
-                + "                WHEN 'Monday' THEN 1 \n"
-                + "                WHEN 'Tuesday' THEN 2 \n"
-                + "                WHEN 'Wednesday' THEN 3 \n"
-                + "                WHEN 'Thursday' THEN 4 \n"
-                + "                WHEN 'Friday' THEN 5 \n"
-                + "                WHEN 'Saturday' THEN 6 \n"
-                + "                WHEN 'Sunday' THEN 7 \n"
-                + "                ELSE 8 END";
+                + "                 FROM Slot \n"
+                + "                 WHERE MentorID = ? and Status like 'unavailable' or  Status like 'available'\n"
+                + "                \n"
+                + "                              ORDER BY CASE DayInWeek \n"
+                + "                                WHEN 'Monday' THEN 1 \n"
+                + "                               WHEN 'Tuesday' THEN 2 \n"
+                + "                                WHEN 'Wednesday' THEN 3 \n"
+                + "                                WHEN 'Thursday' THEN 4 \n"
+                + "                               WHEN 'Friday' THEN 5 \n"
+                + "                               WHEN 'Saturday' THEN 6 \n"
+                + "                               WHEN 'Sunday' THEN 7 \n"
+                + "                                ELSE 8 END;";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, mentorId);
@@ -361,38 +361,39 @@ public class SlotDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
             int query = st.executeUpdate();
-            return query>0;
+            return query > 0;
         } catch (SQLException e) {
             System.out.println(e);
-        return false;
+            return false;
         }
     }
+
     public boolean deleteAllActiveSlot(int mentorId) {
         String sql = "DELETE FROM [dbo].[Slot] WHERE MentorID=? and Status='available'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
             int query = st.executeUpdate();
-            return query>0;
+            return query > 0;
         } catch (SQLException e) {
             System.out.println(e);
-        return false;
+            return false;
         }
     }
 
-  
     public boolean setSlotInactiveToActivebyMentorId(int mentorId) {
         String sql = "update Slot set Status ='available' where MentorID=? and Status='inactive'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
             int query = st.executeUpdate();
-            return query>0;
+            return query > 0;
         } catch (SQLException e) {
             System.out.println(e);
         }
         return false;
     }
+
     public boolean setSlotActiveToInctivebyMentorId(int mentorId) {
         String sql = "update Slot set Status ='inactive' where MentorID=? and Status='available'";
         try {
