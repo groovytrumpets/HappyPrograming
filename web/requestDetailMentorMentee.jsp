@@ -114,58 +114,59 @@
                                         <p>Skill Name: ${skill.skillName}</p>
                                     </div>
                                     <div class="form-group col-12">
-                                        <p>Image: <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></p>&nbsp;
-                                        
+                                        <p>Image: <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></p>&nbsp;                                      
                                     </div>
                                 </div>
                                 <div class="seperator"></div>
-                                <div class="header"><h5>Schedule</h5></div>
+                                <div class="header"><h5>Schedule</h5></div><br>
                                 <div>
                                     <p>Start date: ${request.startDate}</p>
                                     <p>End date: ${request.endDate}</p></div>
 
                                 <div class="row">
-                                    <form action="requestDetailAdmin" method="get">
-                                        <input type="hidden" name="requestID" value="${request.requestId}">
-                                        <label>Start date:</label>
-                                        <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
-                                    </form>
-                                    <table>
-                                        <thead>
-                                            <tr>
+                                    <div class="col-12">
+                                        <div class="ml-auto">
+                                            <form action="requestDetailAdmin" method="get">
+                                                <input type="hidden" name="requestID" value="${request.requestId}">
+                                                <label>Start date:</label>
+                                                <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
+                                            </form><br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Monday</th>
+                                                        <th>Tuesday</th>
+                                                        <th>Wednesday</th>
+                                                        <th>Thursday</th>
+                                                        <th>Friday</th>
+                                                        <th>Saturday</th>
+                                                        <th>Sunday</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <c:forEach var="day" items="${daysOfWeek}">
+                                                            <td>
+                                                                <c:if test="${not empty dateStartDay[day]}">
+                                                                    <div>${dateStartDay[day]}</div>
+                                                                </c:if>
+                                                                <c:if test="${not empty slotsByDay[day]}">
+                                                                    <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                        <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                    </c:forEach>
 
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <c:forEach var="day" items="${daysOfWeek}">
-                                                    <td>
-                                                        <c:if test="${not empty dateStartDay[day]}">
-                                                            <div>${dateStartDay[day]}</div>
-                                                        </c:if>
-                                                        <c:if test="${not empty slotsByDay[day]}">
-                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                <div>${slot.startTime} - ${slot.endTime}</div>
-                                                            </c:forEach>
-
-                                                        </c:if>
-                                                        <c:if test="${empty slotsByDay[day]}">
-                                                            No slots available
-                                                        </c:if>
-                                                    </td>
-                                                </c:forEach>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                                </c:if>
+                                                                <c:if test="${empty slotsByDay[day]}">
+                                                                    No slots available
+                                                                </c:if>
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
