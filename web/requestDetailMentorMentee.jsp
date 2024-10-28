@@ -72,7 +72,7 @@
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                         <li>User</li>
-                        <li>Mentor</li>
+                        <li>Request Detail</li>
 
                     </ul>
                 </div>	
@@ -89,40 +89,73 @@
                             <div class="widget-inner">
                                 <div>Course Process: ${request.status}</div><br>
                                 <div style="display: flex" class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <h6>Mentor</h6>
-                                        <p>Mentor ID: ${mentor.mentorId}</p>
-                                        <p>Full name: ${mentor.fullName}</p>
-                                        <p>Date of birth: ${mentor.dateOfBirth}</p>
-                                        <p>Profession: ${cv.jobProfession}</p>
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Mentor ID</th>
+                                                    <th scope="col">Full name</th>
+                                                    <th scope="col">Date of birth</th>                                               
+                                                    <th scope="col">Profession</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${mentor.mentorId}</td>
+                                                    <td>${mentor.fullName}</td>
+                                                    <td>${mentor.dateOfBirth}</td>
+                                                    <td>${cv.jobProfession}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <h6>Mentee</h6>
-                                        <p>Mentee ID: ${mentee.menteeId}</p>
-                                        <p>Full name: ${mentee.fullName}</p>
-                                        <p>Date of birth: ${mentee.dateOfBirth}</p>
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Mentee ID</th>
+                                                    <th scope="col">Full name</th>
+                                                    <th scope="col">Date of birth</th>                                               
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${mentee.menteeId}</td>
+                                                    <td>${mentee.fullName}</td>
+                                                    <td>${mentee.dateOfBirth}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="seperator"></div>
+                                <div class="seperator"></div><br>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-7">
                                         <div class="ml-auto">
                                             <h6>Skill info</h6>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <p>Skill Name: ${skill.skillName}</p>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <p>Image: <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></p>&nbsp;                                      
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Skill Name</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Start date</th>
+                                                    <th scope="col">End date</th>  
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${skill.skillName}</td>
+                                                    <td><img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></td>
+                                                    <td>${request.startDate}</td>
+                                                    <td>${request.endDate}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="seperator"></div>
-                                <div class="header"><h5>Schedule</h5></div><br>
-                                <div>
-                                    <p>Start date: ${request.startDate}</p>
-                                    <p>End date: ${request.endDate}</p></div>
-
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="ml-auto">
@@ -195,22 +228,22 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-                                            // Pricing add
-                                            function newMenuItem() {
-                                                var newElem = $('tr.list-item').first().clone();
-                                                newElem.find('input').val('');
-                                                newElem.appendTo('table#item-add');
-                                            }
-                                            if ($("table#item-add").is('*')) {
-                                                $('.add-item').on('click', function (e) {
-                                                    e.preventDefault();
-                                                    newMenuItem();
-                                                });
-                                                $(document).on("click", "#item-add .delete", function (e) {
-                                                    e.preventDefault();
-                                                    $(this).parent().parent().parent().parent().remove();
-                                                });
-                                            }
+                                                    // Pricing add
+                                                    function newMenuItem() {
+                                                        var newElem = $('tr.list-item').first().clone();
+                                                        newElem.find('input').val('');
+                                                        newElem.appendTo('table#item-add');
+                                                    }
+                                                    if ($("table#item-add").is('*')) {
+                                                        $('.add-item').on('click', function (e) {
+                                                            e.preventDefault();
+                                                            newMenuItem();
+                                                        });
+                                                        $(document).on("click", "#item-add .delete", function (e) {
+                                                            e.preventDefault();
+                                                            $(this).parent().parent().parent().parent().remove();
+                                                        });
+                                                    }
 
         </script>
 
