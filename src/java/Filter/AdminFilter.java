@@ -103,7 +103,7 @@ public class AdminFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         //Start
-       /*
+/*
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
@@ -119,31 +119,43 @@ public class AdminFilter implements Filter {
             return;
         }
         // Check access for admin pages
-        if (isUrlAdmin(url) && (user == null || user.getRoleId() != 3)) {
+        if (isUrlAdmin(url) && user == null ) {
+            httpResponse.sendRedirect("signin");
+            return;
+        } else if (isUrlAdmin(url) && user.getRoleId() != 3) {
             httpResponse.sendRedirect("home");
             return;
         }
 
         // Check access for mentor pages
-        if (isUrlMentor(url) && (user == null || user.getRoleId() != 1)) {
+        if (isUrlMentor(url) && user == null ) {
+            httpResponse.sendRedirect("signin");
+            return;
+        }else if (isUrlMentor(url) && user.getRoleId() != 1) {
             httpResponse.sendRedirect("home");
             return;
         }
 
         // Check access for mentee pages
-        if (isUrlMentee(url) && (user == null || user.getRoleId() != 2)) {
+        if (isUrlMentee(url) && user == null ) {
+            httpResponse.sendRedirect("signin");
+            return;
+        }else if (isUrlMentee(url) && user.getRoleId() != 2) {
             httpResponse.sendRedirect("home");
             return;
         }
 
         // Check access for manager pages
-        if (isUrlManager(url) && (user == null || user.getRoleId() != 4)) {
+        if (isUrlManager(url) && user == null ) {
+            httpResponse.sendRedirect("signin");
+            return;
+        }else if (isUrlManager(url) && user.getRoleId() != 4) {
             httpResponse.sendRedirect("home");
             return;
         }
-        */
-        
+
         //End
+        */
         if (debug) {
             log("AdminFilter:doFilter()");
         }
@@ -203,15 +215,15 @@ public class AdminFilter implements Filter {
                 || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
                 || url.contains("statisticrequest") || url.contains("updateProfile")
-                || url.contains("updateRequest")
-                || url.contains("updatestatusofmentee") || url.contains("slotmentee");
+                || url.contains("updateRequest")||url.equals("payment")
+                || url.contains("updatestatusofmentee") || url.contains("slotmentee") || url.contains("admin") || url.contains("Admin");
     }
 
     // Boolean function to check if the URL is for manager
     private boolean isUrlManager(String url) {
         return url.contains("manager") || url.contains("Manager")
                 || url.contains("activecv") || url.contains("statuspaidmentorrequest")
-                || url.contains("activementeerequest") || url.contains("cvupdate");
+                || url.contains("activementeerequest") || url.contains("cvmanager") || url.contains("paymentmanager");
     }
 
     /**

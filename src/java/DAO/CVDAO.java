@@ -1580,8 +1580,8 @@ public class CVDAO extends DBContext {
         //lenh sql select * from categories cach 1:
         String sql = """
                      select mr.*, r.RequestID from [Mentor] mr join Request r on mr.MentorID = r.MentorID
-                     join Mentee mt on  mt.MenteeID = r.MenteeID
-                     where r.[Status] = 'Completed' or r.[Status] = 'Paid' and mt.Username = ? 
+                                          join Mentee mt on  mt.MenteeID = r.MenteeID
+                                          where (r.[Status] = 'Completed' or r.[Status] = 'Paid') and mt.Username = 'menteeTest' 
                      """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -1596,6 +1596,7 @@ public class CVDAO extends DBContext {
                         rs.getString("address"), rs.getDate("dateOfBirth"),
                         rs.getString("fullName"), rs.getString("gender"),
                         rs.getString("status"));
+                mentor.setRequestId(rs.getInt("RequestID"));
                 mentorList.add(mentor);
             }
             

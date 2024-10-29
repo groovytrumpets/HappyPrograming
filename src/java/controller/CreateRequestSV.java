@@ -179,6 +179,10 @@ public class CreateRequestSV extends HttpServlet {
             session.setAttribute("end", selectedEndDate);
             LocalDateTime now = LocalDateTime.now();
             LocalDate creaDate = LocalDate.now();
+             if (selectedStartDate.isBefore(creaDate)) {
+                response.sendRedirect("createrequest?id=" + id + "&error=Start date cannot be earlier than current time");
+                return;
+            }
 
             if (selectedEndDate.isBefore(selectedStartDate)) {
                 response.sendRedirect("createrequest?id=" + id + "&error=End date cannot be earlier than start date");
