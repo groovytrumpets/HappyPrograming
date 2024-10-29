@@ -180,7 +180,7 @@ public class PaymentDAO extends DBContext {
     public List<Payment> getAllPaymentsByMentorUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
-                + "Where sender = ?";
+                + "Where receiver = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);

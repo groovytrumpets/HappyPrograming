@@ -95,21 +95,13 @@ public class PaymentSV extends HttpServlet {
 
         int totalItems, totalPages = 0;
         List<Payment> list = new ArrayList<>();
-        if (a.getRoleId() == 2) {
             totalItems = paymentDAO.getAllPaymentsByMenteeUserName(a.getUsername()).size();
             totalPages = totalItems / 9;
             if (totalItems % 9 != 0) {
                 totalPages++;
             }
             list = paymentDAO.getAllPaymentsByMenteeUserNamePagnition(a.getUsername(), currentPage, 9);
-        } else {
-            totalItems = paymentDAO.getAllPaymentsByMentorUserName(a.getUsername()).size();
-            totalPages = totalItems / 9;
-            if (totalItems % 9 != 0) {
-                totalPages++;
-            }
-            list = paymentDAO.getAllPaymentsByMentorUserNamePagnition(a.getUsername(), currentPage, 9);
-        }
+        
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
         Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
 
