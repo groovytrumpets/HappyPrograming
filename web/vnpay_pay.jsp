@@ -141,7 +141,8 @@
 
                 <!-- Charge Money Column -->
                 <div class="col-md-6">
-                    <h3>Charge Money</h3>
+                    <h3 >Charge Money</h3>
+                    <p style="color: red">${error}</p>
                     <div class="table-responsive">
                         <form action="vnpayajax" id="frmCreateOrder" method="post">
                             <div class="form-group">
@@ -219,32 +220,22 @@
                                                     <td >${payments.paymentDate}</td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${sessionScope.acc.roleId == 2}">
-                                                                <c:choose>
-                                                                    <c:when test="${payments.receiver == 'admin'}">Charging Money</c:when>
-                                                                    <c:otherwise>Paying for Mentor</c:otherwise>
-                                                                </c:choose>
-                                                            </c:when>
-                                                            <c:when test="${sessionScope.acc.roleId == 1}">Mentee Payment</c:when>
+                                                            <c:when test="${payments.receiver == 'admin'}">Charging Money</c:when>
+                                                            <c:otherwise>Paying for Mentor</c:otherwise>
                                                         </c:choose>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <c:choose>
-                                                                <c:when test="${sessionScope.acc.roleId == 2}">
-                                                                    <c:choose>
-                                                                        <c:when test="${payments.receiver == 'admin'}">
-                                                                            <span class="text-success"><i class="ti-arrow-up"></i></span>
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                            <span class="text-danger"><i class="ti-arrow-down"></i></span>
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </c:when>
-                                                                    <c:when test="${sessionScope.acc.roleId == 1}">
+                                                                <c:when test="${payments.receiver == 'admin'}">
                                                                     <span class="text-success"><i class="ti-arrow-up"></i></span>
                                                                     </c:when>
+                                                                    <c:otherwise>
+                                                                    <span class="text-danger"><i class="ti-arrow-down"></i></span>
+                                                                    </c:otherwise>
                                                                 </c:choose>
+
                                                             <span class="ms-2">${payments.totalAmount}</span>
                                                         </div>
                                                     </td>
@@ -253,42 +244,7 @@
                                         </tbody>
                                     </table>
 
-                                    <script>
-                                        // JavaScript to handle column sorting
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            const tableBody = document.getElementById("paymentTableBody");
-                                            const headers = document.querySelectorAll("th.sortable");
-
-                                            headers.forEach(header => {
-                                                header.addEventListener("click", function () {
-                                                    const columnIndex = this.getAttribute("data-column-index");
-                                                    const order = this.getAttribute("data-order") === "asc" ? "desc" : "asc";
-                                                    this.setAttribute("data-order", order);
-
-                                                    sortTable(tableBody, columnIndex, order);
-                                                });
-                                            });
-
-                                            function sortTable(tableBody, columnIndex, order) {
-                                                const rows = Array.from(tableBody.querySelectorAll("tr"));
-
-                                                // Sort rows based on column index and order
-                                                rows.sort((a, b) => {
-                                                    const cellA = a.cells[columnIndex].innerText;
-                                                    const cellB = b.cells[columnIndex].innerText;
-
-                                                    if (!isNaN(cellA) && !isNaN(cellB)) {
-                                                        return (order === "asc" ? cellA - cellB : cellB - cellA);
-                                                    }
-                                                    return (order === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA));
-                                                });
-
-                                                // Reattach sorted rows
-                                                rows.forEach(row => tableBody.appendChild(row));
-                                            }
-                                        });
-                                    </script>
-
+                                  
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-center">

@@ -69,11 +69,15 @@
 
 
                 <div class="row mb-4">
-                    <div class="col-auto">
+                    <div class="col-auto" style="display: flex;">
                         <!-- User Balance Section -->
                         <div class="balance-box border border-primary rounded p-2" style="max-width: 150px;">
                             <h6 class="text-primary mb-1">Your Balance</h6>
                             <p id="userBalance" class="text-success mb-0"></p> <!-- Replace with dynamic balance -->
+                        </div>
+                        <div class="balance-box border border-primary rounded p-2" style="max-width: 150px; margin-left: 50px">
+                            <h6 class="text-primary mb-1">Your Hold</h6>
+                            <p id="userHold" class="text-red mb-0"></p> <!-- Replace with dynamic balance -->
                         </div>
                     </div>
                 </div>
@@ -205,7 +209,7 @@
                                                             <c:set var="isSelected" value="" />
 
                                                             <!-- Check if status is 'Unavailable' -->
-                                                            <c:if test="${s.status == 'unavaiable'}">
+                                                            <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
 
@@ -317,13 +321,14 @@
             // JavaScript to format numbers as VND
             const price = ${cv.price}; // Example: Replace with `cv.price` value
             const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
-
+            const hold = ${wallet.hold};
             // Function to format as VND with commas
             function formatVND(value) {
                 return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
             }
 
             // Update the spans with formatted values
+            document.getElementById('userHold').textContent = formatVND(hold);
             document.getElementById('pricePerSlot').textContent = formatVND(price);
             document.getElementById('userBalance').textContent = formatVND(balance);
             document.getElementById('pricePerSlot1').textContent = formatVND(price);

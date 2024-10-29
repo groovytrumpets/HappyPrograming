@@ -83,7 +83,7 @@
 				<!-- header left menu start -->
 				<ul class="ttr-header-navigation">
 					<li>
-						<a href="home" class="ttr-material-button ttr-submenu-toggle">HOME</a>
+						<a href="mentorListAdmin" class="ttr-material-button ttr-submenu-toggle">HOME</a>
 					</li>
 					<li>
 						<a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
@@ -178,7 +178,7 @@
 						</div>
 					</li>
 					<li>
-						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
+						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets\images\userprofile.png" width="32" height="32"></span></a>
 						<div class="ttr-header-submenu">
 							<ul>
 								<li><a href="user-profile.html">My profile</a></li>
@@ -255,7 +255,7 @@
 			<nav class="ttr-sidebar-navi">
 				<ul>
 					<li>
-						<a href="index.html" class="ttr-material-button">
+						<a href="home" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-home"></i></span>
 		                	<span class="ttr-label">Dashborad</span>
 		                </a>
@@ -276,9 +276,9 @@
 		                	<li>
 		                		<a href="SkillListAdmin" class="ttr-material-button"><span class="ttr-label">Skills</span></a>
 		                	</li>
-		                	<li>
+<!--		                	<li>
 		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Skill List</span></a>
-		                	</li>
+		                	</li>-->
 		                </ul>
 		            </li>
 					<li>
@@ -294,24 +294,24 @@
 		                	<li>
 		                		<a href="mentorListAdmin" class="ttr-material-button"><span class="ttr-label">Mentor List</span></a>
 		                	</li>
-                                        <li>
+<!--                                        <li>
 		                		<a href="#" class="ttr-material-button"><span class="ttr-label">Manager List</span></a>
-		                	</li>
+		                	</li>-->
 		                </ul>
 		            </li>
-					<li>
-						<a href="review.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Reviews</span>
-		                </a>
-		            </li>
+                            <!--					<li>
+                                                                            <a href="review.html" class="ttr-material-button">
+                                                                                    <span class="ttr-icon"><i class="ti-comments"></i></span>
+                                                                    <span class="ttr-label">Reviews</span>
+                                                            </a>
+                                                        </li>-->
 					<li>
 						<a href="requestListAdmin" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
 		                	<span class="ttr-label">Request List</span>
 		                </a>
 		            </li>
-					<li>
+<!--					<li>
 						<a href="#" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-crown"></i></span>
 		                	<span class="ttr-label">Role Management</span>
@@ -325,8 +325,8 @@
 		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Change Role</span></a>
 		                	</li>
 		                </ul>
-		            </li>
-                            <li>
+		            </li>-->
+<!--                            <li>
 						<a href="#" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-settings"></i></span>
 		                	<span class="ttr-label">Website Management</span>
@@ -340,7 +340,7 @@
 		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Change Role</span></a>
 		                	</li>
 		                </ul>
-		            </li>
+		            </li>-->
 		            <li class="ttr-seperate"></li>
 				</ul>
 				<!-- sidebar menu end -->

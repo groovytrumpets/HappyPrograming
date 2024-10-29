@@ -63,6 +63,19 @@ public class WalletDAO extends DBContext {
         }
         return false;
     }
+    public boolean updateWalletAddMoneyBalanceByUsername(String username, double newBalance) {
+        String sql = "UPDATE Wallet SET Balance = Balance+? WHERE Username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setDouble(1, newBalance);
+            st.setString(2, username);
+            int rowsUpdated = st.executeUpdate(); // Execute the update statement
+            return rowsUpdated > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public boolean updateHoldByUsername(String username, double Hold) {
         String sql = "UPDATE Wallet SET Hold = ? WHERE Username = ?";

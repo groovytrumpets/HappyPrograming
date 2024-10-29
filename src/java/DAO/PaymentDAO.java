@@ -180,7 +180,7 @@ public class PaymentDAO extends DBContext {
     public List<Payment> getAllPaymentsByMentorUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
-                + "Where sender = ?";
+                + "Where receiver = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
@@ -237,7 +237,7 @@ public class PaymentDAO extends DBContext {
 
     public List<Payment> getAllPaymentsByMenteeUserNamePagnition(String username, int pageNumber, int pageSize) {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT * FROM payment WHERE sender = ? AND status != 'pending' ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM payment WHERE sender = ? AND status != '1' ORDER BY paymentDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -268,10 +268,22 @@ public class PaymentDAO extends DBContext {
     }
 
     // Method to update payment status
-    public boolean updatePaymentStatus(int paymentId, String newStatus) {
-        String sql = "UPDATE payment SET status = ? WHERE paymentId = ?";
+    public boolean updatePaymentStatus(int requestId, String newStatus) {
+        String sql = "UPDATE payment SET status = ? WHERE RequestID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, newStatus);
+            pstmt.setInt(2, requestId);
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // Returns true if the update was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
+     public boolean updatePaymentAmount(int paymentId, double newAmount) {
+        String sql = "UPDATE payment SET TotalAmount = ? WHERE paymentId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setDouble(1, newAmount);
             pstmt.setInt(2, paymentId);
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Returns true if the update was successful

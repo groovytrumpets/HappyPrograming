@@ -143,7 +143,10 @@
                                                                 </c:if>
                                                             </c:when>
                                                             <c:when test="${sessionScope.acc.roleId == 3}">
-                                                            <span  class="ttr-user-avatar"><img class="rounded-circle" src="#" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                            <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets\images\userprofile.png" style="width: 45px;height: 45px;object-fit: cover;"></span>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc.roleId == 4}">
+                                                            <span  class="ttr-user-avatar"><img class="rounded-circle" src="assets\images\userprofile.png" style="width: 45px;height: 45px;object-fit: cover;"></span>
                                                             </c:when>
                                                             <c:otherwise>
                                                             exception!!
@@ -155,10 +158,10 @@
 
                                                 <div class="dropdown-menu">
                                                     <c:if test="${sessionScope.acc.roleId == 1}">
-                                                    <a class="dropdown-item" href="viewprofilecv?id=${sessionScope.mentor.mentorId}">My profile</a>
+                                                        <a class="dropdown-item" href="viewprofilecv?id=${sessionScope.mentor.mentorId}">My profile</a>
                                                     </c:if>
                                                     <c:if test="${sessionScope.acc.roleId == 2}">
-                                                    <a class="dropdown-item" href="updateProfile">My profile</a>
+                                                        <a class="dropdown-item" href="updateProfile">My profile</a>
                                                     </c:if>
                                                     <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
                                                     <a class="dropdown-item" href="mailbox.html">Messages</a>
@@ -209,10 +212,10 @@
                                                 <h5 class="menu-adv-title">Our Courses</h5>
                                                 <ul>
                                                     <li><a href="skillhome">Courses </a></li>
-                                                    <c:if test="${sessionScope.acc.roleId == 2}">
-                                                    
-                                                    <li><a href="suggestMentor">Suggest mentor</a></li>
-                                                    </c:if>
+                                                        <c:if test="${sessionScope.acc.roleId == 2}">
+
+                                                        <li><a href="suggestMentor">Suggest mentor</a></li>
+                                                        </c:if>
                                                     <li><a href="#">Upcoming Event</a></li>
                                                 </ul>
                                             </li>
@@ -235,13 +238,22 @@
                                         </ul>
                                     </li>
                                     <c:choose>
-                                        <c:when test="${sessionScope.acc.roleId == 3}">
+                                        <c:when test="${sessionScope.acc.roleId == 4}">
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
                                                     <li><a href="paymentmanager">Dashboard</a></li>
                                                     <li><a href="cvmanager">CV manager</a></li>
                                                     <li><a href="paymentmanager">Payment Manager</a></li>
-                                                    <li><a href="#">Request List</a></li>
+                                                </ul>
+                                            </li>
+                                        </c:when>
+                                        <c:when test="${sessionScope.acc.roleId == 3}">
+                                            <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="mentorListAdmin">Mentor List</a></li>
+                                                    <li><a href="SkillListAdmin">Skill</a></li>
+                                                    <li><a href="menteeListAdmin">Mentee List</a></li>
+                                                    <li><a href="requestListAdmin">Request List</a></li>
                                                 </ul>
                                             </li>
                                         </c:when>
@@ -256,9 +268,9 @@
                                                     <li><a href="updateProfile">View Profile</a></li>
                                                     <li><a href="updateProfile">Update Profile</a></li>
                                                     <li><a href="listmentor">Rate & Comment</a></li>
-                                                    <li><a href="#">Wishlist</a></li>
+                                                    <!--                                                    <li><a href="#">Wishlist</a></li>-->
                                                     <li><a href="payment">Deposit</a></li>
-                                                    
+
                                                     <li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
                                                         <ul class="sub-menu">
                                                             <li><a href="admin/basic-calendar.html">Basic Calendar</a></li>

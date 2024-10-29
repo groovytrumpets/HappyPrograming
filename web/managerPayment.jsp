@@ -114,7 +114,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 300px; overflow-y: auto;" >
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -199,7 +199,7 @@
                                     Wallet of Manager
                                 </span>
                                 <span class="wc-stats">
-                                    <span class="counter">${wallet.balance}</span>$
+                                    <span class="counter">${wallet.balance}</span>₫
                                 </span>	
                             </div>				      
                         </div>
@@ -213,12 +213,12 @@
                                         <c:forEach items="${requestScope.paymentList1}" var="p">
 
                                             <c:choose>
-                                                <c:when test="${p.status.equals('3')}">
+                                                <c:when test="${p.status.equals('2')}">
                                                     <li>
                                                         <span class="orders-title">
                                                             <a href="#" class=""><b>${p.sender}</b></a>
                                                             to <a href="#" class="text-black-50"><b>You</b></a> <br/>
-                                                            <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> $ </b>
+                                                            <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> ₫ </b>
                                                                 at ${p.paymentDate}</span>
                                                         </span>
                                                         <span class="orders-btn">
@@ -255,7 +255,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="table-vertical-scroll table-responsive" style="max-height: 600px; overflow-y: auto;">
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 300px; overflow-y: auto;">
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -339,13 +339,11 @@
                                     <ul>
 
                                         <c:choose>
-                                            <c:when test="${paymentList2.isEmpty()}">
-
-
+                                            <c:when test="${empty requestScope.lastStatusPayment}">
                                                 <c:forEach items="${requestScope.paymentList1}" var="p">
                                                     <c:forEach items="${requestScope.completeRequestList}" var="c">
                                                         <c:if test="${p.requestId==c.requestId}">
-
+                                                            ${p.requestId} ${c.requestId}
                                                             <c:forEach items="${requestScope.mentorList}" var="v">
                                                                 <c:if test="${c.mentorId==v.mentorId}">
                                                                     <li>
@@ -354,7 +352,7 @@
                                                                         <span class="orders-title">
                                                                             <a href="#" class="text-black-50"><b>You</b></a> 
                                                                             to <a href="#" class=""><b>${v.username}</b></a> <br/>
-                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> $ </b>
+                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫ </b>
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
@@ -368,14 +366,16 @@
                                                 </c:forEach>
 
                                             </c:when>
-                                            <c:otherwise>
-                                                <c:forEach items="${requestScope.paymentList1}" var="p">
+                                            <c:when test="${not empty requestScope.lastStatusPayment}">
+                                                <c:forEach items="${requestScope.lastStatusPayment}" var="p">
+                                                    
                                                     <c:forEach items="${requestScope.completeRequestList}" var="c">
                                                         <c:if test="${p.requestId==c.requestId}">
-
+                                                         
+                                                            
                                                             <c:forEach items="${requestScope.mentorList}" var="v">
                                                                 <c:if test="${c.mentorId==v.mentorId}">
-                                                                    <li>
+                                                                     <li>
 
 
                                                                         <span class="orders-title">
@@ -392,8 +392,11 @@
                                                             </c:forEach>
                                                         </c:if>
                                                     </c:forEach>
+                                                                    
                                                 </c:forEach>
-                                            </c:otherwise>
+
+                                            </c:when>
+                                            
                                         </c:choose>
                                     </ul>
 

@@ -72,7 +72,7 @@ public class PaymentStatusChangeServlet extends HttpServlet {
             Payment payment = new Payment();
             payment.setRequestId(requestId);
             payment.setTotalAmount(price);
-            payment.setStatus("2");
+            payment.setStatus("3");
             payment.setSender("manager");
             payment.setReceiver(mentorName);
             

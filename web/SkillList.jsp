@@ -116,14 +116,32 @@
                                                             <h6 class="post-title"><a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">${list2.skillName}</a></h6>
                                                         </div>
                                                         <div class="ttr-post-meta">
-                                                           <div style="display: flex; align-items: center;">
-                                                            <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}" class="btn-outline-primary btn-success">Read More</a>
-                                                        </div>
+                                                            <div style="display: flex; align-items: center;">
+                                                                <a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}" class="btn-outline-primary btn-success">Read More</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </c:forEach>
                                         </div>
+                                        <div class="filter-block">
+                                            <form action="skillhome" method="get">
+                                                <div class="form-group">
+                                                    <label for="filterCriteria">Filter By:</label>
+                                                    <select id="filterCriteria" name="filter" class="form-control">
+                                                        <option value="mostRequests">Most Requests</option>
+                                                        <option value="leastRequests">Least Requests</option>
+                                                        <option value="mostMentors">Most Mentors</option>
+                                                        <option value="leastMentors">Least Mentors</option>
+                                                        <option value="newestSkill">Newest Skill</option>
+                                                        <option value="oldestSkill">Oldest Skill</option>
+                                                        <option value="">Show all</option>
+                                                    </select>
+                                                </div>
+                                                <button class="btn btn-lights" type="submit">Apply Filter</button>
+                                            </form>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-md-8 col-sm-12">
@@ -188,7 +206,7 @@
         <!-- Content END-->
         <!-- Footer ==== -->
 
-                <jsp:include page="footer.jsp" />
+        <jsp:include page="footer.jsp" />
 
         <!-- Footer END ==== -->
         <button class="back-to-top fa fa-chevron-up" ></button>

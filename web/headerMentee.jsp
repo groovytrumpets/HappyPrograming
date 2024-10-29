@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -178,11 +179,19 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets/images/testimonials/pic3.jpg" width="32" height="32"></span></a>
+                            
+                                    <c:if test="${sessionScope.mentee==null}">
+                                
+                                <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets\images\userprofile.png" style="width: 32px;height: 32px;object-fit: cover;"></span></a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.mentee!=null}">
+                                    
+                                <a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="data:image/jpeg;base64,${mentee.base64FileImage}" style="width: 32px;height: 32px;object-fit: cover;"></span></a>
+                                    </c:if>
                             <div class="ttr-header-submenu">
                                 <ul>
                                     <li><a href="user-profile.html">My profile</a></li>
-                                    <li><a href="list-view-calendar.html">Activity</a></li>
+                                    <li><a href="statisticrequestbymentee">Activity</a></li>
                                     <li><a href="changeloggingpassword">Change Pass</a></li>
                                     <li><a href="logout">Logout</a></li>
                                 </ul>
@@ -274,11 +283,9 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
+                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
                                 </li>
-                                <li>
-                                    <a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-                                </li>
+
                             </ul>
                         </li>
                         <li>
@@ -287,20 +294,20 @@
                                 <span class="ttr-label">List request</span>
                             </a>
                         </li>
+                        <!--                        <li>
+                                                    <a href="#" class="ttr-material-button">
+                                                        <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
+                                                        <span class="ttr-label">Wishlist</span>
+                                                    </a>
+                                                </li>-->
                         <li>
-                            <a href="#" class="ttr-material-button">
-                                <span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-                                <span class="ttr-label">Wishlist</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="review.html" class="ttr-material-button">
+                            <a href="listmentor" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
                                 <span class="ttr-label">Rate & Comment</span>
                             </a>
                         </li>
                         <li>
-                            <a href="review.html" class="ttr-material-button">
+                            <a href="payment" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-credit-card"></i></span>
                                 <span class="ttr-label">Deposit</span>
                             </a>
@@ -313,10 +320,10 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">View Profile</span></a>
+                                    <a href="updateProfile" class="ttr-material-button"><span class="ttr-label">View Profile</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Update Profile</span></a>
+                                    <a href="updateProfile" class="ttr-material-button"><span class="ttr-label">Update Profile</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -332,7 +339,7 @@
 
 
         <!-- External JavaScripts -->
-        
+
 
 
     </body>

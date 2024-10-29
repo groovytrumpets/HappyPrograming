@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.Mentee;
 
 import DAO.CVDAO;
 import DAO.MenteeDAO;
@@ -91,7 +91,7 @@ public class RateMentorSV extends HttpServlet {
         try {
             mentorId = Integer.parseInt(mentorId_raw);
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid mentor ID");
+            System.out.println(e);
             return;
         }
 
@@ -160,9 +160,9 @@ public class RateMentorSV extends HttpServlet {
             response.sendRedirect("viewprofilecv?id=" + mentorId + "&success=ratingSaved");
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input for rating.");
+            System.out.println(e);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while saving the rating.");
+            System.out.println(e);
         }
     }
 

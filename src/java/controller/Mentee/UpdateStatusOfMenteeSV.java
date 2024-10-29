@@ -2,12 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.Mentee;
 
 import DAO.RequestDAO;
-import DAO.SkillDAO;
-import Model.Request;
-import Model.Skill;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,14 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "ListRequestOfMentorSV", urlPatterns = {"/listrequestofmentor"})
-public class ListRequestOfMentorSV extends HttpServlet {
+@WebServlet(name = "UpdateStatusOfMenteeSV", urlPatterns = {"/updatestatusofmentee"})
+public class UpdateStatusOfMenteeSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +39,10 @@ public class ListRequestOfMentorSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListRequestOfMentorSV</title>");
+            out.println("<title>Servlet UpdateStatusOfMenteeSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListRequestOfMentorSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateStatusOfMenteeSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,30 +60,39 @@ public class ListRequestOfMentorSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User curUser = (User) session.getAttribute("acc");
+
+        if (curUser == null) {
+            response.sendRedirect("signin");
+            return;
+        }
+
+        int roleID = curUser.getRoleId();
+        int requestId = Integer.parseInt(request.getParameter("requestId"));
+        RequestDAO requestDAO = new RequestDAO();
+
         try {
-            HttpSession session = request.getSession();
-            User curUser = (User) session.getAttribute("acc");
+            if (roleID == 2) {
+                String action = request.getParameter("action");
 
-            RequestDAO requestdao = new RequestDAO();
-
-            if (curUser == null) {
-                response.sendRedirect("signin");
-                return;
-            }
-            int roleID = curUser.getRoleId();
-            String mentorName = curUser.getUsername();
-
-            if (roleID == 1) {
-                List<Request> requestlist = requestdao.getRequestOfMentor(mentorName);
-                request.setAttribute("mentorrequest", requestlist);
-            } else if (roleID == 2) {
+                switch (action) {
+                    case "update":
+                        response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
+                        break;
+                    case "cancel":
+                        requestDAO.updateRequestStatus(requestId, "Canceled");
+                        break;
+                    default:
+                        break;
+                }
+                response.sendRedirect("listrequestbymentee");
+            } else if (roleID == 1) {
                 response.sendRedirect("home");
                 return;
             }
-
-            request.getRequestDispatcher("listRequestOfMentor.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

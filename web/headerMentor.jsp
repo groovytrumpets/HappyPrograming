@@ -302,7 +302,7 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
+                                    <a href="mentorSchedule" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
                                 </li>
                                 <li>
                                     <a href="createslot?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
@@ -320,12 +320,12 @@
                         </li>
 
 
-                        <li>
+<!--                        <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-comments"></i></span>
                                 <span class="ttr-label">Rating List</span>
                             </a>
-                        </li>
+                        </li>-->
                         <li>
                             <a href="viewprofilecv?id=${sessionScope.mentor.mentorId}" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-user"></i></span>

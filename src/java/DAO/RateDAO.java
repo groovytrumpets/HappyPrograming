@@ -159,6 +159,8 @@ public class RateDAO extends DBContext {
         return false; // No existing rating found or query failed
     }
 
+    
+    
     public static void main(String[] args) {
         System.out.println(new RateDAO().getRatingForRequest(6, 7, 1));
     }

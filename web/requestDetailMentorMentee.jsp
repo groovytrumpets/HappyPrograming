@@ -62,9 +62,7 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <!-- header start -->
-        <jsp:include page="headerAdmin.jsp" />
-        <!-- Left sidebar menu end -->
+        <jsp:include page="headerMentee.jsp" />
 
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -74,7 +72,7 @@
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                         <li>User</li>
-                        <li>Mentor</li>
+                        <li>Request Detail</li>
 
                     </ul>
                 </div>	
@@ -89,94 +87,119 @@
                             </div>
 
                             <div class="widget-inner">
-                                <div class="breadcrumb-title"> Request ID: ${request.requestId}</div>
-                                <div>Request Status: ${request.status}</div>
-                                <div class="seperator"></div>
-                                <br>
+                                <div>Course Process: ${request.status}</div><br>
                                 <div style="display: flex" class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <h6>Mentor</h6>
-                                        <p>Mentor ID: ${mentor.mentorId}</p>
-                                        <p>Full name: ${mentor.fullName}</p>
-                                        <p>Date of birth: ${mentor.dateOfBirth}</p>
-                                        <p>Profession: ${cv.jobProfession}</p>
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Mentor ID</th>
+                                                    <th scope="col">Full name</th>
+                                                    <th scope="col">Date of birth</th>                                               
+                                                    <th scope="col">Profession</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${mentor.mentorId}</td>
+                                                    <td>${mentor.fullName}</td>
+                                                    <td>${mentor.dateOfBirth}</td>
+                                                    <td>${cv.jobProfession}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <h6>Mentee</h6>
-                                        <p>Mentee ID: ${mentee.menteeId}</p>
-                                        <p>Full name: ${mentee.fullName}</p>
-                                        <p>Date of birth: ${mentee.dateOfBirth}</p>
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Mentee ID</th>
+                                                    <th scope="col">Full name</th>
+                                                    <th scope="col">Date of birth</th>                                               
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${mentee.menteeId}</td>
+                                                    <td>${mentee.fullName}</td>
+                                                    <td>${mentee.dateOfBirth}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="seperator"></div>
+                                <div class="seperator"></div><br>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-7">
                                         <div class="ml-auto">
                                             <h6>Skill info</h6>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <p>Skill ID: ${skill.skillId}</p>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <p>Skill Name: ${skill.skillName}</p>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <p>Status: ${skill.status}</p>
-                                    </div>
-                                    <div>
-                                        <label>Image: </label>&nbsp;
-                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px">
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Skill Name</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Start date</th>
+                                                    <th scope="col">End date</th>  
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${skill.skillName}</td>
+                                                    <td><img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px"></td>
+                                                    <td>${request.startDate}</td>
+                                                    <td>${request.endDate}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="seperator"></div>
-                                <div class="header" style="text-align: center"><h5>Schedule</h5></div>
-                                <div>
-                                    <p>Start date: ${request.startDate}</p>
-                                    <p>End date: ${request.endDate}</p></div>
-
                                 <div class="row">
-                                    <form action="requestDetailAdmin" method="get">
-                                        <input type="hidden" name="requestID" value="${request.requestId}">
-                                        <label>Start date:</label>
-                                        <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
-                                    </form>
-                                    <table>
-                                        <thead>
-                                            <tr>
+                                    <div class="col-12">
+                                        <div class="ml-auto">
+                                            <form action="requestDetailAdmin" method="get">
+                                                <input type="hidden" name="requestID" value="${request.requestId}">
+                                                <label>Start date:</label>
+                                                <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
+                                            </form><br>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Monday</th>
+                                                        <th>Tuesday</th>
+                                                        <th>Wednesday</th>
+                                                        <th>Thursday</th>
+                                                        <th>Friday</th>
+                                                        <th>Saturday</th>
+                                                        <th>Sunday</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <c:forEach var="day" items="${daysOfWeek}">
+                                                            <td>
+                                                                <c:if test="${not empty dateStartDay[day]}">
+                                                                    <div>${dateStartDay[day]}</div>
+                                                                </c:if>
+                                                                <c:if test="${not empty slotsByDay[day]}">
+                                                                    <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                        <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                    </c:forEach>
 
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <c:forEach var="day" items="${daysOfWeek}">
-                                                    <td>
-                                                        <c:if test="${not empty dateStartDay[day]}">
-                                                            <div>${dateStartDay[day]}</div>
-                                                        </c:if>
-                                                        <c:if test="${not empty slotsByDay[day]}">
-                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                <div>${slot.startTime} - ${slot.endTime}</div>
-                                                            </c:forEach>
-
-                                                        </c:if>
-                                                        <c:if test="${empty slotsByDay[day]}">
-                                                            No slots available
-                                                        </c:if>
-                                                    </td>
-                                                </c:forEach>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                                </c:if>
+                                                                <c:if test="${empty slotsByDay[day]}">
+                                                                    No slots available
+                                                                </c:if>
+                                                            </td>
+                                                        </c:forEach>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -205,22 +228,22 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
-                                            // Pricing add
-                                            function newMenuItem() {
-                                                var newElem = $('tr.list-item').first().clone();
-                                                newElem.find('input').val('');
-                                                newElem.appendTo('table#item-add');
-                                            }
-                                            if ($("table#item-add").is('*')) {
-                                                $('.add-item').on('click', function (e) {
-                                                    e.preventDefault();
-                                                    newMenuItem();
-                                                });
-                                                $(document).on("click", "#item-add .delete", function (e) {
-                                                    e.preventDefault();
-                                                    $(this).parent().parent().parent().parent().remove();
-                                                });
-                                            }
+                                                    // Pricing add
+                                                    function newMenuItem() {
+                                                        var newElem = $('tr.list-item').first().clone();
+                                                        newElem.find('input').val('');
+                                                        newElem.appendTo('table#item-add');
+                                                    }
+                                                    if ($("table#item-add").is('*')) {
+                                                        $('.add-item').on('click', function (e) {
+                                                            e.preventDefault();
+                                                            newMenuItem();
+                                                        });
+                                                        $(document).on("click", "#item-add .delete", function (e) {
+                                                            e.preventDefault();
+                                                            $(this).parent().parent().parent().parent().remove();
+                                                        });
+                                                    }
 
         </script>
 

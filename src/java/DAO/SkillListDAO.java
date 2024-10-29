@@ -25,7 +25,7 @@ public class SkillListDAO extends DBContext {
 
     public List<Mentor> getMentorBySkill(int id) {
         List<Mentor> list = new ArrayList<>();
-        String sql = "select DISTINCT m.* from mentor m join SkillList s on m.MentorID = s.MentorID where SkillID = ?;";
+        String sql = "select DISTINCT m.* from mentor m join SkillList s on m.MentorID = s.MentorID where SkillID = ? and m.Status like 'active';";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -56,7 +56,7 @@ public class SkillListDAO extends DBContext {
                 + "from CV \n"
                 + "join SkillList s on CV.MentorID = s.MentorID \n"
                 + "join Mentor m on cv.MentorID = m.MentorID\n"
-                + "where s.SkillID =? and m.Status like 'active'";
+                + "where s.SkillID =? and cv.Status like 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);

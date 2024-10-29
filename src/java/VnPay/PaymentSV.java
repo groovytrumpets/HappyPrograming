@@ -79,6 +79,7 @@ public class PaymentSV extends HttpServlet {
         WalletDAO walletDAO = new WalletDAO();
         PaymentDAO paymentDAO = new PaymentDAO();
         String page = request.getParameter("page");
+        String error = request.getParameter("error");
 
         a = (User) sesion.getAttribute("acc");
         if (a == null) {
@@ -95,24 +96,17 @@ public class PaymentSV extends HttpServlet {
 
         int totalItems, totalPages = 0;
         List<Payment> list = new ArrayList<>();
-        if (a.getRoleId() == 2) {
             totalItems = paymentDAO.getAllPaymentsByMenteeUserName(a.getUsername()).size();
             totalPages = totalItems / 9;
             if (totalItems % 9 != 0) {
                 totalPages++;
             }
             list = paymentDAO.getAllPaymentsByMenteeUserNamePagnition(a.getUsername(), currentPage, 9);
-        } else {
-            totalItems = paymentDAO.getAllPaymentsByMentorUserName(a.getUsername()).size();
-            totalPages = totalItems / 9;
-            if (totalItems % 9 != 0) {
-                totalPages++;
-            }
-            list = paymentDAO.getAllPaymentsByMentorUserNamePagnition(a.getUsername(), currentPage, 9);
-        }
+        
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
         Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
-
+        
+        request.setAttribute("error", error);
         request.setAttribute("list", list);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);

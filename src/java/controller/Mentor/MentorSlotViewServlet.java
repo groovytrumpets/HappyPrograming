@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.Mentor;
 
 import DAO.CVDAO;
@@ -25,36 +24,39 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="MentorSlotViewServlet", urlPatterns={"/slotmentor"})
+@WebServlet(name = "MentorSlotViewServlet", urlPatterns = {"/slotmentor"})
 public class MentorSlotViewServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorSlotViewServlet</title>");  
+            out.println("<title>Servlet MentorSlotViewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorSlotViewServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet MentorSlotViewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -62,13 +64,20 @@ public class MentorSlotViewServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String mentorId_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+
         int mentorId;
         try {
             mentorId = Integer.parseInt(mentorId_raw);
             CVDAO cvd = new CVDAO();
             List<SlotRequest> menteeSRList = cvd.getSlotRequestbyMentorId(mentorId);
+            if (menteeSRList.isEmpty()) {
+                //System.out.println("emptyroi");
+                request.getRequestDispatcher("slotMentor.jsp").forward(request, response);
+            }
             //debug converter START-------------------------------------
 //            System.out.println(menteeSRList.get(0).getDayInWeek());
 //            System.out.println(menteeSRList.get(0).getStartDate());
@@ -76,13 +85,12 @@ public class MentorSlotViewServlet extends HttpServlet {
             List<String> startDateconverted = new ArrayList<>();
             List<String> endDateconverted = new ArrayList<>();
             List<String> classTitle = new ArrayList<>();
-            
+
             LocalDate startDate = menteeSRList.get(0).getStartDate();
             LocalDate endDate = menteeSRList.get(0).getEndDate();
-            
+
             for (int j = 0; j < menteeSRList.size(); j++) {
-                List<String> dateList = convertDayInWeekToDatesBetweenRange
-        (menteeSRList.get(j).getDayInWeek(), startDate, endDate);
+                List<String> dateList = convertDayInWeekToDatesBetweenRange(menteeSRList.get(j).getDayInWeek(), startDate, endDate);
                 for (int i = 0; i < dateList.size(); i++) {
                     String startDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getStartTime();
                     String endDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getEndTime();
@@ -95,25 +103,24 @@ public class MentorSlotViewServlet extends HttpServlet {
                 dateList.forEach(System.out::println);
                 System.out.println("Combine:");
                 startDateconverted.forEach(System.out::println);
-            //debug converter END----------------------------
-                
+                //debug converter END----------------------------
+
                 request.setAttribute("values", new Gson().toJson(startDateconverted));
                 request.setAttribute("endDateconverted", new Gson().toJson(endDateconverted));
                 request.setAttribute("status", new Gson().toJson(classTitle));
-                
+                request.setAttribute("error", error);
+                request.setAttribute("mess", mess);
             }
 
-
-            
-         
             request.getRequestDispatcher("slotMentor.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -121,12 +128,13 @@ public class MentorSlotViewServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

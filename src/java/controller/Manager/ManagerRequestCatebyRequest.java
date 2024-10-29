@@ -91,7 +91,7 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             request.setAttribute("completeRequestList", completeRequestList);
 
             request.setAttribute("paymentList1", paymentList1);
-            request.setAttribute("paymentList2", paymentListStatus4);
+            request.setAttribute("lastStatusPayment", paymentListStatus4);
             
             
             request.setAttribute("wallet", wallet);

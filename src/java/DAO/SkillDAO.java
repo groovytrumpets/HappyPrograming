@@ -52,7 +52,7 @@ public class SkillDAO extends DBContext {
     public List<Skill> getListOfAllSkill() {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT *    FROM [dbo].[Skill]\n"
-                     + "where Status = 'active'";
+                + "where Status = 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -78,6 +78,41 @@ public class SkillDAO extends DBContext {
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
+        }
+
+        return listSkill;
+    }
+
+    public List<Skill> getListOfAllSkillExceptId(int excludedId) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Skill] WHERE Status = 'active' AND SkillID <> ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, excludedId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider proper logging here
         }
 
         return listSkill;
@@ -124,6 +159,287 @@ public class SkillDAO extends DBContext {
                 listSkill.add(curSkill);
             }
         } catch (Exception e) {
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfNewestSkills(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img "
+                + "FROM Skill s "
+                + "WHERE s.Status LIKE 'active' "
+                + "ORDER BY s.CreateDate DESC, s.SkillName ASC " // Order by newest create date
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String dateRaw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date createDate = formatter.parse(dateRaw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(createDate);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any errors
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfOldestSkills(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img "
+                + "FROM Skill s "
+                + "WHERE s.Status LIKE 'active' "
+                + "ORDER BY s.CreateDate ASC, s.SkillName ASC " // Order by oldest create date
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String dateRaw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date createDate = formatter.parse(dateRaw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(createDate);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any errors
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByLeastMentors(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img, "
+                + "COUNT(DISTINCT sl.MentorID) AS mentor_count "
+                + "FROM Skill s "
+                + "LEFT JOIN SkillList sl ON s.SkillID = sl.SkillID "
+                + "LEFT JOIN Mentor m ON sl.MentorID = m.MentorID "
+                + "WHERE s.Status LIKE 'active' AND m.Status LIKE 'active' "
+                + "GROUP BY s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img "
+                + "ORDER BY mentor_count ASC, s.SkillName ASC " // Order by least mentors
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String dateRaw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date createDate = formatter.parse(dateRaw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(createDate);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Logging the error is good practice
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByMostMentors(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img, "
+                + "COUNT(DISTINCT sl.MentorID) AS mentor_count "
+                + "FROM Skill s "
+                + "LEFT JOIN SkillList sl ON s.SkillID = sl.SkillID "
+                + "LEFT JOIN Mentor m ON sl.MentorID = m.MentorID "
+                + "WHERE s.Status LIKE 'active' AND m.Status LIKE 'active' "
+                + "GROUP BY s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img "
+                + "ORDER BY mentor_count DESC, s.SkillName ASC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String dateRaw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date createDate = formatter.parse(dateRaw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(createDate);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Logging the error is good practice
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByLeastRequested(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT s.[SkillID], s.[SkillName], s.[CreateDate], s.[Description], s.[Status], s.[Img], COUNT(rs.SkillID) AS request_count "
+                + "FROM [dbo].[Skill] s "
+                + "LEFT JOIN [dbo].[Request] rs ON s.SkillID = rs.SkillID "
+                + "WHERE s.Status = 'active' "
+                + "GROUP BY s.SkillID, s.SkillName, s.CreateDate, s.Description, s.Status, s.Img "
+                + "ORDER BY request_count ASC, s.SkillName ASC " // Order by least requested
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any errors
+        }
+        return listSkill;
+    }
+
+    public List<Skill> getListOfSkillByMostRequested(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT \n"
+                + "    s.[SkillID], \n"
+                + "    s.[SkillName], \n"
+                + "    s.[CreateDate], \n"
+                + "    s.[Description], \n"
+                + "    s.[Status], \n"
+                + "    s.[Img], \n"
+                + "    COUNT(rs.SkillID) AS request_count\n"
+                + "FROM \n"
+                + "    [dbo].[Skill] s \n"
+                + "LEFT JOIN \n"
+                + "    [dbo].[Request] rs ON s.SkillID = rs.SkillID \n"
+                + "WHERE \n"
+                + "    s.Status = 'active' \n"
+                + "GROUP BY \n"
+                + "    s.SkillID, \n"
+                + "    s.SkillName, \n"
+                + "    s.CreateDate, \n"
+                + "    s.Description, \n"
+                + "    s.Status, \n"
+                + "    s.Img \n"
+                + "ORDER BY \n"
+                + "    request_count DESC, \n"
+                + "    s.SkillName ASC \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY;";
+
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("SkillID");
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("Img");
+
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any errors
         }
         return listSkill;
     }

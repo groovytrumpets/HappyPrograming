@@ -27,7 +27,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Create request</title>
+        <title>Update request</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -212,7 +212,7 @@
                                                             <c:set var="isDisabled" value="false" />
                                                             <c:set var="isSelected" value="" />
 
-                                                            <c:if test="${s.status == 'unavaiable'}">
+                                                            <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
 

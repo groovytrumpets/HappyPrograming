@@ -339,7 +339,7 @@
                     </div>
                     <!-- Testimonials END -->
                     <!-- Testimonials ==== -->
-                    
+
                     <div class="section-area section-sp2">
                         <div class="container">
                             <div class="row">
@@ -349,46 +349,57 @@
                                 </div>
                             </div>
                             <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                <c:forEach items="${requestScope.rate}" var="r">
+                                <c:if test="${not empty requestScope.rate}">
+                                    <c:forEach items="${requestScope.rate}" var="r">
 
-                                    <a href="viewprofilecv?id=${r.mentorId}">
-                                        <div class="item">
+                                        <a href="viewprofilecv?id=${r.mentorId}">
+                                            <div class="item">
 
-                                            <div class="testimonial-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic1.jpg" alt="">
-                                                </div>
-                                                <div class="testimonial-info">
-                                                    <c:forEach items="${requestScope.menteeList}" var="c">
-                                                        <c:if test="${c.menteeId==r.menteeId}">
+                                                <div class="testimonial-bx">
+                                                    <div class="testimonial-thumb">
+                                                        <c:forEach items="${requestScope.menteeList}" var="m">
+                                                            <c:if test="${r.menteeId==m.menteeId}">
+                                                                <c:if test="${m.base64FileImage!=null}">
+                                                                    <img src="data:image/jpeg;base64,${mentee.base64FileImage}" alt="">
+                                                                </c:if>
+                                                                <c:if test="${m.base64FileImage==null}">
+                                                                    <img src="assets\images\userprofile.png" alt="">
+                                                                </c:if>
 
-                                                            <h5 class="name">${c.username}</h5>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:forEach items="${requestScope.mentorList}" var="c">
-                                                        <c:if test="${c.mentorId==r.mentorId}">
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                    <div class="testimonial-info">
+                                                        <c:forEach items="${requestScope.menteeList}" var="c">
+                                                            <c:if test="${c.menteeId==r.menteeId}">
 
-                                                            <p>Rating: ${c.username}</p>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <ul class="cours-star">
-                                                        <c:forEach var="i" begin="1" end="${r.rate}">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            </c:forEach>
-                                                            <c:forEach var="j" begin="1" end="${5-r.rate}">
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            </c:forEach>
+                                                                <h5 class="name">${c.username}</h5>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <c:forEach items="${requestScope.mentorList}" var="c">
+                                                            <c:if test="${c.mentorId==r.mentorId}">
 
-                                                    </ul>
-                                                </div>
-                                                <div class="testimonial-content" style="height: 130px">
-                                                    <p>${r.comment}</p>
+                                                                <p>Rating: ${c.username}</p>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <ul class="cours-star">
+                                                            <c:forEach var="i" begin="1" end="${r.rate}">
+                                                                <li class="active"><i class="fa fa-star"></i></li>
+                                                                </c:forEach>
+                                                                <c:forEach var="j" begin="1" end="${5-r.rate}">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                </c:forEach>
+
+                                                        </ul>
+                                                    </div>
+                                                    <div class="testimonial-content" style="height: 130px">
+                                                        <p>${r.comment}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-
+                                        </a>
+                                    </c:forEach>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -457,7 +468,7 @@
         });
 
     </script>
-    
+
 </html>
 
 

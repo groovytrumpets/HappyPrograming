@@ -93,7 +93,7 @@ public class UpdateRequestSV extends HttpServlet {
         String error = request.getParameter("error");
         String notify = request.getParameter("notify");
         String pay = request.getParameter("pay");
-        
+
         int id;
 
         try {
@@ -103,7 +103,7 @@ public class UpdateRequestSV extends HttpServlet {
             List<Skill> list1 = cvd.getMentorSkillListByMentorID(requests.getMentorId());
             List<Slot> slotList = slotDAO.getSlotsByMentorId(requests.getMentorId());
             List<RequestSlotItem> checkedSlot = requestDAO.getSlotByRequestID(id);
-            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(mentee.getMenteeId(), id);
+            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlotByRequestID(mentee.getMenteeId(), requests.getMentorId(), requests.getRequestId());
             request.setAttribute("selectedSlot", listSlot);
             request.setAttribute("cv", cvd.getCVbyMentorId(requests.getMentorId()));
             request.setAttribute("mid", id);
@@ -111,7 +111,7 @@ public class UpdateRequestSV extends HttpServlet {
             request.setAttribute("skillList", list1);
             request.setAttribute("error", error);
             request.setAttribute("notify", notify);
-             request.setAttribute("wallet", walletDAO.getWalletByUsername(a.getUsername()));
+            request.setAttribute("wallet", walletDAO.getWalletByUsername(a.getUsername()));
             request.setAttribute("slotList", slotList);
             request.setAttribute("checkedSlot", checkedSlot);
             request.setAttribute("mentor", mentorDAO.findMentorByID(requests.getMentorId()));
@@ -155,7 +155,7 @@ public class UpdateRequestSV extends HttpServlet {
         String selectedSkills = request.getParameter("addSkills");
         String[] selectedSlot;
         if (request.getParameterValues("addSlot") == null || request.getParameterValues("addSlot").length == 0) {
-            response.sendRedirect("createrequest?id=" + id_raw + "&error=You can't creqte request without slot");
+            response.sendRedirect("upadateRequest?id=" + id_raw + "&error=You can't creqte request without slot");
             return;
         }
         selectedSlot = request.getParameterValues("addSlot");
@@ -187,16 +187,16 @@ public class UpdateRequestSV extends HttpServlet {
             }
 
             if (wallet.getBalance() < (totalP + wallet.getHold())) {
-                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money to created more request");
+                response.sendRedirect("updateRequest?id=" + id + "&pay=Your account doesn't have enough money to created more request");
                 return;
             }
-
+            
             Request newRequest = new Request(requests.getRequestId(), requests.getMentorId(), requests.getMenteeId(), totalP,
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
-
             requestDAO.updateRequest(newRequest);
+            walletDAO.updateHoldByUsername(a.getUsername(), wallet.getHold() - requests.getPrice() + totalP);
+            paymentDAO.updatePaymentAmount(menteeid, totalP);
             requestDAO.updateItemsByRequestID(id, selectedSlot);
-            walletDAO.updateHoldByUsername(a.getUsername(), wallet.getHold() + totalP);
             response.sendRedirect("updateRequest?id=" + id + "&notify=Update request succesfully");
 
         } catch (Exception e) {

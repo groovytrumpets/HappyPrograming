@@ -64,6 +64,7 @@ public class SkillDetailSV extends HttpServlet {
         SkillDAO skillDAO = new SkillDAO();
         SkillListDAO skilllistDAO = new SkillListDAO();
         CVDAO cvDAO = new CVDAO();
+        request.setAttribute("skill", skillDAO.getListOfAllSkillExceptId(Integer.parseInt(id)));
         request.setAttribute("cv", skilllistDAO.getCVbySkill(Integer.parseInt(id)));
         request.setAttribute("mentor", skilllistDAO.getMentorBySkill(Integer.parseInt(id)));
         request.setAttribute("detail", skillDAO.getSkillByID(Integer.parseInt(id)));
