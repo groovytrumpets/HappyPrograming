@@ -212,6 +212,9 @@
                                                             <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
+                                                            <c:if test="${s.status == 'Unavailable'}">
+                                                                <c:set var="isDisabled" value="true" />
+                                                            </c:if>
 
                                                             <!-- Check if slot is selected in another request -->
                                                             <c:forEach items="${selectedSlot}" var="sl">

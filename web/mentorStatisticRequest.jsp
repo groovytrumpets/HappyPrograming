@@ -248,7 +248,7 @@
                     </div>
                     <!-- Your Profile Views Chart END-->
                     <div class="col-lg-4 m-b30">
-                        <div class="widget-box">
+<!--                        <div class="widget-box">
                             <div class="wc-title">
                                 <h4>Notifications</h4>
                             </div>
@@ -318,7 +318,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     
                 </div>
@@ -329,7 +329,7 @@
 
         <script>
             const ctx = document.getElementById('PieChart');
-            const accept = '${(requestScope.completedRequest)/requestScope.countRequest*100}';
+            const accept = '${(requestScope.acceptedRequest)/requestScope.countRequest*100}';
             const invited = '${(requestScope.invitedRequest)/requestScope.countRequest*100}';
             const canceled = '${(requestScope.canceledRequest)/requestScope.countRequest*100}';
             new Chart(ctx, {

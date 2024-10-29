@@ -814,7 +814,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countInvitedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Processing'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -850,7 +850,25 @@ public class CVDAO extends DBContext {
     }
 
     public int countCompletedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed' ";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+    public int countAllCompletedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and (Status ='Completed' or Status ='Paid') ";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -869,7 +887,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countCanceledRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Canceled'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Reject'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -992,6 +1010,39 @@ public class CVDAO extends DBContext {
     public List<Request> getListofRequest() {
         List<Request> listRequest = new ArrayList<>();
         String sql = "select * from Request order by RequestID desc";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
+    public List<Request> getListofRequestbyStaus() {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "select * from Request where Status not like 'open' and Status not like 'reject' order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -1502,6 +1553,20 @@ public class CVDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setFloat(1, price);
             st.setString(2, mentorname);
+            st.setFloat(3, price);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public void setWalletTransactionbyMentee(float price, String menteeString) {
+        String sql = "update Wallet set Balance =Balance+? where Username like 'manager'\n"
+                + "update Wallet set Balance =Balance-? where Username like '?'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, price);
+            st.setString(2, menteeString);
             st.setFloat(3, price);
 
             st.executeUpdate();
