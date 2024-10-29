@@ -432,7 +432,7 @@
                                                     </span>
                                                 </li>
                                             </c:if>
-                                            
+
                                             <!-- Modal -->
                                             <div class="modal fade" id="active" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
@@ -520,104 +520,122 @@
         </main>
         <div class="ttr-overlay"></div>
 
-       
+
 
     </body>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+    <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+    <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+    <script src="assets/vendors/counter/waypoints-min.js"></script>
+    <script src="assets/vendors/counter/counterup.min.js"></script>
+    <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+    <script src="assets/vendors/masonry/masonry.js"></script>
+    <script src="assets/vendors/masonry/filter.js"></script>
+    <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+    <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+    <script src="assets/js/functions.js"></script>
+    <script src="assets/vendors/chart/chart.min.js"></script>
+    <script src="assets/js/admin.js"></script>
+    <script src='assets/vendors/calendar/moment.min.js'></script>
+    <script src='assets/vendors/calendar/fullcalendar.js'></script>
     <script>
-                                                    $(document).ready(function () {
-                                                        var status1 = JSON.parse('${requestScope.status}');
-                                                        var start1 = JSON.parse('${requestScope.startTime}');
-                                                        var end1 = JSON.parse('${requestScope.endTime}');
-                                                        var eventsArray1 = [];
-                                                        for (var i = 0; i < start1.length; i++) {
-                                                            var eventColor = '';
-                                                            if (status1[i].toLowerCase() === 'inactive') {
-                                                                eventColor = '#c22d2d';
-                                                            } else {
-                                                                eventColor = '#2dc22d';
-                                                            }
-                                                            console.log('debug:');
-                                                            console.log(status1[i]);
-                                                            console.log(status1[i].toLowerCase() === 'inactive');
-                                                            eventsArray1.push({
-                                                                title: status1[i],
-                                                                start: start1[i],
-                                                                end: end1[i],
-                                                                color: eventColor
-                                                            });
-                                                        }
-                                                        var status = JSON.parse('${requestScope.status2}');
-                                                        var start = JSON.parse('${requestScope.startTime2}');
-                                                        var end = JSON.parse('${requestScope.endTime2}');
-                                                        var eventsArray = [];
-                                                        for (var i = 0; i < start.length; i++) {
-                                                            var eventColor = '';
-                                                            if (status[i].toLowerCase() === 'inactive') {
-                                                                eventColor = '#c22d2d';
-                                                            } else {
-                                                                eventColor = '#2dc22d';
-                                                            }
-                                                            console.log('debug:');
-                                                            console.log(status[i]);
-                                                            console.log(status[i].toLowerCase() === 'inactive');
-                                                            eventsArray.push({
-                                                                title: status[i],
-                                                                start: start[i],
-                                                                end: end[i],
-                                                                color: eventColor
-                                                            });
-                                                        }
-                                                        
-                                                        
-                                                        
-                                                        $('#calendar').fullCalendar({
-                                                            header: {
-                                                                left: 'prev,next today',
-                                                                center: 'title',
-                                                                right: 'agendaWeek,listWeek,agendaDay'
-                                                            },
+        $(document).ready(function () {
+            var status1 = JSON.parse('${requestScope.status}');
+            var start1 = JSON.parse('${requestScope.startTime}');
+            var end1 = JSON.parse('${requestScope.endTime}');
+            var eventsArray1 = [];
+            for (var i = 0; i < start1.length; i++) {
+                var eventColor = '';
+                if (status1[i].toLowerCase() === 'inactive') {
+                    eventColor = '#c22d2d';
+                } else {
+                    eventColor = '#2dc22d';
+                }
+                console.log('debug:');
+                console.log(status1[i]);
+                console.log(status1[i].toLowerCase() === 'inactive');
+                eventsArray1.push({
+                    title: status1[i],
+                    start: start1[i],
+                    end: end1[i],
+                    color: eventColor
+                });
+            }
+            var status = JSON.parse('${requestScope.status2}');
+            var start = JSON.parse('${requestScope.startTime2}');
+            var end = JSON.parse('${requestScope.endTime2}');
+            var eventsArray = [];
+            for (var i = 0; i < start.length; i++) {
+                var eventColor = '';
+                if (status[i].toLowerCase() === 'inactive') {
+                    eventColor = '#c22d2d';
+                } else {
+                    eventColor = '#2dc22d';
+                }
+                console.log('debug:');
+                console.log(status[i]);
+                console.log(status[i].toLowerCase() === 'inactive');
+                eventsArray.push({
+                    title: status[i],
+                    start: start[i],
+                    end: end[i],
+                    color: eventColor
+                });
+            }
 
-                                                            defaultView: 'agendaWeek',
-                                                            navLinks: true, // can click day/week names to navigate views
 
-                                                            weekNumbers: true,
-                                                            weekNumbersWithinDays: true,
-                                                            weekNumberCalculation: 'ISO',
 
-                                                            editable: true,
-                                                            eventLimit: true, // allow "more" link when too many events
-                                                            events: eventsArray1,
-                                                            height: 500
-                                                        });
-                                                        $('#calendar2').fullCalendar({
-                                                            header: {
-                                                                left: 'prev,next today',
-                                                                center: 'title',
-                                                                right: 'agendaWeek,listWeek,agendaDay'
-                                                            },
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'agendaWeek,listWeek,agendaDay'
+                },
 
-                                                            defaultView: 'agendaWeek',
-                                                            navLinks: true, // can click day/week names to navigate views
+                defaultView: 'agendaWeek',
+                navLinks: true, // can click day/week names to navigate views
 
-                                                            weekNumbers: true,
-                                                            weekNumbersWithinDays: true,
-                                                            weekNumberCalculation: 'ISO',
+                weekNumbers: true,
+                weekNumbersWithinDays: true,
+                weekNumberCalculation: 'ISO',
 
-                                                            editable: true,
-                                                            eventLimit: true, // allow "more" link when too many events
-                                                            events: eventsArray,
-                                                            height: 500
-                                                        });
-                                                        // Re-render the calendar when the modal is shown
-                                                        $('#active').on('shown.bs.modal', function () {
-                                                            $('#calendar').fullCalendar('render');
-                                                            $('#calendar').fullCalendar('refetchEvents');
-                                                        });
-                                                        $('#inactive').on('shown.bs.modal', function () {
-                                                            $('#calendar2').fullCalendar('render');
-                                                            $('#calendar2').fullCalendar('refetchEvents');
-                                                        });
-                                                    });
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: eventsArray1,
+                height: 500
+            });
+            $('#calendar2').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'agendaWeek,listWeek,agendaDay'
+                },
+
+                defaultView: 'agendaWeek',
+                navLinks: true, // can click day/week names to navigate views
+
+                weekNumbers: true,
+                weekNumbersWithinDays: true,
+                weekNumberCalculation: 'ISO',
+
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: eventsArray,
+                height: 500
+            });
+            // Re-render the calendar when the modal is shown
+            $('#active').on('shown.bs.modal', function () {
+                $('#calendar').fullCalendar('render');
+                $('#calendar').fullCalendar('refetchEvents');
+            });
+            $('#inactive').on('shown.bs.modal', function () {
+                $('#calendar2').fullCalendar('render');
+                $('#calendar2').fullCalendar('refetchEvents');
+            });
+        });
 
     </script>
     <script>
@@ -667,23 +685,6 @@
         }
 
     </script>
-    <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-        <script src="assets/vendors/counter/waypoints-min.js"></script>
-        <script src="assets/vendors/counter/counterup.min.js"></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-        <script src="assets/vendors/masonry/masonry.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/calendar/moment.min.js'></script>
-        <script src='assets/vendors/calendar/fullcalendar.js'></script>
+    
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

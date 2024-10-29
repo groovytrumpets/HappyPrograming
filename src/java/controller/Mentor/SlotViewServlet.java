@@ -144,9 +144,9 @@ public class SlotViewServlet extends HttpServlet {
         DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayInWeek.toUpperCase());
 
         // Tìm thứ trong tuần hiện tại
-        LocalDate resultDate = today.with(DayOfWeek.MONDAY); // Mặc định là lấy ngày Monday trong tuần hiện tại
+        LocalDate resultDate = today.with(DayOfWeek.MONDAY);
 
-        // Nếu thứ bạn muốn không phải là Monday, hãy điều chỉnh lại
+        
         while (resultDate.getDayOfWeek() != dayOfWeek) {
             resultDate = resultDate.plusDays(1);
         }
