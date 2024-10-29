@@ -106,7 +106,9 @@ public class UpdateStatusByMentorSV extends HttpServlet {
 //                      //Buoc 4: update balance
                         
 //                      //Buoc 5: update payment
-                        paymentDAO.updatePaymentStatus(requestId, "");
+                        paymentDAO.updatePaymentStatus(requestId, "2");
+                        //+ tien cho manager??? Buoc 6
+                        walletDAO.updateWalletAddMoneyBalanceByUsername("manager", requests.getPrice());
                         //Buoc 6: Update Hold
                         walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         response.sendRedirect("listrequestofmentor");

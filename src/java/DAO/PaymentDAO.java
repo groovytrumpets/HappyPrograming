@@ -268,11 +268,11 @@ public class PaymentDAO extends DBContext {
     }
 
     // Method to update payment status
-    public boolean updatePaymentStatus(int paymentId, String newStatus) {
-        String sql = "UPDATE payment SET status = ? WHERE paymentId = ?";
+    public boolean updatePaymentStatus(int requestId, String newStatus) {
+        String sql = "UPDATE payment SET status = ? WHERE RequestID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, newStatus);
-            pstmt.setInt(2, paymentId);
+            pstmt.setInt(2, requestId);
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Returns true if the update was successful
         } catch (SQLException e) {
