@@ -79,6 +79,7 @@ public class PaymentSV extends HttpServlet {
         WalletDAO walletDAO = new WalletDAO();
         PaymentDAO paymentDAO = new PaymentDAO();
         String page = request.getParameter("page");
+        String error = request.getParameter("error");
 
         a = (User) sesion.getAttribute("acc");
         if (a == null) {
@@ -104,7 +105,8 @@ public class PaymentSV extends HttpServlet {
         
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
         Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
-
+        
+        request.setAttribute("error", error);
         request.setAttribute("list", list);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);

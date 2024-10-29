@@ -39,6 +39,10 @@ public class ajaxServlet extends HttpServlet {
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = Integer.parseInt(req.getParameter("amount")) * 100;
+            if (amount/100 < 5000 || amount/100 > 1000000000) {
+               resp.sendRedirect("payment?error=Please input amount greater than 5000 and less than 1000000000");
+            }
+
         String bankCode = req.getParameter("bankCode");
 
         String vnp_TxnRef = Config.getRandomNumber(8);
