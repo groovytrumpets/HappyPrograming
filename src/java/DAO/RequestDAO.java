@@ -458,7 +458,7 @@ public class RequestDAO extends DBContext {
     public List<Request> getRequestStatisticByMenteeID(int menteeId) {
         List<Request> listReq = new ArrayList<>();
         String sql = "SELECT * FROM [Request]\n"
-                + "where [Status] != 'Canceled' and [Status] != 'Pending' and [Status] != 'Reject' and MenteeID = ? ";
+                + "where [Status] != 'Canceled' and [Status] != 'Pending' and [Status] != 'Reject' and [Status] != 'Open' and MenteeID = ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, menteeId);
