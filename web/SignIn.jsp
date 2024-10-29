@@ -78,7 +78,7 @@
                                                             <small style="color:  red">${notify}</small>
 								<div class="input-group">
 									<label>Your username</label>
-									<input name="username" type="text" required="" class="form-control">
+                                                                        <input name="username" type="text" required="" class="form-control" value="${username}">
 								</div>
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 							<div class="form-group">
 								<div class="input-group"> 
 									<label>Your Password</label>
-									<input name="pass" type="password" class="form-control" required="">
+                                                                        <input name="pass" type="password" class="form-control" required="" value="${password}">
 								</div>
 							</div>
 						</div>

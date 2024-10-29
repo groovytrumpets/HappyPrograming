@@ -1,11 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
-
-        <!-- META ============================================= -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Payment</title>
+        <!-- Bootstrap core CSS -->
+        <link href="/vnpay_jsp/assets/bootstrap.min.css" rel="stylesheet" />
+        <!-- Custom styles for this template -->
+        <link href="/vnpay_jsp/assets/jumbotron-narrow.css" rel="stylesheet">
+        <script src="/vnpay_jsp/assets/jquery-1.11.3.min.js"></script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="keywords" content="" />
@@ -13,20 +22,19 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="Happy Programing" />
+        <meta name="description" content="EduChamp : Education HTML Template" />
 
         <!-- OG -->
-        <meta property="og:title" content="Happy Programing" />
-        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:title" content="EduChamp : Education HTML Template" />
+        <meta property="og:description" content="EduChamp : Education HTML Template" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+        <link rel="icon" href="../error-404.html" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Happy Programing: CV of Mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +47,7 @@
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
         <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
+
         <!-- TYPOGRAPHY ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
 
@@ -47,10 +56,8 @@
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
         <style>
             .important-balance {
                 font-size: 1.0em;             /* Increase the font size for prominence */
@@ -135,8 +142,7 @@
 
                 <!-- Charge Money Column -->
                 <div class="col-md-6">
-                    <h3 >Charge Money</h3>
-                    <p style="color: red">${error}</p>
+                    <h3>Charge Money</h3>
                     <div class="table-responsive">
                         <form action="vnpayajax" id="frmCreateOrder" method="post">
                             <div class="form-group">
@@ -209,27 +215,37 @@
                                         </thead>
                                         <tbody id="paymentTableBody">
                                             <c:forEach var="payments" items="${list}">
-                                                <tr>
+                                                <tr> 
                                                     <td>${payments.paymentId}</td>
-                                                    <td >${payments.paymentDate}</td>
+                                                    <td data-date="${payments.paymentDate}" class="date-cell">${payments.paymentDate}</td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${payments.receiver == 'admin'}">Charging Money</c:when>
-                                                            <c:otherwise>Paying for Mentor</c:otherwise>
+                                                            <c:when test="${sessionScope.acc.roleId == 2}">
+                                                                <c:choose>
+                                                                    <c:when test="${payments.receiver == 'admin'}">Charging Money</c:when>
+                                                                    <c:otherwise>Paying for Mentor</c:otherwise>
+                                                                </c:choose>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc.roleId == 1}">Mentee Payment</c:when>
                                                         </c:choose>
-
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <c:choose>
-                                                                <c:when test="${payments.receiver == 'admin'}">
+                                                                <c:when test="${sessionScope.acc.roleId == 2}">
+                                                                    <c:choose>
+                                                                        <c:when test="${payments.receiver == 'admin'}">
+                                                                            <span class="text-success"><i class="ti-arrow-up"></i></span>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                            <span class="text-danger"><i class="ti-arrow-down"></i></span>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </c:when>
+                                                                    <c:when test="${sessionScope.acc.roleId == 1}">
                                                                     <span class="text-success"><i class="ti-arrow-up"></i></span>
                                                                     </c:when>
-                                                                    <c:otherwise>
-                                                                    <span class="text-danger"><i class="ti-arrow-down"></i></span>
-                                                                    </c:otherwise>
                                                                 </c:choose>
-
                                                             <span class="ms-2">${payments.totalAmount}</span>
                                                         </div>
                                                     </td>
@@ -238,7 +254,42 @@
                                         </tbody>
                                     </table>
 
-                                  
+                                    <script>
+                                        // JavaScript to handle column sorting
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const tableBody = document.getElementById("paymentTableBody");
+                                            const headers = document.querySelectorAll("th.sortable");
+
+                                            headers.forEach(header => {
+                                                header.addEventListener("click", function () {
+                                                    const columnIndex = this.getAttribute("data-column-index");
+                                                    const order = this.getAttribute("data-order") === "asc" ? "desc" : "asc";
+                                                    this.setAttribute("data-order", order);
+
+                                                    sortTable(tableBody, columnIndex, order);
+                                                });
+                                            });
+
+                                            function sortTable(tableBody, columnIndex, order) {
+                                                const rows = Array.from(tableBody.querySelectorAll("tr"));
+
+                                                // Sort rows based on column index and order
+                                                rows.sort((a, b) => {
+                                                    const cellA = a.cells[columnIndex].innerText;
+                                                    const cellB = b.cells[columnIndex].innerText;
+
+                                                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                                                        return (order === "asc" ? cellA - cellB : cellB - cellA);
+                                                    }
+                                                    return (order === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA));
+                                                });
+
+                                                // Reattach sorted rows
+                                                rows.forEach(row => tableBody.appendChild(row));
+                                            }
+                                        });
+                                    </script>
+
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-center">
@@ -309,21 +360,29 @@
             document.getElementById('holdDisplay').textContent = formatVND(hold);
 
         </script>
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dateCells = document.querySelectorAll(".date-cell");
+
+        dateCells.forEach(cell => {
+            // Get the raw date string from the data attribute
+            const rawDate = cell.getAttribute("data-date");
+
+            // Convert to a Date object (assuming the date is in ISO format)
+            const date = new Date(rawDate);
+
+            // Format the date (customize as needed)
+            const formattedDate = date.toLocaleDateString("en-GB") + ' ' + date.toLocaleTimeString("en-GB", {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Set the formatted date as the cell's text content
+            cell.textContent = formattedDate;
+        });
+    });
+</script>
+
 
     </body>
-    <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-        <script src="assets/vendors/counter/waypoints-min.js"></script>
-        <script src="assets/vendors/counter/counterup.min.js"></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-        <script src="assets/vendors/masonry/masonry.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/js/contact.js"></script>
 </html>
