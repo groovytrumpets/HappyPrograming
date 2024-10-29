@@ -68,6 +68,7 @@
 				<div class="heading-bx left">
 					<h2 class="title-head">Login to your <span>Account</span></h2>
 					<p>Don't have an account? <a href="signup">Create one here</a></p>
+                                        <p>Login for admin, manager <a href="loginAdmin">here</a></p>
                                         <p style="color: green">${message}<p>
 				</div>	
                             <form class="contact-bx" action="signin" method="post">

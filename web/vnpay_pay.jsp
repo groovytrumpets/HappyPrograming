@@ -141,7 +141,8 @@
 
                 <!-- Charge Money Column -->
                 <div class="col-md-6">
-                    <h3>Charge Money</h3>
+                    <h3 >Charge Money</h3>
+                    <p style="color: red">${error}</p>
                     <div class="table-responsive">
                         <form action="vnpayajax" id="frmCreateOrder" method="post">
                             <div class="form-group">
