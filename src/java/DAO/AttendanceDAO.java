@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.sql.Date;
 
 /**
  *
@@ -83,6 +85,53 @@ public class AttendanceDAO extends DBContext {
 
     }
 
+    public List<Attendance> getAllSlotOfRequest(int requestID) {
+        List<Attendance> list = new ArrayList<>();
+        String sql = "select rs.RequestSlotItem,s.DayInWeek \n"
+                + "from Slot s \n"
+                + "left join RequestSlotItem rs on s.SlotID = rs.SlotID\n"
+                + "left join Request r on rs.RequestID = r.RequestID\n"
+                + "WHERE r.RequestID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, requestID);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Attendance curAttend = new Attendance();
+                curAttend.setRequestSlotItem(rs.getInt("RequestSlotItem"));
+                curAttend.setDayInWeek(rs.getString("DayInWeek"));
+                list.add(curAttend);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public boolean addAttendance(Attendance curAttendance) {
+        String sql = "INSERT INTO [dbo].[Attendance]\n"
+                + "           ([RequestSlotItem]\n"
+                + "           ,[slotDate]\n"
+                + "           ,[Status])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1 , curAttendance.getRequestSlotItem());
+            st.setDate(2, Date.valueOf(curAttendance.getDate()));
+            st.setString(3, curAttendance.getStatus());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         AttendanceDAO act = new AttendanceDAO();
         LocalDate start = LocalDate.parse("2024-10-21");
@@ -91,3 +140,4 @@ public class AttendanceDAO extends DBContext {
         System.out.println(list.get(0).getMenteeID());
     }
 }
+
