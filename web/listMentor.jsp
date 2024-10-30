@@ -90,13 +90,16 @@
                                     </div>
 
                                     <ul id="masonry" class="ttr-gallery-listing magnific-image row">
-                                        <c:forEach items="${requestScope.cvlist}" var="c">
-                                            <c:forEach items="${requestScope.mentorlist}" var="m">
-                                                <c:if test="${c.mentorId==m.mentorId}">
-                                                    <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
-                                                        <div class="cours-bx">
-                                                            <div class="info-bx text-center">
-                                                                <div class="action-box" style="height: 250px" >
+
+                                        <c:forEach items="${requestScope.mentorlist}" var="m">
+
+
+                                            <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
+                                                <div class="cours-bx">
+                                                    <div class="info-bx text-center">
+                                                        <div class="action-box" style="height: 250px" >
+                                                            <c:forEach items="${requestScope.cvlist}" var="c"> 
+                                                                <c:if test="${c.mentorId==m.mentorId}">
                                                                     <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
                                                                 </div>
                                                                 <div style="margin: 15px 0px">
@@ -106,19 +109,24 @@
                                                                     <span>Education: ${c.education}</span> 
 
                                                                 </div>
-                                                                <c:forEach items="${requestScope.requestlist}" var="r">
-                                                                    <c:if test="${m.mentorId==r.mentorId}">
-                                                                        <a href="ratementor?mentorId=${c.mentorId}&requestId=${r.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+
+                                                                
+                                                                        <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
                                                                             Review
                                                                         </a>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </div>
-                                                        </div>
+                                                                   
+                                                            </c:if>
+                                                        </c:forEach>
+
+
                                                     </div>
-                                                </c:if>
-                                            </c:forEach>
+                                                </div>
+                                            </div>
+
                                         </c:forEach>
+
+
+
                                     </ul>
                                 </div>
                             </div>

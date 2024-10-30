@@ -148,7 +148,7 @@ public class SignUpSV extends HttpServlet {
                         + "Address: " + address + "\n"
                         + "------------------------\n\n"
                         + "Please click the link below to confirm your email address:\n"
-                        + "http://14.177.86.215/:9999/happy_programming/confirm?email=" + mail + "\n\n"
+                        + "http://localhost:9999/happy_programming/confirm?email=" + mail + "\n\n"
                         + "If you did not sign up for this account, please disregard this email.\n\n"
                         + "Best regards,\n"
                         + "The Happy Programming Team";

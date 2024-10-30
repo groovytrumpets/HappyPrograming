@@ -4,6 +4,7 @@
  */
 package controller.Mentor;
 
+import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.PaymentDAO;
@@ -106,7 +107,10 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 5: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //Buoc 6: Update Hold
-                        //walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername("manager",walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
+                        
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "reject":

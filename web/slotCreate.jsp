@@ -103,9 +103,9 @@
                         <div class="widget-box">
                             <div class="wc-title d-flex align-items-center">
                                 <h4 class="d-inline-block">Create Slot:&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+</a></h4>
-                                <div class="d-inline-block ml-auto">
+<!--                                <div class="d-inline-block ml-auto">
                                     <a href="deleteslot?all=all&mentorid=${uFound.mentorId}" class="btn button-layout red">Delete All</a>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="widget-inner">
                                 <div class="new-user-list" style="max-height: 600px; overflow-y: auto;" >

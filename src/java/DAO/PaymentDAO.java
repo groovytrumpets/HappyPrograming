@@ -281,7 +281,7 @@ public class PaymentDAO extends DBContext {
         }
     }
      public boolean updatePaymentAmount(int paymentId, double newAmount) {
-        String sql = "UPDATE payment SET TotalAmount = ? WHERE paymentId = ?";
+        String sql = "UPDATE payment SET TotalAmount = ? WHERE requestId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setDouble(1, newAmount);
             pstmt.setInt(2, paymentId);

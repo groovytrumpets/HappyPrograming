@@ -343,7 +343,6 @@
                                                 <c:forEach items="${requestScope.paymentList1}" var="p">
                                                     <c:forEach items="${requestScope.completeRequestList}" var="c">
                                                         <c:if test="${p.requestId==c.requestId}">
-                                                            ${p.requestId} ${c.requestId}
                                                             <c:forEach items="${requestScope.mentorList}" var="v">
                                                                 <c:if test="${c.mentorId==v.mentorId}">
                                                                     <li>

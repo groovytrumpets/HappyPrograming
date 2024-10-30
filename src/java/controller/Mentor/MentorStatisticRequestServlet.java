@@ -74,6 +74,8 @@ public class MentorStatisticRequestServlet extends HttpServlet {
             int rateAve = cvd.getAveRatebyId(mentorid);
             int invitedRequest = cvd.countInvitedRequestbyMentorId(mentorid);
             int compeletedRequest = cvd.countCompletedRequestbyMentorId(mentorid);
+            int acceptedRequest = cvd.countAllCompletedRequestbyMentorId(mentorid);
+            
             int canceledRequest = cvd.countCanceledRequestbyMentorId(mentorid);
             int countRequest = cvd.countRequestbyMentorId(mentorid);
             List<Request> requestList = cvd.getListofRequestbyMentorId(mentorid);
@@ -87,6 +89,8 @@ public class MentorStatisticRequestServlet extends HttpServlet {
             request.setAttribute("requestList", requestList);
             request.setAttribute("menteeList", menteeList);
             request.setAttribute("listUser", listUser);
+            
+            request.setAttribute("acceptedRequest", acceptedRequest);
             
             Map<String, Integer> monthlyRatings = cvd.getRatingMapbyMentorId(mentorid);
             //System.out.println(monthlyRatings.keySet() + ", " + monthlyRatings.values());

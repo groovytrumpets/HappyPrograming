@@ -174,6 +174,11 @@ public class UpdateRequestSV extends HttpServlet {
 
             LocalDateTime now = LocalDateTime.now();
             LocalDate creaDate = LocalDate.now();
+             if (selectedStartDate.isBefore(creaDate)) {
+                response.sendRedirect("updateRequest?id=" + id + "&error=Start date cannot be earlier than current time");
+                return;
+            }
+
 
             if (selectedEndDate.isBefore(selectedStartDate)) {
                 response.sendRedirect("updateRequest?id=" + id + "&error=End date cannot be earlier than start date");
@@ -195,7 +200,7 @@ public class UpdateRequestSV extends HttpServlet {
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
             requestDAO.updateRequest(newRequest);
             walletDAO.updateHoldByUsername(a.getUsername(), wallet.getHold() - requests.getPrice() + totalP);
-            paymentDAO.updatePaymentAmount(menteeid, totalP);
+            paymentDAO.updatePaymentAmount(id, totalP);
             requestDAO.updateItemsByRequestID(id, selectedSlot);
             response.sendRedirect("updateRequest?id=" + id + "&notify=Update request succesfully");
 
