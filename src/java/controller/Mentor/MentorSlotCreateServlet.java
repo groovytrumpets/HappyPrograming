@@ -78,7 +78,7 @@ public class MentorSlotCreateServlet extends HttpServlet {
         CVDAO cvd = new CVDAO();
         SlotDAO sld = new SlotDAO();
         try {
-
+            
             mentorId = Integer.parseInt(mentorId_raw);
             Mentor mentor = cvd.getMentorByID(mentorId);
             List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(mentorId);
@@ -181,7 +181,7 @@ public class MentorSlotCreateServlet extends HttpServlet {
             slot.setStatus("inactive");
             slot.setCVID(cv.getCvId());
             for (Slot slot1 : listDraftSlot) {
-                if (slot1.getStartTime().equals(slot.getStartTime())) {
+                if (slot1.getStartTime().equals(slot.getStartTime()) && slot1.getDayInWeek().equalsIgnoreCase(slot.getDayInWeek()))  {
                     //System.out.println("giong nhau roii");
                     response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create the slot because a duplicate start time was found. Please choose a different time!");
                     return;

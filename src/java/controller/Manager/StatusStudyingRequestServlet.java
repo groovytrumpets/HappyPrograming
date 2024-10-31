@@ -77,16 +77,19 @@ public class StatusStudyingRequestServlet extends HttpServlet {
 
                     //System.out.println("pending");
                     cvd.setStatusStudyingRequestId(requestId);
-                    response.sendRedirect("paymentmanagercate?id=" + requestId+"&mess=Status changed to Studying successfully.");
+                    //add attendance!!
+                    Request newRq = cvd.getRequestbyRequestId(requestId);
+                    CreateScheduleServlet.setScheduelForRequest(newRq);
+                    response.sendRedirect("paymentmanagercate?id=" + requestId+"&mess=Status changed to Studying and create schedule successfully.");
                 } else {
                     response.sendRedirect("paymentmanagercate?id=" + requestId+"&error=Failed to change status.");
                 }
             } else if (rq.getStatus().equalsIgnoreCase("Studying")) {
                 if (requestDAO.setSlotStatusbyRequestSlotItemAvailable(requestId)) {
-                    System.out.println("change a sucess");
+                    
                     //System.out.println("studying");
-                    cvd.setStatusProcessingRequestId(requestId);
-                    response.sendRedirect("paymentmanagercate?id=" + requestId+"&mess=Status changed to Processing successfully.");
+                    //cvd.setStatusProcessingRequestId(requestId);
+                    response.sendRedirect("paymentmanagercate?id=" + requestId+"&error=Cannot change status from 'Studying' to 'Processing'.");
                 } else {
                     response.sendRedirect("paymentmanagercate?id=" + requestId+"&error=Failed to change status.");
                 }

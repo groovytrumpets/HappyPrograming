@@ -7,6 +7,7 @@ package controller.CV;
 
 import DAO.CVDAO;
 import DAO.HomeDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
@@ -74,6 +75,7 @@ public class ViewProfileCVServlet extends HttpServlet {
         
         int id;
         CVDAO cvd = new CVDAO();
+        SlotDAO sld = new SlotDAO();
         try {
             id = Integer.parseInt(id_raw);
             Mentor mentor = cvd.getMentorByID(id);
@@ -103,7 +105,7 @@ public class ViewProfileCVServlet extends HttpServlet {
             List<String> dateConverted = new ArrayList<>();
             List<String> enddateConverted = new ArrayList<>();
             List<String> statusSlot = new ArrayList<>();
-            List<Slot> mentorSlot = cvd.getSlotByMentorId(id);
+            List<Slot> mentorSlot = sld.getListofActiveSlotsByMentorId(id);
             //System.out.println(mentorSlot.get(0).getDayInWeek());
             for (int i = 0; i < mentorSlot.size(); i++) {
                 String startDate = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();

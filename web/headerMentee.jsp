@@ -264,9 +264,9 @@
                 <nav class="ttr-sidebar-navi">
                     <ul>
                         <li>
-                            <a href="index.html" class="ttr-material-button">
+                            <a href="home" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashborad</span>
+                                <span class="ttr-label">Dashboard</span>
                             </a>
                         </li>
                         <li>
@@ -276,17 +276,10 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button">
+                            <a href="slotview" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-calendar"></i></span>
-                                <span class="ttr-label">Calendar</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
+                                <span class="ttr-label">Schedule</span>
                             </a>
-                            <ul>
-                                <li>
-                                    <a href="#" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-                                </li>
-
-                            </ul>
                         </li>
                         <li>
                             <a href="listrequestbymentee" class="ttr-material-button">

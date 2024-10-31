@@ -176,7 +176,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 300px; overflow-y: auto;" >
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -207,7 +207,7 @@
 
                                                     <td class="align-middle">${c.startDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50">₫${c.price}</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.status}</td>     
 
 <!--                                                    <td class="align-middle">

@@ -168,7 +168,8 @@
                                                         <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
                                                     <div class="info-bx text-center" style="height: 130px">
-                                                        <h5><a href="#">${s.skillName}</a></h5>
+                                                        <h5><a href="#" style="display: inline-block; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                                               >${s.skillName}</a></h5>
                                                         <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
                                                             ${s.description}</span>
                                                     </div>
@@ -305,7 +306,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 m-b30">
                                     <div class="counter-style-1">
                                         <div class="text-white">
-                                            <span class="counter">3000</span><span>+</span>
+                                            <span class="counter">${requestScope.completeRequestCount}</span><span>+</span>
                                         </div>
                                         <span class="counter-text">Completed Request</span>
                                     </div>
@@ -321,7 +322,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 m-b30">
                                     <div class="counter-style-1">
                                         <div class="text-white">
-                                            <span class="counter">1500</span><span>+</span>
+                                            <span class="counter">${requestScope.rateCount}</span><span>+</span>
                                         </div>
                                         <span class="counter-text">Questions Answered</span>
                                     </div>
@@ -359,11 +360,12 @@
                                                     <div class="testimonial-thumb">
                                                         <c:forEach items="${requestScope.menteeList}" var="m">
                                                             <c:if test="${r.menteeId==m.menteeId}">
+                                                                
                                                                 <c:if test="${m.base64FileImage!=null}">
-                                                                    <img src="data:image/jpeg;base64,${mentee.base64FileImage}" alt="">
+                                                                    <img src="data:image/jpeg;base64,${m.base64FileImage}" alt="" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
                                                                 </c:if>
                                                                 <c:if test="${m.base64FileImage==null}">
-                                                                    <img src="assets\images\userprofile.png" alt="">
+                                                                    <img src="assets/images/userprofile.png" alt="">
                                                                 </c:if>
 
                                                             </c:if>

@@ -164,7 +164,7 @@
                                                         <a class="dropdown-item" href="updateProfile">My profile</a>
                                                     </c:if>
                                                     <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
-                                                    <a class="dropdown-item" href="mailbox.html">Messages</a>
+                                                    <a class="dropdown-item" href="payment">Balance: </a>
                                                     <a class="dropdown-item" href="logout">Logout</a>
 
                                                 </div>
@@ -227,17 +227,9 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="javascript:;">Rank <i class="fa fa-chevron-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="ranking.jsp">Mentee Ranking</a></li>
-                                            <li><a href="skillhome">Contributor</a></li>
-                                            <li><a href="skillhome">Learn Now</a></li>
-
-
-
-                                        </ul>
-                                    </li>
                                     <c:choose>
+
+
                                         <c:when test="${sessionScope.acc.roleId == 4}">
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
@@ -259,24 +251,28 @@
                                         </c:when>
 
                                         <c:when test="${sessionScope.acc.roleId == 2}">
+                                            <li><a href="javascript:;">My Course <i class="fa fa-chevron-down"></i></a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="slotview">Schedule</a></li>
+                                                    <li><a href="listmentor">Rate & Comment</a></li>
+
+
+
+                                                </ul>
+                                            </li>
                                             <!-- Mentee Dashboard -->
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
                                                     <li><a href="statisticrequestbymentee">Statistic Request</a></li>
-                                                    <li><a href="skillhome">Courses</a></li>
+                                                    <li><a href="listrequestbymentee">List Request</a></li>
 
                                                     <li><a href="updateProfile">View Profile</a></li>
                                                     <li><a href="updateProfile">Update Profile</a></li>
-                                                    <li><a href="listmentor">Rate & Comment</a></li>
+                                                    
                                                     <!--                                                    <li><a href="#">Wishlist</a></li>-->
                                                     <li><a href="payment">Deposit</a></li>
 
-                                                    <li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
-                                                        <ul class="sub-menu">
-                                                            <li><a href="admin/basic-calendar.html">Basic Calendar</a></li>
-                                                            <li><a href="admin/list-view-calendar.html">List View Calendar</a></li>
-                                                        </ul>
-                                                    </li>
+                                                    
                                                 </ul>
                                             </li>
                                         </c:when>

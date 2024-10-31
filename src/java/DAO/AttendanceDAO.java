@@ -6,6 +6,7 @@
 package DAO;
 
 import Model.Attendance;
+import Model.Schedule;
 import Model.Slot;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,44 @@ public class AttendanceDAO extends DBContext {
         return list;
     }
 
+    public List<Schedule> getListOfSchedulebyMenteeId(int menteeId) {
+        List<Schedule> list = new ArrayList<>();
+        String sql = """
+                     select r.RequestID,r.MenteeID,r.MentorID,r.Status,r.Price,r.Framework,s.DayInWeek,r.StartDate,r.EndDate,s.StartTime,s.EndTime,a.slotDate,a.Status[aStatus],r.SkillID
+                     from Request r join RequestSlotItem rs on r.RequestID=rs.RequestID join Slot s on rs.SlotID=s.SlotID join Attendance a on a.RequestSlotItem=rs.RequestSlotItem
+                     where r.MenteeID = ? and r.Status like 'studying'
+                     """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, menteeId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Schedule s = new Schedule();
+                s.setRequestId(rs.getInt("RequestID"));
+                s.setMenteeId(rs.getInt("MenteeID"));
+                s.setMentorId(rs.getInt("MentorID"));
+                s.setStatus(rs.getString("Status"));
+                s.setPrice(rs.getFloat("Price"));
+                s.setFramework(rs.getString("Framework"));
+                s.setDayInWeek(rs.getString("DayInWeek"));
+                s.setStartDate(rs.getDate("StartDate").toLocalDate());
+                s.setEndDate(rs.getDate("EndDate").toLocalDate());
+                s.setStartTime(rs.getTime("StartTime").toLocalTime());
+                s.setEndTime(rs.getTime("EndTime").toLocalTime());
+                s.setSlotDate(rs.getDate("slotDate").toLocalDate());
+                s.setAttendanceStatus(rs.getString("aStatus"));
+                s.setSkillId(rs.getInt("SkillID"));
+
+                list.add(s);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public boolean addAttendance(Attendance curAttendance) {
         String sql = "INSERT INTO [dbo].[Attendance]\n"
                 + "           ([RequestSlotItem]\n"
@@ -121,7 +160,7 @@ public class AttendanceDAO extends DBContext {
                 + "           ,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1 , curAttendance.getRequestSlotItem());
+            st.setInt(1, curAttendance.getRequestSlotItem());
             st.setDate(2, Date.valueOf(curAttendance.getDate()));
             st.setString(3, curAttendance.getStatus());
             st.executeUpdate();
@@ -139,5 +178,5 @@ public class AttendanceDAO extends DBContext {
         List<Attendance> list = act.getSchduleByMentorID(2, start, end);
         System.out.println(list.get(0).getMenteeID());
     }
-}
 
+}

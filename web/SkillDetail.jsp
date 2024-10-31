@@ -174,7 +174,7 @@
                                                                 <div class="col-md-6">
                                                                     <div class="instructor-bx" >
                                                                         <div class="instructor-author">
-                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100">
+                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100" style="width: 100%; height: 100%; object-fit: cover;">
                                                                         </div>
                                                                         <div class="instructor-info">
                                                                             <h6>${mentors.fullName}</h6>

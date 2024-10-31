@@ -146,7 +146,7 @@
 
                                                     <td class="align-middle">${c.startDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50"><fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Processing')}">
@@ -199,7 +199,7 @@
                                     Wallet of Manager
                                 </span>
                                 <span class="wc-stats">
-                                    <span class="counter">${wallet.balance}</span>₫
+                                    <span class=""><fmt:formatNumber value="${wallet.balance}" type="number" maxFractionDigits="2" /> </span>₫
                                 </span>	
                             </div>				      
                         </div>
@@ -291,7 +291,7 @@
 
                                                     <td class="align-middle">${c.endDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50"><fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Completed')}">
@@ -380,7 +380,7 @@
                                                                         <span class="orders-title">
                                                                             <a href="#" class="text-black-50"><b>You</b></a> 
                                                                             to <a href="#" class=""><b>${v.username}</b></a> <br/>
-                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> $ </b>
+                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫ </b>
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">

@@ -114,11 +114,13 @@ public class HomeDAO extends DBContext {
     public List<Skill> getListofSkill() {
         List<Skill> list = new ArrayList<>();
         //lenh sql select * from categories cach 1:
-        String sql = "select top 4 s.SkillID,s.SkillName,s.CreateDate,s.Description,s.Img,Avg(Rating)[Rating]\n"
-                + "from Skill s join SkillList sl on s.SkillID=sl.SkillID\n"
-                + "where s.Status='active'\n"
-                + "group by s.SkillID,s.SkillName,s.CreateDate,s.Img,sl.Rating,s.Description\n"
-                + "order by sl.Rating desc;";
+        String sql = """
+                     select top 4 s.SkillID,s.SkillName,s.CreateDate,s.Description,s.Img,Avg(Rating)[Rating]
+                     from Skill s join SkillList sl on s.SkillID=sl.SkillID
+                     				where s.Status='active'
+                     				group by s.SkillID,s.SkillName,s.CreateDate,s.Img,s.Description
+                     				order by Rating desc;
+                     """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
