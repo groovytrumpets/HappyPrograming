@@ -222,7 +222,7 @@
                                                                 at ${p.paymentDate}</span>
                                                         </span>
                                                         <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">Paid</a>
+                                                            <a href="#" class="btn button-sm green">Mentee Paid</a>
                                                         </span>
                                                         <!--
                                                            
@@ -355,7 +355,7 @@
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
-                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm red">Unpaid</a>
+                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm">Make Payment</a>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>
@@ -384,7 +384,7 @@
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
-                                                                            <a  href="#" class="btn button-sm green">Paid</a>
+                                                                            <a  href="#" class="btn button-sm purple">Paid</a>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>
