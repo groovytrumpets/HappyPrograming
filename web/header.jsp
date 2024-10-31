@@ -7,6 +7,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -164,7 +165,7 @@
                                                         <a class="dropdown-item" href="updateProfile">My profile</a>
                                                     </c:if>
                                                     <a class="dropdown-item" href="changeloggingpassword">Change Password</a>
-                                                    <a class="dropdown-item" href="payment">Balance: </a>
+                                                    <a class="dropdown-item" href="payment">Balance: <span class="text-green"><fmt:formatNumber value="${sessionScope.wallet.balance}" type="number" maxFractionDigits="2" /> ₫</span> </a>
                                                     <a class="dropdown-item" href="logout">Logout</a>
 
                                                 </div>
