@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,20 +20,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Schedule </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +60,7 @@
         <style>
             .fc-event .fc-title {
                 font-size: 16px; /* Adjust font size if needed */
-    font-weight: bold;
+                font-weight: bold;
             }
             .fc-time{
                 font-size: 16px;
@@ -84,7 +85,18 @@
                     </ul>
                 </div>	
                 <!-- Card -->
-
+                <div style="display: flex;justify-content: center">
+                    <c:if test="${not empty requestScope.error}">
+                        <div class="alert alert-danger text-center d-inline-block" role="alert" >
+                            ${requestScope.error}
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty requestScope.mess}">
+                        <a href="#" class="alert alert-success text-center d-inline-block" role="alert" >
+                            ${requestScope.mess}
+                        </a>
+                    </c:if>
+                </div>
                 <!-- Card END -->
                 <div class="row">
                     <!-- Your Profile Views Chart -->
@@ -109,24 +121,7 @@
         <div class="ttr-overlay"></div>
 
         <!-- External JavaScripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-        <script src="assets/vendors/counter/waypoints-min.js"></script>
-        <script src="assets/vendors/counter/counterup.min.js"></script>
-        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-        <script src="assets/vendors/masonry/masonry.js"></script>
-        <script src="assets/vendors/masonry/filter.js"></script>
-        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/calendar/moment.min.js'></script>
-        <script src='assets/vendors/calendar/fullcalendar.js'></script>
+        
 
         <script>
             $(document).ready(function () {
@@ -177,6 +172,24 @@
 
         </script>
     </body>
+    <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/vendors/chart/chart.min.js"></script>
+        <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/calendar/moment.min.js'></script>
+        <script src='assets/vendors/calendar/fullcalendar.js'></script>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

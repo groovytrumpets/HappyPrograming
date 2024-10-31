@@ -203,7 +203,6 @@
                                             </li>
 
                                             <li><a href="contact.jsp">Contact Us</a></li>
-                                            <li><a href="menteeprofile">Profile</a></li>
                                             <li><a href="faq.jsp">FAQ's</a></li>
                                         </ul>
                                     </li>

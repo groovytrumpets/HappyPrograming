@@ -19,7 +19,7 @@
         <meta name="author" content="" />
         <meta name="robots" content="" />
 
-       <!-- DESCRIPTION -->
+      <!-- DESCRIPTION -->
         <meta name="description" content="Happy Programing" />
 
         <!-- OG -->

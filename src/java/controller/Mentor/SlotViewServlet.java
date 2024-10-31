@@ -77,15 +77,18 @@ public class SlotViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
-        Mentee mentee = (Mentee)session.getAttribute("mentee");
+        Mentee mentee = (Mentee) session.getAttribute("mentee");
 
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
         }
-        
+
         int mentorId;
         try {
             mentorId = mentee.getMenteeId();
@@ -102,6 +105,13 @@ public class SlotViewServlet extends HttpServlet {
             List<Skill> skillList = skd.getListOfAllSkill();
 
             List<Schedule> scheduleList = atd.getListOfSchedulebyMenteeId(mentorId);
+            if (scheduleList == null || scheduleList.isEmpty()) {
+                mess = "It looks like you have no upcoming schedule. Please rent a mentor to get started!";
+                request.setAttribute("error", error);
+                request.setAttribute("mess", mess);
+                request.getRequestDispatcher("scheduleView.jsp").forward(request, response);
+                return;
+            }
             System.out.println(scheduleList.get(0).getStatus());
             System.out.println(scheduleList.get(0).getAttendanceStatus());
 
@@ -130,7 +140,7 @@ public class SlotViewServlet extends HttpServlet {
             request.setAttribute("status", new Gson().toJson(status));
             request.setAttribute("framework", new Gson().toJson(framework));
 
-            request.getRequestDispatcher("slotDemo.jsp").forward(request, response);
+            request.getRequestDispatcher("scheduleView.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
