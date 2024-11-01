@@ -20,20 +20,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Statistic Request Mentor </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -176,7 +176,7 @@
                                 </form>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
+                                <div class="table-vertical-scroll table-responsive" style="max-height: 300px; overflow-y: auto;" >
                                     <table class="table table-hover">
                                         <thead class="thead-light">
                                             <tr>
@@ -207,7 +207,7 @@
 
                                                     <td class="align-middle">${c.startDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50">₫${c.price}</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.status}</td>     
 
 <!--                                                    <td class="align-middle">

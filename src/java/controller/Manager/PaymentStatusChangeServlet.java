@@ -67,7 +67,8 @@ public class PaymentStatusChangeServlet extends HttpServlet {
             
             price = Float.parseFloat(price_raw);
             requestId= Integer.parseInt(requestId_raw);
-            
+            price = price-(price*(20.0f/100));
+            Math.round(price);
             CVDAO cvd = new CVDAO();
             Payment payment = new Payment();
             payment.setRequestId(requestId);

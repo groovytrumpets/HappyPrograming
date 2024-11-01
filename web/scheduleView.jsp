@@ -1,16 +1,15 @@
 <%-- 
-    Document   : statisticRequestByMentee
-    Created on : Oct 15, 2024, 9:48:14 AM
-    Author     : asus
+    Document   : slot
+    Created on : 15 thg 10, 2024, 18:47:37
+    Author     : ADMIN
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
     <head>
 
         <!-- META ============================================= -->
@@ -34,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Statistic of requests</title>
+        <title>Happy Programing : Schedule </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,63 +57,61 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-
+        <style>
+            .fc-event .fc-title {
+                font-size: 16px; /* Adjust font size if needed */
+                font-weight: bold;
+            }
+            .fc-time{
+                font-size: 16px;
+                margin-right: 20px
+            }
+        </style>
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
+        <!-- header start -->
         <jsp:include page="headerMentee.jsp" />
+        <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Statistic of requests</h4>
+                    <h4 class="breadcrumb-title">Schedule</h4>
                     <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Statistic of requests</li>
+                        <li><a href="home"><i class="fa fa-home"></i>Home</a></li>
+                        <li>Schedule</li>
                     </ul>
-                </div>    
+                </div>	
+                <!-- Card -->
+                <div style="display: flex;justify-content: center">
+                    <c:if test="${not empty requestScope.error}">
+                        <div class="alert alert-danger text-center d-inline-block" role="alert" >
+                            ${requestScope.error}
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty requestScope.mess}">
+                        <a href="#" class="alert alert-success text-center d-inline-block" role="alert" >
+                            ${requestScope.mess}
+                        </a>
+                    </c:if>
+                </div>
+                <!-- Card END -->
                 <div class="row">
+                    <!-- Your Profile Views Chart -->
+
+                    <!-- Your Profile Views Chart END-->
+
+
+
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Statistic</h4><br>
-                                <div style="display: flex; gap: 2rem;">
-                                    <span>Total Requests: ${totalRequests}</span>
-                                    <span>Total Hours: ${totalHours}</span>
-                                    <span>Total Mentors: ${totalMentors}</span>
-                                </div>
+                                <h4>Basic Calendar</h4>
                             </div>
                             <div class="widget-inner">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Request Title</th>
-                                            <th>Mentor Name</th>
-                                            <th>Price</th>
-                                            <th>Start Date</th>
-                                            <th>End Date</th>
-                                            <th>Total Hours each Request</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="request" items="${listRequests}" varStatus="status">
-                                            <c:forEach var="m" items="${mentorlist}" varStatus="status">
-                                                <c:if test="${request.mentorId==m.mentorId}">
-                                                    <tr>
-                                                        <td>${request.title}</td>
-                                                        <td>${m.fullName}</td>
-                                                        <td>${request.price}</td>
-                                                        <td>${request.startDate}</td>
-                                                        <td>${request.endDate}</td>
-                                                        <td>${hoursPerRequestList[status.index]}</td>
-                                                    </tr> 
-                                                </c:if>
-
-                                            </c:forEach>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                <div id="calendar"></div>
                             </div>
                         </div>
                     </div>
@@ -140,34 +137,59 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
-        <script>
-            // Pricing add
-            function newMenuItem() {
-                var newElem = $('tr.list-item').first().clone();
-                newElem.find('input').val('');
-                newElem.appendTo('table#item-add');
-            }
-            if ($("table#item-add").is('*')) {
-                $('.add-item').on('click', function (e) {
-                    e.preventDefault();
-                    newMenuItem();
-                });
-                $(document).on("click", "#item-add .delete", function (e) {
-                    e.preventDefault();
-                    $(this).parent().parent().parent().parent().remove();
-                });
-            }
-            //file path
-            const input = document.getElementById('avatar');
-            const filePathDisplay = document.getElementById('file-path');
+        <script src='assets/vendors/calendar/moment.min.js'></script>
+        <script src='assets/vendors/calendar/fullcalendar.js'></script>
 
-            input.addEventListener('change', function () {
-                const fileName = input.files[0].name; // Lấy tên file được chọn
-                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
+        <script>
+            $(document).ready(function () {
+                var status = JSON.parse('${requestScope.status}');
+                var start = JSON.parse('${requestScope.start}');
+                var end = JSON.parse('${requestScope.end}');
+                var framework = JSON.parse('${requestScope.framework}');
+                var eventsArray = [];
+                for (var i = 0; i < start.length; i++) {
+                    var eventColor = '';
+                    if (status[i].toLowerCase() === 'absent') {
+                        eventColor = '#c22d2d';
+                    } else if (status[i].toLowerCase() === 'attended') {
+                        eventColor = '#2dc22d';
+                    } else {
+                        eventColor = '#404040';
+                    }
+                    console.log(status[i]);
+                    console.log(status[i].toLowerCase() === 'inactive');
+                    eventsArray.push({
+                        title: framework[i] + ' - ' + status[i],
+                        start: start[i],
+                        end: end[i],
+                        color: eventColor
+                    });
+                }
+                $('#calendar').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay,listWeek'
+                    },
+
+                    defaultView: 'month',
+                    navLinks: true, // can click day/week names to navigate views
+
+                    weekNumbers: true,
+                    weekNumbersWithinDays: true,
+                    weekNumberCalculation: 'ISO',
+
+                    editable: true,
+                    eventLimit: true, // allow "more" link when too many events
+                    events: eventsArray,
+                    height: 800
+                });
+
             });
+
         </script>
     </body>
+    
 
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+    <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

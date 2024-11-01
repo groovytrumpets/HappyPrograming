@@ -47,6 +47,12 @@ public class Mentee {
         this.fullName = fullName;
         this.gender = gender;
         this.status = status;
+        if (avatar != null) {
+            this.base64FileImage = Base64.getEncoder().encodeToString(avatar);
+        } else {
+            this.base64FileImage = null;
+        }
+        
     }
 
     public Mentee(int menteeId, int roleId, byte[] avatar, String username, Date createDate, String email, String phone, String address, Date dateOfBirth, String fullName, String gender, String status) {

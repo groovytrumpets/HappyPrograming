@@ -2,12 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.Mentor;
+package controller.Mentee;
 
+import DAO.AttendanceDAO;
 import DAO.CVDAO;
+import DAO.SkillDAO;
+import Model.Mentee;
 import Model.Request;
+import Model.Schedule;
+import Model.Skill;
 import Model.Slot;
 import Model.SlotRequest;
+import Model.User;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +22,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -70,53 +77,71 @@ public class SlotViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorId_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+
+        HttpSession session = request.getSession();
+        User curUser = (User) session.getAttribute("acc");
+        Mentee mentee = (Mentee) session.getAttribute("mentee");
+
+        if (curUser == null) {
+            response.sendRedirect("signin");
+            return;
+        }
+
         int mentorId;
         try {
-            mentorId = Integer.parseInt(mentorId_raw);
-            CVDAO cvd = new CVDAO();
-            
-            List<String> statusSlot = new ArrayList<>();
-            List<Slot> mentorSlot = cvd.getSlotByMentorId(mentorId);
-            int menteeId = 2;
-            List<SlotRequest> menteeSRList = cvd.getSlotRequestbyMenteeId(menteeId);
+            mentorId = mentee.getMenteeId();
+            AttendanceDAO atd = new AttendanceDAO();
+            SkillDAO skd = new SkillDAO();
             //debug converter START-------------------------------------
-            System.out.println(menteeSRList.get(0).getDayInWeek());
-            System.out.println(menteeSRList.get(0).getStartDate());
-            System.out.println(menteeSRList.get(0).getEndDate());
-            List<String> startDateconverted = new ArrayList<>();
-            List<String> endDateconverted = new ArrayList<>();
-            List<String> classTitle = new ArrayList<>();
-            
-            LocalDate startDate = menteeSRList.get(0).getStartDate();
-            LocalDate endDate = menteeSRList.get(0).getEndDate();
-            
-            for (int j = 0; j < menteeSRList.size(); j++) {
-                List<String> dateList = convertDayInWeekToDatesBetweenRange(menteeSRList.get(j).getDayInWeek(), startDate, endDate);
-                for (int i = 0; i < dateList.size(); i++) {
-                    String startDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getStartTime();
-                    String endDateAdd = dateList.get(i) + "T" + menteeSRList.get(j).getEndTime();
-                    classTitle.add(menteeSRList.get(j).getFramework());
-                    startDateconverted.add(startDateAdd);
-                    endDateconverted.add(endDateAdd);
-                }
-                //debug converter result
-                System.out.println("OK:");
-                dateList.forEach(System.out::println);
-                System.out.println("Combine:");
-                startDateconverted.forEach(System.out::println);
-            //debug converter END----------------------------
-                
-                request.setAttribute("values", new Gson().toJson(startDateconverted));
-                request.setAttribute("endDateconverted", new Gson().toJson(endDateconverted));
-                request.setAttribute("status", new Gson().toJson(classTitle));
-                
+//            System.out.println(menteeSRList.get(0).getDayInWeek());
+//            System.out.println(menteeSRList.get(0).getStartDate());
+//            System.out.println(menteeSRList.get(0).getEndDate());
+            List<String> start = new ArrayList<>();
+            List<String> end = new ArrayList<>();
+            List<String> status = new ArrayList<>();
+            List<String> framework = new ArrayList<>();
+            List<Skill> skillList = skd.getListOfAllSkill();
+            atd.updateStatusAttendanceByDay();
+            List<Schedule> scheduleList = atd.getListOfSchedulebyMenteeId(mentorId);
+            if (scheduleList == null || scheduleList.isEmpty()) {
+                mess = "It looks like you have no upcoming schedule. Please rent a mentor to get started!";
+                request.setAttribute("error", error);
+                request.setAttribute("mess", mess);
+                request.getRequestDispatcher("scheduleView.jsp").forward(request, response);
+                return;
             }
+//            System.out.println(scheduleList.get(0).getStatus());
+//            System.out.println(scheduleList.get(0).getAttendanceStatus());
 
+            for (int j = 0; j < scheduleList.size(); j++) {
 
-            
-         
-            request.getRequestDispatcher("slotDemo.jsp").forward(request, response);
+                String startDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getStartTime();
+                System.out.println(scheduleList.get(j).getSlotDate());
+                String endDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getEndTime();
+                status.add(scheduleList.get(j).getAttendanceStatus());
+                start.add(startDateAdd);
+                end.add(endDateAdd);
+                for (Skill skill : skillList) {
+                    if (scheduleList.get(j).getSkillId() == skill.getSkillId()) {
+                        framework.add(skill.getSkillName());
+                    }
+                }
+
+                //debug converter result
+//                System.out.println("OK:");
+//                dateList.forEach(System.out::println);
+//                System.out.println("Combine:");
+//                startDateconverted.forEach(System.out::println);
+                //debug converter END----------------------------
+            }
+            request.setAttribute("start", new Gson().toJson(start));
+            request.setAttribute("end", new Gson().toJson(end));
+            request.setAttribute("status", new Gson().toJson(status));
+            request.setAttribute("framework", new Gson().toJson(framework));
+
+            request.getRequestDispatcher("scheduleView.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -146,7 +171,6 @@ public class SlotViewServlet extends HttpServlet {
         // Tìm thứ trong tuần hiện tại
         LocalDate resultDate = today.with(DayOfWeek.MONDAY);
 
-        
         while (resultDate.getDayOfWeek() != dayOfWeek) {
             resultDate = resultDate.plusDays(1);
         }

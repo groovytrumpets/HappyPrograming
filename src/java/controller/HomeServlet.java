@@ -81,8 +81,8 @@ public class HomeServlet extends HttpServlet {
         int mentorNumb = hdao.countMentor();
         int menteeCount = hdao.countMentee();
         int requestCount = hdao.countRequest();
-        //System.out.println(menteeList.get(0));
-        
+        int completeRequestCount = cvd.countAllCompletedRequest();
+       int rateCount = cvd.countAllRating();
         int skillCount = hdao.skillCount();
         float rateAve = hdao.getRateAve();
         //System.out.println(rateAve);
@@ -91,6 +91,10 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("skillCount", skillCount);
         request.setAttribute("menteeCount", menteeCount);
          request.setAttribute("requestCount", requestCount);
+         request.setAttribute("completeRequestCount", completeRequestCount);
+         request.setAttribute("rateCount", rateCount);
+         
+         
          
         request.setAttribute("mentorList", mentorList);
         request.setAttribute("menteeList", menteeList);
