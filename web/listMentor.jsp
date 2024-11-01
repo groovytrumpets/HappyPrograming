@@ -107,18 +107,12 @@
                                                                     <span>Framework: ${c.framework}</span>
                                                                     <br/>
                                                                     <span>Education: ${c.education}</span> 
-
                                                                 </div>
-
-                                                                
-                                                                        <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                                            Review
-                                                                        </a>
-                                                                   
+                                                                <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                    Review
+                                                                </a>                                                                 
                                                             </c:if>
                                                         </c:forEach>
-
-
                                                     </div>
                                                 </div>
                                             </div>

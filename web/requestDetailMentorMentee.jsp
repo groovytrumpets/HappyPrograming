@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -156,47 +157,53 @@
                                         </table>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="ml-auto">
-                                            <form action="requestDetailAdmin" method="get">
+                                            <form action="requestdetailmentormentee" method="get">
                                                 <input type="hidden" name="requestID" value="${request.requestId}">
                                                 <label>Start date:</label>
                                                 <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
-                                            </form><br>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Monday</th>
-                                                        <th>Tuesday</th>
-                                                        <th>Wednesday</th>
-                                                        <th>Thursday</th>
-                                                        <th>Friday</th>
-                                                        <th>Saturday</th>
-                                                        <th>Sunday</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <c:forEach var="day" items="${daysOfWeek}">
-                                                            <td>
-                                                                <c:if test="${not empty dateStartDay[day]}">
-                                                                    <div>${dateStartDay[day]}</div>
-                                                                </c:if>
-                                                                <c:if test="${not empty slotsByDay[day]}">
-                                                                    <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                        <div>${slot.startTime} - ${slot.endTime}</div>
-                                                                    </c:forEach>
+                                            </form>
+                                            <div class="text-center">
+                                                <h3>${formattedDateRange}</h3>
+                                            </div>
+                                            <div style="border: 1px solid #eaeaea; padding: 1px; background-color: #f9f9f9;">
+                                                <table border="1" class="table table-hover text-center" style="border-collapse: separate; width: 100%; table-layout: fixed; border: #ddd">
+                                                    <thead style="background-color: #f0f0f0;">
+                                                        <tr>
+                                                            <th style="border: none; padding: 10px; width: 10%;"></th>
+                                                                <c:forEach var="day" items="${daysOfWeek}" varStatus="status">
+                                                                <th style="padding: 10px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
+                                                                    ${fn:substring(day, 0, 3)}
+                                                                    ${dateOfDay[day].monthValue}/${dateOfDay[day].dayOfMonth}
+                                                                </th>
+                                                            </c:forEach>
+                                                        </tr>
+                                                    </thead>
 
-                                                                </c:if>
-                                                                <c:if test="${empty slotsByDay[day]}">
-                                                                    No slots available
-                                                                </c:if>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="border: 1px solid #ddd;">
+                                                                <label>Slot</label>
                                                             </td>
-                                                        </c:forEach>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                            <c:forEach var="day" items="${daysOfWeek}">
+                                                                <td class="text-left" style="padding-bottom: 50px;
+                                                                    <c:if test='${not empty slotsByDay[day]}'>background-color: #62d262;</c:if>
+                                                                        border: 1px solid #ddd; border-radius: 3px;">
+                                                                    <c:if test="${not empty slotsByDay[day]}">
+                                                                        <c:forEach var="slot" items="${slotsByDay[day]}">
+                                                                            <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                            <div>${slot.status}</div>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                </td>
+                                                            </c:forEach>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -227,26 +234,6 @@
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
-        <script>
-                                                    // Pricing add
-                                                    function newMenuItem() {
-                                                        var newElem = $('tr.list-item').first().clone();
-                                                        newElem.find('input').val('');
-                                                        newElem.appendTo('table#item-add');
-                                                    }
-                                                    if ($("table#item-add").is('*')) {
-                                                        $('.add-item').on('click', function (e) {
-                                                            e.preventDefault();
-                                                            newMenuItem();
-                                                        });
-                                                        $(document).on("click", "#item-add .delete", function (e) {
-                                                            e.preventDefault();
-                                                            $(this).parent().parent().parent().parent().remove();
-                                                        });
-                                                    }
-
-        </script>
-
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
