@@ -85,6 +85,21 @@ public class AttendanceDAO extends DBContext {
         }
 
     }
+    public boolean updateStatusAttendanceByDay() {
+        String sql = """
+                     update Attendance set Status='Absent' where slotDate<getdate() and Status='Not yet';
+                     update Attendance set Status='Not yet' where slotDate>getdate();
+                     """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+
+    }
 
     public List<Attendance> getAllSlotOfRequest(int requestID) {
         List<Attendance> list = new ArrayList<>();
@@ -116,7 +131,7 @@ public class AttendanceDAO extends DBContext {
         String sql = """
                      select r.RequestID,r.MenteeID,r.MentorID,r.Status,r.Price,r.Framework,s.DayInWeek,r.StartDate,r.EndDate,s.StartTime,s.EndTime,a.slotDate,a.Status[aStatus],r.SkillID
                      from Request r join RequestSlotItem rs on r.RequestID=rs.RequestID join Slot s on rs.SlotID=s.SlotID join Attendance a on a.RequestSlotItem=rs.RequestSlotItem
-                     where r.MenteeID = ? and r.Status like 'studying'
+                     where r.MenteeID = ?
                      """;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, menteeId);

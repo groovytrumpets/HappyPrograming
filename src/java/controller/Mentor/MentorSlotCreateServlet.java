@@ -14,7 +14,7 @@ import Model.Rate;
 import Model.Slot;
 import Model.StatisticSkills;
 import com.google.gson.Gson;
-import static controller.Mentor.SlotViewServlet.convertDayInWeekToCurrentDate;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToCurrentDate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

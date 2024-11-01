@@ -287,7 +287,7 @@
                                                     <li><a href="mentorStatisticRequest?id=${sessionScope.mentor.mentorId}">Statistic Request</a></li>
                                                     <li><a href="listrequestofmentor">Inviting Request</a></li>
                                                     <li><a href="cvlist?id=${sessionScope.mentor.mentorId}">CV</a></li>
-                                                    <li><a href="createslot?id=${sessionScope.mentor.mentorId}">Create Slot</a></li>
+                                                    <li><a href="createslot?id=${sessionScope.mentor.mentorId}">Weekly Slot</a></li>
                                                     <li><a href="viewprofilecv?id=${sessionScope.mentor.mentorId}">My Profile</a></li>
                                                 </ul>
                                             </li>

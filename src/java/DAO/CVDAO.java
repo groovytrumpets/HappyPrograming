@@ -1618,7 +1618,7 @@ public class CVDAO extends DBContext {
         String sql = """
                      select mr.*, r.RequestID from [Mentor] mr join Request r on mr.MentorID = r.MentorID
                                           join Mentee mt on  mt.MenteeID = r.MenteeID
-                                          where (r.[Status] = 'Completed' or r.[Status] = 'Paid') and mt.Username = 'menteeTest' 
+                                          where (r.[Status] = 'Completed' or r.[Status] = 'Paid') and mt.Username = ? 
                      """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {

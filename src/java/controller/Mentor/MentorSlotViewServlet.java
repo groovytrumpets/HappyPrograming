@@ -8,7 +8,7 @@ import DAO.CVDAO;
 import Model.Slot;
 import Model.SlotRequest;
 import com.google.gson.Gson;
-import static controller.Mentor.SlotViewServlet.convertDayInWeekToDatesBetweenRange;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToDatesBetweenRange;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

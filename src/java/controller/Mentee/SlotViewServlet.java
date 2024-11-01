@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.Mentor;
+package controller.Mentee;
 
 import DAO.AttendanceDAO;
 import DAO.CVDAO;
@@ -103,7 +103,7 @@ public class SlotViewServlet extends HttpServlet {
             List<String> status = new ArrayList<>();
             List<String> framework = new ArrayList<>();
             List<Skill> skillList = skd.getListOfAllSkill();
-
+            atd.updateStatusAttendanceByDay();
             List<Schedule> scheduleList = atd.getListOfSchedulebyMenteeId(mentorId);
             if (scheduleList == null || scheduleList.isEmpty()) {
                 mess = "It looks like you have no upcoming schedule. Please rent a mentor to get started!";
@@ -112,12 +112,13 @@ public class SlotViewServlet extends HttpServlet {
                 request.getRequestDispatcher("scheduleView.jsp").forward(request, response);
                 return;
             }
-            System.out.println(scheduleList.get(0).getStatus());
-            System.out.println(scheduleList.get(0).getAttendanceStatus());
+//            System.out.println(scheduleList.get(0).getStatus());
+//            System.out.println(scheduleList.get(0).getAttendanceStatus());
 
             for (int j = 0; j < scheduleList.size(); j++) {
 
                 String startDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getStartTime();
+                System.out.println(scheduleList.get(j).getSlotDate());
                 String endDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getEndTime();
                 status.add(scheduleList.get(j).getAttendanceStatus());
                 start.add(startDateAdd);

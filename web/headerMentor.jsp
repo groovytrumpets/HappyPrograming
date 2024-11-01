@@ -297,15 +297,15 @@
                         <li>
                             <a href="#" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-time"></i></span>
-                                <span class="ttr-label">Slots</span>
+                                <span class="ttr-label">Weekly Slot</span>
                                 <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="createslot?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
+                                    <a href="createslot?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Approved Schedule</span></a>
                                 </li>
                                 <li>
-                                    <a href="slotdraft?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Draft</span></a>
+                                    <a href="slotdraft?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Draft Schedule</span></a>
                                 </li>
                             </ul>
                         </li>
