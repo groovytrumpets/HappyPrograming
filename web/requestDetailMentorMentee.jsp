@@ -8,11 +8,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page import="java.time.LocalDate" %>
-<%
-    LocalDate today = LocalDate.now();
-    request.setAttribute("today", today);
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -171,14 +166,8 @@
                                                 <label>Start date:</label>
                                                 <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
                                             </form>
-                                            <div class="md-8">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                                    <div style="display: flex; gap: 10px;">
-                                                        <a href="requestdetailmentormentee?requestID=${request.requestId}&start=${dateOfDay['Monday'].minusDays(7)}" class="btn btn-primary">Back</a>
-                                                        <a href="requestdetailmentormentee?requestID=${request.requestId}&start=${dateOfDay['Monday'].plusDays(7)}" class="btn btn-primary">Next</a>
-                                                    </div>
-                                                        <h3 style="justify-content: center">${formattedDateRange}</h3>
-                                                </div>                                               
+                                            <div class="text-center">
+                                                <h3>${formattedDateRange}</h3>
                                             </div>
                                             <div style="border: 1px solid #eaeaea; padding: 1px; background-color: #f9f9f9;">
                                                 <table border="1" class="table table-hover text-center" style="border-collapse: separate; width: 100%; table-layout: fixed; border: #ddd">
@@ -201,14 +190,25 @@
                                                             </td>
                                                             <c:forEach var="day" items="${daysOfWeek}">
                                                                 <td class="text-left" style="padding-bottom: 50px;
-                                                                    <c:if test="${dateOfDay[day] == today}">background-color: #fcf8e3;</c:if>
                                                                     <c:if test='${not empty slotsByDay[day]}'>background-color: #62d262;</c:if>
                                                                         border: 1px solid #ddd; border-radius: 3px;">
                                                                     <c:if test="${not empty slotsByDay[day]}">
                                                                         <c:forEach var="slot" items="${slotsByDay[day]}">
                                                                             <div>${slot.startTime} - ${slot.endTime}</div>
-                                                                            <div>${slot.status}</div>
                                                                         </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${not empty slotInWeek[day]}">
+                                                                        <c:forEach var="slotStatus" items="${slotInWeek[day]}">
+                                                                            <c:choose>
+                                                                                <c:when test="${slotStatus.status != null && slotStatus.status eq 'Attended'}">
+                                                                                    <div style="display: flex"><p style="color: green">${slotStatus.status}</p></div>
+                                                                                    </c:when>
+                                                                                    <c:otherwise>
+                                                                                    <div style="display: flex"><p style="color: red">${slotStatus.status}</p> </div>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </c:forEach>
+
                                                                     </c:if>
                                                                 </td>
                                                             </c:forEach>

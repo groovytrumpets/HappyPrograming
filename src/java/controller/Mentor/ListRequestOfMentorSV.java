@@ -79,6 +79,11 @@ public class ListRequestOfMentorSV extends HttpServlet {
 
             if (roleID == 1) {
                 List<Request> requestlist = requestdao.getRequestOfMentor(mentorName);
+                for (Request requestItem : requestlist) {
+                    int requestId = requestItem.getRequestId();
+                    double attendancePercentage = requestdao.getAttendancePercentage(requestId);
+                    requestItem.setAttendancePercentage(attendancePercentage);
+                }
                 request.setAttribute("mentorrequest", requestlist);
             } else if (roleID == 2) {
                 response.sendRedirect("home");

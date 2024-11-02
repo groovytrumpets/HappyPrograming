@@ -87,6 +87,7 @@
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Note</th>
                                                 <th scope="col">Framework</th>
+                                                <th scope="col">Progress</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
 
@@ -108,7 +109,7 @@
 
                                                     <td class="align-middle">${c.note}</td>
                                                     <td class="align-middle">${c.framework}</td>
-
+                                                    <td class="align-middle">${c.attendancePercentage}%</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         ${c.status}
                                                     </td>     
@@ -123,7 +124,7 @@
                                                                     <a href="updatestatusbymentor?action=reject&requestId=${c.requestId}" class="btn button-sm red">Reject</a>
                                                                 </span>
                                                             </c:when>
-                                                            <c:when test="${c.status == 'Studying'}">
+                                                            <c:when test="${c.status == 'Studying' && c.attendancePercentage == 100}">
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Complete</a>
                                                                 </span>
@@ -135,9 +136,6 @@
                                                     </td>
                                                 </tr>
                                             </c:forEach>
-
-
-
                                         </tbody>
                                     </table>
                                 </div>
