@@ -190,15 +190,12 @@
                                                             </td>
                                                             <c:forEach var="day" items="${daysOfWeek}">
                                                                 <td class="text-left" style="padding-bottom: 50px;
-                                                                    <c:if test='${not empty slotsByDay[day]}'>background-color: #62d262;</c:if>
+                                                                    <c:if test='${not empty slotInWeek[day]}'>background-color: #62d262;</c:if>
                                                                         border: 1px solid #ddd; border-radius: 3px;">
-                                                                    <c:if test="${not empty slotsByDay[day]}">
-                                                                        <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                            <div>${slot.startTime} - ${slot.endTime}</div>
-                                                                        </c:forEach>
-                                                                    </c:if>
+
                                                                     <c:if test="${not empty slotInWeek[day]}">
                                                                         <c:forEach var="slotStatus" items="${slotInWeek[day]}">
+                                                                            <div>${slotStatus.startTime} - ${slotStatus.endTime}</div>
                                                                             <c:choose>
                                                                                 <c:when test="${slotStatus.status != null && slotStatus.status eq 'Attended'}">
                                                                                     <div style="display: flex"><p style="color: green">${slotStatus.status}</p></div>
