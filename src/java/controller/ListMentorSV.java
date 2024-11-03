@@ -71,10 +71,7 @@ public class ListMentorSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String error = request.getParameter("error");
-        String mess = request.getParameter("mess");
-        
-        
+
         try {
             HttpSession session = request.getSession();
             User curUser = (User) session.getAttribute("acc");
@@ -92,12 +89,14 @@ public class ListMentorSV extends HttpServlet {
                 List<CV> cvlist = cvdao.getListofActiveCV();
                 List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
                 List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
+                List<Request> requestdistinctlist = requestdao.getListofRequestDistinctByMenteeID(curMentee.getMenteeId());
                 List<SkillList> skilllist = requestdao.getSkillsForCompletedOrPaidRequests(curMentee.getMenteeId());
                 List<Skill> skill = skilldao.getListOfAllSkill();
 
                 request.setAttribute("cvlist", cvlist);
                 request.setAttribute("mentorlist", mentorlist);
                 request.setAttribute("requestlist", requestlist);
+                request.setAttribute("requestdistinctlist", requestdistinctlist);
                 request.setAttribute("skilllist", skilllist);
                 request.setAttribute("skill", skill);
             } else if (roleID == 1) {

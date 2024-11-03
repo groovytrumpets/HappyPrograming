@@ -93,6 +93,24 @@ public class RateDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public void saveSkillRating(int skillId, int rate) {
+        String query = """
+                       UPDATE SkillList
+                       SET Rating = ?
+                       WHERE SkillID = ?;
+                       """;
+
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, rate);
+            ps.setInt(2, skillId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Rate getRatingForRequest(int menteeId, int mentorId, int requestId) {
         String sql = "SELECT * FROM Rate WHERE MenteeID = ? AND MentorID = ? AND RequestID = ?";

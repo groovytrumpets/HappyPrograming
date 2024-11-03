@@ -6,6 +6,7 @@ package DAO;
 
 import Model.CV;
 import Model.Mentor;
+import Model.SkillList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -79,6 +80,37 @@ public class SkillListDAO extends DBContext {
         return list;
     }
 
+    public Integer getCurrentRating(int skillId) {
+        String query = """
+                       SELECT *
+                       FROM SkillList 
+                       WHERE SkillID = ?
+                       """;
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, skillId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Rating");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateRating(int skillId, int rating) {
+        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? ";
+        try (
+            PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+            ps.setInt(1, rating);
+            ps.setInt(2, skillId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         SkillListDAO s = new SkillListDAO();
         List<CV> list = s.getCVbySkill(1);
