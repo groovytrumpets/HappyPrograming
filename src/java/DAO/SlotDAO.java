@@ -283,6 +283,32 @@ public class SlotDAO extends DBContext {
         }
         return null;
     }
+    public List<Slot> getListofSlotsByMentorId(int id) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "select * from Slot where MentorID=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                int mentorId = rs.getInt("MentorID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 
     public List<Slot> getListofInactiveSlotsByMentorId(int id) {
         List<Slot> slots = new ArrayList<>();

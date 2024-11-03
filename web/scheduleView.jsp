@@ -115,6 +115,10 @@
                             </div>
                         </div>
                     </div>
+<!--                    <form id="dataForm" action="slotview" method="POST">
+                        <input type="hidden" name="eventsArray" id="eventsArrayInput">
+                        <button type="submit" class="btn">Save changes</button>
+                    </form>-->
                 </div>
             </div>
         </main>
@@ -182,14 +186,38 @@
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
                     events: eventsArray,
-                    height: 800
-                });
+                    height: 800,
+                    eventClick: function (event, jsEvent, view) {
+                        // Hiển thị prompt để nhập tiêu đề mới
+                        var newTitle = 'absent';
+                        
+                        // Nếu có tiêu đề mới, cập nhật sự kiện
+                        if (newTitle) {
+                            event.title = newTitle;
+                            $('#calendar').fullCalendar('updateEvent', event);
 
+                            // Cập nhật `eventsArray` nếu cần lưu lại dữ liệu mới
+                            eventsArray = eventsArray.map(evt => {
+                                if (evt.start === event.start.format() && evt.end === event.end.format()) {
+                                    evt.title = newTitle;
+                                }
+                                return evt;
+                            });
+
+                            // Gán lại `eventsArray` vào input ẩn nếu cần gửi về Servlet
+                            document.getElementById("eventsArrayInput").value = JSON.stringify(eventsArray);
+                        }
+                    }
+                });
+// Convert eventsArray to JSON and set it to hidden input
+//                document.getElementById("eventsArrayInput").value = JSON.stringify(eventsArray);
+
+// Submit the form
             });
 
         </script>
     </body>
-    
+
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>
