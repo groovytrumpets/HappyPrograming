@@ -9,16 +9,53 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- META ============================================= -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="keywords" content="" />
+        <meta name="author" content="" />
+        <meta name="robots" content="" />
+
+        <!-- DESCRIPTION -->
+        <meta name="description" content="EduChamp : Education HTML Template" />
+
+        <!-- OG -->
+        <meta property="og:title" content="EduChamp : Education HTML Template" />
+        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:image" content="" />
+        <meta name="format-detection" content="telephone=no">
+
+        <!-- FAVICONS ICON ============================================= -->
+        <link rel="icon" href="../error-404.html" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+
+        <!-- PAGE TITLE HERE ============================================= -->
         <title>Change Password</title>
-        <link href="assets/css/assets.css" rel="stylesheet">
-        <link href="assets/vendors/calendar/fullcalendar.css" rel="stylesheet">
-        <link href="assets/css/typography.css" rel="stylesheet">
-        <link href="assets/css/shortcodes/shortcodes.css" rel="stylesheet">
-        <link href="assets/css/style.css" rel="stylesheet">
-        <link href="assets/css/dashboard.css" rel="stylesheet">
-        <link class="skin" href="assets/css/color/color-1.css" rel="stylesheet">
+
+        <!-- MOBILE SPECIFIC ============================================= -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- All PLUGINS CSS ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
+
+        <!-- TYPOGRAPHY ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
+
+        <!-- SHORTCODES ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/shortcodes/shortcodes.css">
+
+        <!-- STYLESHEETS ============================================= -->
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
+        <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -51,13 +88,10 @@
                 <div class="row">
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Change Password</h4>
-                            </div>
                             <div class="widget-inner">
                                 <form action="changeloggingpassword" method="post">
                                     <p>${sessionScope.acc.username}</p>
-                                    <p class="info">------ Please enter your username and password ------</p>
+                                    <p class="info">Please enter your username and password</p>
 
                                     <label for="username">Account Name</label>
                                     <input type="text" id="username" name="username" class="form-control" style="width: 250px" required/>

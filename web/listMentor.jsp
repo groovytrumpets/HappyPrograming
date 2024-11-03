@@ -84,16 +84,9 @@
                                     </ul>
                                 </div>
                                 <div class="clearfix">
-
-                                    <div class="container">
-
-                                    </div>
-
+                                    <div class="container"></div>
                                     <ul id="masonry" class="ttr-gallery-listing magnific-image row">
-
                                         <c:forEach items="${requestScope.mentorlist}" var="m">
-
-
                                             <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
                                                 <div class="cours-bx">
                                                     <div class="info-bx text-center">
@@ -107,32 +100,52 @@
                                                                     <span>Framework: ${c.framework}</span>
                                                                     <br/>
                                                                     <span>Education: ${c.education}</span> 
-
                                                                 </div>
-
-                                                                
-                                                                        <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                                            Review
-                                                                        </a>
-                                                                   
+                                                                <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                    Review
+                                                                </a>                                                                 
                                                             </c:if>
                                                         </c:forEach>
-
-
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </c:forEach>
-
-
-
+                                        </c:forEach>                                      
+                                    </ul>
+                                    <div class="container">
+                                        <ul class="list-inline">
+                                            <h3>Skill List</h3>
+                                        </ul>
+                                    </div>    
+                                    <ul class="ttr-gallery-listing magnific-image row">
+                                        <c:forEach items="${requestScope.skilllist}" var="sl">
+                                            <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
+                                                <div class="cours-bx">
+                                                    <div class="info-bx text-center">
+                                                        <div class="action-box" style="height: 250px">
+                                                            <c:forEach items="${requestScope.skill}" var="skill">
+                                                                <c:if test="${skill.skillId == sl.skillId}">
+                                                                    <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}" style="width: 272px; height: 200px">
+                                                                    <div style="margin: 15px 0px">
+                                                                        <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
+                                                                        <span>Framework: ${c.framework}</span>
+                                                                        <br/>
+                                                                        <span>Education: ${c.education}</span> 
+                                                                    </div>
+                                                                    <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                        Review
+                                                                    </a>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>  
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <!-- Mentor List Section END-->

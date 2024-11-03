@@ -24,6 +24,7 @@ public class Request {
     private LocalDate startDate;
     private LocalDate endDate;
     private String framework;
+    private double attendancePercentage;
     private int skillId;
 
 
@@ -44,6 +45,30 @@ public class Request {
         this.startDate = startDate;
         this.endDate = endDate;
         this.skillId = skillId;
+    }
+
+    public Request(int requestId, int mentorId, int menteeId, float price, String note, LocalDate createDate, String status, String title, LocalDate startDate, LocalDate endDate, String framework, double attendancePercentage, int skillId) {
+        this.requestId = requestId;
+        this.mentorId = mentorId;
+        this.menteeId = menteeId;
+        this.price = price;
+        this.note = note;
+        this.createDate = createDate;
+        this.status = status;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.framework = framework;
+        this.attendancePercentage = attendancePercentage;
+        this.skillId = skillId;
+    }
+
+    public double getAttendancePercentage() {
+        return attendancePercentage;
+    }
+
+    public void setAttendancePercentage(double attendancePercentage) {
+        this.attendancePercentage = attendancePercentage;
     }
 
     @Override
