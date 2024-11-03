@@ -87,6 +87,7 @@
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Framework</th>
+                                                <th scope="col">Progress</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
                                             </tr>
@@ -107,7 +108,7 @@
                                                     
                                                     <td class="align-middle">${r.note}</td>
                                                     <td class="align-middle">${r.framework}</td>
-
+                                                    <td class="align-middle">${r.attendancePercentage}%</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         ${r.status}
                                                     </td>     
