@@ -474,10 +474,10 @@
     <script>
         window.embeddedChatbotConfig = {
             chatbotId: "u5Jo3ydYkfiHuR6MaNT93",
-            domain: "www.chatbase.co"
+            domain: "www.chatbase.co",
         }
     </script>
-    <script>
+    <script
         src="https://www.chatbase.co/embed.min.js"
         chatbotId="u5Jo3ydYkfiHuR6MaNT93"
         domain="www.chatbase.co"
