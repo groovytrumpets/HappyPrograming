@@ -5,6 +5,7 @@
 package controller.CV;
 
 import DAO.CVDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Skill;
@@ -151,6 +152,11 @@ public class CVCreateServlet extends HttpServlet {
             if (cvId == -1) {
                 response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to create your CV. Please try again.");
 
+            }
+            SlotDAO sld = new SlotDAO();
+            System.out.println(sld.getListofSlotsByMentorId(newCv.getMentorId()));
+            if (sld.getListofSlotsByMentorId(newCv.getMentorId()).isEmpty()) {
+                response.sendRedirect("createslot?id=" + userid + "&mess=Your CV has been created successfully, please create weekly slot!");
             }
             response.sendRedirect("cvlist?id=" + userid + "&mess=Your CV has been created successfully!");
         } catch (NullPointerException e) {
