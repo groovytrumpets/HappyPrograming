@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.SkillDAO;
+import DAO.SkillListDAO;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,15 +62,21 @@ public class SearchSkillSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String skillname = request.getParameter("skill");
+        String index_raw = request.getParameter("index");
         SkillDAO skillDAO = new SkillDAO();
         skillname = skillname.toLowerCase();
-
+        SkillListDAO skilllistDAO = new SkillListDAO();
         if (skillname == null || skillname.trim().isEmpty()) {
             response.sendRedirect("skillhome?index=1");
         } else {
             List<Skill> listSkill = skillDAO.getListOfSkillByName(skillname);
             List<Skill> list2 = skillDAO.getListOfSkillByDate();
             int index = 1;
+            try {
+                index = Integer.parseInt(index_raw);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid index parameter, defaulting to 1.");
+            }
             int totalSkill = listSkill.size();
             int page;
             if (totalSkill / 9 == 0) {
@@ -78,10 +85,16 @@ public class SearchSkillSV extends HttpServlet {
                 page = totalSkill / 9 + 1;
             }
             List<Skill> list = skillDAO.getListOfSkillByNamePagination(index, 9, skillname);
+            int[] number = new int[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
+            }
             if (list == null || list.isEmpty()) {
                 request.setAttribute("notify", "There is no skill name: " + skillname);
                 request.getRequestDispatcher("SkillList.jsp").forward(request, response);
             } else {
+                request.setAttribute("url", "searchskill?skill=" + skillname);
+                request.setAttribute("number", number);
                 request.setAttribute("pageIndex", index);
                 request.setAttribute("endP", page);
                 request.setAttribute("list", list);
