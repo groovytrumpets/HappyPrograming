@@ -141,6 +141,7 @@
 
 
                 <!-- Charge Money Column -->
+                <c:if test="${sessionScope.acc.role == 2}">
                 <div class="col-md-6">
                     <h3>Charge Money</h3>
                     <div class="table-responsive">
@@ -192,7 +193,7 @@
                     </div>
                 </div>
             </div>
-
+                </c:if>
             <p>&nbsp;</p>
 
             <div class="container mt-5">
