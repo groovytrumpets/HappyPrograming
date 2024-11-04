@@ -72,7 +72,7 @@
 			<!--logo start -->
 			<div class="ttr-logo-box">
 				<div>
-					<a href="index.html" class="ttr-logo">
+					<a href="loginAdmin" class="ttr-logo">
 						<img class="ttr-logo-mobile" alt="" src="assets/images/fptuLogo.png" width="30" height="30">
 						<img class="ttr-logo-desktop" alt="" src="assets/images/fptuLogo.png" width="160" height="27">
 					</a>
