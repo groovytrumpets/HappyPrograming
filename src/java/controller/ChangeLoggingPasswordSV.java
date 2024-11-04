@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 /**
@@ -22,14 +25,21 @@ import java.sql.SQLException;
 public class ChangeLoggingPasswordSV extends HttpServlet {
 
     private String encrypt(String password) {
-        StringBuilder encrypted = new StringBuilder();
-
-        for (int i = 0; i < password.length(); i++) {
-            char c = password.charAt(i);
-            encrypted.append((char) (c + 5)); // Shift character by key
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
         }
-
-        return encrypted.toString();
+        return digest;
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

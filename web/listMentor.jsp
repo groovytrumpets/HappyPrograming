@@ -96,7 +96,7 @@
                                                                     <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
                                                                 </div>
                                                                 <div style="margin: 15px 0px">
-                                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
+                                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">${m.fullName}</a></h5>
                                                                     <span>Framework: ${c.framework}</span>
                                                                     <br/>
                                                                     <span>Education: ${c.education}</span> 
@@ -122,21 +122,24 @@
                                                 <div class="cours-bx">
                                                     <div class="info-bx text-center">
                                                         <div class="action-box" style="height: 250px">
-                                                            <c:forEach items="${requestScope.skill}" var="skill">
-                                                                <c:if test="${skill.skillId == sl.skillId}">
-                                                                    <img src="data:image/jpeg;base64,${skill.base64ImageFile}" alt="${skill.skillName}" style="width: 272px; height: 200px">
-                                                                    <div style="margin: 15px 0px">
-                                                                        <h5><a href="ratementor?mentorId=${c.mentorId}">Mentor: ${m.fullName}</a></h5>
-                                                                        <span>Framework: ${c.framework}</span>
-                                                                        <br/>
-                                                                        <span>Education: ${c.education}</span> 
-                                                                    </div>
-                                                                    <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                                        Review
-                                                                    </a>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </div>
+                                                            <c:forEach items="${requestScope.skill}" var="s">                                                            
+                                                                <c:if test="${s.skillId == sl.skillId}">
+                                                                    <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="${s.skillName}" style="width: 272px; height: 200px">
+                                                                </div>
+                                                                <div style="margin: 15px 0px">
+                                                                    <h5>${s.skillName}</h5>
+                                                                </div>
+                                                                <c:forEach items="${requestScope.requestdistinctlist}" var="r"> 
+                                                                    <c:if test="${r.skillId == sl.skillId}">
+                                                                        <a href="rateskill?skillId=${r.skillId}&requestId=${r.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
+                                                                            Review
+                                                                        </a>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+
+                                                        </c:forEach>
+
                                                     </div>
                                                 </div>
                                             </div>

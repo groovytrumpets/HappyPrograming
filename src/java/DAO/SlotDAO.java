@@ -219,9 +219,9 @@ public class SlotDAO extends DBContext {
         SlotDAO slotDAO = new SlotDAO();
         slotDAO.deleteAllActiveSlot(7);
         // Correcting the date initialization using LocalDate.of()
-//        LocalDate start = LocalDate.of(2022, 1, 7); // Start date: January 7, 2022
-//        LocalDate end = LocalDate.of(2022, 1, 8);   // End date: January 8, 2022
-//
+        LocalDate start = LocalDate.of(2022, 1, 7); // Start date: January 7, 2022
+        LocalDate end = LocalDate.of(2022, 1, 8);   // End date: January 8, 2022
+
 //        // Fetching slots in the given date range for request ID 1
 //        List<Slot> slots = slotDAO.getSlotInDate(start, end, 1);
 //
@@ -432,4 +432,5 @@ public class SlotDAO extends DBContext {
         }
         return false;
     }
+    
 }

@@ -256,6 +256,22 @@ public class MenteeDAO extends DBContext {
         return mentee; // Return the retrieved Mentor object or null if not found
     }
 
+    public int getTotalMentees() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS total FROM Mentee WHERE status = 'active'";
+
+        try (
+            PreparedStatement ps = connection.prepareStatement(query); 
+            ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         MenteeDAO actMentee = new MenteeDAO();
         List<Mentee> list1 = actMentee.getListMenteePagination(1, 10);

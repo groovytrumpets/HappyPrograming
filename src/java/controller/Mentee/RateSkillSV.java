@@ -4,7 +4,16 @@
  */
 package controller.Mentee;
 
-import DAO.RequestDAO;
+import DAO.CVDAO;
+import DAO.MenteeDAO;
+import DAO.MentorDAO;
+import DAO.RateDAO;
+import DAO.SkillDAO;
+import DAO.SkillListDAO;
+import Model.Mentee;
+import Model.Mentor;
+import Model.Skill;
+import Model.SkillList;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,8 +28,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author asus
  */
-@WebServlet(name = "UpdateStatusOfMenteeSV", urlPatterns = {"/updatestatusofmentee"})
-public class UpdateStatusOfMenteeSV extends HttpServlet {
+@WebServlet(name = "RateSkillSV", urlPatterns = {"/rateskill"})
+public class RateSkillSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +48,10 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateStatusOfMenteeSV</title>");
+            out.println("<title>Servlet RateSkillSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateStatusOfMenteeSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RateSkillSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,41 +71,41 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
+        MenteeDAO actMentee = new MenteeDAO();
+        MentorDAO actMentor = new MentorDAO();
+        SkillDAO actSkill = new SkillDAO();
+        CVDAO cvdao = new CVDAO();
 
         if (curUser == null) {
             response.sendRedirect("signin");
             return;
         }
-
         int roleID = curUser.getRoleId();
-        int requestId = Integer.parseInt(request.getParameter("requestId"));
-        RequestDAO requestDAO = new RequestDAO();
-
-        try {
-            if (roleID == 2) {
-                String action = request.getParameter("action");
-
-                switch (action) {
-                    case "update":
-                        response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
-                        break;
-                    case "complete":
-                        requestDAO.updateRequestStatus(requestId, "Complete");
-                        break;
-                    case "cancel":
-                        requestDAO.updateRequestStatus(requestId, "Canceled");
-                        break;
-                    default:
-                        break;
-                }
-                response.sendRedirect("listrequestbymentee");
-            } else if (roleID == 1) {
-                response.sendRedirect("home");
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Mentee curMentee = new Mentee();
+        if (roleID == 2) {
+            curMentee = actMentee.findMenteeByUsername(curUser.getUsername());
+            request.setAttribute("mentee", curMentee);
+        } else if (roleID == 1) {
+            response.sendRedirect("home");
+            return;
         }
+        String skillid_raw = request.getParameter("skillId");
+        int skillId;
+        try {
+            skillId = Integer.parseInt(skillid_raw);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+            return;
+        }
+
+        Skill skill = actSkill.getSkillByID(skillId);
+        if (skill == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Skill not found");
+            return;
+        }
+
+        request.setAttribute("skill", skill);
+        request.getRequestDispatcher("rateSkill.jsp").forward(request, response);
     }
 
     /**
@@ -110,7 +119,44 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User curUser = (User) session.getAttribute("acc");
+        SkillListDAO actskilllist = new SkillListDAO();
+
+        if (curUser == null) {
+            response.sendRedirect("signin");
+            return;
+        }
+
+        int roleID = curUser.getRoleId();
+        if (roleID != 2) {
+            response.sendRedirect("home");
+            return;
+        }
+
+        int skillId, rate;
+
+        try {
+            skillId = Integer.parseInt(request.getParameter("skillId"));
+            rate = Integer.parseInt(request.getParameter("rating"));
+
+            Integer currentRating = actskilllist.getCurrentRating(skillId);
+
+            if (currentRating == null || currentRating == 0) {
+                actskilllist.updateRating(skillId, rate);
+                response.sendRedirect("listmentor");
+                return;
+            } else {
+                int newRating = (currentRating + rate) / 2;
+                actskilllist.updateRating(skillId, newRating);
+                response.sendRedirect("listmentor");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

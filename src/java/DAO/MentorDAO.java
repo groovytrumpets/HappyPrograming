@@ -367,11 +367,28 @@ public class MentorDAO extends DBContext {
         return mentor;
     }
 
-    
+    public int getTotalMentors() {
+        int count = 0;
+        String query = """
+                       SELECT COUNT(*) AS TotalMentors
+                       FROM Mentor;
+                       """;
+
+        try (
+            PreparedStatement ps = connection.prepareStatement(query); 
+            ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("TotalMentors");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
-        act.insertMentor(2, "hoanganhgp234", new Date(2004,12,11), "0961316508", "VN", new Date(2004,12,11), "Hoang Anh", "Male", "active");
-
+        //act.insertMentor(2, "hoanganhgp234", new Date(2004, 12, 11), "0961316508", "VN", new Date(2004, 12, 11), "Hoang Anh", "Male", "active");
+        System.out.println(act.getTotalMentors());
     }
 }

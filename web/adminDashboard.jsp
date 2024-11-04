@@ -1,10 +1,9 @@
 <%-- 
-    Document   : listRequestOfMentor
-    Created on : Oct 17, 2024, 9:58:58 AM
+    Document   : adminDashboard
+    Created on : Nov 3, 2024, 11:24:18 PM
     Author     : asus
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,20 +19,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="Happy Programing" />
+        <meta name="description" content="EduChamp : Education HTML Template" />
 
         <!-- OG -->
-        <meta property="og:title" content="Happy Programing" />
-        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:title" content="EduChamp : Education HTML Template" />
+        <meta property="og:description" content="EduChamp : Education HTML Template" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+        <link rel="icon" href="../error-404.html" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Happy Programing : Inviting Request </title>
+        <title>EduChamp : Education HTML Template </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,89 +60,111 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <jsp:include  page="headerMentor.jsp"/>
+        <!-- header start -->
+        <jsp:include page="headerManager.jsp" />
+        <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
-
+                <div class="db-breadcrumb">
+                    <h4 class="breadcrumb-title">Dashboard</h4>
+                    <ul class="db-breadcrumb-list">
+                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+                        <li>Dashboard</li>
+                    </ul>
+                </div>	
+                <!-- Card -->
+                <div class="row">
+                    <div class="col-md-2 m-b30">
+                        <div class="widget-card widget-bg1">					 
+                            <div class="wc-item">
+                                <h4 class="wc-title">
+                                    Total Mentor
+                                </h4>
+                                <span class="wc-des">
+                                    All Customs Value
+                                </span>
+                                <span class="wc-stats">
+                                    <span class="counter">${totalMentors}</span>
+                                </span>		
+                            </div>				      
+                        </div>
+                    </div>
+                    <div class="col-md-2 m-b30">
+                        <div class="widget-card widget-bg2">					 
+                            <div class="wc-item">
+                                <h4 class="wc-title">
+                                    Total Mentee
+                                </h4>
+                                <span class="wc-des">
+                                    Customer Review
+                                </span>
+                                <span class="wc-stats counter">
+                                    ${totalMentees} 
+                                </span>		
+                            </div>				      
+                        </div>
+                    </div>
+                </div>
+                <!-- Card END -->
                 <div class="row">
                     <!-- Your Profile Views Chart -->
-                    <div class="col-lg-12 m-b30">
+                    <div class="col-md-6 m-b30">
                         <div class="widget-box">
-
-                            <div class="wc-title d-flex align-items-center">
-                                <h4 class="d-inline-block" >Mentee Request List</h4>
+                            <div class="wc-title">
+                                <h4>User</h4>
                             </div>
                             <div class="widget-inner">
-                                <div class="new-user-list" >
-                                    <table class="table table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th scope="col">STT</th>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Price</th>                                               
-                                                <th scope="col">Start Date</th>
-                                                <th scope="col">End Date</th>
-                                                <th scope="col">Note</th>
-                                                <th scope="col">Framework</th>
-                                                <th scope="col">Progress</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Action</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <c:forEach items="${requestScope.mentorrequest}" var="c"  varStatus="status">
-
-                                                <tr>
-                                                    <th class="align-middle" scope="row">${status.index + 1}</th>
-                                                    <td class="align-middle">${c.title}</td>
-                                                    <td class="align-middle">${c.price}</td>
-
-                                                    <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${c.startDate}</td>
-                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${c.endDate}</td>
-
-
-
-                                                    <td class="align-middle">${c.note}</td>
-                                                    <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle">${c.attendancePercentage}%</td>
-                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
-                                                        ${c.status}
-                                                    </td>     
-
-                                                    <td class="align-middle">
-                                                        <c:choose>
-                                                            <c:when test="${c.status == 'Open'}">
-                                                                <span class="orders-btn">
-                                                                    <a href="updatestatusbymentor?action=accept&requestId=${c.requestId}" class="btn button-sm green">Accept</a>
-                                                                </span>
-                                                                <span class="orders-btn">
-                                                                    <a href="updatestatusbymentor?action=reject&requestId=${c.requestId}" class="btn button-sm red">Reject</a>
-                                                                </span>
-                                                            </c:when>
-                                                            <c:when test="${c.status == 'Studying' && c.attendancePercentage == 100}">
-                                                                <span class="orders-btn">
-                                                                    <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Mentor Accept</a>
-                                                                </span>
-                                                            </c:when>
-                                                        </c:choose>
-                                                        <span class="new-users-btn">
-                                                            <a href="requestdetailmentormentee?requestID=${c.requestId}" class="btn button-sm outline">Detail</a>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+                                <canvas id="chart" width="100" height="45"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 m-b30">
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>New Users</h4>
+                            </div>
+                            <div class="widget-inner">
+                                <div class="new-user-list">
+                                    <ul>
+                                        <li>
+                                            <span class="new-users-pic">
+                                                <img src="assets/images/testimonials/pic1.jpg" alt=""/>
+                                            </span>
+                                            <span class="new-users-text">
+                                                <a href="#" class="new-users-name">Anna Strong </a>
+                                                <span class="new-users-info">Visual Designer,Google Inc </span>
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Your Profile Views Chart END-->
-
+                    <div class="col-lg-12 m-b30">
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>Users</h4>
+                            </div>
+                            <div class="widget-inner">
+                                <div class="orders-list">
+                                    <ul>
+                                        <li>
+                                            <span class="orders-title">
+                                                <a href="#" class="orders-title-name">Anna Strong </a>
+                                                <span class="orders-info">Order #02357 | Date 12/08/2019</span>
+                                            </span>
+                                            <span class="orders-btn">
+                                                <a href="#" class="btn button-sm red">Inactive</a>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -168,6 +189,7 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
+        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
             $(document).ready(function () {
 
