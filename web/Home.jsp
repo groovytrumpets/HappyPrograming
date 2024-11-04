@@ -69,6 +69,7 @@
             <header class="header rs-nav">
                 <jsp:include page="header.jsp" />
             </header>
+            
             <!-- Header Top END ==== -->
             <!-- Content -->
             <div class="page-content bg-white" style="overflow: visible;">
@@ -360,7 +361,7 @@
                                                     <div class="testimonial-thumb">
                                                         <c:forEach items="${requestScope.menteeList}" var="m">
                                                             <c:if test="${r.menteeId==m.menteeId}">
-                                                                
+
                                                                 <c:if test="${m.base64FileImage!=null}">
                                                                     <img src="data:image/jpeg;base64,${m.base64FileImage}" alt="" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
                                                                 </c:if>
@@ -414,7 +415,7 @@
             <!-- Footer ==== -->
             <jsp:include page="footer.jsp" />
             <!-- Footer END ==== -->
-            <button class="back-to-top fa fa-chevron-up" ></button>
+            <button class="back-to-top fa fa-chevron-up"  ></button>
         </div>
 
         <!-- External JavaScripts -->
@@ -469,6 +470,18 @@
             });
         });
 
+    </script>
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "XiTPkz-Q1knBIhnDoyApf",
+            domain: "www.chatbase.co"
+        };
+    </script>
+    <script
+        src="https://www.chatbase.co/embed.min.js"
+        chatbotId="XiTPkz-Q1knBIhnDoyApf"
+        domain="www.chatbase.co"
+        defer>
     </script>
 
 </html>

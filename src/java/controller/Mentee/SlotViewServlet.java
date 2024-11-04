@@ -118,7 +118,7 @@ public class SlotViewServlet extends HttpServlet {
             for (int j = 0; j < scheduleList.size(); j++) {
 
                 String startDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getStartTime();
-                System.out.println(scheduleList.get(j).getSlotDate());
+//                System.out.println(scheduleList.get(j).getSlotDate());
                 String endDateAdd = scheduleList.get(j).getSlotDate() + "T" + scheduleList.get(j).getEndTime();
                 status.add(scheduleList.get(j).getAttendanceStatus());
                 start.add(startDateAdd);
@@ -158,7 +158,11 @@ public class SlotViewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String jsonData = request.getParameter("eventsArray");
+        System.out.println(jsonData);
+        
+        
+        response.sendRedirect("slotview");
     }
 
     public static String convertDayInWeekToCurrentDate(String dayInWeek) {
