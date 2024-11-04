@@ -103,8 +103,8 @@ public class AdminFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         //Start
-
         /*
+        
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
@@ -159,9 +159,9 @@ public class AdminFilter implements Filter {
 
             return;
         }
-
+*/
         //End
-         */
+         
         if (debug) {
             log("AdminFilter:doFilter()");
         }

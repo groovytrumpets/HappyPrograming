@@ -69,7 +69,7 @@
             <header class="header rs-nav">
                 <jsp:include page="header.jsp" />
             </header>
-            
+
             <!-- Header Top END ==== -->
             <!-- Content -->
             <div class="page-content bg-white" style="overflow: visible;">
@@ -473,13 +473,13 @@
     </script>
     <script>
         window.embeddedChatbotConfig = {
-            chatbotId: "XiTPkz-Q1knBIhnDoyApf",
+            chatbotId: "u5Jo3ydYkfiHuR6MaNT93",
             domain: "www.chatbase.co"
-        };
+        }
     </script>
-    <script
+    <script>
         src="https://www.chatbase.co/embed.min.js"
-        chatbotId="XiTPkz-Q1knBIhnDoyApf"
+        chatbotId="u5Jo3ydYkfiHuR6MaNT93"
         domain="www.chatbase.co"
         defer>
     </script>
