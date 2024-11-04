@@ -110,7 +110,7 @@
                                         <div class="widget-post-bx">
                                             <c:forEach items="${list2}" var="list2">
                                                 <div class="widget-post clearfix">
-                                                    <div class="ttr-post-media"> <img src="data:image/jpeg;base64,${list2.base64ImageFile}" width="200" height="160" alt=""> </div>
+                                                    <div class="ttr-post-media"> <img src="data:image/jpeg;base64,${list2.base64ImageFile}" width="220" height="160" alt=""> </div>
                                                     <div class="ttr-post-info">
                                                         <div class="ttr-post-header">
                                                             <h6 class="post-title"><a href="skilldetail?id=${list2.skillId}&name=${list2.skillName}">${list2.skillName}</a></h6>
@@ -187,7 +187,13 @@
                                             </li>
                                             <c:forEach begin="1" end="${endP}" var="i">
                                                 <li class="page-item ${pageIndex == i ? 'active' : ''}">
-                                                    <a href="skillhome?index=${i}" class="page-link">${i}</a>
+                                                    <c:if test="${url != null}">
+                                                        <a href="${url}&index=${i}" class="page-link">${i}</a>
+                                                    </c:if>
+                                                    <c:if test="${url == null}">
+                                                        <a href="skillhome?index=${i}" class="page-link">${i}</a>
+                                                    </c:if>
+
                                                 </li>
                                             </c:forEach>
                                             <li class="page-item ${pageIndex == endP ? 'disabled' : ''}">

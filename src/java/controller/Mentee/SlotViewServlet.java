@@ -103,7 +103,7 @@ public class SlotViewServlet extends HttpServlet {
             List<String> status = new ArrayList<>();
             List<String> framework = new ArrayList<>();
             List<Skill> skillList = skd.getListOfAllSkill();
-            atd.updateStatusAttendanceByDay();
+            //atd.updateStatusAttendanceByDay();
             List<Schedule> scheduleList = atd.getListOfSchedulebyMenteeId(mentorId);
             if (scheduleList == null || scheduleList.isEmpty()) {
                 mess = "It looks like you have no upcoming schedule. Please rent a mentor to get started!";

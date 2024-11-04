@@ -19,6 +19,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -196,15 +199,22 @@ public class SignUpSV extends HttpServlet {
         return false;
     }
 
-    private String encrypt(String password) {
-        StringBuilder encrypted = new StringBuilder();
-
-        for (int i = 0; i < password.length(); i++) {
-            char c = password.charAt(i);
-            encrypted.append((char) (c + 5)); // Shift character by key
+       public static String encrypt(String pass) {
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(pass.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
         }
-
-        return encrypted.toString();
+        return digest;
     }
 
     /**
