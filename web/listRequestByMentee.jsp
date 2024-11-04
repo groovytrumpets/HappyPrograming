@@ -105,7 +105,7 @@
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>
 
 
-                                                    
+
                                                     <td class="align-middle">${r.note}</td>
                                                     <td class="align-middle">${r.framework}</td>
                                                     <td class="align-middle">${r.attendancePercentage}%</td>
@@ -121,6 +121,11 @@
                                                                 </span>
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusofmentee?action=cancel&requestId=${r.requestId}" class="btn button-sm red">Cancel</a>
+                                                                </span>
+                                                            </c:when>
+                                                            <c:when test="${r.status == 'MentorAccept'}">
+                                                                <span class="orders-btn">
+                                                                    <a href="updatestatusofmentee?action=complete&requestId=${r.requestId}" class="btn button-sm orange">Complete</a>
                                                                 </span>
                                                             </c:when>
                                                             <c:otherwise>   

@@ -121,7 +121,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":
-                        requestDAO.updateStatusByMentor(requestId, "Completed");
+                        requestDAO.updateStatusByMentor(requestId, "MentorAccept");
                         slotDAO.updateSlotStatusToAvailable(slotId);
                         response.sendRedirect("listrequestofmentor");
                         break;

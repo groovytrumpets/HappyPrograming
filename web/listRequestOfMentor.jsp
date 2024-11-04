@@ -126,7 +126,7 @@
                                                             </c:when>
                                                             <c:when test="${c.status == 'Studying' && c.attendancePercentage == 100}">
                                                                 <span class="orders-btn">
-                                                                    <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Complete</a>
+                                                                    <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Mentor Accept</a>
                                                                 </span>
                                                             </c:when>
                                                         </c:choose>

@@ -80,6 +80,9 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
                     case "update":
                         response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
                         break;
+                    case "complete":
+                        requestDAO.updateRequestStatus(requestId, "Complete");
+                        break;
                     case "cancel":
                         requestDAO.updateRequestStatus(requestId, "Canceled");
                         break;
