@@ -85,7 +85,7 @@ public class SkillListServlet extends HttpServlet {
         request.setAttribute("numDis", numDis);
         
         request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("viewSkillAdmin.jsp").forward(request, response);
     }
 
     /**
@@ -138,7 +138,7 @@ public class SkillListServlet extends HttpServlet {
         request.setAttribute("numDis", numDis);
 
         request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("viewSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("viewSkillAdmin.jsp").forward(request, response);
     }
 
     /**
