@@ -118,20 +118,13 @@ public class AdminFilter implements Filter {
             httpResponse.sendRedirect("home");
             return;
         }
-        // Check access for admin pages
-        if (isUrlAdmin(url) && user == null ) {
-            httpResponse.sendRedirect("signin");
-            return;
-        } else if (isUrlAdmin(url) && user.getRoleId() != 3) {
-            httpResponse.sendRedirect("home");
-            return;
-        }
+       
 
         // Check access for mentor pages
         if (isUrlMentor(url) && user == null ) {
             httpResponse.sendRedirect("signin");
             return;
-        }else if (isUrlAdmin(url) && user.getRoleId() != 1) {
+        }else if (isUrlMentor(url) && user.getRoleId() != 1) {
             httpResponse.sendRedirect("home");
             return;
         }
@@ -140,7 +133,15 @@ public class AdminFilter implements Filter {
         if (isUrlMentee(url) && user == null ) {
             httpResponse.sendRedirect("signin");
             return;
-        }else if (isUrlAdmin(url) && user.getRoleId() != 2) {
+        }else if (isUrlMentee(url) && user.getRoleId() != 2) {
+            httpResponse.sendRedirect("home");
+            return;
+        }
+         // Check access for admin pages
+        if (isUrlAdmin(url) && user == null ) {
+            httpResponse.sendRedirect("signin");
+            return;
+        } else if (isUrlAdmin(url) && user.getRoleId() != 3) {
             httpResponse.sendRedirect("home");
             return;
         }
@@ -149,8 +150,8 @@ public class AdminFilter implements Filter {
         if (isUrlManager(url) && user == null ) {
             httpResponse.sendRedirect("signin");
             return;
-        }else if (isUrlAdmin(url) && user.getRoleId() != 4) {
-            httpResponse.sendRedirect("home");
+        }else if (isUrlManager(url) && user.getRoleId() != 4) {
+            httpResponse.sendRedirect("signin");
             return;
         }
 
@@ -214,7 +215,7 @@ public class AdminFilter implements Filter {
                 || url.contains("listmentor") || url.contains("listrequestbymentee")
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
                 || url.contains("statisticrequest") || url.contains("updateProfile")
-                || url.contains("updateRequest")
+                || url.contains("updateRequest") || url.equals("payment")
                 || url.contains("updatestatusofmentee") || url.contains("slotmentee");
     }
 
@@ -222,7 +223,7 @@ public class AdminFilter implements Filter {
     private boolean isUrlManager(String url) {
         return url.contains("manager") || url.contains("Manager")
                 || url.contains("activecv") || url.contains("statuspaidmentorrequest")
-                || url.contains("activementeerequest") || url.contains("cvupdate");
+                || url.contains("activementeerequest") || url.contains("cvupdate") ;
     }
 
     /**

@@ -63,7 +63,7 @@ public class CreateScheduleServlet extends HttpServlet {
     throws ServletException, IOException {
         AttendanceDAO actAttend = new AttendanceDAO();
         RequestDAO actRequest = new RequestDAO();
-        Request curRequest = actRequest.getRequestByID(4);
+        Request curRequest = actRequest.getRequestByID(8);
         
         
         boolean checkInsetSchedule = setScheduelForRequest(curRequest);

@@ -1306,6 +1306,7 @@ public class RequestDAO extends DBContext {
         LocalDate end = LocalDate.parse("2024-11-09");
         List<Request> list = act.getRequestByStatusAndSearchPagination("b", 1, 10, "", start, end);
         int count = act.getCountRequestByStatusAndSearch("a", "", start, end);
-        System.out.println(count);
+        Request curRequest = act.getRequestByID(6);
+        System.out.println(curRequest);
     }
 }
