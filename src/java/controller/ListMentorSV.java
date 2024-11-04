@@ -8,10 +8,13 @@ import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RequestDAO;
+import DAO.SkillDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.Request;
+import Model.Skill;
+import Model.SkillList;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -77,6 +80,7 @@ public class ListMentorSV extends HttpServlet {
             User curUser = (User) session.getAttribute("acc");
             Mentee curMentee = (Mentee) session.getAttribute("mentee");
             RequestDAO requestdao = new RequestDAO();
+            SkillDAO skilldao = new SkillDAO();
             CVDAO cvdao = new CVDAO();
             if (curUser == null) {
                 response.sendRedirect("signin");
@@ -88,12 +92,14 @@ public class ListMentorSV extends HttpServlet {
                 List<CV> cvlist = cvdao.getListofActiveCV();
                 List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
                 List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
+                List<SkillList> skilllist = requestdao.getSkillsForCompletedOrPaidRequests(curMentee.getMenteeId());
+                List<Skill> skill = skilldao.getListOfAllSkill();
 
                 request.setAttribute("cvlist", cvlist);
                 request.setAttribute("mentorlist", mentorlist);
                 request.setAttribute("requestlist", requestlist);
-                request.setAttribute("error", error);
-                request.setAttribute("mess", mess);
+                request.setAttribute("skilllist", skilllist);
+                request.setAttribute("skill", skill);
             } else if (roleID == 1) {
                 response.sendRedirect("home");
                 return;

@@ -62,15 +62,12 @@
 
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
-
         <!-- header start -->
         <jsp:include page="headerMentor.jsp" />
         <!-- Left sidebar menu end -->
-
         <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
-
                 <div class="row">
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
@@ -80,13 +77,9 @@
                                     <h4>Schedule</h4>
                                 </div>
                             </div>
-
                             <div class="widget-inner">
-
                                 <div class="seperator"></div>
                                 <br>
-
-
                                 <div class="row">
                                     <form action="mentorSchedule" method="get">
 
@@ -169,26 +162,6 @@
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
-        <script>
-                                            // Pricing add
-                                            function newMenuItem() {
-                                                var newElem = $('tr.list-item').first().clone();
-                                                newElem.find('input').val('');
-                                                newElem.appendTo('table#item-add');
-                                            }
-                                            if ($("table#item-add").is('*')) {
-                                                $('.add-item').on('click', function (e) {
-                                                    e.preventDefault();
-                                                    newMenuItem();
-                                                });
-                                                $(document).on("click", "#item-add .delete", function (e) {
-                                                    e.preventDefault();
-                                                    $(this).parent().parent().parent().parent().remove();
-                                                });
-                                            }
-
-        </script>
-
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

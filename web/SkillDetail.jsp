@@ -19,20 +19,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Course Detail </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -174,7 +174,7 @@
                                                                 <div class="col-md-6">
                                                                     <div class="instructor-bx" >
                                                                         <div class="instructor-author">
-                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100">
+                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100" style="width: 100%; height: 100%; object-fit: cover;">
                                                                         </div>
                                                                         <div class="instructor-info">
                                                                             <h6>${mentors.fullName}</h6>

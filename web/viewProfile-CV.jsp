@@ -250,7 +250,19 @@
 
                                     <div class="instructor-bx">
                                         <div class="instructor-author">
-                                            <img src="assets/images/testimonials/pic1.jpg" alt="">
+                                            <c:forEach items="${requestScope.menteeList}" var="m">
+                                                <c:if test="${c.menteeId==m.menteeId}">
+
+                                                    <c:if test="${m.base64FileImage!=null}">
+                                                        <img src="data:image/jpeg;base64,${m.base64FileImage}" alt="" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
+                                                    </c:if>
+                                                    <c:if test="${m.base64FileImage==null}">
+                                                        <img src="assets/images/userprofile.png" alt="">
+                                                    </c:if>
+
+                                                </c:if>
+                                            </c:forEach>
+                                            
                                         </div>
                                         <div class="instructor-info">
                                             <c:forEach items="${requestScope.menteeList}" var="r">

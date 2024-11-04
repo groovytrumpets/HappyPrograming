@@ -138,7 +138,7 @@
                                         <div class="widget footer_widget">
                                             <h5 class="footer-title">Courses</h5>
                                             <ul>
-                                                <li><a href="courses.html">Courses</a></li>
+                                                <li><a href="skillhome">Courses</a></li>
                                                 <li><a href="courses-details.html">Details</a></li>
                                                 <li><a href="membership.html">Membership</a></li>
                                                 <li><a href="profile.html">Profile</a></li>

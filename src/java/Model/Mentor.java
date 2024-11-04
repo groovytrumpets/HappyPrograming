@@ -22,6 +22,7 @@ public class Mentor {
     private String fullName;
     private String gender;
     private String status;
+    private int RequestId;
 
     public Mentor() {
     }
@@ -50,6 +51,29 @@ public class Mentor {
         this.fullName = fullName;
         this.gender = gender;
     }
+
+    public Mentor(int mentorId, int roleId, String username, Date createDate, String phone, String address, Date dateOfBirth, String fullName, String gender, String status, int RequestId) {
+        this.mentorId = mentorId;
+        this.roleId = roleId;
+        this.username = username;
+        this.createDate = createDate;
+        this.phone = phone;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.status = status;
+        this.RequestId = RequestId;
+    }
+
+    public int getRequestId() {
+        return RequestId;
+    }
+
+    public void setRequestId(int RequestId) {
+        this.RequestId = RequestId;
+    }
+    
     
     
 

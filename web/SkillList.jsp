@@ -20,11 +20,11 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
@@ -33,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Our Courses </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -93,7 +93,7 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
                                     <div class="widget courses-search-bx placeani">
-                                        <form action="searchskill">
+                                        <form action="adminSearchSkill">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <label>Search Courses</label>

@@ -3,17 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>Payment</title>
-        <!-- Bootstrap core CSS -->
-        <link href="/vnpay_jsp/assets/bootstrap.min.css" rel="stylesheet" />
-        <!-- Custom styles for this template -->
-        <link href="/vnpay_jsp/assets/jumbotron-narrow.css" rel="stylesheet">
-        <script src="/vnpay_jsp/assets/jquery-1.11.3.min.js"></script>
+
+
+        <!-- META ============================================= -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="keywords" content="" />
@@ -21,19 +13,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
+        <title>Happy Programing: CV of Mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,7 +39,6 @@
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
         <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
-
         <!-- TYPOGRAPHY ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
 
@@ -55,8 +47,10 @@
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
         <style>
             .important-balance {
                 font-size: 1.0em;             /* Increase the font size for prominence */
@@ -317,4 +311,19 @@
         </script>
 
     </body>
+    <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
+        <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
+        <script src="assets/vendors/counter/waypoints-min.js"></script>
+        <script src="assets/vendors/counter/counterup.min.js"></script>
+        <script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
+        <script src="assets/vendors/masonry/masonry.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+        <script src="assets/vendors/masonry/filter.js"></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/js/contact.js"></script>
 </html>

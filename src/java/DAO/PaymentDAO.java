@@ -154,7 +154,7 @@ public class PaymentDAO extends DBContext {
     public List<Payment> getAllPaymentsByMenteeUserName(String username) {
         List<Payment> payments = new ArrayList<>();
         String sql = "SELECT * FROM payment\n"
-                + "WHERE sender = '?' AND status != 'pending';";
+                + "WHERE sender = ? AND status != 'pending';";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
@@ -281,7 +281,7 @@ public class PaymentDAO extends DBContext {
         }
     }
      public boolean updatePaymentAmount(int paymentId, double newAmount) {
-        String sql = "UPDATE payment SET TotalAmount = ? WHERE paymentId = ?";
+        String sql = "UPDATE payment SET TotalAmount = ? WHERE requestId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setDouble(1, newAmount);
             pstmt.setInt(2, paymentId);

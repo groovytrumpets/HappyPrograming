@@ -9,6 +9,7 @@ import Model.Mentor;
 import Model.Request;
 import Model.RequestSlotData;
 import Model.RequestSlotItem;
+import Model.SkillList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -458,7 +459,7 @@ public class RequestDAO extends DBContext {
     public List<Request> getRequestStatisticByMenteeID(int menteeId) {
         List<Request> listReq = new ArrayList<>();
         String sql = "SELECT * FROM [Request]\n"
-                + "where [Status] != 'Canceled' and [Status] != 'Pending' and [Status] != 'Reject' and MenteeID = ? ";
+                + "where [Status] != 'Canceled' and [Status] != 'Pending' and [Status] != 'Reject' and [Status] != 'Open' and MenteeID = ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, menteeId);
@@ -1298,6 +1299,63 @@ public class RequestDAO extends DBContext {
         }
 
         return null;
+    }
+
+    public List<SkillList> getSkillsForCompletedOrPaidRequests(int menteeId) {
+        List<SkillList> skillsList = new ArrayList<>();
+        String query = """
+                       SELECT MIN(sl.SkillListID) AS SkillListID, sl.SkillID, sl.MentorID, MIN(sl.Rating) AS Rating, MIN(sl.CVID) AS CVID
+                       FROM SkillList sl
+                       JOIN Request r ON sl.SkillID = r.SkillID AND sl.MentorID = r.MentorID
+                       WHERE r.MenteeID = ? AND (r.Status = 'Completed' OR r.Status = 'Paid')
+                       GROUP BY sl.SkillID, sl.MentorID, r.Framework;
+                       """;
+
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, menteeId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                SkillList skill = new SkillList(
+                        rs.getInt("SkillListID"),
+                        rs.getInt("SkillID"),
+                        rs.getInt("MentorID"),
+                        rs.getInt("Rating"),
+                        rs.getInt("CVID")
+                );
+                skillsList.add(skill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return skillsList;
+    }
+
+    public double getAttendancePercentage(int requestId) {
+        double attendancePercentage = 0.0;
+        String sql = """
+            SELECT COALESCE(ROUND((CAST(SUM(CASE WHEN A.Status = 'Attended' THEN 1 ELSE 0 END) AS FLOAT) 
+                / NULLIF(COUNT(A.AttendID), 0)) * 100, 2), 0) AS AttendancePercentage
+            FROM Request R
+            LEFT JOIN RequestSlotItem RSI ON R.RequestID = RSI.RequestID
+            LEFT JOIN Attendance A ON RSI.RequestSlotItem = A.RequestSlotItem
+            WHERE R.RequestID = ?
+            GROUP BY R.RequestID;
+            """;
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, requestId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    attendancePercentage = rs.getDouble("AttendancePercentage");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attendancePercentage;
     }
 
     public static void main(String[] args) {

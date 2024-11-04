@@ -20,20 +20,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Inviting Request </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,6 +87,7 @@
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Note</th>
                                                 <th scope="col">Framework</th>
+                                                <th scope="col">Progress</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
 
@@ -108,7 +109,7 @@
 
                                                     <td class="align-middle">${c.note}</td>
                                                     <td class="align-middle">${c.framework}</td>
-
+                                                    <td class="align-middle">${c.attendancePercentage}%</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         ${c.status}
                                                     </td>     
@@ -123,7 +124,7 @@
                                                                     <a href="updatestatusbymentor?action=reject&requestId=${c.requestId}" class="btn button-sm red">Reject</a>
                                                                 </span>
                                                             </c:when>
-                                                            <c:when test="${c.status == 'Studying'}">
+                                                            <c:when test="${c.status == 'Studying' && c.attendancePercentage == 100}">
                                                                 <span class="orders-btn">
                                                                     <a href="updatestatusbymentor?action=complete&requestId=${c.requestId}" class="btn button-sm orange">Complete</a>
                                                                 </span>
@@ -135,9 +136,6 @@
                                                     </td>
                                                 </tr>
                                             </c:forEach>
-
-
-
                                         </tbody>
                                     </table>
                                 </div>

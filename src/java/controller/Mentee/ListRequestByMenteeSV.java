@@ -77,6 +77,11 @@ public class ListRequestByMenteeSV extends HttpServlet {
             Mentee curMentee = new Mentee();
             if (roleID == 2) {
                 List<Request> requestlist = requestDAO.getRequestsByMenteeUsername(curUser.getUsername());
+                for (Request requestItem : requestlist) {
+                    int requestId = requestItem.getRequestId();
+                    double attendancePercentage = requestDAO.getAttendancePercentage(requestId);
+                    requestItem.setAttendancePercentage(attendancePercentage);
+                }
                 request.setAttribute("requestlist", requestlist);
             } else if (roleID == 1) {
                 response.sendRedirect("home");

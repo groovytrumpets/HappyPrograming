@@ -22,20 +22,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Payment Management </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -146,7 +146,7 @@
 
                                                     <td class="align-middle">${c.startDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50"><fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Processing')}">
@@ -199,7 +199,7 @@
                                     Wallet of Manager
                                 </span>
                                 <span class="wc-stats">
-                                    <span class="counter">${wallet.balance}</span>₫
+                                    <span class=""><fmt:formatNumber value="${wallet.balance}" type="number" maxFractionDigits="2" /> </span>₫
                                 </span>	
                             </div>				      
                         </div>
@@ -222,7 +222,7 @@
                                                                 at ${p.paymentDate}</span>
                                                         </span>
                                                         <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">Paid</a>
+                                                            <a href="#" class="btn button-sm green">Mentee Paid</a>
                                                         </span>
                                                         <!--
                                                            
@@ -291,7 +291,7 @@
 
                                                     <td class="align-middle">${c.endDate}</td>
                                                     <td class="align-middle">${c.framework}</td>
-                                                    <td class="align-middle"><b class="text-black-50">${c.price} $</b></td>
+                                                    <td class="align-middle"><b class="text-black-50"><fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫</b></td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Completed')}">
@@ -343,7 +343,6 @@
                                                 <c:forEach items="${requestScope.paymentList1}" var="p">
                                                     <c:forEach items="${requestScope.completeRequestList}" var="c">
                                                         <c:if test="${p.requestId==c.requestId}">
-                                                            ${p.requestId} ${c.requestId}
                                                             <c:forEach items="${requestScope.mentorList}" var="v">
                                                                 <c:if test="${c.mentorId==v.mentorId}">
                                                                     <li>
@@ -356,7 +355,7 @@
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
-                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm red">Unpaid</a>
+                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm">Make Payment</a>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>
@@ -381,11 +380,11 @@
                                                                         <span class="orders-title">
                                                                             <a href="#" class="text-black-50"><b>You</b></a> 
                                                                             to <a href="#" class=""><b>${v.username}</b></a> <br/>
-                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> $ </b>
+                                                                            <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫ </b>
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
-                                                                            <a  href="#" class="btn button-sm green">Paid</a>
+                                                                            <a  href="#" class="btn button-sm purple">Paid</a>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>

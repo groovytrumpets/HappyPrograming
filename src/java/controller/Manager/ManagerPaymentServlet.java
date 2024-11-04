@@ -64,7 +64,7 @@ public class ManagerPaymentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         CVDAO cvd = new CVDAO();
-        List<Request> requestList = cvd.getListofRequest();
+        List<Request> requestList = cvd.getListofRequestbyStaus();
         List<Mentee> menteeList = cvd.getListofMentee();
         List<Mentor> mentorList = cvd.getListofMentor();
         List<User> listUser = cvd.getListofUser();

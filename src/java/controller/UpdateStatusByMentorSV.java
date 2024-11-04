@@ -108,8 +108,11 @@ public class UpdateStatusByMentorSV extends HttpServlet {
 //                      //Buoc 5: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //+ tien cho manager??? Buoc 6
-                        walletDAO.updateWalletAddMoneyBalanceByUsername("manager", requests.getPrice());
-                        //Buoc 6: Update Hold
+                        System.out.println(walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance());
+                        System.out.println(walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername("manager",walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
+                        System.out.println(walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance());
                         walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         response.sendRedirect("listrequestofmentor");
                         break;
@@ -117,7 +120,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 1: cap nhat trang thai reject
                         requestDAO.updateStatusByMentor(requestId, "Reject");
                         //Buoc 2: Update Hold
-                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() + requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":

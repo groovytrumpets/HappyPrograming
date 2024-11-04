@@ -6,6 +6,7 @@
 package DAO;
 
 import Model.Attendance;
+import Model.Schedule;
 import Model.Slot;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,51 @@ public class AttendanceDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Attendance> getSchduleByMenteeID(int menteeID, LocalDate start, LocalDate end) {
+        List<Attendance> list = new ArrayList<>();
+        String sql = "SELECT a.[AttendID]\n"
+                + "      ,r.[RequestID]\n"
+                + "      ,a.[slotDate]\n"
+                + "      ,a.[Status]\n"
+                + "      ,r.[MenteeID]\n"
+                + "      ,s.[StartTime]\n"
+                + "      ,s.[EndTime]\n"
+                + "      ,r.[Title]\n"
+                + "      ,s.[DayInWeek]\n"
+                + "  FROM [dbo].[Attendance] a\n"
+                + "  LEFT JOIN [RequestSlotItem] rs ON a.[RequestSlotItem] = rs.[RequestSlotItem]\n"
+                + "  LEFT JOIN [Slot] s ON s.[SlotID] = rs.[SlotID]\n"
+                + "  LEFT JOIN [Request] r ON r.[RequestID] = rs.[RequestID]\n"
+                + "  WHERE r.[MenteeID] = ? \n"
+                + "    AND a.[slotDate] BETWEEN ? AND ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, menteeID);
+            preparedStatement.setDate(2, java.sql.Date.valueOf(start));
+            preparedStatement.setDate(3, java.sql.Date.valueOf(end));
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Attendance curAttend = new Attendance();
+                curAttend.setAttendID(rs.getInt("AttendID"));
+                curAttend.setRequestID(rs.getInt("RequestID"));
+                curAttend.setDate(rs.getDate("slotDate").toLocalDate());
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                curAttend.setStartTime(startTime);
+                curAttend.setEndTime(endTime);
+                curAttend.setStatus(rs.getString("Status"));
+                curAttend.setTitle(rs.getString("Title"));
+                curAttend.setDayInWeek(rs.getString("DayInWeek"));
+                curAttend.setMenteeID(rs.getInt("MenteeID"));
+                list.add(curAttend);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
 
     public boolean updateStatusAttendance(int attendID, String status) {
         boolean updateSuccess = true;
@@ -80,6 +126,21 @@ public class AttendanceDAO extends DBContext {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        }
+
+    }
+    public boolean updateStatusAttendanceByDay() {
+        String sql = """
+                     update Attendance set Status='Absent' where (slotDate + 1)<getdate() and Status='Not yet';
+                     update Attendance set Status='Not yet' where slotDate>getdate();
+                     """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
             return false;
         }
 
@@ -110,6 +171,44 @@ public class AttendanceDAO extends DBContext {
         return list;
     }
 
+    public List<Schedule> getListOfSchedulebyMenteeId(int menteeId) {
+        List<Schedule> list = new ArrayList<>();
+        String sql = """
+                     select r.RequestID,r.MenteeID,r.MentorID,r.Status,r.Price,r.Framework,s.DayInWeek,r.StartDate,r.EndDate,s.StartTime,s.EndTime,a.slotDate,a.Status[aStatus],r.SkillID
+                     from Request r join RequestSlotItem rs on r.RequestID=rs.RequestID join Slot s on rs.SlotID=s.SlotID join Attendance a on a.RequestSlotItem=rs.RequestSlotItem
+                     where r.MenteeID = ?
+                     """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, menteeId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Schedule s = new Schedule();
+                s.setRequestId(rs.getInt("RequestID"));
+                s.setMenteeId(rs.getInt("MenteeID"));
+                s.setMentorId(rs.getInt("MentorID"));
+                s.setStatus(rs.getString("Status"));
+                s.setPrice(rs.getFloat("Price"));
+                s.setFramework(rs.getString("Framework"));
+                s.setDayInWeek(rs.getString("DayInWeek"));
+                s.setStartDate(rs.getDate("StartDate").toLocalDate());
+                s.setEndDate(rs.getDate("EndDate").toLocalDate());
+                s.setStartTime(rs.getTime("StartTime").toLocalTime());
+                s.setEndTime(rs.getTime("EndTime").toLocalTime());
+                s.setSlotDate(rs.getDate("slotDate").toLocalDate());
+                s.setAttendanceStatus(rs.getString("aStatus"));
+                s.setSkillId(rs.getInt("SkillID"));
+
+                list.add(s);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public boolean addAttendance(Attendance curAttendance) {
         String sql = "INSERT INTO [dbo].[Attendance]\n"
                 + "           ([RequestSlotItem]\n"
@@ -121,7 +220,7 @@ public class AttendanceDAO extends DBContext {
                 + "           ,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1 , curAttendance.getRequestSlotItem());
+            st.setInt(1, curAttendance.getRequestSlotItem());
             st.setDate(2, Date.valueOf(curAttendance.getDate()));
             st.setString(3, curAttendance.getStatus());
             st.executeUpdate();
@@ -139,5 +238,5 @@ public class AttendanceDAO extends DBContext {
         List<Attendance> list = act.getSchduleByMentorID(2, start, end);
         System.out.println(list.get(0).getMenteeID());
     }
-}
 
+}

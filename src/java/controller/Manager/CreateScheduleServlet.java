@@ -69,7 +69,7 @@ public class CreateScheduleServlet extends HttpServlet {
         boolean checkInsetSchedule = setScheduelForRequest(curRequest);
         processRequest(request, response);
     }
-    public boolean setScheduelForRequest(Request curRequest){
+    public static boolean setScheduelForRequest(Request curRequest){
          AttendanceDAO actAttend = new AttendanceDAO();
         RequestDAO actRequest = new RequestDAO();
         List<Attendance> listAttend = actAttend.getAllSlotOfRequest(curRequest.getRequestId());

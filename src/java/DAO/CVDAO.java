@@ -814,7 +814,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countInvitedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Processing'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Open'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -850,7 +850,7 @@ public class CVDAO extends DBContext {
     }
 
     public int countCompletedRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Completed' ";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -867,9 +867,62 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
+    public int countAllCompletedRequestbyMentorId(int mentorid) {
+        String sql = "select count(MentorID) from Request where MentorID=? and (Status ='Completed' or Status ='Paid') ";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+    
+     public int countAllCompletedRequest() {
+        String sql = "select count(MentorID) from Request where (Status ='Completed' or Status ='Paid') ";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+     public int countAllRating() {
+        String sql = "select count(RateID) from Rate";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("");
+
+            }
+        } catch (SQLException e) {
+
+            System.out.println(e);
+        }
+
+        return 0;
+    }
 
     public int countCanceledRequestbyMentorId(int mentorid) {
-        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Canceled'";
+        String sql = "select count(MentorID) from Request where MentorID=? and Status ='Reject'";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -1022,10 +1075,43 @@ public class CVDAO extends DBContext {
         return listRequest;
 
     }
+    public List<Request> getListofRequestbyStaus() {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "select * from Request where Status not like 'open' and Status not like 'reject' order by RequestID desc";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listRequest;
+
+    }
 
     public List<Request> getListofRequestbyMentorId(int mentorId) {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where MentorID=?";
+        String sql = "select * from Request where MentorID=? order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
@@ -1350,13 +1436,15 @@ public class CVDAO extends DBContext {
 
     public List<SlotRequest> getSlotRequestbyMenteeId(int menteeId) {
         List<SlotRequest> srList = new ArrayList<>();
-        String sql = "select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,\n"
-                + "r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate\n"
-                + "from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID\n"
-                + "where r.MenteeID=?";
+        String sql = """
+                     select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,
+                     	r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate
+                     	from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID where r.MenteeID=?
+                     """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            
             st.setInt(1, menteeId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -1509,14 +1597,28 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
+    public void setWalletTransactionbyMentee(float price, String menteeString) {
+        String sql = "update Wallet set Balance =Balance+? where Username like 'manager'\n"
+                + "update Wallet set Balance =Balance-? where Username like '?'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, price);
+            st.setString(2, menteeString);
+            st.setFloat(3, price);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public List<Mentor> getListofMentorByMenteeWithStatus(String username) {
         List<Mentor> mentorList = new ArrayList<>();
         //lenh sql select * from categories cach 1:
         String sql = """
                      select mr.*, r.RequestID from [Mentor] mr join Request r on mr.MentorID = r.MentorID
-                     join Mentee mt on  mt.MenteeID = r.MenteeID
-                     where r.[Status] = 'Completed' or r.[Status] = 'Paid' and mt.Username = ? 
+                                          join Mentee mt on  mt.MenteeID = r.MenteeID
+                                          where (r.[Status] = 'Completed' or r.[Status] = 'Paid') and mt.Username = ? 
                      """;
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -1531,6 +1633,7 @@ public class CVDAO extends DBContext {
                         rs.getString("address"), rs.getDate("dateOfBirth"),
                         rs.getString("fullName"), rs.getString("gender"),
                         rs.getString("status"));
+                mentor.setRequestId(rs.getInt("RequestID"));
                 mentorList.add(mentor);
             }
             

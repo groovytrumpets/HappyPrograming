@@ -75,7 +75,7 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
         try {
             requestId = Integer.parseInt(requestId_raw);
             CVDAO cvd = new CVDAO();
-            List<Request> requestList = cvd.getListofRequest();
+            List<Request> requestList = cvd.getListofRequestbyStaus();
             List<Mentee> menteeList = cvd.getListofMentee();
             List<Payment> paymentList1 = cvd.getListofPaymentbyRequestIdStep1(requestId);
             List<Payment> paymentListStatus4 = cvd.getListofPaymentbyRequestIdStep2(requestId);

@@ -7,10 +7,12 @@ package controller;
 import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.UserDAO;
+import DAO.WalletDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.User;
+import Model.Wallet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -99,22 +101,28 @@ public class SignInSV extends HttpServlet {
 
                     if (a.getRoleId() == 1) {
                         CVDAO cvd = new CVDAO();
+                        WalletDAO wld = new WalletDAO();
                         Mentor mentor = cvd.getMentorByUsername(a.getUsername());
                         if (mentor.getStatus().equalsIgnoreCase("active"));
                         {
                             CV cvactive = cvd.getCVbyMentorId(mentor.getMentorId());
                             session.setAttribute("cvactive", cvactive);
                         }
+                        Wallet wallet = wld.getWalletByUsername(a.getUsername());
+                        session.setAttribute("wallet", wallet);
                         session.setAttribute("mentor", mentor);
 
                     }//mentee avatar process
 
                     if (a.getRoleId() == 2) {
                         MenteeDAO mtd = new MenteeDAO();
+                        WalletDAO wld = new WalletDAO();
                         //System.out.println(a.getUsername());
                         Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
+                        Wallet wallet = wld.getWalletByUsername(a.getUsername());
                         //System.out.println(mentee.getFullName());
 
+                        session.setAttribute("wallet", wallet);
                         session.setAttribute("mentee", mentee);
                     }
                     if (rememberMe != null) {  // Checkbox was checked

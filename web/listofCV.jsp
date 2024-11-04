@@ -19,18 +19,18 @@
         <meta name="author" content="" />
         <meta name="robots" content="" />
 
-        <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+       <!-- DESCRIPTION -->
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>List CV of mentor</title>
@@ -113,10 +113,10 @@
 
                                                         </div>
                                                         <div class="info-bx text-center" >
-                                                            <c:if test="${c.status==('active')}">
+                                                            <c:if test="${c.status eq'active'}">
                                                                 <h5><a href="#">CV ID: ${c.cvId} </a><span class="text-green">${c.status}</span></h5>
                                                                 </c:if>
-                                                                <c:if test="${c.status==('inactive')}">
+                                                                <c:if test="${c.status eq'inactive'}">
                                                                 <h5><a href="#">Draft: ${c.cvId} </a><span class="text-red">${c.status}</span></h5>
                                                                 </c:if>
                                                             <span>Last change:</span>
@@ -124,12 +124,24 @@
                                                             <span> ${c.createDate}</span>
                                                         </div>
                                                         <div class="cours-more-info" style="height: 50px">
+                                                            <c:if test="${c.status eq'inactive'}">
                                                             <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
                                                                 Update
                                                             </a>
+                                                                
                                                             <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
                                                                 Delete
                                                             </a>
+                                                            </c:if>
+                                                            <c:if test="${c.status eq'active'}">
+                                                            <a href="cvupdate?id=${c.cvId}" class="review btn" style=" display: flex; align-items: center; justify-content: center; ">
+                                                                Update
+                                                            </a>
+                                                                
+                                                            <a href="#" onclick="delete1('${c.cvId}')" class="price btn" style=" display: flex; align-items: center; justify-content: center ">
+                                                                Delete
+                                                            </a>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </li>

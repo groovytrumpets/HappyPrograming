@@ -13,7 +13,7 @@ import Model.SkillList;
 import Model.Slot;
 import Model.User;
 import com.google.gson.Gson;
-import static controller.Mentor.SlotViewServlet.convertDayInWeekToCurrentDate;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToCurrentDate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -80,6 +80,7 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
             List<Mentor> listMentor = cvd.getListofMentor();
             List<CV> listCV = cvd.getListofCVbyMentorId(id);
             List<Slot> listActiveSlot = sld.getListofActiveSlotsByMentorId(id);
+            //System.out.println(listActiveSlot);
             List<Slot> listInactiveSlot = sld.getListofInactiveSlotsByMentorId(id);
             List<Skill> listSkill = cvd.getListofSkill();
             List<SkillList> listSkillList = cvd.getListofSkillList();
@@ -116,6 +117,7 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
 
             request.setAttribute("status", new Gson().toJson(statusSlot));
             request.setAttribute("startTime", new Gson().toJson(dateConverted));
+           // System.out.println(dateConverted);
             request.setAttribute("endTime", new Gson().toJson(enddateConverted));
 
             //slot view Inactive
@@ -135,6 +137,7 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
 
             request.setAttribute("status2", new Gson().toJson(statusSlot));
             request.setAttribute("startTime2", new Gson().toJson(dateConverted));
+            //System.out.println(dateConverted);
             request.setAttribute("endTime2", new Gson().toJson(enddateConverted));
             request.getRequestDispatcher("managerCV.jsp").forward(request, response);
         } catch (Exception e) {
