@@ -102,12 +102,12 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 2: Tu choi tat ca Mentee requests cung slot
                         requestDAO.rejectOtherMenteesForSameSlots(requestId);
                         //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
-                        //slotDAO.updateSlotStatusToUnavailable(slotId);
+                        requestDAO.setSlotStatusbyRequestSlotItemUnavailable(requestId);
                         //Buoc 4: update balance                      
                         //Buoc 5: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //Buoc 6: Update Hold
-                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), - requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),-requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername("manager",walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
                         
@@ -122,7 +122,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         break;
                     case "complete":
                         requestDAO.updateStatusByMentor(requestId, "MentorAccept");
-                        slotDAO.updateSlotStatusToAvailable(slotId);
+                        requestDAO.setSlotStatusbyRequestSlotItemAvailable(requestId);
                         response.sendRedirect("listrequestofmentor");
                         break;
                     default:
