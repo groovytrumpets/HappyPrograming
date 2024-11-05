@@ -1093,7 +1093,7 @@ public class RequestDAO extends DBContext {
     public boolean setSlotStatusbyRequestSlotItemUnavailable(int requestId) throws SQLException {
         String query = """
                    UPDATE Slot
-                   SET status = 'Unavailable'
+                   SET status = 'unavailable'
                    WHERE slotID IN (
                        SELECT s.slotID
                        FROM RequestSlotItem rqs
@@ -1114,7 +1114,7 @@ public class RequestDAO extends DBContext {
     public boolean setSlotStatusbyRequestSlotItemAvailable(int requestId) throws SQLException {
         String query = """
                    UPDATE Slot
-                   SET status = 'Available'
+                   SET status = 'available'
                    WHERE slotID IN (
                        SELECT s.slotID
                        FROM RequestSlotItem rqs
