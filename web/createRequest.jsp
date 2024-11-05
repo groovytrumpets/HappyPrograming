@@ -86,8 +86,11 @@
 
             <div class="container mt-4">
                 <div class="card p-4 shadow-sm border-light">
-                    <h4 class="text-primary text-center mb-4">Create Request to Mentor</h4>
+                    <h4 class="text-primary text-center mb-4">Create new request to mentor to get support</h4>
                     <div class="list-group">
+                        <div class=" text-center">
+                            <img id="userAvatar" src="getCVimage?id=${requestScope.cv.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                        </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 rounded-top">
                             <span class="font-weight-bold">Mentor:</span>
                             <span class="font-weight-bold text-info">${mentor.fullName}</span>
@@ -212,7 +215,7 @@
                                                             <c:if test="${s.status == 'unavailable'}">
                                                                 <c:set var="isDisabled" value="true" />
                                                             </c:if>
-                                                           
+
                                                             <!-- Check if slot is selected in another request -->
                                                             <c:forEach items="${selectedSlot}" var="sl">
                                                                 <c:if test="${s.slotID == sl.slotId}">

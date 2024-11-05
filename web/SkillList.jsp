@@ -93,7 +93,7 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
                                     <div class="widget courses-search-bx placeani">
-                                        <form action="adminSearchSkill">
+                                        <form action="searchskill">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <label>Search Courses</label>

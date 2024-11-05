@@ -94,8 +94,8 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     if (rememberMe != null) {  // Checkbox was checked
-                        Cookie usernameCookie = new Cookie("username", username);
-                        Cookie passwordCookie = new Cookie("pass", pass);
+                        Cookie usernameCookie = new Cookie("usernameAdmin", username);
+                        Cookie passwordCookie = new Cookie("passAdmin", pass);
 
                         // Set cookie age to one week (7 days)
                         usernameCookie.setMaxAge(7 * 24 * 60 * 60);
@@ -106,8 +106,8 @@ public class LoginServlet extends HttpServlet {
                         response.addCookie(passwordCookie);
                     } else {
                         // Clear cookies if "Remember Me" is not checked
-                        Cookie usernameCookie = new Cookie("username", null);
-                        Cookie passwordCookie = new Cookie("pass", null);
+                        Cookie usernameCookie = new Cookie("usernameAdmin", null);
+                        Cookie passwordCookie = new Cookie("passAdmin", null);
 
                         // Invalidate the cookies by setting the max age to 0
                         usernameCookie.setMaxAge(0);
