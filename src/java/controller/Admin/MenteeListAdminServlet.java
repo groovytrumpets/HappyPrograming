@@ -4,9 +4,11 @@
  */
 package controller.Admin;
 
+import DAO.AttendanceDAO;
 import DAO.MenteeDAO;
 import DAO.RequestDAO;
 import DAO.SlotDAO;
+import Model.Attendance;
 import Model.Mentee;
 import Model.Request;
 import Model.Slot;
@@ -92,14 +94,14 @@ public class MenteeListAdminServlet extends HttpServlet {
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
         request.setAttribute("listMent", listMentee);
-       
+
         int[] arrayNumMentor = getNumOfMentorOfMentee(listMentee);
         request.setAttribute("numMentor", arrayNumMentor);
         int[] arrayNumSkill = getNumOfSkillEachMentee(listMentee);
         request.setAttribute("numSkill", arrayNumSkill);
         float[] arrayHour = getTotalHourOfMentee(listMentee);
         request.setAttribute("numHour", arrayHour);
-        request.getRequestDispatcher("menteeListAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/menteeListAdmin.jsp").forward(request, response);
     }
 
     public int[] getNumOfMentorOfMentee(List<Mentee> listMentee) {
@@ -124,20 +126,22 @@ public class MenteeListAdminServlet extends HttpServlet {
 
     public float[] getTotalHourOfMentee(List<Mentee> listMentee) {
         RequestDAO actReq = new RequestDAO();
+        AttendanceDAO actAtt = new AttendanceDAO();
         float[] arraySum = new float[listMentee.size()];
 
         //Loop for each mentee
         for (int i = 0; i < listMentee.size(); i++) {
             int menteeId = listMentee.get(i).getMenteeId();
-            List<Request> listReq = actReq.getValidRequestByMenteeID(menteeId);
+            List<Attendance> listAttendOfMentee = actAtt.getAttendedByMenteeID(menteeId);
             float hourOfMentee = 0;
             //Loop for each request of mentee
-            for (int j = 0; j < listReq.size(); j++) {
-                Request curRequest = listReq.get(j);
-                int requestId = curRequest.getRequestId();
-                float hourRequest = getTotalHourOfRequest(curRequest);
+            for (int j = 0; j < listAttendOfMentee.size(); j++) {
+                Attendance attend = listAttendOfMentee.get(j);
+                LocalTime startTime = attend.getStartTime();
+                LocalTime endTime = attend.getEndTime();
+                float durationInHours = (float) Duration.between(startTime, endTime).toMinutes() / 60;
                 //getTotal hour each request
-                hourOfMentee += hourRequest;
+                hourOfMentee += durationInHours;
             }
             arraySum[i] = (float) Math.round(hourOfMentee * 100) / 100;
         }
@@ -145,28 +149,7 @@ public class MenteeListAdminServlet extends HttpServlet {
         return arraySum;
     }
 
-    public float getTotalHourOfRequest(Request request) {
-        SlotDAO actSlot = new SlotDAO();
-        float sum = 0;
-        List<Slot> listSlot = actSlot.getValidSlotByRequestId(request.getRequestId());
-        LocalDate startDate = request.getStartDate();
-        LocalDate endDate = request.getEndDate();
-
-        while (startDate.isBefore(endDate) || startDate.equals(endDate)) { // Loop until the end date is reached
-            for (Slot curSlot : listSlot) { // Iterate through slots
-                String dayInWeek = startDate.getDayOfWeek().toString(); // Get the day of the week
-                if (curSlot.getDayInWeek().equalsIgnoreCase(dayInWeek)) {
-                    LocalTime startTime = curSlot.getStartTime();
-                    LocalTime endTime = curSlot.getEndTime();
-                    float durationInHours = (float) Duration.between(startTime, endTime).toMinutes() / 60;
-                    sum += durationInHours;
-                }
-            }
-            startDate = startDate.plusDays(1); // Move to the next day
-        }
-
-        return sum;
-    }
+   
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -179,7 +162,44 @@ public class MenteeListAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        MenteeDAO actMentee = new MenteeDAO();
+        RequestDAO actRequest = new RequestDAO();
+        List<Mentee> listMentee = actMentee.getAllMentee();
+        String page_raw = request.getParameter("page");
+        String numDis_raw = request.getParameter("numDis");
+        String search = request.getParameter("search");
+        if (search == null || search == "") {
+            response.sendRedirect("menteeListAdmin");
+            return;
+        }
+        int page, numDis;
+        if (page_raw != null) {
+            page = Integer.parseInt(page_raw);
+        } else {
+            page = 1;
+        }
+        if (numDis_raw != null) {
+            numDis = Integer.parseInt(numDis_raw);
+        } else {
+            numDis = 10;
+        }
+        int stt = (page - 1) * numDis;
+        request.setAttribute("stt", stt);
+        int numMent = listMentee.size();
+        int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
+        request.setAttribute("numOfPage", numOfPage);
+        listMentee = actMentee.getListMenteeSearchPagination(search, page, numDis);
+        request.setAttribute("indexPage", page);
+        request.setAttribute("numDis", numDis);
+        request.setAttribute("listMent", listMentee);
+        request.setAttribute("search", search);
+        int[] arrayNumMentor = getNumOfMentorOfMentee(listMentee);
+        request.setAttribute("numMentor", arrayNumMentor);
+        int[] arrayNumSkill = getNumOfSkillEachMentee(listMentee);
+        request.setAttribute("numSkill", arrayNumSkill);
+        float[] arrayHour = getTotalHourOfMentee(listMentee);
+        request.setAttribute("numHour", arrayHour);
+        request.getRequestDispatcher("/Admin/menteeListAdmin.jsp").forward(request, response);
     }
 
     /**

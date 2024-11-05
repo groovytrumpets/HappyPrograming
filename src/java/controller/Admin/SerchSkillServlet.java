@@ -87,7 +87,7 @@ public class SerchSkillServlet extends HttpServlet {
         listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
         request.setAttribute("search", searchName);
         request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("adminSearchSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminSearchSkill.jsp").forward(request, response);
     }
 
     /**
@@ -141,7 +141,7 @@ public class SerchSkillServlet extends HttpServlet {
         listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
         request.setAttribute("search", searchName);
         request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("adminSearchSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminSearchSkill.jsp").forward(request, response);
     }
 
     /**

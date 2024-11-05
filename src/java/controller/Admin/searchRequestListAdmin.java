@@ -111,7 +111,7 @@ public class searchRequestListAdmin extends HttpServlet {
         request.setAttribute("listStatus", listStatus);
 
         // Forward to JSP
-        request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/searchRequestAdmin.jsp").forward(request, response);
     }
 
     public String[] getRequestMenteeName(List<Request> listReq) {
@@ -180,7 +180,7 @@ public class searchRequestListAdmin extends HttpServlet {
         request.setAttribute("listStatus", listStatus);
 
         // Forward to JSP
-        request.getRequestDispatcher("searchRequestAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/searchRequestAdmin.jsp").forward(request, response);
     }
 
     /**

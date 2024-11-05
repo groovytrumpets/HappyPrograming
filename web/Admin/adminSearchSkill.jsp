@@ -1,6 +1,6 @@
 <%-- 
-    Document   : viewSkill
-    Created on : Sep 17, 2024, 4:47:52 PM
+    Document   : adminSearchSkill
+    Created on : Sep 21, 2024, 2:02:53 AM
     Author     : tuong
 --%>
 
@@ -29,8 +29,8 @@
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+        <link rel="icon" href="../error-404.html" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>EduChamp : Education HTML Template </title>
@@ -61,7 +61,9 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
+        <!-- header start -->
         <jsp:include page="headerAdmin.jsp" />
+        <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -70,7 +72,7 @@
                     <h4 class="breadcrumb-title">Skill</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Skill</li>
+                        <li>View Skill</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -83,21 +85,21 @@
                                 </div>
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
+                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
                                         <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
                                 <div class="col-md-4" style="text-align: right">
                                     <div class="btn-secondry add-item m-r5">
-                                        <a href="addSkillAdmin" style="text-decoration: none; color: inherit;"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</a>
+                                        <a href="addSkill" style="text-decoration: none; color: inherit;"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</a>
                                     </div>
                                 </div>
 
                             </div>
 
                             <div class="widget-inner">
-                                <table class="table-bordered">
-
+                                <table class="table-bordered table-hover">
                                     <tr>
                                         <th>STT</th>
                                         <th>Skill ID</th>
@@ -109,10 +111,10 @@
                                     </tr>
                                     <c:set value="${requestScope.stt}" var="stt"></c:set>
                                     <c:forEach items="${requestScope.list}" var="c">
-                                        <form action="SkillListAdmin" method="post">
+                                        <form action="adminSearchSkill" method="post">
                                             <input type="hidden" name="page" value="${requestScope.indexPage}">
                                             <input type="hidden" name="numDis" value="${requestScope.numDis}">
-
+                                            <input type="hidden" name="search" value="${requestScope.search}">
                                             <tr>
                                                 <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
@@ -136,7 +138,7 @@
                                                 </c:choose>
                                             </td>
                                             <td style="text-align: center">
-                                                <a href="updateSkillAdmin?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
+                                                <a href="updateSkill?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
                                                 <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
                                             </tr>
                                         </form>
@@ -189,6 +191,7 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
                                                     // Pricing add
                                                     function newMenuItem() {
@@ -211,7 +214,7 @@
         <script type="text/javascript">
             function doDelete(id) {
                 if (confirm("Are you sure want to delete skill with ID = " + id)) {
-                    window.location = "deleteSkillAdmin?id=" + id;
+                    window.location = "deleteSkill?id=" + id;
                 }
             }
         </script>

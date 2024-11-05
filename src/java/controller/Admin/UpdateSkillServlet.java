@@ -82,7 +82,7 @@ public class UpdateSkillServlet extends HttpServlet {
         request.setAttribute("createDate", curSkill.getCreateDate());
         request.setAttribute("status", curSkill.getStatus());
         request.setAttribute("description", curSkill.getDescription());
-        request.getRequestDispatcher("updateSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/updateSkill.jsp").forward(request, response);
     }
 
     /**
