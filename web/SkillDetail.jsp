@@ -109,32 +109,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Breadcrumb row -->
-                <div class="breadcrumb-row">
-                    <div class="container">
-                        <ul class="list-inline">
-
-                        </ul>
-                    </div>
-                </div>
-                <!-- Breadcrumb row END -->
 
 
-                <!-- inner page banner END -->
-                <div class="content-block">
-
-
-                    <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#recentCoursesCarousel" role="button" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-
-                <!-- About Us -->
                 <div class="section-area section-sp1">
                     <div class="container">
                         <div class="row d-flex flex-row-reverse">
@@ -162,9 +138,9 @@
                                     <h4>Mentor</h4>
                                     <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
-                                            
+
                                             <c:forEach items="${requestScope.mentor}" var="mentors" varStatus="loop">
-                                                
+
                                                 <c:forEach items="${requestScope.cv}" var="cvs">
                                                     <c:if test="${mentors.mentorId == cvs.mentorId}">
                                                         <c:if test="${loop.index % 2 == 0}">
