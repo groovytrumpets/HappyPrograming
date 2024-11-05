@@ -4,6 +4,9 @@
     Author     : asus
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +60,13 @@
         <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+        <style>
+            .new-user-list {
+                max-height: 250px;
+                overflow-y: auto;
+            }
+        </style>
+
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
@@ -76,7 +86,7 @@
                 </div>	
                 <!-- Card -->
                 <div class="row">
-                    <div class="col-md-2 m-b30">
+                    <div class="col-md-3 m-b30">
                         <div class="widget-card widget-bg1">					 
                             <div class="wc-item">
                                 <h4 class="wc-title">
@@ -91,7 +101,7 @@
                             </div>				      
                         </div>
                     </div>
-                    <div class="col-md-2 m-b30">
+                    <div class="col-md-3 m-b30">
                         <div class="widget-card widget-bg2">					 
                             <div class="wc-item">
                                 <h4 class="wc-title">
@@ -120,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-6 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
@@ -129,15 +139,18 @@
                             <div class="widget-inner">
                                 <div class="new-user-list">
                                     <ul>
-                                        <li>
-                                            <span class="new-users-pic">
-                                                <img src="assets/images/testimonials/pic1.jpg" alt=""/>
-                                            </span>
-                                            <span class="new-users-text">
-                                                <a href="#" class="new-users-name">Anna Strong </a>
-                                                <span class="new-users-info">Visual Designer,Google Inc </span>
-                                            </span>
-                                        </li>
+                                        <c:forEach var="u" items="${listuser}">
+                                            <li>
+                                                <span class="new-users-text">
+                                                    <a href="#" class="new-users-name">${u.username}</a>
+                                                    <span class="new-users-info">${u.email}</span>
+                                                    <span class="new-users-date">
+                                                        <fmt:parseDate value="${u.createDate}" pattern="yyyy-MM-dd" var="parsedDate" />
+                                                        <fmt:formatDate value="${parsedDate}" pattern="dd MMM yyyy" />
+                                                    </span>
+                                                </span>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>

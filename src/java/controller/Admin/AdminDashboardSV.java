@@ -6,6 +6,8 @@ package controller.Admin;
 
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.UserDAO;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -61,11 +64,14 @@ public class AdminDashboardSV extends HttpServlet {
             throws ServletException, IOException {
         MenteeDAO menteeDAO = new MenteeDAO();
         MentorDAO mentorDAO = new MentorDAO();
+        UserDAO userDAO = new UserDAO();
+        List<User> listUsers = userDAO.gettAllUsers();
         int totalMentees = menteeDAO.getTotalMentees();
         int totalMentors = mentorDAO.getTotalMentors();
 
         request.setAttribute("totalMentors", totalMentors);
         request.setAttribute("totalMentees", totalMentees);
+        request.setAttribute("listuser", listUsers);
 
         request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
     }

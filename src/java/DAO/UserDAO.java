@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.time.LocalDate;
 import Model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO extends DBContext {
 
@@ -201,12 +203,44 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
-         UserDAO u = new UserDAO();
-         String password = u.encrypt("yVMkvELb");
-         System.out.println(password);
-         System.out.println(u.findUserPass("User1", password));
+
+    public List<User> gettAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = """
+                     SELECT * FROM [User] 
+                     WHERE RoleID NOT IN (3, 4)
+                     ORDER BY CreateDate DESC;
+                     """;
+        try (
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+
+                user.setUsername(rs.getString("Username"));
+                user.setRoleId(rs.getInt("RoleID"));
+                user.setStatus(rs.getString("Status"));
+                user.setCreateDate(rs.getDate("CreateDate"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("Password"));
+
+                // Add the user to the list
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
+
+    public static void main(String[] args) {
+        UserDAO u = new UserDAO();
+        String password = u.encrypt("yVMkvELb");
+        System.out.println(password);
+        System.out.println(u.findUserPass("User1", password));
+    }
+
     public String encrypt(String password) {
         StringBuilder encrypted = new StringBuilder();
 
@@ -220,7 +254,7 @@ public class UserDAO extends DBContext {
     // Main method for testing
 //   public static void main(String[] args) throws SQLException {
 //        UserDAO u = new UserDAO();
-        /*User newUser = new User();
+    /*User newUser = new User();
         newUser.setRoleId(1);
         newUser.setUsername("hoanganhgp2");
         newUser.setStatus("active");
