@@ -120,7 +120,7 @@ public class SignInSV extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     //mentor avatar process
-
+                    System.out.println(a);
                     if (a.getRoleId() == 1) {
                         CVDAO cvd = new CVDAO();
                         WalletDAO wld = new WalletDAO();

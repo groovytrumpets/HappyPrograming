@@ -198,7 +198,7 @@ public class SlotDAO extends DBContext {
     }
 
     public void updateSlotStatusToUnavailable(int slotId) throws SQLException {
-        String query = "UPDATE Slot SET status = 'Unavailable' WHERE slotID = ?";
+        String query = "UPDATE Slot SET status = 'unavailable' WHERE slotID = ?";
         try (
                 PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, slotId);
@@ -207,7 +207,7 @@ public class SlotDAO extends DBContext {
     }
 
     public void updateSlotStatusToAvailable(int slotId) throws SQLException {
-        String query = "UPDATE Slot SET status = 'Available' WHERE slotID = ?";
+        String query = "UPDATE Slot SET status = 'available' WHERE slotID = ?";
         try (
                 PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, slotId);
