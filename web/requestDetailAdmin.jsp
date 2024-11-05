@@ -94,22 +94,34 @@
                                 <div>Request Status: ${request.status}</div>
                                 <div class="seperator"></div>
                                 <br>
+                                <hr class="hr" />
                                 <div style="display: flex" class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display: flex">
                                         <h6>Mentor</h6>
-                                        <p>Mentor ID: ${mentor.mentorId}</p>
-                                        <p>Full name: ${mentor.fullName}</p>
-                                        <p>Date of birth: ${mentor.dateOfBirth}</p>
-                                        <p>Profession: ${cv.jobProfession}</p>
+                                        <div class="col-md-6">
+                                            <p>Mentor ID: ${mentor.mentorId}</p>
+                                            <p>Full name: ${mentor.fullName}</p>
+                                            <p>Date of birth: ${mentor.dateOfBirth}</p>
+                                            <p>Profession: ${cv.jobProfession}</p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <img id="userAvatar" src="getCVimage?id=${requestScope.cv.cvId}" class="rounded-circle" >
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display: flex">
                                         <h6>Mentee</h6>
-                                        <p>Mentee ID: ${mentee.menteeId}</p>
-                                        <p>Full name: ${mentee.fullName}</p>
-                                        <p>Date of birth: ${mentee.dateOfBirth}</p>
+                                        <div class="col-md-6">
+                                            <p>Mentee ID: ${mentee.menteeId}</p>
+                                            <p>Full name: ${mentee.fullName}</p>
+                                            <p>Date of birth: ${mentee.dateOfBirth}</p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <img src="data:image/jpeg;base64,${mentee.base64FileImage}" class="rounded-circle">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="seperator"></div>
+                                <hr class="hr" />
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="ml-auto">
@@ -130,11 +142,12 @@
                                         <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="img-fluid" style="max-height: 100px; max-width: 100px">
                                     </div>
                                 </div>
-                                <div class="seperator">-</div>
+                                <hr class="hr" />
                                 <div class="header" style="text-align: center"><h5>Schedule</h5></div>
                                 <div>
                                     <p>Start date: ${request.startDate}</p>
                                     <p>End date: ${request.endDate}</p></div>
+
 
                                 <div class="row">
                                     <form action="requestDetailAdmin" method="get">
@@ -142,52 +155,57 @@
                                         <label>Start date:</label>
                                         <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
                                     </form>
-                                    <table>
-                                        <thead>
+                                    <table class="table table-hover" style="border-collapse: collapse;">
+                                        <thead class="thead-light">
                                             <tr>
-
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
+                                                <c:forEach items="${dateOfDay}" var="entry">
+                                                    <th scope="col">${entry.key}</th> <!-- Day of the week -->
+                                                    </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <c:forEach items="${dateOfDay}" var="entry">
+                                                    <th scope="col">${entry.value}</th> <!-- Corresponding date -->
+                                                    </c:forEach>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                            <tr>
                                                 <c:forEach var="day" items="${daysOfWeek}">
-                                                    <td>
+                                                    <td style="border: solid black 1px; padding: 10px;">
                                                         <c:if test="${not empty slotInWeek[day]}">
                                                             <c:forEach var="slot" items="${slotInWeek[day]}">
-                                                                <form action="mentorSchedule" method="get">
-                                                                    <div>Request ID:${slot.requestID}- Titile: ${slot.title}</div>
-                                                                    <div>MenteeID: ${slot.menteeID}</div>
+                                                                <form action="mentorSchedule" method="get" style="margin-bottom: 10px;">
+                                                                    <div>
+                                                                        <strong>Request ID:</strong> ${slot.requestID} - <strong>Title:</strong> ${slot.title}
+                                                                    </div>
+                                                                    <div><strong>Mentee ID:</strong> ${slot.menteeID}</div>
+
                                                                     <c:choose>
                                                                         <c:when test="${slot.status != null && slot.status eq 'Attended'}">
-                                                                            <div style="display: flex">Status: <p style="color: green">${slot.status}</p></div>
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                            <div style="display: flex">Status: <p style="color: red">${slot.status}</p> </div>
+                                                                            <div style="display: flex; align-items: center;">
+                                                                                <strong>Status:<p style="color: green; margin-left: 5px;">${slot.status}</p></strong>
+
+                                                                            </div>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <div style="display: flex; align-items: center;">
+                                                                                <strong>Status:<p style="color: red; margin-left: 5px;">${slot.status}</p></strong>
+
+                                                                            </div>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                    <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                    <div><strong>Time:</strong> ${slot.startTime} - ${slot.endTime}</div>
                                                                     <input type="hidden" name="attendID" value="${slot.attendID}">
                                                                     <input type="hidden" name="start" value="${start}">
-                                                                    
                                                                 </form>
                                                             </c:forEach>
-
                                                         </c:if>
-
                                                     </td>
                                                 </c:forEach>
                                             </tr>
-                                            </tr>
                                         </tbody>
                                     </table>
+
                                 </div>
 
                             </div>

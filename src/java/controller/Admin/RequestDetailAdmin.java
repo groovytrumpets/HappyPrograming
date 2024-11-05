@@ -129,7 +129,7 @@ public class RequestDetailAdmin extends HttpServlet {
         LocalDate sunday = monday.plusDays(6);
         //Get all slot between monday and saturday
 
-        List<Attendance> slotInWeek = actAttend.getSchduleByMentorID(curMentor.getMentorId(), monday, sunday);
+        List<Attendance> slotInWeek = actAttend.getSchduleByRequestID(requestId, monday, sunday);
         //Get all slots in date for 7 day in week. 
         Map<String, List<Attendance>> listSlotInday = getAllSlotIndate(slotInWeek);
 
