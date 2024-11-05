@@ -12,6 +12,7 @@ import DAO.RequestDAO;
 import DAO.SlotDAO;
 import Model.Wallet;
 import DAO.WalletDAO;
+import Model.CV;
 import Model.Mentee;
 import Model.Request;
 import Model.RequestSlotItem;
@@ -99,13 +100,14 @@ public class UpdateRequestSV extends HttpServlet {
         try {
             id = Integer.parseInt(id_raw);
             Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
-            Request requests = requestDAO.getRequestByID(id);
-            List<Skill> list1 = cvd.getMentorSkillListByMentorID(requests.getMentorId());
+            Request requests = requestDAO.getRequestByID(id);          
             List<Slot> slotList = slotDAO.getSlotsByMentorId(requests.getMentorId());
             List<RequestSlotItem> checkedSlot = requestDAO.getSlotByRequestID(id);
-            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlotByRequestID(mentee.getMenteeId(), requests.getMentorId(), requests.getRequestId());
+            CV cv = cvd.getCVbyMentorId(requests.getMentorId());
+            List<Skill> list1 = cvd.getMentorSkillListByCVID(cv.getCvId());
+            List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlotByRequestID(mentee.getMenteeId(), requests.getMentorId(), requests.getRequestId());     
             request.setAttribute("selectedSlot", listSlot);
-            request.setAttribute("cv", cvd.getCVbyMentorId(requests.getMentorId()));
+            request.setAttribute("cv", cv);
             request.setAttribute("mid", id);
             request.setAttribute("request", requests);
             request.setAttribute("skillList", list1);

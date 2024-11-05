@@ -42,10 +42,10 @@
                             <p style="color: white">${notify}</p>
                             <form action="loginAdmin" class="signin-form" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="username" required name="username">
+                                    <input type="text" class="form-control" placeholder="username" required name="username" value="${passAdmin}">
                                 </div>
                                 <div class="form-group">
-                                    <input id="password-field" type="password" class="form-control" placeholder="Password" required name="pass">
+                                    <input id="password-field" type="password" class="form-control" placeholder="Password" required name="pass" value="${usernameAdmin}">
                                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
                                 <div class="form-group">

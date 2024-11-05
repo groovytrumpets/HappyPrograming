@@ -106,15 +106,16 @@ public class CreateRequestSV extends HttpServlet {
         try {
             Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
             id = Integer.parseInt(id_raw);
-            List<Skill> skillList = cvd.getMentorSkillListByMentorID(id);
+            CV cv = cvd.getCVbyMentorId(id);
+            List<Skill> list1 = cvd.getMentorSkillListByCVID(cv.getCvId());
             List<Slot> slotList = slotDAO.getSlotsByMentorId(id);
             List<RequestSlotItem> listSlot = requestDAO.getDuplicateSlot(mentee.getMenteeId(), id);
             request.setAttribute("selectedSlot", listSlot);
-            request.setAttribute("cv", cvd.getCVbyMentorId(id));
+            request.setAttribute("cv", cv);
             request.setAttribute("mid", id);
             request.setAttribute("wallet", walletDAO.getWalletByUsername(a.getUsername()));
             request.setAttribute("mentor", mentorDAO.findMentorByID(id));
-            request.setAttribute("skillList", skillList);
+            request.setAttribute("skillList", list1);
             request.setAttribute("error", error);
             request.setAttribute("notify", notify);
             request.setAttribute("slotList", slotList);
