@@ -202,7 +202,7 @@ public class CreateRequestSV extends HttpServlet {
 
             Request newRequest = new Request(0, id, mentee.getMenteeId(), totalP,
                     content, creaDate, "Open", title, framework, selectedStartDate, selectedEndDate, skill);
-            out.print(newRequest);
+            
             requestDAO.insertRequest(newRequest);
             int idReq = requestDAO.getNewestRequest();
             Payment payment = new Payment(1, idReq, LocalDateTime.now(), totalP, "1", a.getUsername(), "manager");

@@ -157,6 +157,7 @@ public class AttendanceDAO extends DBContext {
         return list;
     }
 
+   
     public boolean updateStatusAttendance(int attendID, String status) {
         boolean updateSuccess = true;
         String sql = "UPDATE [dbo].[Attendance]\n"

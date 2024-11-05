@@ -286,7 +286,7 @@
                                             <input type="hidden" id="totalPriceInput" name="totalPrice" value="">
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">
-                                            <i class="fa fa-plus-circle me-2"></i>Create Request
+                                            <i class="fa fa-plus-circle me-2"></i>Update Request
                                         </button>
                                     </div>
                                 </div>

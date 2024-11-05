@@ -96,11 +96,7 @@ public class suggestMentor extends HttpServlet {
         List<MentorRating> mentorRatingList = new ArrayList<>();
 
         // Populate the list with MentorRating objects
-        int i=0;
-        for (CV cv : mentorCvList) {
-            i++;
-            System.out.println("CV :"+cv+" adn " +i);
-            
+        for (CV cv : mentorCvList) {        
             int rating = cvd.getAveRatebyId(cv.getMentorId());
             Mentor mentor = mentorDAO.getMentorById(cv.getMentorId());
             int reviewsCount = cvd.getMentorRateList(cv.getMentorId()).size();

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.Mentee;
+package controller.Admin;
 
-import DAO.RequestDAO;
-import Model.User;
+import DAO.MenteeDAO;
+import DAO.MentorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "UpdateStatusOfMenteeSV", urlPatterns = {"/updatestatusofmentee"})
-public class UpdateStatusOfMenteeSV extends HttpServlet {
+@WebServlet(name = "AdminDashboardSV", urlPatterns = {"/admindashboard"})
+public class AdminDashboardSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateStatusOfMenteeSV</title>");
+            out.println("<title>Servlet AdminDashboardSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateStatusOfMenteeSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminDashboardSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,43 +59,15 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User curUser = (User) session.getAttribute("acc");
+        MenteeDAO menteeDAO = new MenteeDAO();
+        MentorDAO mentorDAO = new MentorDAO();
+        int totalMentees = menteeDAO.getTotalMentees();
+        int totalMentors = mentorDAO.getTotalMentors();
 
-        if (curUser == null) {
-            response.sendRedirect("signin");
-            return;
-        }
+        request.setAttribute("totalMentors", totalMentors);
+        request.setAttribute("totalMentees", totalMentees);
 
-        int roleID = curUser.getRoleId();
-        int requestId = Integer.parseInt(request.getParameter("requestId"));
-        RequestDAO requestDAO = new RequestDAO();
-
-        try {
-            if (roleID == 2) {
-                String action = request.getParameter("action");
-
-                switch (action) {
-                    case "update":
-                        response.sendRedirect("updaterequestofmentee?requestId=" + requestId);
-                        break;
-                    case "complete":
-                        requestDAO.updateRequestStatus(requestId, "Complete");
-                        break;
-                    case "cancel":
-                        requestDAO.updateRequestStatus(requestId, "Canceled");
-                        break;
-                    default:
-                        break;
-                }
-                response.sendRedirect("listrequestbymentee");
-            } else if (roleID == 1) {
-                response.sendRedirect("home");
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
     }
 
     /**

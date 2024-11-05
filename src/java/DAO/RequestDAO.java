@@ -1093,7 +1093,7 @@ public class RequestDAO extends DBContext {
     public boolean setSlotStatusbyRequestSlotItemUnavailable(int requestId) throws SQLException {
         String query = """
                    UPDATE Slot
-                   SET status = 'Unavailable'
+                   SET status = 'unavailable'
                    WHERE slotID IN (
                        SELECT s.slotID
                        FROM RequestSlotItem rqs
@@ -1114,7 +1114,7 @@ public class RequestDAO extends DBContext {
     public boolean setSlotStatusbyRequestSlotItemAvailable(int requestId) throws SQLException {
         String query = """
                    UPDATE Slot
-                   SET status = 'Available'
+                   SET status = 'available'
                    WHERE slotID IN (
                        SELECT s.slotID
                        FROM RequestSlotItem rqs
@@ -1301,6 +1301,49 @@ public class RequestDAO extends DBContext {
         return null;
     }
 
+    public List<Request> getListofRequestDistinctByMenteeID(int menteeId) {
+        List<Request> requestList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = """
+                     SELECT DISTINCT Framework, Request.*  
+                     FROM [dbo].[Request] 
+                     WHERE ([Status] = 'Completed' OR [Status] = 'Paid') 
+                     AND MenteeID = ?
+                     """;
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, menteeId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                requestList.add(curRequest);
+            }
+
+            return requestList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    
     public List<SkillList> getSkillsForCompletedOrPaidRequests(int menteeId) {
         List<SkillList> skillsList = new ArrayList<>();
         String query = """
@@ -1357,6 +1400,8 @@ public class RequestDAO extends DBContext {
         }
         return attendancePercentage;
     }
+    
+    
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();

@@ -22,6 +22,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -68,6 +71,25 @@ public class SignInSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String username = null;
+        String password = null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                } else if ("pass".equals(cookie.getName())) {
+                    password = cookie.getValue();
+                }
+            }
+        }
+
+        // Set username and password as request attributes
+        request.setAttribute("username", username);
+        request.setAttribute("password", password);
+
+        // Forward to the JSP page
         request.getRequestDispatcher("SignIn.jsp").forward(request, response);
     }
 
@@ -98,7 +120,7 @@ public class SignInSV extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     //mentor avatar process
-
+                    System.out.println(a);
                     if (a.getRoleId() == 1) {
                         CVDAO cvd = new CVDAO();
                         WalletDAO wld = new WalletDAO();
@@ -160,16 +182,24 @@ public class SignInSV extends HttpServlet {
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }
+    
 
-    private String encrypt(String password) {
-        StringBuilder encrypted = new StringBuilder();
-
-        for (int i = 0; i < password.length(); i++) {
-            char c = password.charAt(i);
-            encrypted.append((char) (c + 5)); // Shift character by key
+    public static String encrypt(String pass) {
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(pass.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
         }
-
-        return encrypted.toString();
+        return digest;
     }
 
     /**

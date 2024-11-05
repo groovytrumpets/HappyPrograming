@@ -108,7 +108,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //Buoc 6: Update Hold
                         walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
-                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getBalance() - requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),-requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername("manager",walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
                         
                         response.sendRedirect("listrequestofmentor");
@@ -121,7 +121,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "complete":
-                        requestDAO.updateStatusByMentor(requestId, "Completed");
+                        requestDAO.updateStatusByMentor(requestId, "MentorAccept");
                         slotDAO.updateSlotStatusToAvailable(slotId);
                         response.sendRedirect("listrequestofmentor");
                         break;
@@ -133,7 +133,7 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                 response.sendRedirect("home");
                 return;
             }
-            response.sendRedirect("listrequestofmentor");
+
 
         } catch (Exception e) {
             e.printStackTrace();

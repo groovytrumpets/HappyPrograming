@@ -142,7 +142,7 @@ public class RequestDetailMentorMenteeSV extends HttpServlet {
         request.setAttribute("dateOfDay", dateOfDay);//day ngay trong tuan
 
         LocalDate sunday = monday.plusDays(6);
-        List<Attendance> slotInWeek = actAttend.getSchduleByMenteeID(curMentee.getMenteeId(), monday, sunday);
+        List<Attendance> slotInWeek = actAttend.getSchduleByRequestID(requestId, monday, sunday);
         Map<String, List<Attendance>> listSlotInday = getAllSlotIndate(slotInWeek);
         
         //format date sang date month year tu curRequest
