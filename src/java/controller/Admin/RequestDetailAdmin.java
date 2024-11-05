@@ -4,18 +4,19 @@
  */
 package controller.Admin;
 
+import DAO.AttendanceDAO;
 import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RequestDAO;
 import DAO.SkillDAO;
 import DAO.SlotDAO;
+import Model.Attendance;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.Request;
 import Model.Skill;
-import Model.Slot;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,20 +24,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -86,6 +83,7 @@ public class RequestDetailAdmin extends HttpServlet {
         RequestDAO actRequest = new RequestDAO();
         MentorDAO actMentor = new MentorDAO();
         MenteeDAO actMentee = new MenteeDAO();
+        AttendanceDAO actAttend = new AttendanceDAO();
         SkillDAO actSkill = new SkillDAO();
         CVDAO actCV = new CVDAO();
         SlotDAO actSlot = new SlotDAO();
@@ -99,20 +97,16 @@ public class RequestDetailAdmin extends HttpServlet {
             return;
         }
         Request curRequest = actRequest.getRequestByID(requestId);
-        request.setAttribute("request", curRequest);
         Mentor curMentor = actMentor.getMentorById(curRequest.getMentorId());
-        request.setAttribute("mentor", curMentor);
         Mentee curMentee = actMentee.getMenteeByID(curRequest.getMenteeId());
-        request.setAttribute("mentee", curMentee);
         Skill curSkill = actSkill.getSkillByID(curRequest.getSkillId());
-        request.setAttribute("skill", curSkill);
         CV curCV = actCV.getCVbyMentorId(curMentor.getMentorId());
-        request.setAttribute("cv", curCV);
+
+        //Get date mentor want to view schedule
         String date_raw = request.getParameter("start");
-        LocalDate date = curRequest.getStartDate();
+        LocalDate date = LocalDate.now();
         if (date_raw != null && !date_raw.isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
             try {
 
                 date = LocalDate.parse(date_raw, formatter);
@@ -120,55 +114,57 @@ public class RequestDetailAdmin extends HttpServlet {
                 ex.printStackTrace();
             }
         }
-
-        // Add 7 days to the date
-        LocalDate newDate = date.plusDays(7);
-        request.setAttribute("start", date);
-        String dayInWeek = date.getDayOfWeek().toString();
-        List<Slot> listSlot = actSlot.getSlotInDate(newDate, date, requestId);
-        Map<String, List<Slot>> slotsByDay = getSlotInDayOfWeek(listSlot, dayInWeek);
-        request.setAttribute("slotsByDay", slotsByDay);
+        LocalDate monday = getMondayDate(date);
+        request.setAttribute("start", monday);
         List<String> daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-        request.setAttribute("daysOfWeek", daysOfWeek);
-        Map<String, LocalDate> dateOfStartDay = new LinkedHashMap<>();
-        for (int i = 0; i < daysOfWeek.size(); i++) {
-            if (daysOfWeek.get(i).equalsIgnoreCase(dayInWeek)) {
-                dateOfStartDay.put(daysOfWeek.get(i), date);
-            }
+        Map<String, LocalDate> dateOfDay = new LinkedHashMap<>();
+
+        int i = 0;
+        for (String day : daysOfWeek) {
+            dateOfDay.put(day, monday.plusDays(i));
+            i++;
         }
-        request.setAttribute("dateStartDay", dateOfStartDay);
+        request.setAttribute("dateOfDay", dateOfDay);
+
+        LocalDate sunday = monday.plusDays(6);
+        //Get all slot between monday and saturday
+
+        List<Attendance> slotInWeek = actAttend.getSchduleByMentorID(curMentor.getMentorId(), monday, sunday);
+        //Get all slots in date for 7 day in week. 
+        Map<String, List<Attendance>> listSlotInday = getAllSlotIndate(slotInWeek);
+
+        //Set atribute
+        request.setAttribute("request", curRequest);
+        request.setAttribute("mentor", curMentor);
+        request.setAttribute("mentee", curMentee);
+        request.setAttribute("skill", curSkill);
+        request.setAttribute("cv", curCV);
+        request.setAttribute("start", date);
+        request.setAttribute("daysOfWeek", daysOfWeek);
+        request.setAttribute("slotInWeek", listSlotInday);
         
         //Get list of slot by request and and start date
         request.getRequestDispatcher("requestDetailAdmin.jsp").forward(request, response);
     }
 
-    public Map<String, List<Slot>> getSlotInDayOfWeek(List<Slot> slots, String dayInweek) {
-        Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
+    public LocalDate getMondayDate(LocalDate input) {
+        return input.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+
+    public Map<String, List<Attendance>> getAllSlotIndate(List<Attendance> slotInWeek) {
+        Map<String, List<Attendance>> slotsByDay = new LinkedHashMap<>();
         String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-        // Find the index of the specified day
-        int indexDay = -1; // Default to -1 to signify not found
-        for (int i = 0; i < daysOfWeek.length; i++) {
-            if (daysOfWeek[i].equalsIgnoreCase(dayInweek)) {
-                indexDay = i;
-                break;
-            }
+        // Initialize map with day keys
+        for (String day : daysOfWeek) {
+            slotsByDay.put(day, new ArrayList<>());
         }
 
-        // If the day is found, populate the map with days from that index to Sunday
-        if (indexDay != -1) {
-            // Initialize lists for each day of the week
-            for (String day : daysOfWeek) {
-                slotsByDay.put(day, new ArrayList<>());
-            }
-
-            // Populate slots from the specified day to Sunday
-            for (int i = indexDay; i < daysOfWeek.length; i++) {
-                for (Slot slot : slots) {
-                    if (slot.getDayInWeek().equalsIgnoreCase(daysOfWeek[i])) {
-                        slotsByDay.get(daysOfWeek[i]).add(slot);
-                    }
-                }
+        // Populate each day with relevant attendance records
+        for (Attendance attend : slotInWeek) {
+            String day = attend.getDayInWeek();
+            if (day != null && slotsByDay.containsKey(day)) {
+                slotsByDay.get(day).add(attend);
             }
         }
 

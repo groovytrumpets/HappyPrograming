@@ -157,22 +157,34 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                            <tr>
                                                 <c:forEach var="day" items="${daysOfWeek}">
                                                     <td>
-                                                        <c:if test="${not empty dateStartDay[day]}">
-                                                            <div>${dateStartDay[day]}</div>
-                                                        </c:if>
-                                                        <c:if test="${not empty slotsByDay[day]}">
-                                                            <c:forEach var="slot" items="${slotsByDay[day]}">
-                                                                <div>${slot.startTime} - ${slot.endTime}</div>
+                                                        <c:if test="${not empty slotInWeek[day]}">
+                                                            <c:forEach var="slot" items="${slotInWeek[day]}">
+                                                                <form action="mentorSchedule" method="get">
+                                                                    <div>Request ID:${slot.requestID}- Titile: ${slot.title}</div>
+                                                                    <div>MenteeID: ${slot.menteeID}</div>
+                                                                    <c:choose>
+                                                                        <c:when test="${slot.status != null && slot.status eq 'Attended'}">
+                                                                            <div style="display: flex">Status: <p style="color: green">${slot.status}</p></div>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                            <div style="display: flex">Status: <p style="color: red">${slot.status}</p> </div>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                    <div>${slot.startTime} - ${slot.endTime}</div>
+                                                                    <input type="hidden" name="attendID" value="${slot.attendID}">
+                                                                    <input type="hidden" name="start" value="${start}">
+                                                                    
+                                                                </form>
                                                             </c:forEach>
 
                                                         </c:if>
-                                                        <c:if test="${empty slotsByDay[day]}">
-                                                            No slots available
-                                                        </c:if>
+
                                                     </td>
                                                 </c:forEach>
+                                            </tr>
                                             </tr>
                                         </tbody>
                                     </table>
