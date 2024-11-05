@@ -92,7 +92,7 @@ public class RequestListAdmin extends HttpServlet {
         request.setAttribute("listName", listNameMentee);
         String[] listStatus = actRequest.getAllStatusInRequest();
         request.setAttribute("listStatus", listStatus);
-        request.getRequestDispatcher("RequestListAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/RequestListAdmin.jsp").forward(request, response);
     }
 
     public String[] getRequestMenteeName(List<Request> listReq) {
@@ -160,7 +160,7 @@ public class RequestListAdmin extends HttpServlet {
         request.setAttribute("listName", listNameMentee);
         String[] listStatus = actRequest.getAllStatusInRequest();
         request.setAttribute("listStatus", listStatus);
-        request.getRequestDispatcher("RequestListAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/RequestListAdmin.jsp").forward(request, response);
     }
 
     /**

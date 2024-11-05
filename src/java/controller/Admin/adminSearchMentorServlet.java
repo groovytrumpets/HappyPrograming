@@ -112,7 +112,7 @@ public class adminSearchMentorServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("adminSearchMentor.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminSearchMentor.jsp").forward(request, response);
     }
 
     /**
@@ -184,7 +184,7 @@ public class adminSearchMentorServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("adminSearchMentor.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminSearchMentor.jsp").forward(request, response);
     }
 
     /**

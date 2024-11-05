@@ -67,7 +67,7 @@ public class addSkillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/addSkill.jsp").forward(request, response);
     }
 
     /**
@@ -84,18 +84,18 @@ public class addSkillServlet extends HttpServlet {
         String name = request.getParameter("name");
         if (name.trim().isEmpty() || name.isEmpty()) {
             request.setAttribute("error", "You must not leave this field empty!");
-            request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+            request.getRequestDispatcher("/Admin/addSkill.jsp").forward(request, response);
             return;
         } else if (name.length() > 50) {
             request.setAttribute("error", "Please enter name no longger than 50 character!");
-            request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+            request.getRequestDispatcher("/Admin/addSkill.jsp").forward(request, response);
             return;
         }
 
         boolean checkDup = checkDupSkill(name);
         if (checkDup == true) {
             request.setAttribute("error", "Skill name already exist!");
-            request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+            request.getRequestDispatcher("/Admin/addSkill.jsp").forward(request, response);
             return;
         }
         //Skill image doing
@@ -113,7 +113,7 @@ public class addSkillServlet extends HttpServlet {
             return;
         }
         request.setAttribute("successAdd", "Add new skill successfully");
-        request.getRequestDispatcher("addSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/addSkill.jsp").forward(request, response);
     }
 
     public boolean checkDupSkill(String skillName) {

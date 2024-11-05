@@ -106,7 +106,7 @@ public class MentorListAdMinServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/AdminMentorList.jsp").forward(request, response);
     }
 
     /**
@@ -172,7 +172,7 @@ public class MentorListAdMinServlet extends HttpServlet {
         //Handle rate
         List<Rate> listRate = actRate.getAllRate();
         request.setAttribute("listRate", listRate);
-        request.getRequestDispatcher("AdminMentorList.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/AdminMentorList.jsp").forward(request, response);
     }
 
     /**

@@ -199,7 +199,10 @@
                                                                     <input type="hidden" name="start" value="${start}">
                                                                 </form>
                                                             </c:forEach>
-                                                        </c:if>
+                                                        </c:if>  
+                                                        <c:if test="${empty slotInWeek[day]}">
+                                                            <p>No slot available</p>
+                                                        </c:if> 
                                                     </td>
                                                 </c:forEach>
                                             </tr>

@@ -1,11 +1,13 @@
 <%-- 
-    Document   : viewSkill
-    Created on : Sep 17, 2024, 4:47:52 PM
+    Document   : viewMenteeListAdmin
+    Created on : Oct 11, 2024, 4:32:13 PM
     Author     : tuong
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,17 +22,17 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="Happy Programing" />
+        <meta name="description" content="EduChamp : Education HTML Template" />
 
         <!-- OG -->
-        <meta property="og:title" content="Happy Programing" />
-        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:title" content="EduChamp : Education HTML Template" />
+        <meta property="og:description" content="EduChamp : Education HTML Template" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+        <link rel="icon" href="../error-404.html" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>EduChamp : Education HTML Template </title>
@@ -61,16 +63,21 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
+        <!-- header start -->
         <jsp:include page="headerAdmin.jsp" />
+
+        <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Skill</h4>
+                    <h4 class="breadcrumb-title">User</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Skill</li>
+                        <li>User</li>
+                        <li>Mentee</li>
+
                     </ul>
                 </div>	
                 <div class="row">
@@ -79,78 +86,59 @@
                         <div class="widget-box" >
                             <div class="wc-title" style="display: flex">
                                 <div class="col-md-4">
-                                    <h4>View Skill</h4>
+                                    <h4>Mentee List</h4>
                                 </div>
                                 <div class="mail-search-bar col-md-4">
-                                    <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
+
+                                    <form method="post" action="menteeListAdmin" style="display: flex; align-items: center;">
+                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
+                                        <input type="text" name="search"value="${search}" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
-                                </div>
-                                <div class="col-md-4" style="text-align: right">
-                                    <div class="btn-secondry add-item m-r5">
-                                        <a href="addSkill" style="text-decoration: none; color: inherit;"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</a>
-                                    </div>
-                                </div>
 
+                                </div>
                             </div>
 
                             <div class="widget-inner">
-                                <table class="table-bordered">
+                                <table class="table-hover table-bordered">
 
                                     <tr>
                                         <th>STT</th>
-                                        <th>Skill ID</th>
-                                        <th>Skill Image</th>
-                                        <th>Skill Name</th>
-                                        <th>Create date</th>
-                                        <th>Status</th>
-                                        <th style="text-align: center">Edit</th>
+                                        <th>Full Name</th>
+                                        <th>Account name</th>
+                                        <th>Number of mentor</th>
+                                        <th>Total hour</th>
+                                        <th>Total Skill</th>
+
                                     </tr>
-                                    <c:set value="${requestScope.stt}" var="stt"></c:set>
-                                    <c:forEach items="${requestScope.list}" var="c">
-                                        <form action="SkillList" method="post">
+                                    <c:set var="stt" value="${requestScope.stt}"/>
+                                    <c:forEach items="${requestScope.listMent}" var="c">
+                                        <form action="menteeListAdmin" method="post">
                                             <input type="hidden" name="page" value="${requestScope.indexPage}">
                                             <input type="hidden" name="numDis" value="${requestScope.numDis}">
-
+                                            <input type="hidden" name="mentorId" value="${c.menteeId}">
+                                            <input type="hidden" name="status" value="${c.status}">
+                                            <c:set value="${stt +1}" var="stt"/>
                                             <tr>
-                                                <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
-                                                <td>${c.skillId}</td>
-                                            <input type="hidden" name="id" value="${c.skillId}">
-                                            <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
-                                            <td>${c.skillName}</td>
-                                            <td>${c.createDate}</td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${c.status eq 'Active'}">
-                                                        <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
-                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise >
-                                                        <div class="btn-secondry add-item m-r5">
-                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;">${c.status}</button>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <a href="updateSkill?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
-                                                <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
+                                                <td>${c.fullName}</td>
+                                                <td>${c.username}</td>
+                                                <td>${numMentor[stt-((indexPage-1)*numDis)-1]}</td>
+                                                <td>${numHour[stt-((indexPage-1)*numDis)-1]}</td>
+                                                <td>${numSkill[stt-((indexPage-1)*numDis)-1]}</td>
+
                                             </tr>
                                         </form>
-
                                     </c:forEach>
                                 </table>
                                 <c:set var="page" value="${requestScope.indexPage}"/>
                                 <div class="pagination" style="display: flex">
                                     <div class="col-md-6" >
                                         <div class="col-md-4">
-                                            <form action="SkillList" method="get">
+                                            <form action="menteeListAdmin" method="get">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
-                                                    <option value="5" ${numDis == 5 ? 'selected' : ''}>5</option>
                                                     <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
+                                                    <option value="15" ${numDis == 15 ? 'selected' : ''}>15</option>
                                                     <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
                                                 </select>
                                                 <noscript><input type="submit" value="Submit"></noscript>
@@ -159,7 +147,7 @@
                                     </div>
                                     <div class="col-md-6" style="text-align: right">
                                         <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                            <a href="SkillList?page=${i}&numDis=${numDis}">${i}</a>
+                                            <a href="menteeListAdmin?page=${i}&numDis=${numDis}">${i}</a>
                                         </c:forEach>
                                     </div>
                                 </div>
@@ -189,6 +177,7 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
                                                     // Pricing add
                                                     function newMenuItem() {
@@ -208,14 +197,9 @@
                                                     }
 
         </script>
-        <script type="text/javascript">
-            function doDelete(id) {
-                if (confirm("Are you sure want to delete skill with ID = " + id)) {
-                    window.location = "deleteSkill?id=" + id;
-                }
-            }
-        </script>
+
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>
+

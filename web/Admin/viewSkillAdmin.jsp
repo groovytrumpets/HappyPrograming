@@ -1,13 +1,11 @@
 <%-- 
-    Document   : RequestListAdmin
-    Created on : Oct 15, 2024, 12:24:23 PM
+    Document   : viewSkill
+    Created on : Sep 17, 2024, 4:47:52 PM
     Author     : tuong
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,8 +29,8 @@
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>EduChamp : Education HTML Template </title>
@@ -63,20 +61,16 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <!-- header start -->
         <jsp:include page="headerAdmin.jsp" />
-        <!-- Left sidebar menu end -->
 
         <!--Main container start -->
         <main class="ttr-wrapper">
             <div class="container-fluid">
                 <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">User</h4>
+                    <h4 class="breadcrumb-title">Skill</h4>
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>User</li>
-                        <li>Mentor</li>
-
+                        <li>Skill</li>
                     </ul>
                 </div>	
                 <div class="row">
@@ -85,74 +79,78 @@
                         <div class="widget-box" >
                             <div class="wc-title" style="display: flex">
                                 <div class="col-md-4">
-                                    <h4>Request List</h4>
+                                    <h4>View Skill</h4>
                                 </div>
                                 <div class="mail-search-bar col-md-4">
-
-                                    <form method="get" action="searchRequestListAdmin" style="display: flex; align-items: center;">
-                                        <input type="hidden" value="${status}"  name="status">
+                                    <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
                                         <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;"/>
+                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
-                                <div class="col-md-2 " >
-                                    <form method="post" action="requestListAdmin">
-                                        <input type="hidden" name="page" value="${requestScope.indexPage}">
-                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <select class="dropdown-item" name="status" onchange="this.form.submit();">
-                                            <option value="all">Select all</option>
-                                            <c:forEach items="${requestScope.listStatus}" var="s">
-                                                <option value="${s}" ${requestScope.status eq s ? 'selected' : ''}>${s}</option>
-                                            </c:forEach>
-                                        </select>
+                                <div class="col-md-4" style="text-align: right">
+                                    <div class="btn-secondry add-item m-r5">
+                                        <a href="addSkillAdmin" style="text-decoration: none; color: inherit;"><i class="fa fa-fw fa-plus-circle"></i>Add Skill</a>
+                                    </div>
+                                </div>
 
-                                    </form>
-                                </div>
-                            </div>
-                            <div>
-                                <form method="get" action="searchRequestListAdmin"  align-items: center;">
-                                    <label> Start time:</label><input type="date" name="start" value="${start}" required></br>
-                                    <label> End time:</label><input type="date" name="end" value="${end}" required>
-                                    <button type="submit" class="fa fa-search" style="padding: 10px;"/>
-                                </form> 
                             </div>
 
                             <div class="widget-inner">
-                                <table class="table-bordered">
+                                <table class="table-bordered table-hover">
+
                                     <tr>
                                         <th>STT</th>
-                                        <th>ID</th>
-                                        <th>Account name</th>
-                                        <th>Title</th>
+                                        <th>Skill ID</th>
+                                        <th>Skill Image</th>
+                                        <th>Skill Name</th>
+                                        <th>Create date</th>
                                         <th>Status</th>
-
-
+                                        <th style="text-align: center">Edit</th>
                                     </tr>
-                                    <c:set var="stt" value="${requestScope.stt}"/>
-                                    <c:forEach items="${requestScope.listReq}" var="c">
-                                        <form action="requestListAdmin" method="post">
+                                    <c:set value="${requestScope.stt}" var="stt"></c:set>
+                                    <c:forEach items="${requestScope.list}" var="c">
+                                        <form action="SkillListAdmin" method="post">
                                             <input type="hidden" name="page" value="${requestScope.indexPage}">
                                             <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                            <input type="hidden" name="status" value="${c.status}">
-                                            <c:set value="${stt +1}" var="stt"/>
+
                                             <tr>
+                                                <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
-                                                <td><a href="requestDetailAdmin?requestID=${c.requestId}">${c.requestId}</a></td>
-                                                <td>${listName[stt-((indexPage-1)*numDis)-1]}</td>
-                                                <td>${c.title}</td>
-                                                <td>${c.status}</td>
+                                                <td>${c.skillId}</td>
+                                            <input type="hidden" name="id" value="${c.skillId}">
+                                            <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
+                                            <td>${c.skillName}</td>
+                                            <td>${c.createDate}</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${c.status eq 'Active'}">
+                                                        <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
+                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise >
+                                                        <div class="btn-secondry add-item m-r5">
+                                                            <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;">${c.status}</button>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td style="text-align: center">
+                                                <a href="updateSkillAdmin?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
+                                                <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
                                             </tr>
                                         </form>
+
                                     </c:forEach>
                                 </table>
                                 <c:set var="page" value="${requestScope.indexPage}"/>
                                 <div class="pagination" style="display: flex">
                                     <div class="col-md-6" >
                                         <div class="col-md-4">
-                                            <form action="requestListAdmin" method="get">
+                                            <form action="SkillListAdmin" method="get">
                                                 <select name="numDis" id="numDis" onchange="this.form.submit()">
+                                                    <option value="5" ${numDis == 5 ? 'selected' : ''}>5</option>
                                                     <option value="10" ${numDis == 10 ? 'selected' : ''}>10</option>
-                                                    <option value="15" ${numDis == 15 ? 'selected' : ''}>15</option>
                                                     <option value="20" ${numDis == 20 ? 'selected' : ''}>20</option>
                                                 </select>
                                                 <noscript><input type="submit" value="Submit"></noscript>
@@ -160,22 +158,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6" style="text-align: right">
-                                        <c:choose>
-                                            <c:when test="${requestScope.status != null}">
-                                                <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <form action="requestListAdmin" method="post" style="display: inline;">
-                                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                                        <input type="hidden" name="status" value="${requestScope.status}">
-                                                        <button type="submit" name="page" value="${i}">${i}</button>
-                                                    </form>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
-                                                    <a href="requestListAdmin?page=${i}&numDis=${requestScope.numDis}">${i}</a>
-                                                </c:forEach>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <c:forEach begin="${1}" end="${requestScope.numOfPage}" var="i">
+                                            <a href="SkillListAdmin?page=${i}&numDis=${numDis}">${i}</a>
+                                        </c:forEach>
                                     </div>
                                 </div>
                             </div>
@@ -204,7 +189,6 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
                                                     // Pricing add
                                                     function newMenuItem() {
@@ -224,7 +208,13 @@
                                                     }
 
         </script>
-
+        <script type="text/javascript">
+            function doDelete(id) {
+                if (confirm("Are you sure want to delete skill with ID = " + id)) {
+                    window.location = "deleteSkillAdmin?id=" + id;
+                }
+            }
+        </script>
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

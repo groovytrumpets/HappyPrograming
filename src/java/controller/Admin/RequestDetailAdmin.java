@@ -144,7 +144,7 @@ public class RequestDetailAdmin extends HttpServlet {
         request.setAttribute("slotInWeek", listSlotInday);
         
         //Get list of slot by request and and start date
-        request.getRequestDispatcher("requestDetailAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/requestDetailAdmin.jsp").forward(request, response);
     }
 
     public LocalDate getMondayDate(LocalDate input) {
