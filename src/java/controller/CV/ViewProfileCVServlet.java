@@ -78,6 +78,7 @@ public class ViewProfileCVServlet extends HttpServlet {
         SlotDAO sld = new SlotDAO();
         try {
             id = Integer.parseInt(id_raw);
+            System.out.println(id);
             Mentor mentor = cvd.getMentorByID(id);
             CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             //String email = cvd.getUserEmail(id);

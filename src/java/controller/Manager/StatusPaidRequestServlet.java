@@ -6,6 +6,7 @@
 package controller.Manager;
 
 import DAO.CVDAO;
+import DAO.RequestDAO;
 import Model.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -66,6 +67,8 @@ public class StatusPaidRequestServlet extends HttpServlet {
             if (rq.getStatus().equalsIgnoreCase("Completed")) {
                // System.out.println("Complete");
                 cvd.setStatusPaidRequestId(requestId);
+                RequestDAO rqd = new RequestDAO();
+                rqd.setSlotStatusbyRequestSlotItemAvailable(requestId);
                 response.sendRedirect("paymentmanagercate?id="+requestId);
             }else if (rq.getStatus().equalsIgnoreCase("Paid")) {
                 System.out.println("Paid");
