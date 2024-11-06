@@ -70,9 +70,14 @@ public class StatusSlotServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             id = Integer.parseInt(id_raw);
             if (action.equalsIgnoreCase("active")) {
-
+                System.out.println("alo"+sld.getListofActiveSlotsJoinRequestSlotByMentorId(id));
+                if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()){
                 sld.deleteAllActiveSlot(id);
                 sld.setSlotInactiveToActivebyMentorId(id);
+                    
+                }else{
+                   response.sendRedirect("slotmanagercate?id=" + id +"&error=Mentor already have actived Request, cannot active new Slot"); 
+                }
                 //check slot of mentor aviable or not to set mentor status to active or inactive
                 if (cvd.getCVbyMentorId(id)!=null) {
                     //System.out.println("active ne");
@@ -85,8 +90,15 @@ public class StatusSlotServlet extends HttpServlet {
             }
             if (action.equalsIgnoreCase("deactive")) {
                 cvd.setStatusInactiveMentor(id);
+                
+                //check if any request that used that slot
+                if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()) {
                 sld.deleteAllInactiveSlot(id);
                 sld.setSlotActiveToInctivebyMentorId(id);
+                }else{
+                response.sendRedirect("slotmanagercate?id=" + id +"&error=Mentor already have actived Request, cannot deactive Slot");
+                    
+                }
             }
 
             response.sendRedirect("slotmanagercate?id=" + id);
