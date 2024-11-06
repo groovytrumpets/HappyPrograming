@@ -89,6 +89,9 @@
                 <div class="card p-4 shadow-sm border-light">
                     <h4 class="text-primary text-center mb-4">Create Request to Mentor</h4>
                     <div class="list-group">
+                        <div class=" text-center">
+                            <img id="userAvatar" src="getCVimage?id=${requestScope.cv.cvId}" class="rounded-circle" alt="" style=" margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                        </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 rounded-top">
                             <span class="font-weight-bold">Mentor:</span>
                             <span class="font-weight-bold text-info">${mentor.fullName}</span>
@@ -113,7 +116,9 @@
                     <div class="widget-box">
                         <div class="wc-title">
                             <p style="color: red"> ${error}</p>
-                            <p style="color: red"> ${pay}</p>
+                            <c:if test="${pay != null}">
+                                <p style="color: red">Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
+                            </c:if>
                             <p style="color: blue"> ${notify}</p>
                         </div>
                         <div class="widget-inner">
@@ -219,7 +224,7 @@
                                                             <c:forEach items="${selectedSlot}" var="sl">
                                                                 <c:if test="${s.slotID == sl.slotId}">
                                                                     <c:set var="isDisabled" value="true" />
-                                                                    <c:set var="isSelected" value="Selected" />
+                                                                    <c:set var="isSelected" value="selected" />
                                                                 </c:if>
                                                             </c:forEach>
 
