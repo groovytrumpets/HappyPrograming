@@ -19,20 +19,21 @@
 	<meta name="robots" content="" />
 	
 	<!-- DESCRIPTION -->
-	<meta name="description" content="EduChamp : Education HTML Template" />
-	
-	<!-- OG -->
-	<meta property="og:title" content="EduChamp : Education HTML Template" />
-	<meta property="og:description" content="EduChamp : Education HTML Template" />
-	<meta property="og:image" content="" />
-	<meta name="format-detection" content="telephone=no">
-	
-	<!-- FAVICONS ICON ============================================= -->
-	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-	
-	<!-- PAGE TITLE HERE ============================================= -->
-	<title>EduChamp : Education HTML Template </title>
+        <meta name="description" content="Happy Programing" />
+
+        <!-- OG -->
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:image" content="" />
+        <meta name="format-detection" content="telephone=no">
+
+        <!-- FAVICONS ICON ============================================= -->
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+
+        <!-- PAGE TITLE HERE ============================================= -->
+        <title>Happy Programing </title>
+
 	
 	<!-- MOBILE SPECIFIC ============================================= -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,7 +66,7 @@
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
-        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
+        <div class="page-banner ovbl-dark" style="background-image:url(https://i0.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2023/08/bg-why.jpg?fit=1920&ssl=1);">
             <div class="container">
                 <div class="page-banner-entry">
                     <h1 class="text-white">Contact Us</h1>
@@ -93,20 +94,20 @@
 					<div class="col-lg-6 col-md-6 section-sp2 p-lr30">
 						<div class="bg-primary text-white contact-info-bx">
 							<h2 class="m-b10 title-head">Contact <span>Information</span></h2>
-							<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+							<p>The Happy Programming System is envisioned to evolve over several releases, eventually integrating with online learning platforms, programming resources, and potentially third-party educational tools.</p>
 							<div class="widget widget_getintuch">	
 								<ul>
 									<li><i class="ti-location-pin"></i>Km29 Đại lộ Thăng Long, H. Thạch Thất, TP. Hà Nội.</li>
-									<li><i class="ti-mobile"></i>+84 999999999 (24/7 Support Line)</li>
-									<li><i class="ti-email"></i>info@example.com</li>
+									<li><i class="ti-mobile"></i>+84 961316508(24/7 Support Line)</li>
+									<li><i class="ti-email"></i>anhnhhhe187162@fpt.edu.vn</li>
 								</ul>
 							</div>
 							<h5 class="m-t0 m-b20">Follow Us</h5>
 							<ul class="list-inline contact-social-bx">
-								<li><a href="#" class="btn outline radius-xl"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="btn outline radius-xl"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="btn outline radius-xl"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#" class="btn outline radius-xl"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="https://www.facebook.com/GroovyTrumpet/" class="btn outline radius-xl"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="https://www.facebook.com/nhha204" class="btn outline radius-xl"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="https://www.facebook.com/profile.php?id=100047221694707" class="btn outline radius-xl"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="https://www.facebook.com/odd.thien" class="btn outline radius-xl"><i class="fa fa-google-plus"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -137,7 +138,6 @@
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
-<script src='assets/vendors/switcher/switcher.js'></script>
 <script src='../../www.google.com/recaptcha/api.js'></script>
 </body>
 
