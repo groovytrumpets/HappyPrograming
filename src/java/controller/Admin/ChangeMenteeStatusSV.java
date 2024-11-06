@@ -5,11 +5,6 @@
 package controller.Admin;
 
 import DAO.MenteeDAO;
-import DAO.MentorDAO;
-import DAO.UserDAO;
-import Model.Mentee;
-import Model.Mentor;
-import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,15 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import com.google.gson.Gson;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "AdminDashboardSV", urlPatterns = {"/admindashboard"})
-public class AdminDashboardSV extends HttpServlet {
+@WebServlet(name = "ChangeMenteeStatusSV", urlPatterns = {"/changementeestatus"})
+public class ChangeMenteeStatusSV extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +37,10 @@ public class AdminDashboardSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminDashboardSV</title>");
+            out.println("<title>Servlet ChangeMenteeStatusSV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminDashboardSV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ChangeMenteeStatusSV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,54 +56,23 @@ public class AdminDashboardSV extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        MenteeDAO menteeDAO = new MenteeDAO();
-        MentorDAO mentorDAO = new MentorDAO();
-        UserDAO userDAO = new UserDAO();
-
-        List<User> listUsers = userDAO.gettAllUsers();
-        List<Mentor> listMentors = mentorDAO.getAllMentor();
-        List<Mentee> listMentees = menteeDAO.getAllMentee();
-        List<Object[]> userCreationStats = userDAO.getUserCreationStats();
-        int totalMentees = menteeDAO.getTotalMentees();
-        int totalMentors = mentorDAO.getTotalMentors();
-
-        // Check if 'mentorid' and 'mentorstatus' parameters are provided
-        String mentorIdParam = request.getParameter("mentorid");
-        String newMentorStatus = request.getParameter("mentorstatus");
-        if (mentorIdParam != null && newMentorStatus != null) {
-            try {
-                int mentorId = Integer.parseInt(mentorIdParam);
-                mentorDAO.updateStatus(mentorId, newMentorStatus);
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid mentor ID: " + mentorIdParam);
-            }
-        }
-
-        // Check if 'menteeid' and 'menteestatus' parameters are provided
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String menteeIdParam = request.getParameter("menteeid");
-        String newMenteeStatus = request.getParameter("menteestatus");
-        if (menteeIdParam != null && newMenteeStatus != null) {
+        String newStatus = request.getParameter("menteestatus");
+
+        if (menteeIdParam != null && newStatus != null) {
             try {
                 int menteeId = Integer.parseInt(menteeIdParam);
-                menteeDAO.updateStatus(menteeId, newMenteeStatus);
+
+                MenteeDAO menteeDAO = new MenteeDAO();
+                menteeDAO.updateStatus(menteeId, newStatus);
+
+                // Optionally, add a message to show success
             } catch (NumberFormatException e) {
                 System.err.println("Invalid mentee ID: " + menteeIdParam);
             }
         }
-        
-        Gson gson = new Gson();
-        String json = gson.toJson(userCreationStats);
-
-        request.setAttribute("userCreationStatsJson", json);
-        request.setAttribute("totalMentors", totalMentors);
-        request.setAttribute("totalMentees", totalMentees);
-        request.setAttribute("mentorlist", listMentors);
-        request.setAttribute("menteelist", listMentees);
-        request.setAttribute("listuser", listUsers);
-
-        request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+        response.sendRedirect("admindashboard");
     }
 
     /**

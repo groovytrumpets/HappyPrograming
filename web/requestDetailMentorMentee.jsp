@@ -63,7 +63,20 @@
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
-        <jsp:include page="headerMentee.jsp" />
+        <c:choose>
+            <c:when test="${sessionScope.acc.roleId == 1}">
+                <jsp:include page="headerMentor.jsp" />
+            </c:when>
+            <c:when test="${sessionScope.acc.roleId == 2}">
+                <jsp:include page="headerMentee.jsp" />
+            </c:when>
+            <c:when test="${sessionScope.acc.roleId == 3}">
+                <jsp:include page="headerAdmin.jsp" />
+            </c:when>
+            <c:when test="${sessionScope.acc.roleId == 4}">
+                <jsp:include page="headerManager.jsp" />
+            </c:when>
+        </c:choose>
 
         <!--Main container start -->
         <main class="ttr-wrapper">
@@ -158,63 +171,20 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="ml-auto">
-                                            <form action="requestdetailmentormentee" method="get">
-                                                <input type="hidden" name="requestID" value="${request.requestId}">
-                                                <label>Start date:</label>
-                                                <input type="date" name="start" value="${requestScope.start}" onchange="this.form.submit()">
-                                            </form>
-                                            <div class="text-center">
-                                                <h3>${formattedDateRange}</h3>
+                                <div class="row">                                    
+                                <!-- Your Profile Views Chart END-->
+                                <div class="col-lg-12 col-md-12 m-b30">
+                                    <div class="widget-box">
+                                        <div class="widget-box">
+                                            <div class="wc-title">
+                                                <h4>Basic Calendar</h4>
                                             </div>
-                                            <div style="border: 1px solid #eaeaea; padding: 1px; background-color: #f9f9f9;">
-                                                <table border="1" class="table table-hover text-center" style="border-collapse: separate; width: 100%; table-layout: fixed; border: #ddd">
-                                                    <thead style="background-color: #f0f0f0;">
-                                                        <tr>
-                                                            <th style="border: none; padding: 10px; width: 10%;"></th>
-                                                                <c:forEach var="day" items="${daysOfWeek}" varStatus="status">
-                                                                <th style="padding: 10px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
-                                                                    ${fn:substring(day, 0, 3)}
-                                                                    ${dateOfDay[day].monthValue}/${dateOfDay[day].dayOfMonth}
-                                                                </th>
-                                                            </c:forEach>
-                                                        </tr>
-                                                    </thead>
-
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="border: 1px solid #ddd;">
-                                                                <label>Slot</label>
-                                                            </td>
-                                                            <c:forEach var="day" items="${daysOfWeek}">
-                                                                <td class="text-left" style="padding-bottom: 50px;
-                                                                    <c:if test='${not empty slotInWeek[day]}'>background-color: #62d262;</c:if>
-                                                                        border: 1px solid #ddd; border-radius: 3px;">
-
-                                                                    <c:if test="${not empty slotInWeek[day]}">
-                                                                        <c:forEach var="slotStatus" items="${slotInWeek[day]}">
-                                                                            <div>${slotStatus.startTime} - ${slotStatus.endTime}</div>
-                                                                            <c:choose>
-                                                                                <c:when test="${slotStatus.status != null && slotStatus.status eq 'Attended'}">
-                                                                                    <div style="display: flex"><p style="color: green">${slotStatus.status}</p></div>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <div style="display: flex"><p style="color: red">${slotStatus.status}</p> </div>
-                                                                                </c:otherwise>
-                                                                            </c:choose>
-                                                                        </c:forEach>
-
-                                                                    </c:if>
-                                                                </td>
-                                                            </c:forEach>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="widget-inner">
+                                                <div id="calendar"></div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -242,8 +212,55 @@
         <script src="assets/js/functions.js"></script>
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
+        <script src='assets/vendors/calendar/moment.min.js'></script>
+        <script src='assets/vendors/calendar/fullcalendar.js'></script>
     </body>
+    <script>
+            $(document).ready(function () {
+                var status = JSON.parse('${requestScope.status}');
+                var start = JSON.parse('${requestScope.values}');
+                var end = JSON.parse('${requestScope.endValues}');
+                var eventsArray = [];
+                for (var i = 0; i < start.length; i++) {
+                    var eventColor = '';
+                    if (status[i].toLowerCase() === 'inactive') {
+                        eventColor = '#c22d2d';
+                    } else {
+                        eventColor = '#2dc22d';
+                    }
+                    console.log('debug:');
+                    console.log(status[i]);
+                    console.log(status[i].toLowerCase() === 'inactive');
+                    eventsArray.push({
+                        title: status[i],
+                        start: start[i],
+                        end: end[i],
+                        color: eventColor
+                    });
+                }
+                $('#calendar').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'agendaWeek,listWeek,agendaDay'
+                    },
+
+                    defaultView: 'agendaWeek',
+                    navLinks: true, // can click day/week names to navigate views
+
+                    weekNumbers: true,
+                    weekNumbersWithinDays: true,
+                    weekNumberCalculation: 'ISO',
+
+                    editable: true,
+                    eventLimit: true, // allow "more" link when too many events
+                    events: eventsArray,
+                    height: 500
+                });
+
+            });
+
+        </script>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

@@ -212,7 +212,7 @@ public class UserDAO extends DBContext {
                      ORDER BY CreateDate DESC;
                      """;
         try (
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
@@ -232,6 +232,30 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public List<Object[]> getUserCreationStats() {
+        List<Object[]> stats = new ArrayList<>();
+        String sql = """
+                     SELECT MONTH(CreateDate) AS month, YEAR(CreateDate) AS year, COUNT(*) AS user_count
+                                 FROM [User]
+                                 GROUP BY YEAR(CreateDate), MONTH(CreateDate)
+                                 ORDER BY YEAR(CreateDate), MONTH(CreateDate);
+                     """;
+
+        try (
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int month = rs.getInt("month");
+                int year = rs.getInt("year");
+                int userCount = rs.getInt("user_count");
+                stats.add(new Object[]{month, year, userCount}); // Adding an array to the list
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stats;
     }
 
     public static void main(String[] args) {

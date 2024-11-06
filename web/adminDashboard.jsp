@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +63,7 @@
 
         <style>
             .new-user-list {
-                max-height: 250px;
+                max-height: 200px;
                 overflow-y: auto;
             }
         </style>
@@ -126,7 +127,8 @@
                                 <h4>User</h4>
                             </div>
                             <div class="widget-inner">
-                                <canvas id="chart" width="100" height="45"></canvas>
+                                <canvas id="PieChart"></canvas>
+                                <canvas id="userCreationChart" width="400" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -142,11 +144,9 @@
                                         <c:forEach var="u" items="${listuser}">
                                             <li>
                                                 <span class="new-users-text">
-                                                    <a href="#" class="new-users-name">${u.username}</a>
-                                                    <span class="new-users-info">${u.email}</span>
+                                                    <a href="#" class="new-users-name">${u.username} | ${u.email}</a>
                                                     <span class="new-users-date">
-                                                        <fmt:parseDate value="${u.createDate}" pattern="yyyy-MM-dd" var="parsedDate" />
-                                                        <fmt:formatDate value="${parsedDate}" pattern="dd MMM yyyy" />
+                                                        <fmt:formatDate value="${u.createDate}" pattern="dd MMM yyyy" />
                                                     </span>
                                                 </span>
                                             </li>
@@ -156,23 +156,67 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 m-b30">
+                    <div class="col-lg-6 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
-                                <h4>Users</h4>
+                                <h4>Mentor Accounts</h4>
                             </div>
                             <div class="widget-inner">
                                 <div class="orders-list">
                                     <ul>
-                                        <li>
-                                            <span class="orders-title">
-                                                <a href="#" class="orders-title-name">Anna Strong </a>
-                                                <span class="orders-info">Order #02357 | Date 12/08/2019</span>
-                                            </span>
-                                            <span class="orders-btn">
-                                                <a href="#" class="btn button-sm red">Inactive</a>
-                                            </span>
-                                        </li>
+                                        <c:forEach var="mentor" items="${mentorlist}">
+                                            <li>
+                                                <span class="orders-title">
+                                                    <a href="#" class="orders-title-name">${mentor.fullName}</a>
+                                                    <span class="orders-info">
+                                                        Username: ${mentor.username} | Date: <fmt:formatDate value="${mentor.createDate}" pattern="dd/MM/yyyy" />
+                                                    </span>
+                                                </span>
+                                                <span class="orders-btn">
+                                                    <c:choose>
+                                                        <c:when test="${fn:toLowerCase(mentor.status) == 'active' || fn:toLowerCase(mentor.status) == 'acitve'}">
+                                                            <a href="changementorstatus?mentorid=${mentor.mentorId}&mentorstatus=Inactive" class="btn button-sm green">Active</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="changementorstatus?mentorid=${mentor.mentorId}&mentorstatus=Active" class="btn button-sm red">Inactive</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 m-b30">
+                        <div class="widget-box">
+                            <div class="wc-title">
+                                <h4>Mentee Accounts</h4>
+                            </div>
+                            <div class="widget-inner">
+                                <div class="orders-list">
+                                    <ul>
+                                        <c:forEach var="mentee" items="${menteelist}">
+                                            <li>
+                                                <span class="orders-title">
+                                                    <a href="#" class="orders-title-name">${mentee.fullName}</a>
+                                                    <span class="orders-info">
+                                                        Username: ${mentee.username} | Date: <fmt:formatDate value="${mentee.createDate}" pattern="dd/MM/yyyy" />
+                                                    </span>
+                                                </span>
+                                                <span class="orders-btn">
+                                                    <c:choose>
+                                                        <c:when test="${mentee.status == 'Active'}">
+                                                            <a href="changementeestatus?menteeid=${mentee.menteeId}&menteestatus=Inactive" class="btn button-sm green">Active</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="changementeestatus?menteeid=${mentee.menteeId}&menteestatus=Active" class="btn button-sm red">Inactive</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </span>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>
@@ -203,84 +247,68 @@
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            $(document).ready(function () {
-
-                $('#calendar').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
-                    },
-                    defaultDate: '2019-03-12',
-                    navLinks: true, // can click day/week names to navigate views
-
-                    weekNumbers: true,
-                    weekNumbersWithinDays: true,
-                    weekNumberCalculation: 'ISO',
-
-                    editable: true,
-                    eventLimit: true, // allow "more" link when too many events
-                    events: [
-                        {
-                            title: 'All Day Event',
-                            start: '2019-03-01'
-                        },
-                        {
-                            title: 'Long Event',
-                            start: '2019-03-07',
-                            end: '2019-03-10'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-09T16:00:00'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-16T16:00:00'
-                        },
-                        {
-                            title: 'Conference',
-                            start: '2019-03-11',
-                            end: '2019-03-13'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T10:30:00',
-                            end: '2019-03-12T12:30:00'
-                        },
-                        {
-                            title: 'Lunch',
-                            start: '2019-03-12T12:00:00'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T14:30:00'
-                        },
-                        {
-                            title: 'Happy Hour',
-                            start: '2019-03-12T17:30:00'
-                        },
-                        {
-                            title: 'Dinner',
-                            start: '2019-03-12T20:00:00'
-                        },
-                        {
-                            title: 'Birthday Party',
-                            start: '2019-03-13T07:00:00'
-                        },
-                        {
-                            title: 'Click for Google',
-                            url: 'http://google.com/',
-                            start: '2019-03-28'
+            const ctx = document.getElementById('PieChart');
+            const accept = '${(requestScope.acceptedRequest)}';
+            const invited = '${(requestScope.invitedRequest)}';
+            const canceled = '${(requestScope.canceledRequest)}';
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+                    datasets: [{
+                            label: ' %',
+                            data: [1, 2, 3, 4, 5, 6],
+                            borderWidth: 1
+                        }], hoverOffset: 4
+                }, options: {
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
                         }
-                    ]
-                });
+                    }
+                }
+
 
             });
+        </script>
 
+        <script>
+            // Parse the JSON data passed from the servlet
+            const userCreationStats = JSON.parse('${userCreationStatsJson}');
+            const labels = [];
+            const dataCounts = [];
+
+            // Prepare data for the chart
+            userCreationStats.forEach(stat => {
+                labels.push(stat[0] + '/' + stat[1]); // Month / Year
+                dataCounts.push(stat[2]); // User Count
+            });
+
+            // Create the chart
+            const ctx = document.getElementById('userCreationChart').getContext('2d');
+            const userCreationChart = new Chart(ctx, {
+                type: 'line', // Change to 'bar', 'pie', etc. if needed
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Number of Created Users',
+                            data: dataCounts,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         </script>
     </body>
 

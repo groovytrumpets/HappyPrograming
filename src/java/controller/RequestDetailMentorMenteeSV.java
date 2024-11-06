@@ -18,6 +18,10 @@ import Model.Mentor;
 import Model.Request;
 import Model.Skill;
 import Model.Slot;
+import Model.SlotRequest;
+import com.google.gson.Gson;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToCurrentDate;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToDatesBetweenRange;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -113,108 +117,29 @@ public class RequestDetailMentorMenteeSV extends HttpServlet {
         request.setAttribute("skill", curSkill);
         CV curCV = actCV.getCVbyMentorId(curMentor.getMentorId());
         request.setAttribute("cv", curCV);
-        String date_raw = request.getParameter("start");
-        LocalDate date = LocalDate.now();
-        if (date_raw != null && !date_raw.isEmpty()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            try {
-                date = LocalDate.parse(date_raw, formatter);
-            } catch (DateTimeParseException ex) {
-                ex.printStackTrace();
+
+        List<SlotRequest> menteeSRList = actCV.getSlotRequestbyRequestId(requestId);
+        List<String> startDateconverted = new ArrayList<>();
+        List<String> endDateconverted = new ArrayList<>();
+        List<String> classTitle = new ArrayList<>();
+        LocalDate startDate = menteeSRList.get(0).getStartDate();
+        LocalDate endDate = menteeSRList.get(0).getEndDate();
+
+        for (int k = 0; k < menteeSRList.size(); k++) {
+            List<String> dateList = convertDayInWeekToDatesBetweenRange(menteeSRList.get(k).getDayInWeek(), startDate, endDate);
+            for (int m = 0; m < dateList.size(); m++) {
+                String startDateAdd = dateList.get(m) + "T" + menteeSRList.get(k).getStartTime();
+                String endDateAdd = dateList.get(m) + "T" + menteeSRList.get(k).getEndTime();
+                classTitle.add(menteeSRList.get(k).getFramework());
+                startDateconverted.add(startDateAdd);
+                endDateconverted.add(endDateAdd);
             }
+            request.setAttribute("status", new Gson().toJson(startDateconverted));
+            request.setAttribute("values", new Gson().toJson(endDateconverted));
+            request.setAttribute("endValues", new Gson().toJson(classTitle));
         }
 
-        // Add 7 days to the date
-        LocalDate monday = getMondayDate(date);
-        request.setAttribute("start", monday);//
-
-        String dayInWeek = date.getDayOfWeek().toString();
-        List<Slot> listSlot = actSlot.getSlotInDate(monday, date, requestId);
-        List<String> daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-        Map<String, LocalDate> dateOfDay = new LinkedHashMap<>();
-        Map<String, List<Slot>> slotsByDay = getSlotInDayOfWeek(listSlot, dayInWeek);
-
-        int i = 0;
-        for (String day : daysOfWeek) {
-            dateOfDay.put(day, monday.plusDays(i));
-            i++;
-        }
-        request.setAttribute("dateOfDay", dateOfDay);//day ngay trong tuan
-
-        LocalDate sunday = monday.plusDays(6);
-        List<Attendance> slotInWeek = actAttend.getSchduleByRequestID(requestId, monday, sunday);
-        Map<String, List<Attendance>> listSlotInday = getAllSlotIndate(slotInWeek);
-        
-        //format date sang date month year tu curRequest
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
-        DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yyyy");
-        String formattedStartDate = curRequest.getStartDate().format(formatter);
-        String formattedEndDate = curRequest.getEndDate().format(formatter) + ", " + curRequest.getEndDate().format(yearFormatter);
-
-        request.setAttribute("formattedDateRange", formattedStartDate + " – " + formattedEndDate);
-
-        //request.setAttribute("dateStartDay", dateOfStartDay);
-        request.setAttribute("slotsByDay", slotsByDay);//
-        request.setAttribute("slotInWeek", listSlotInday);  //Them attendance sau
-        request.setAttribute("daysOfWeek", daysOfWeek);//
         request.getRequestDispatcher("requestDetailMentorMentee.jsp").forward(request, response);
-    }
-
-    public LocalDate getMondayDate(LocalDate input) {
-        return input.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-    }
-
-    public Map<String, List<Attendance>> getAllSlotIndate(List<Attendance> slotInWeek) {
-        Map<String, List<Attendance>> slotsByDay = new LinkedHashMap<>();
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-
-        // Initialize map with day keys
-        for (String day : daysOfWeek) {
-            slotsByDay.put(day, new ArrayList<>());
-        }
-
-        // Populate each day with relevant attendance records
-        for (Attendance attend : slotInWeek) {
-            String day = attend.getDayInWeek();
-            if (day != null && slotsByDay.containsKey(day)) {
-                slotsByDay.get(day).add(attend);
-            }
-        }
-
-        return slotsByDay;
-    }
-
-    public Map<String, List<Slot>> getSlotInDayOfWeek(List<Slot> slots, String dayInweek) {
-        Map<String, List<Slot>> slotsByDay = new LinkedHashMap<>();
-        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-
-        // Find the index of the specified day
-        int indexDay = -1; // Default to -1 to signify not found
-        for (int i = 0; i < daysOfWeek.length; i++) {
-            if (daysOfWeek[i].equalsIgnoreCase(dayInweek)) {
-                indexDay = i;
-                break;
-            }
-        }
-
-        // If the day is found, populate the map with days from that index to Sunday
-        if (indexDay != -1) {
-            // Initialize lists for each day of the week
-            for (String day : daysOfWeek) {
-                slotsByDay.put(day, new ArrayList<>());
-            }
-
-            // Populate slots from the specified day to Sunday
-            for (int i = indexDay; i < daysOfWeek.length; i++) {
-                for (Slot slot : slots) {
-                    if (slot.getDayInWeek().equalsIgnoreCase(daysOfWeek[i])) {
-                        slotsByDay.get(daysOfWeek[i]).add(slot);
-                    }
-                }
-            }
-        }
-
-        return slotsByDay;
     }
 
     /**
