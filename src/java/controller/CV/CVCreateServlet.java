@@ -158,9 +158,6 @@ public class CVCreateServlet extends HttpServlet {
             }
             SlotDAO sld = new SlotDAO();
             System.out.println(sld.getListofSlotsByMentorId(newCv.getMentorId()));
-            if (sld.getListofSlotsByMentorId(newCv.getMentorId()).isEmpty()) {
-                response.sendRedirect("createslot?id=" + userid + "&mess=Your CV has been created successfully, please create weekly slot!");
-            }
             response.sendRedirect("cvlist?id=" + userid + "&mess=Your CV has been created successfully!");
         } catch (NullPointerException e) {
             response.sendRedirect("cvcreate?id=" + userId_raw + "&error=File size exceeds the 5 MB limit. Please upload a smaller file.");
