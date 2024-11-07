@@ -340,7 +340,7 @@
                                 <h4>Add Skill</h4>
                             </div>
                             <div class="widget-inner">
-                                <form class="edit-profile m-b30" method="post" action="addSkill" enctype="multipart/form-data">
+                                <form class="edit-profile m-b30" method="post" action="addSkillAdmin" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="ml-auto">
@@ -364,7 +364,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Status</label>
                                             <div>
-                                                <input type="radio"name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
+                                                <input type="radio" name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
                                             </div>
                                         </div>
                                         <div class="seperator"></div>
