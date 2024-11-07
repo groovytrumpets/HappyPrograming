@@ -36,7 +36,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Admin Dashboard</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,7 +72,7 @@
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
         <!-- header start -->
-        <jsp:include page="headerManager.jsp" />
+        <jsp:include page="headerAdmin.jsp" />
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
@@ -127,7 +127,6 @@
                                 <h4>User</h4>
                             </div>
                             <div class="widget-inner">
-                                <canvas id="PieChart"></canvas>
                                 <canvas id="userCreationChart" width="400" height="200"></canvas>
                             </div>
                         </div>
@@ -148,72 +147,6 @@
                                                     <span class="new-users-date">
                                                         <fmt:formatDate value="${u.createDate}" pattern="dd MMM yyyy" />
                                                     </span>
-                                                </span>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 m-b30">
-                        <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Mentor Accounts</h4>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="orders-list">
-                                    <ul>
-                                        <c:forEach var="mentor" items="${mentorlist}">
-                                            <li>
-                                                <span class="orders-title">
-                                                    <a href="#" class="orders-title-name">${mentor.fullName}</a>
-                                                    <span class="orders-info">
-                                                        Username: ${mentor.username} | Date: <fmt:formatDate value="${mentor.createDate}" pattern="dd/MM/yyyy" />
-                                                    </span>
-                                                </span>
-                                                <span class="orders-btn">
-                                                    <c:choose>
-                                                        <c:when test="${fn:toLowerCase(mentor.status) == 'active' || fn:toLowerCase(mentor.status) == 'acitve'}">
-                                                            <a href="changementorstatus?mentorid=${mentor.mentorId}&mentorstatus=Inactive" class="btn button-sm green">Active</a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <a href="changementorstatus?mentorid=${mentor.mentorId}&mentorstatus=Active" class="btn button-sm red">Inactive</a>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </span>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 m-b30">
-                        <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Mentee Accounts</h4>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="orders-list">
-                                    <ul>
-                                        <c:forEach var="mentee" items="${menteelist}">
-                                            <li>
-                                                <span class="orders-title">
-                                                    <a href="#" class="orders-title-name">${mentee.fullName}</a>
-                                                    <span class="orders-info">
-                                                        Username: ${mentee.username} | Date: <fmt:formatDate value="${mentee.createDate}" pattern="dd/MM/yyyy" />
-                                                    </span>
-                                                </span>
-                                                <span class="orders-btn">
-                                                    <c:choose>
-                                                        <c:when test="${mentee.status == 'Active'}">
-                                                            <a href="changementeestatus?menteeid=${mentee.menteeId}&menteestatus=Inactive" class="btn button-sm green">Active</a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <a href="changementeestatus?menteeid=${mentee.menteeId}&menteestatus=Active" class="btn button-sm red">Inactive</a>
-                                                        </c:otherwise>
-                                                    </c:choose>
                                                 </span>
                                             </li>
                                         </c:forEach>
@@ -249,33 +182,6 @@
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            const ctx = document.getElementById('PieChart');
-            const accept = '${(requestScope.acceptedRequest)}';
-            const invited = '${(requestScope.invitedRequest)}';
-            const canceled = '${(requestScope.canceledRequest)}';
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
-                    datasets: [{
-                            label: ' %',
-                            data: [1, 2, 3, 4, 5, 6],
-                            borderWidth: 1
-                        }], hoverOffset: 4
-                }, options: {
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom'
-                        }
-                    }
-                }
-
-
-            });
-        </script>
-
-        <script>
             // Parse the JSON data passed from the servlet
             const userCreationStats = JSON.parse('${userCreationStatsJson}');
             const labels = [];
@@ -283,7 +189,7 @@
 
             // Prepare data for the chart
             userCreationStats.forEach(stat => {
-                labels.push(stat[0] + '/' + stat[1]); // Month / Year
+                labels.push(stat[0] + '/' + stat[1]); // Month/Year
                 dataCounts.push(stat[2]); // User Count
             });
 
@@ -294,7 +200,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                            label: 'Number of Created Users',
+                            label: 'Number of Registered Users',
                             data: dataCounts,
                             borderColor: 'rgba(75, 192, 192, 1)',
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -310,6 +216,7 @@
                 }
             });
         </script>
+
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

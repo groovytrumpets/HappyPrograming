@@ -108,7 +108,7 @@
                                                         <c:if test="${not empty slotInWeek[day]}">
                                                             <c:forEach var="slot" items="${slotInWeek[day]}">
                                                                 <form action="mentorSchedule" method="get">
-                                                                    <div>Request ID:${slot.requestID}- Titile: ${slot.title}</div>
+                                                                    <div>Request ID:${slot.requestID}- Title: ${slot.title}</div>
                                                                     <div>MenteeID: ${slot.menteeID}</div>
                                                                     <c:choose>
                                                                         <c:when test="${slot.status != null && slot.status eq 'Attended'}">

@@ -99,18 +99,18 @@ public class AdminDashboardSV extends HttpServlet {
                 System.err.println("Invalid mentee ID: " + menteeIdParam);
             }
         }
-        
-        Gson gson = new Gson();
-        String json = gson.toJson(userCreationStats);
 
-        request.setAttribute("userCreationStatsJson", json);
+        Gson gson = new Gson();
+        String userCreationStatsJson = gson.toJson(userCreationStats);
+        request.setAttribute("userCreationStatsJson", userCreationStatsJson);
+
         request.setAttribute("totalMentors", totalMentors);
         request.setAttribute("totalMentees", totalMentees);
         request.setAttribute("mentorlist", listMentors);
         request.setAttribute("menteelist", listMentees);
         request.setAttribute("listuser", listUsers);
 
-        request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminDashboard.jsp").forward(request, response);
     }
 
     /**

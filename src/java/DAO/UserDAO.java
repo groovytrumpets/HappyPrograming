@@ -237,10 +237,15 @@ public class UserDAO extends DBContext {
     public List<Object[]> getUserCreationStats() {
         List<Object[]> stats = new ArrayList<>();
         String sql = """
-                     SELECT MONTH(CreateDate) AS month, YEAR(CreateDate) AS year, COUNT(*) AS user_count
-                                 FROM [User]
-                                 GROUP BY YEAR(CreateDate), MONTH(CreateDate)
-                                 ORDER BY YEAR(CreateDate), MONTH(CreateDate);
+                     SELECT MONTH(CreateDate) AS month, 
+                            YEAR(CreateDate) AS year, 
+                            COUNT(*) AS user_count
+                     FROM [User]
+                     WHERE RoleID NOT IN (3, 4)
+                     GROUP BY YEAR(CreateDate), 
+                              MONTH(CreateDate)
+                     ORDER BY YEAR(CreateDate), 
+                              MONTH(CreateDate);
                      """;
 
         try (
