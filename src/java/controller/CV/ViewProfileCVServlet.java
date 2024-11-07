@@ -83,7 +83,7 @@ public class ViewProfileCVServlet extends HttpServlet {
             CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             //String email = cvd.getUserEmail(id);
             List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(id);
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillListByMentor(id);
             int rateAve = cvd.getAveRatebyId(id);
             HomeDAO hdao = new HomeDAO();
             List<Mentee> menteeList = hdao.getListofMentee();

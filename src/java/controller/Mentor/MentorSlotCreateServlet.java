@@ -77,9 +77,10 @@ public class MentorSlotCreateServlet extends HttpServlet {
         int mentorId;
         CVDAO cvd = new CVDAO();
         SlotDAO sld = new SlotDAO();
+        
         try {
-            
             mentorId = Integer.parseInt(mentorId_raw);
+            
             Mentor mentor = cvd.getMentorByID(mentorId);
             List<Slot> activeSlotList = sld.getListofActiveSlotsByMentorId(mentorId);
 
@@ -128,7 +129,8 @@ public class MentorSlotCreateServlet extends HttpServlet {
         String dayinweek = request.getParameter("dayinweek");
         String slottime = request.getParameter("slotTime");
         String mentorId_raw = request.getParameter("mentorId");
-
+        
+        
         System.out.println(slottime);
         System.out.println(dayinweek);
 
@@ -171,6 +173,11 @@ public class MentorSlotCreateServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             SlotDAO sld = new SlotDAO();
             CV cv = cvd.getNewestCVbyMentorId(mentorId);
+            //check if mentor have no actived cv
+            CV activeCv = cvd.getCVActivebyMentorId(mentorId);
+            if (activeCv==null) {
+                response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create the slot because your CV has not been activated. Please wait for the manager to approve your CV!");
+            }
             List<Slot> listDraftSlot = sld.getListofInactiveSlotsByMentorId(mentorId);
             Slot slot = new Slot();
             slot.setMentorID(mentorId);

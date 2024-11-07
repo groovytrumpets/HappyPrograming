@@ -117,7 +117,6 @@
                                                 <th scope="col">End Time</th>
                                                 <th scope="col">Day In Week</th>
                                                 <th scope="col">Status</th>
-
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
