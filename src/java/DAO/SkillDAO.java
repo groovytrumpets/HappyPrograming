@@ -118,6 +118,51 @@ public class SkillDAO extends DBContext {
         return listSkill;
     }
 
+    public List<Skill> getListOfSkillPagings(int page, int numShow) {
+        List<Skill> listSkill = new ArrayList<>();
+        String sql = "SELECT [SkillID]\n"
+                + "             ,[SkillName]\n"
+                + "             ,[CreateDate]\n"
+                + "             ,[Description]\n"
+                + "             ,[Status]\n"
+                + "             ,[Img]\n"
+                + "             FROM [dbo].[Skill]\n"
+                + "		where Status like 'active'\n"
+                + "             order by Skill.SkillName asc\n"
+                + "             offset ? rows\n"
+                + "             fetch next ? row only";
+        int start = (page - 1) * numShow;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, start);
+            st.setInt(2, numShow);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill();
+                curSkill.setSkillId(id);
+                curSkill.setSkillName(name);
+                curSkill.setCreateDate(date);
+                curSkill.setDescription(description);
+                curSkill.setStatus(status);
+                if (img != null) {
+                    curSkill.setImg(img);
+                }
+                listSkill.add(curSkill);
+            }
+        } catch (Exception e) {
+        }
+        return listSkill;
+    }
+    
     public List<Skill> getListOfSkillPaging(int page, int numShow) {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"
@@ -127,8 +172,7 @@ public class SkillDAO extends DBContext {
                 + "             ,[Status]\n"
                 + "             ,[Img]\n"
                 + "             FROM [dbo].[Skill]\n"
-                + "		where Status = 'active'\n"
-                + "             order by Skill.SkillName asc\n"
+                + "             order by Skill.SkillID asc\n"
                 + "             offset ? rows\n"
                 + "             fetch next ? row only";
         int start = (page - 1) * numShow;

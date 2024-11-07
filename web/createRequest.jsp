@@ -103,7 +103,7 @@
 
                     </div>
                     <div class="text-muted mt-3 text-center">
-                        <c:if test="${wallet.balance < cv.price || pay != null}">
+                        <c:if test="${wallet.balance < cv.price}">
                             <p style="color: red">Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
                                         </c:if>
                     </div>

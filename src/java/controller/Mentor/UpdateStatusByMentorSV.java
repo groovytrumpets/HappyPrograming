@@ -107,10 +107,9 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 5: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //Buoc 6: Update Hold
-                        walletDAO.updateHoldByUsername(menteeName.getUsername(), - requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),-requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername("manager",walletDAO.getWalletByUsername("manager").getBalance() + requests.getPrice());
-                        
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "reject":
