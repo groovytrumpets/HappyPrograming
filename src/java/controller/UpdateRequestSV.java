@@ -112,6 +112,7 @@ public class UpdateRequestSV extends HttpServlet {
             request.setAttribute("request", requests);
             request.setAttribute("skillList", list1);
             request.setAttribute("error", error);
+            request.setAttribute("pay", pay);
             request.setAttribute("notify", notify);
             request.setAttribute("wallet", walletDAO.getWalletByUsername(a.getUsername()));
             request.setAttribute("slotList", slotList);
@@ -157,7 +158,7 @@ public class UpdateRequestSV extends HttpServlet {
         String selectedSkills = request.getParameter("addSkills");
         String[] selectedSlot;
         if (request.getParameterValues("addSlot") == null || request.getParameterValues("addSlot").length == 0) {
-            response.sendRedirect("upadateRequest?id=" + id_raw + "&error=You can't creqte request without slot");
+            response.sendRedirect("updateRequest?id=" + id_raw + "&error=You can't upadate request without slot");
             return;
         }
         selectedSlot = request.getParameterValues("addSlot");
@@ -188,13 +189,17 @@ public class UpdateRequestSV extends HttpServlet {
             }
 
             Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+             if (totalP == 0) {
+                response.sendRedirect("updateRequest?id=" + id + "&error=You request must have at least 1 slot");
+                return;
+            }
             if (wallet == null || wallet.getBalance() < totalP) {
-                response.sendRedirect("updateRequest?id=" + id + "&error=Your account doesn't have enough money");
+                response.sendRedirect("updateRequest?id=" + id + "&error=Your account doesn't have enough money&pay=oke");
                 return;
             }
 
             if (wallet.getBalance() < (totalP + wallet.getHold())) {
-                response.sendRedirect("updateRequest?id=" + id + "&pay=Your account doesn't have enough money to created more request");
+                response.sendRedirect("updateRequest?id=" + id + "&pay=Your account doesn't have enough money to created more request&pay=oke");
                 return;
             }
             

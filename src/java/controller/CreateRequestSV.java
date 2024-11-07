@@ -159,7 +159,7 @@ public class CreateRequestSV extends HttpServlet {
         String selectedSkills = request.getParameter("addSkills");
         String[] selectedSlot;
         if (request.getParameterValues("addSlot") == null || request.getParameterValues("addSlot").length == 0) {
-            response.sendRedirect("createrequest?id=" + id_raw + "&error=You can't creqte request without slot");
+            response.sendRedirect("createrequest?id=" + id_raw + "&error=You can't create request without slot");
             return;
         } 
         selectedSlot = request.getParameterValues("addSlot");
@@ -191,13 +191,18 @@ public class CreateRequestSV extends HttpServlet {
             }
 
             Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+            if (totalP == 0) {
+                response.sendRedirect("createrequest?id=" + id + "&error=You request must at least 1 slot");
+                return;
+            }
+            
             if (wallet == null || wallet.getBalance() < totalP) {
-                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money");
+                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money&pay=oke");
                 return;
             }
             
             if (wallet.getBalance() < (totalP + wallet.getHold())) {
-                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money to created more request");
+                response.sendRedirect("createrequest?id=" + id + "&pay=Your account doesn't have enough money to created more request&pay=oke");
                 return;
             }
 
