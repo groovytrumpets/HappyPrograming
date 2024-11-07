@@ -6,6 +6,10 @@ package controller.Admin;
 
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.UserDAO;
+import Model.Mentee;
+import Model.Mentor;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +17,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import com.google.gson.Gson;
 
 /**
  *
@@ -61,13 +67,50 @@ public class AdminDashboardSV extends HttpServlet {
             throws ServletException, IOException {
         MenteeDAO menteeDAO = new MenteeDAO();
         MentorDAO mentorDAO = new MentorDAO();
+        UserDAO userDAO = new UserDAO();
+
+        List<User> listUsers = userDAO.gettAllUsers();
+        List<Mentor> listMentors = mentorDAO.getAllMentor();
+        List<Mentee> listMentees = menteeDAO.getAllMentee();
+        List<Object[]> userCreationStats = userDAO.getUserCreationStats();
         int totalMentees = menteeDAO.getTotalMentees();
         int totalMentors = mentorDAO.getTotalMentors();
 
+        // Check if 'mentorid' and 'mentorstatus' parameters are provided
+        String mentorIdParam = request.getParameter("mentorid");
+        String newMentorStatus = request.getParameter("mentorstatus");
+        if (mentorIdParam != null && newMentorStatus != null) {
+            try {
+                int mentorId = Integer.parseInt(mentorIdParam);
+                mentorDAO.updateStatus(mentorId, newMentorStatus);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid mentor ID: " + mentorIdParam);
+            }
+        }
+
+        // Check if 'menteeid' and 'menteestatus' parameters are provided
+        String menteeIdParam = request.getParameter("menteeid");
+        String newMenteeStatus = request.getParameter("menteestatus");
+        if (menteeIdParam != null && newMenteeStatus != null) {
+            try {
+                int menteeId = Integer.parseInt(menteeIdParam);
+                menteeDAO.updateStatus(menteeId, newMenteeStatus);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid mentee ID: " + menteeIdParam);
+            }
+        }
+
+        Gson gson = new Gson();
+        String userCreationStatsJson = gson.toJson(userCreationStats);
+        request.setAttribute("userCreationStatsJson", userCreationStatsJson);
+
         request.setAttribute("totalMentors", totalMentors);
         request.setAttribute("totalMentees", totalMentees);
+        request.setAttribute("mentorlist", listMentors);
+        request.setAttribute("menteelist", listMentees);
+        request.setAttribute("listuser", listUsers);
 
-        request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/adminDashboard.jsp").forward(request, response);
     }
 
     /**

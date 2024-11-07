@@ -333,7 +333,7 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestsByMenteeUsername(String username) {
         List<Request> requests = new ArrayList<>();
-        String query = "SELECT * FROM [Request] WHERE MenteeID = (SELECT MenteeID FROM Mentee WHERE Username = ?)";
+        String query = "SELECT * FROM [Request] WHERE MenteeID = (SELECT MenteeID FROM Mentee WHERE Username = ?) Order by RequestID DESC";
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -1023,13 +1023,9 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestOfMentor(String mentorName) {
         List<Request> requestlist = new ArrayList<>();
-        String sql = "SELECT r.*\n"
-                + "FROM Request r\n"
-                + "WHERE r.MentorID = (\n"
-                + "    SELECT MentorID\n"
-                + "    FROM Mentor\n"
-                + "    WHERE Username = ?\n"
-                + ");";
+        String sql = """
+                     SELECT * FROM [Request] WHERE MentorID = (SELECT MentorID FROM Mentor WHERE Username = ?) Order by RequestID DESC
+                     """;
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, mentorName);

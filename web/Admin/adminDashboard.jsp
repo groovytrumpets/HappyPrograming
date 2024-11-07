@@ -4,6 +4,10 @@
     Author     : asus
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +36,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Admin Dashboard</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,11 +61,18 @@
         <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+        <style>
+            .new-user-list {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+        </style>
+
     </head>
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
         <!-- header start -->
-        <jsp:include page="headerManager.jsp" />
+        <jsp:include page="headerAdmin.jsp" />
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
@@ -76,7 +87,7 @@
                 </div>	
                 <!-- Card -->
                 <div class="row">
-                    <div class="col-md-2 m-b30">
+                    <div class="col-md-3 m-b30">
                         <div class="widget-card widget-bg1">					 
                             <div class="wc-item">
                                 <h4 class="wc-title">
@@ -91,7 +102,7 @@
                             </div>				      
                         </div>
                     </div>
-                    <div class="col-md-2 m-b30">
+                    <div class="col-md-3 m-b30">
                         <div class="widget-card widget-bg2">					 
                             <div class="wc-item">
                                 <h4 class="wc-title">
@@ -116,11 +127,11 @@
                                 <h4>User</h4>
                             </div>
                             <div class="widget-inner">
-                                <canvas id="chart" width="100" height="45"></canvas>
+                                <canvas id="userCreationChart" width="400" height="200"></canvas>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-6 m-b30">
                         <div class="widget-box">
                             <div class="wc-title">
@@ -129,37 +140,16 @@
                             <div class="widget-inner">
                                 <div class="new-user-list">
                                     <ul>
-                                        <li>
-                                            <span class="new-users-pic">
-                                                <img src="assets/images/testimonials/pic1.jpg" alt=""/>
-                                            </span>
-                                            <span class="new-users-text">
-                                                <a href="#" class="new-users-name">Anna Strong </a>
-                                                <span class="new-users-info">Visual Designer,Google Inc </span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 m-b30">
-                        <div class="widget-box">
-                            <div class="wc-title">
-                                <h4>Users</h4>
-                            </div>
-                            <div class="widget-inner">
-                                <div class="orders-list">
-                                    <ul>
-                                        <li>
-                                            <span class="orders-title">
-                                                <a href="#" class="orders-title-name">Anna Strong </a>
-                                                <span class="orders-info">Order #02357 | Date 12/08/2019</span>
-                                            </span>
-                                            <span class="orders-btn">
-                                                <a href="#" class="btn button-sm red">Inactive</a>
-                                            </span>
-                                        </li>
+                                        <c:forEach var="u" items="${listuser}">
+                                            <li>
+                                                <span class="new-users-text">
+                                                    <a href="#" class="new-users-name">${u.username} | ${u.email}</a>
+                                                    <span class="new-users-date">
+                                                        <fmt:formatDate value="${u.createDate}" pattern="dd MMM yyyy" />
+                                                    </span>
+                                                </span>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>
@@ -190,85 +180,43 @@
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            $(document).ready(function () {
+            // Parse the JSON data passed from the servlet
+            const userCreationStats = JSON.parse('${userCreationStatsJson}');
+            const labels = [];
+            const dataCounts = [];
 
-                $('#calendar').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
-                    },
-                    defaultDate: '2019-03-12',
-                    navLinks: true, // can click day/week names to navigate views
-
-                    weekNumbers: true,
-                    weekNumbersWithinDays: true,
-                    weekNumberCalculation: 'ISO',
-
-                    editable: true,
-                    eventLimit: true, // allow "more" link when too many events
-                    events: [
-                        {
-                            title: 'All Day Event',
-                            start: '2019-03-01'
-                        },
-                        {
-                            title: 'Long Event',
-                            start: '2019-03-07',
-                            end: '2019-03-10'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-09T16:00:00'
-                        },
-                        {
-                            id: 999,
-                            title: 'Repeating Event',
-                            start: '2019-03-16T16:00:00'
-                        },
-                        {
-                            title: 'Conference',
-                            start: '2019-03-11',
-                            end: '2019-03-13'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T10:30:00',
-                            end: '2019-03-12T12:30:00'
-                        },
-                        {
-                            title: 'Lunch',
-                            start: '2019-03-12T12:00:00'
-                        },
-                        {
-                            title: 'Meeting',
-                            start: '2019-03-12T14:30:00'
-                        },
-                        {
-                            title: 'Happy Hour',
-                            start: '2019-03-12T17:30:00'
-                        },
-                        {
-                            title: 'Dinner',
-                            start: '2019-03-12T20:00:00'
-                        },
-                        {
-                            title: 'Birthday Party',
-                            start: '2019-03-13T07:00:00'
-                        },
-                        {
-                            title: 'Click for Google',
-                            url: 'http://google.com/',
-                            start: '2019-03-28'
-                        }
-                    ]
-                });
-
+            // Prepare data for the chart
+            userCreationStats.forEach(stat => {
+                labels.push(stat[0] + '/' + stat[1]); // Month/Year
+                dataCounts.push(stat[2]); // User Count
             });
 
+            // Create the chart
+            const ctx = document.getElementById('userCreationChart').getContext('2d');
+            const userCreationChart = new Chart(ctx, {
+                type: 'line', // Change to 'bar', 'pie', etc. if needed
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Number of Registered Users',
+                            data: dataCounts,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         </script>
+
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

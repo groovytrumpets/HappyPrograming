@@ -344,9 +344,21 @@ public class MenteeDAO extends DBContext {
         return count;
     }
 
+    public void updateStatus(int menteeId, String status) {
+        String sql = "UPDATE Mentee SET Status = ? WHERE MenteeID = ?";
+        try (
+            PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setInt(2, menteeId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         MenteeDAO actMentee = new MenteeDAO();
-        List<Mentee> list1 = actMentee.getListMenteeSearchPagination("boni",1, 10);
+        List<Mentee> list1 = actMentee.getListMenteeSearchPagination("boni", 1, 10);
         System.out.println(list1.get(4).getFullName());
     }
 

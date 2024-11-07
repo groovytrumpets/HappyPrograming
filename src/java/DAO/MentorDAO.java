@@ -375,8 +375,7 @@ public class MentorDAO extends DBContext {
                        """;
 
         try (
-            PreparedStatement ps = connection.prepareStatement(query); 
-            ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 count = rs.getInt("TotalMentors");
             }
@@ -384,6 +383,18 @@ public class MentorDAO extends DBContext {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public void updateStatus(int mentorId, String status) {
+        String sql = "UPDATE Mentor SET Status = ? WHERE MentorID = ?";
+        try (
+            PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setInt(2, mentorId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

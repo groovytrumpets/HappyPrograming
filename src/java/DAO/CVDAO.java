@@ -1519,6 +1519,50 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    
+    public List<SlotRequest> getSlotRequestbyRequestId(int requestId) {
+        List<SlotRequest> srList = new ArrayList<>();
+        String sql = """
+                     select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,
+                     r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate
+                     from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID
+                     where r.RequestID=? 
+                     """;
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                SlotRequest sr = new SlotRequest();
+                sr.setSlotID(rs.getInt("slotID"));
+                sr.setStartTime(rs.getTime("startTime").toLocalTime());
+                sr.setEndTime(rs.getTime("endTime").toLocalTime());
+                sr.setDayInWeek(rs.getString("dayInWeek"));
+                sr.setRequestId(rs.getInt("RequestID"));
+                sr.setMentorId(rs.getInt("MentorID"));
+                sr.setMenteeId(rs.getInt("MenteeID"));
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setStatus(rs.getString("Status"));
+                sr.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                sr.setStartDate(start);
+                sr.setEndDate(end);
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setFramework(rs.getString("Framework"));
+
+                //System.out.println(sr.getMenteeId());
+                srList.add(sr);
+            }
+            return srList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public List<Mentor> getListofMentorWithStatus() {
         List<Mentor> mentorList = new ArrayList<>();
