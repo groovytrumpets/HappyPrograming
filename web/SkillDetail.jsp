@@ -134,8 +134,13 @@
                                 </div>
 
 
+
                                 <div class="" id="instructor">
                                     <h4>Mentor</h4>
+                                    <c:if test="${empty mentor}">
+                                        <p style="color : red">There are no mentors available with this skill</p>
+                                    </c:if>
+
                                     <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
 
