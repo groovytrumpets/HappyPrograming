@@ -74,7 +74,7 @@
                             <div class="topbar-left">
                                 <ul>
                                     <li><a href="faq.jsp"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
+                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>anhnhhhe187162@fpt.edu.vn</a></li>
                                 </ul>
                             </div>
                             <div class="topbar-right">
@@ -116,9 +116,9 @@
                                 <div class="secondary-inner">
                                     <ul>
                                         <c:if test="${sessionScope.acc == null}">
-                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
+<!--                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
                                             <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>-->
                                             <!-- Search Button ==== -->
                                             <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
                                                 </c:if>
