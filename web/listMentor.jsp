@@ -113,7 +113,7 @@
                                                                     <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
                                                                 </div>
                                                                 <div style="margin: 15px 0px">
-                                                                    <h5><a href="ratementor?mentorId=${c.mentorId}">${m.fullName}</a></h5>
+                                                                    <h5>${m.fullName}</h5>
                                                                         <c:forEach items="${requestScope.requestlist}" var="r">
                                                                             <c:if test="${r.requestId==m.requestId}">
                                                                             <span>Title: ${r.title}</span>
@@ -122,21 +122,15 @@
                                                                         </c:if>
                                                                     </c:forEach>
                                                                 </div>
-                                                            </div>
-                                                            <div class="cours-more-info" style="height: 58px">
-                                                                <div style="display: flex; align-items: center; padding-left: 10px">
-                                                                    
+                                                                <div>                                                                  
                                                                     <c:choose>
                                                                         <c:when test="${ratedMap[m.requestId]}">
-                                                                            <a href="viewprofilecv?id=${c.mentorId}" class="btn"z>View Review</a>
+                                                                            <div><a href="viewprofilecv?id=${c.mentorId}" class="btn" style="display: flex; align-items: center; justify-content: center;">View Review</a></div>
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="btn">Review Mentor</a>
+                                                                            <div><a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="btn" style="display: flex; align-items: center; justify-content: center;">Review Mentor</a></div>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                </div>
-                                                                <div style="display: flex; align-items: center; padding-left: 10px">
-                                                                    <a href="rateskill?requestId=${m.requestId}" class="btn">Rate Skill</a>
                                                                 </div>
                                                             </div>
                                                         </c:if>
@@ -145,7 +139,7 @@
                                             </div>
                                         </c:forEach>                                      
                                     </ul>
-                                  
+
                                 </div>
                             </div>
                         </div>

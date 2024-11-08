@@ -103,10 +103,9 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         requestDAO.rejectOtherMenteesForSameSlots(requestId);
                         //Buoc 3: Cap nhat trang thai co lien quan toi request sang Unavailable
                         requestDAO.setSlotStatusbyRequestSlotItemUnavailable(requestId);
-                        //Buoc 4: update balance                      
-                        //Buoc 5: update payment
+                        //Buoc 4: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
-                        //Buoc 6: Update Hold
+                        //Buoc 5: Update Hold
                         walletDAO.updateHoldByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),-requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername("manager", requests.getPrice());
