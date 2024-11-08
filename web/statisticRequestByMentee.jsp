@@ -81,7 +81,7 @@
                                 <h4>Statistic</h4><br>
                                 <div style="display: flex; gap: 2rem;">
                                     <span>Total Requests: ${totalRequests}</span>
-                                    <span>Total Hours: ${totalHours}</span>
+                                    <span>Total Hours: ${formattedTotalHours}</span>
                                     <span>Total Mentors: ${totalMentors}</span>
                                 </div>
                             </div>
@@ -98,8 +98,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="request" items="${listRequests}" varStatus="status">
-                                            <c:forEach var="m" items="${mentorlist}" varStatus="status">
+                                        <c:forEach var="m" items="${mentorlist}" varStatus="status">
+                                            <c:forEach var="request" items="${listRequests}" varStatus="status">                                           
                                                 <c:if test="${request.mentorId==m.mentorId}">
                                                     <tr>
                                                         <td>${request.title}</td>
@@ -141,32 +141,6 @@
         <script src="assets/vendors/chart/chart.min.js"></script>
         <script src="assets/js/admin.js"></script>
         <!-- comment<script src='assets/vendors/switcher/switcher.js'></script> -->
-        <script>
-            // Pricing add
-            function newMenuItem() {
-                var newElem = $('tr.list-item').first().clone();
-                newElem.find('input').val('');
-                newElem.appendTo('table#item-add');
-            }
-            if ($("table#item-add").is('*')) {
-                $('.add-item').on('click', function (e) {
-                    e.preventDefault();
-                    newMenuItem();
-                });
-                $(document).on("click", "#item-add .delete", function (e) {
-                    e.preventDefault();
-                    $(this).parent().parent().parent().parent().remove();
-                });
-            }
-            //file path
-            const input = document.getElementById('avatar');
-            const filePathDisplay = document.getElementById('file-path');
-
-            input.addEventListener('change', function () {
-                const fileName = input.files[0].name; // Lấy tên file được chọn
-                filePathDisplay.textContent = "File selected: " + fileName; // Hiển thị tên file
-            });
-        </script>
     </body>
 
     <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->

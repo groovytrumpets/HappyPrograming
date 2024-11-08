@@ -128,7 +128,7 @@
                                                                     
                                                                     <c:choose>
                                                                         <c:when test="${ratedMap[m.requestId]}">
-                                                                            <a href="viewprofilecv?id=${c.mentorId}" class="btn">View Review</a>
+                                                                            <a href="viewprofilecv?id=${c.mentorId}" class="btn"z>View Review</a>
                                                                         </c:when>
                                                                         <c:otherwise>
                                                                             <a href="ratementor?mentorId=${c.mentorId}&requestId=${m.requestId}" class="btn">Review Mentor</a>
