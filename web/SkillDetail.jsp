@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Happy Programing : Course Detail </title>
+        <title>Skill Detail </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -88,7 +89,9 @@
 
             .btn {
                 margin-right: 5px; /* Space between buttons */
+
             }
+
         </style>
     </head>
     <body id="bg">
@@ -114,11 +117,9 @@
                 <div class="section-area section-sp1">
                     <div class="container">
                         <div class="row d-flex flex-row-reverse">
-                            <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
+                            
 
-                            </div>
-
-                            <div class="col-lg-9 col-md-8 col-sm-12">
+                            <div class="col-lg-12 col-md-8 col-sm-12">
                                 <div class="courses-post">
                                     <div class="ttr-post-media media-effect">
                                         <a href="#"><img src="data:image/jpeg;base64,${detail.base64ImageFile}" alt="" ></a>
@@ -142,7 +143,7 @@
                                     </c:if>
 
                                     <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
+                                        <div class="carousel-inner" >
 
                                             <c:forEach items="${requestScope.mentor}" var="mentors" varStatus="loop">
 
@@ -153,8 +154,8 @@
                                                                 <div class="row">
                                                                 </c:if>
                                                                 <div class="col-md-6">
-                                                                    <div class="instructor-bx" >
-                                                                        <div class="instructor-author">
+                                                                    <div class="instructor-bx " >
+                                                                        <div class="instructor-author ">
                                                                             <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100" style="width: 100%; height: 100%; object-fit: cover;">
                                                                         </div>
                                                                         <div class="instructor-info">
@@ -162,10 +163,13 @@
                                                                             <p class="m-b0">Education: ${cvs.education}</p>
                                                                             <p class="m-b0">Description: ${cvs.professionIntroduction}</p>
                                                                             <p class="m-b0">Year of experience: ${cvs.yearOfExperience} years</p>
-                                                                            <p class="m-b0">Price: ${cvs.price} VND</p>
+                                                                            <p class="m-b0">Price: <fmt:formatNumber value="${cvs.price}" type="number" maxFractionDigits="2" />₫ VND</p>
                                                                             <div class="instructor-info" style="margin-left: 60px">
                                                                                 <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
-                                                                                <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
+                                                                                <c:if test="${acc.roleId == 2}">  
+                                                                                    <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
+                                                                                </c:if>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -178,15 +182,18 @@
                                                 </c:forEach>
                                             </c:forEach>
                                         </div>
+                                        <div class="custom-carousel-controls">
+                                            <a class="carousel-control-prev" href="#mentorCarousel" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#mentorCarousel" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
 
-                                        <a class="carousel-control-prev" href="#mentorCarousel" role="button" data-slide="prev">
-                                            <span class="ti-arrow-left black" aria-hidden="true"></span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#mentorCarousel" role="button" data-slide="next">
-                                            <span class="ti-arrow-right black" aria-hidden="true"></span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
+
                                     </div>
                                 </div>                   
 
@@ -231,14 +238,16 @@
                                             </c:forEach>
                                         </div> <!-- Close carousel-inner -->
 
-                                        <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-slide="prev">
-                                            <span class="ti-arrow-left black" aria-hidden="true"></span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#recentCoursesCarousel" role="button" data-slide="next">
-                                            <span class="ti-arrow-right black" aria-hidden="true"></span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
+                                         <div class="custom-carousel-controls">
+                                            <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#recentCoursesCarousel" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -254,93 +263,7 @@
         </div>
         <!-- Content END-->
         <!-- Footer ==== -->
-        <footer>
-            <div class="footer-top">
-                <div class="pt-exebar">
-                    <div class="container">
-                        <div class="d-flex align-items-stretch">
-                            <div class="pt-logo mr-auto">
-                                <a href="index.html"><img src="assets/images/logo-white.png" alt=""/></a>
-                            </div>
-                            <div class="pt-social-link">
-                                <ul class="list-inline m-a0">
-                                    <li><a href="#" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#" class="btn-link"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pt-btn-join">
-                                <a href="#" class="btn ">Join Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 col-lg-5 col-md-7 col-sm-12">
-                            <div class="row">
-                                <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                    <div class="widget footer_widget">
-                                        <h5 class="footer-title">Company</h5>
-                                        <ul>
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about-1.html">About</a></li>
-                                            <li><a href="faq-1.html">FAQs</a></li>
-                                            <li><a href="contact-1.html">Contact</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                    <div class="widget footer_widget">
-                                        <h5 class="footer-title">Get In Touch</h5>
-                                        <ul>
-                                            <li><a href="http://educhamp.themetrades.com/admin/index.html">Dashboard</a></li>
-                                            <li><a href="blog-classic-grid.html">Blog</a></li>
-                                            <li><a href="portfolio.html">Portfolio</a></li>
-                                            <li><a href="event.html">Event</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                    <div class="widget footer_widget">
-                                        <h5 class="footer-title">Courses</h5>
-                                        <ul>
-                                            <li><a href="courses.html">Courses</a></li>
-                                            <li><a href="courses-details.html">Details</a></li>
-                                            <li><a href="membership.html">Membership</a></li>
-                                            <li><a href="profile.html">Profile</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-3 col-md-5 col-sm-12 footer-col-4">
-                            <div class="widget widget_gallery gallery-grid-4">
-                                <h5 class="footer-title">Our Gallery</h5>
-                                <ul class="magnific-image">
-                                    <li><a href="assets/images/gallery/pic1.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic1.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic2.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic2.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic3.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic3.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic4.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic4.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic5.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic5.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic6.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic6.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic7.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic7.jpg" alt=""></a></li>
-                                    <li><a href="assets/images/gallery/pic8.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic8.jpg" alt=""></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 text-center"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <jsp:include page="footer.jsp"/>
         <!-- Footer END ==== -->
         <button class="back-to-top fa fa-chevron-up" ></button>
     </div>
@@ -360,7 +283,7 @@
     <script src="assets/js/jquery.scroller.js"></script>
     <script src="assets/js/functions.js"></script>
     <script src="assets/js/contact.js"></script>
-    <script src="assets/vendors/switcher/switcher.js"></script>
+
 </body>
 
 </html>

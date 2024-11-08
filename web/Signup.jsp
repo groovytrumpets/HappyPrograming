@@ -95,7 +95,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label for="user-pass">Password</label>
-                                            <input name="pass" type="password" class="form-control" required>
+                                            <input name="pass" type="password" class="form-control" required>                                         
                                             <small>Password requirements (6-18 characters, containing a number, uppercase letter)</small>
                                             <small style="color: red">${perror1}</small>
                                             
@@ -151,6 +151,7 @@
                                         Date of birth
                                         <div class="input-group">
                                             <input name="dob" type="date" class="form-control" required="">
+                                            <small style="color: red">${aerror}</small>
                                         </div>
                                     </div>
                                 </div>

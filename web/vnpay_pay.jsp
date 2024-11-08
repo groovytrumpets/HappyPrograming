@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -232,7 +233,7 @@
                                                                     <span class="text-success"><i class="ti-arrow-up"></i></span>
                                                                     </c:when>
                                                                 </c:choose>
-                                                            <span class="ms-2">${payments.totalAmount}</span>
+                                                            <span class="ms-2"><fmt:formatNumber value="${payments.totalAmount}" type="number" maxFractionDigits="2" />₫</span>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -24,6 +24,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -87,6 +88,11 @@ public class SignUpSV extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UserDAO userDAO = new UserDAO();
+        MentorDAO mentorDAO = new MentorDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
+        WalletDAO walletDAO = new WalletDAO();
+
         String username = request.getParameter("username");
         String pass = request.getParameter("pass");
         String repass = request.getParameter("repass");
@@ -97,13 +103,13 @@ public class SignUpSV extends HttpServlet {
         String sex = request.getParameter("sex");
         String address = request.getParameter("address");
         String role_raw = request.getParameter("role");
-        UserDAO userDAO = new UserDAO();
-        MentorDAO mentorDAO = new MentorDAO();
-        MenteeDAO menteeDAO = new MenteeDAO();
-        WalletDAO walletDAO = new WalletDAO();
+
         try {
 
             LocalDate localDob = LocalDate.parse(dob_raw);
+            LocalDate currentDate = LocalDate.now();
+            int age = Period.between(localDob, currentDate).getYears();
+
             java.sql.Date dob = java.sql.Date.valueOf(localDob);
 
             int role = Integer.parseInt(role_raw);
@@ -120,6 +126,16 @@ public class SignUpSV extends HttpServlet {
                 return;
             }
 
+            if ((age > 65 || age < 20) && role == 1) {
+                request.setAttribute("aerror", "Your age must be between 20 and 65 years old");
+                request.getRequestDispatcher("Signup.jsp").forward(request, response);
+            }
+            
+             if ((age > 65 || age < 10) && role == 2) {
+                request.setAttribute("aerror", "Your age must be between 10 and 65 years old");
+                request.getRequestDispatcher("Signup.jsp").forward(request, response);
+            }
+
             if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(mail) == null) {
                 User newUser = new User();
                 newUser.setUsername(username);
@@ -132,7 +148,7 @@ public class SignUpSV extends HttpServlet {
                 userDAO.insertUser(newUser);
 
                 if (role == 1) {
-                    mentorDAO.insertMentor(role, username,  dob, phone, address, dob, fname, sex, "inactive");
+                    mentorDAO.insertMentor(role, username, dob, phone, address, dob, fname, sex, "inactive");
                     walletDAO.addNewWallet(username);
                 } else {
                     menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");
@@ -177,7 +193,7 @@ public class SignUpSV extends HttpServlet {
         }
 
     }
-
+    
     private boolean checkValidPass(String pass, String repass) {
         boolean hasUpperCase = false;
         boolean hasNumber = false;
@@ -199,7 +215,7 @@ public class SignUpSV extends HttpServlet {
         return false;
     }
 
-       public static String encrypt(String pass) {
+    public static String encrypt(String pass) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
