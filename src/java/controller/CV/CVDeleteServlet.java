@@ -5,6 +5,7 @@
 package controller.CV;
 
 import DAO.CVDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,12 +62,33 @@ public class CVDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        int id;
+        int CVid;
         try {
             CVDAO cvd = new CVDAO();
-            id = Integer.parseInt(id_raw);
-            CV cv = cvd.getCVbyCVId(id);
-            if (cvd.deleteCV(id)) {
+            SlotDAO sld = new SlotDAO();
+            CVid = Integer.parseInt(id_raw);
+            CV cv = cvd.getCVbyCVId(CVid);
+
+            //check if mentor have current request or not, if not deactive all slots
+            if (cv.getStatus().equalsIgnoreCase("active")) {
+                System.out.println("active");
+                if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(cv.getMentorId()).isEmpty()) {
+                    //setSlot to Inactive after delete cv
+                    if (cvd.deleteCV(CVid)) {
+                        sld.deleteAllInactiveSlot(cv.getMentorId());
+                        sld.setSlotActiveToInctivebyMentorId(cv.getMentorId());
+                        System.out.println("empty");
+                        response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Your active CV has been deleted successfully! your slot has been deactive!");
+                    } else {
+                        response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV. Please try again.");
+                    }
+
+                }
+
+                response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&mess=Your CV has been deleted successfully!");
+                return;
+            }
+            if (cvd.deleteCV(CVid)) {
                 response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&mess=Your CV has been deleted successfully!");
             } else {
                 response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV. Please try again.");

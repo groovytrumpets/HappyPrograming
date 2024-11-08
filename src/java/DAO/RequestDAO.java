@@ -1156,7 +1156,7 @@ public class RequestDAO extends DBContext {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0; // Return true if any rows were updated
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
             return false;
         }
     }
@@ -1177,7 +1177,7 @@ public class RequestDAO extends DBContext {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0; // Return true if any rows were updated
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
             return false;
         }
     }

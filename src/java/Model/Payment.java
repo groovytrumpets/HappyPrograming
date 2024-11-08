@@ -11,6 +11,7 @@ package Model;
 import java.util.Date;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Payment {
     private int paymentId;
@@ -93,7 +94,15 @@ public class Payment {
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
-
+    
+    public String getFormattedPaymentDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return paymentDate.format(formatter);
+    }
+    public String getFormattedPaymentTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return paymentDate.format(formatter);
+    }
     // Optional: toString method for debugging
     @Override
     public String toString() {

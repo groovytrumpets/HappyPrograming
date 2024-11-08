@@ -95,7 +95,6 @@ public class ManagerRequestCatebyRequest extends HttpServlet {
             
             
             request.setAttribute("wallet", wallet);
-            
             request.setAttribute("error", error);
             request.setAttribute("mess", mess);
             
