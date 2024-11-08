@@ -138,6 +138,8 @@
                         <div class="widget-box">
                             <div class="wc-title">
                                 <h4>List suggest mentor</h4>
+                                <h4 style="color: red">${error}</h4>
+                                
                             </div>
                             <div class="widget-inner">
                                 <c:forEach items="${mentorList}" var="mentors">

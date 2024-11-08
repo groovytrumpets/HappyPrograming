@@ -414,7 +414,7 @@ public class CVDAO extends DBContext {
 
     public List<Skill> getMentorSkillListByCVID(int id) {
         List<Skill> list = new ArrayList<>();
-        String sql = "select s.SkillID,s.SkillName from Skill s left join SkillList sl on s.SkillID=sl.SkillID and sl.CVID = ?";
+        String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID and sl.CVID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);

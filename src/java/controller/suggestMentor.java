@@ -73,6 +73,7 @@ public class suggestMentor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         RequestDAO requestDAO = new RequestDAO();
         HttpSession sesion = request.getSession();
         User a = new User();
@@ -91,12 +92,12 @@ public class suggestMentor extends HttpServlet {
         String sortBy = request.getParameter("sortBy");
 
         // Fetch mentors based on the mentee's preference
+        try{
         Mentee mentee = menteeDAO.findMenteeByUsername(a.getUsername());
         List<CV> mentorCvList = requestDAO.getSuggestMentorCVByMentee();
         List<MentorRating> mentorRatingList = new ArrayList<>();
-
         // Populate the list with MentorRating objects
-        for (CV cv : mentorCvList) {        
+        for (CV cv : mentorCvList) { 
             int rating = cvd.getAveRatebyId(cv.getMentorId());
             Mentor mentor = mentorDAO.getMentorById(cv.getMentorId());
             int reviewsCount = cvd.getMentorRateList(cv.getMentorId()).size();
@@ -129,6 +130,12 @@ public class suggestMentor extends HttpServlet {
         // Set the filtered and sorted list as an attribute
         request.setAttribute("mentorList", mentorRatingList);
         request.getRequestDispatcher("suggestMentor.jsp").forward(request, response);
+        }
+        catch(Exception e)
+        {
+             request.setAttribute("error", "List load error");
+        request.getRequestDispatcher("suggestMentor.jsp").forward(request, response);
+        }
     }
 
     private List<MentorRating> filterByExperience(List<MentorRating> mentors, String experience) {
