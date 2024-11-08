@@ -60,6 +60,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+
     public Mentor getMentorByUsername(String username) {
         //lenh sql select * from categories cach 1:
         String sql = "select * from Mentor where Username = ?";
@@ -111,7 +112,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-    
+
     public CV getNewestCVbyMentorId(int id) {
         //lenh sql select * from categories cach 1:
         String sql = "select top (1) * from [dbo].[CV] where MentorID =? order by CreateDate desc;";
@@ -163,7 +164,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-    
+
     public CV getCVActivebyMentorId(int id) {
         //lenh sql select * from categories cach 1:
         String sql = "select*from CV where MentorID=? and Status like 'active';";
@@ -314,7 +315,7 @@ public class CVDAO extends DBContext {
                 + "      ,[Activity] = ?\n"
                 + "      ,[ProfessionIntroduction] = ?,[CreateDate] = GETDATE()\n"
                 + "      ,[JobProfession] = ?\n"
-                + "      ,[YearOfExperience] = ?\n"               
+                + "      ,[YearOfExperience] = ?\n"
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
                 + " WHERE [CVID] = ?;SELECT SCOPE_IDENTITY();";
@@ -326,7 +327,7 @@ public class CVDAO extends DBContext {
             st.setString(4, c.getProfessionIntroduction());
             st.setString(5, c.getJobProfession());
             st.setInt(6, c.getYearOfExperience());
-            
+
             st.setString(7, c.getServiceDescription());
             st.setString(8, c.getFramework());
             st.setBytes(9, c.getAvatar());
@@ -334,9 +335,9 @@ public class CVDAO extends DBContext {
             st.setInt(11, cvid);
             int queryLine = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
-            
-            return queryLine>0;
-            
+
+            return queryLine > 0;
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -374,7 +375,7 @@ public class CVDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<StatisticSkills> getCVSkillListByMentor(int id) {
         List<StatisticSkills> list = new ArrayList<>();
         String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
@@ -478,7 +479,7 @@ public class CVDAO extends DBContext {
                 st.setInt(3, cvId);
                 st.executeUpdate();
             }
-                return true;
+            return true;
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -707,8 +708,8 @@ public class CVDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            int query= st.executeUpdate();
-            return query>0;
+            int query = st.executeUpdate();
+            return query > 0;
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -914,6 +915,7 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
+
     public int countAllCompletedRequestbyMentorId(int mentorid) {
         String sql = "select count(MentorID) from Request where MentorID=? and (Status ='Completed' or Status ='Paid') ";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
@@ -932,8 +934,8 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
-    
-     public int countAllCompletedRequest() {
+
+    public int countAllCompletedRequest() {
         String sql = "select count(MentorID) from Request where (Status ='Completed' or Status ='Paid') ";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -950,7 +952,8 @@ public class CVDAO extends DBContext {
 
         return 0;
     }
-     public int countAllRating() {
+
+    public int countAllRating() {
         String sql = "select count(RateID) from Rate";
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
@@ -1122,6 +1125,7 @@ public class CVDAO extends DBContext {
         return listRequest;
 
     }
+
     public List<Request> getListofRequestbyStaus() {
         List<Request> listRequest = new ArrayList<>();
         String sql = "select * from Request where Status not like 'open' and Status not like 'reject' order by RequestID desc";
@@ -1224,7 +1228,7 @@ public class CVDAO extends DBContext {
         return listRequest;
 
     }
-    
+
     public List<Request> getListofCompleteRequestbyRequestId(int id) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "select * from Request where RequestID =? and (Status='Paid' or Status='Completed') order by RequestID desc";
@@ -1491,7 +1495,7 @@ public class CVDAO extends DBContext {
         //cach 2: vao sql phai chuot vao bang chon scriptable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            
+
             st.setInt(1, menteeId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -1566,7 +1570,7 @@ public class CVDAO extends DBContext {
 
         return null;
     }
-    
+
     public List<SlotRequest> getSlotRequestbyRequestId(int requestId) {
         List<SlotRequest> srList = new ArrayList<>();
         String sql = """
@@ -1688,6 +1692,7 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
+
     public void setWalletTransactionbyMentee(float price, String menteeString) {
         String sql = "update Wallet set Balance =Balance+? where Username like 'manager'\n"
                 + "update Wallet set Balance =Balance-? where Username like '?'";
@@ -1727,7 +1732,7 @@ public class CVDAO extends DBContext {
                 mentor.setRequestId(rs.getInt("RequestID"));
                 mentorList.add(mentor);
             }
-            
+
             return mentorList;
         } catch (SQLException e) {
             System.out.println(e);
@@ -1735,6 +1740,42 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+
+    public List<Mentor> getListofMentorByMenteeWithStatusSort(String username) {
+        List<Mentor> mentorList = new ArrayList<>();
+        //lenh sql select * from categories cach 1:
+        String sql = """
+                     SELECT mr.*, r.RequestID FROM [Mentor] mr 
+                     JOIN [Request] r ON mr.MentorID = r.MentorID
+                     JOIN [Mentee] mt ON mt.MenteeID = r.MenteeID
+                     WHERE (r.[Status] = 'Completed' OR r.[Status] = 'Paid') AND mt.Username = ?
+                     ORDER BY r.RequestID DESC;
+                     """;
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Mentor mentor = new Mentor(rs.getInt("mentorId"),
+                        rs.getInt("roleId"), rs.getString("username"),
+                        rs.getDate("createDate"), rs.getString("phone"),
+                        rs.getString("address"), rs.getDate("dateOfBirth"),
+                        rs.getString("fullName"), rs.getString("gender"),
+                        rs.getString("status"));
+                mentor.setRequestId(rs.getInt("RequestID"));
+                mentorList.add(mentor);
+            }
+
+            return mentorList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
     public boolean addSlot(Slot slot) {
         String sql = "INSERT INTO [dbo].[Slot] ([MentorID],[StartTime],[EndTime],[DayInWeek],[Status],[CVID]) \n"
                 + "VALUES (?,?,?,?,?,?)";
@@ -1763,6 +1804,7 @@ public class CVDAO extends DBContext {
             System.out.println(e);
         }
     }
+
     public void setStatusActiveMentor(int mentorId) {
         String sql = "update Mentor set Status='active' where MentorID=?";
         try {

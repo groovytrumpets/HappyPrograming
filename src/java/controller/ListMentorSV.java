@@ -90,7 +90,7 @@ public class ListMentorSV extends HttpServlet {
 
             if (roleID == 2) {
                 List<CV> cvlist = cvdao.getListofActiveCV();
-                List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
+                List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatusSort(curUser.getUsername());
                 List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
 
                 // tạo map để lưu trạng thái đã đánh giá cho từng mentor-request
