@@ -91,6 +91,7 @@
                                         <tr>
                                             <th>Request Title</th>
                                             <th>Mentor Name</th>
+                                            <th>Framework</th>
                                             <th>Price</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
@@ -104,6 +105,7 @@
                                                     <tr>
                                                         <td>${request.title}</td>
                                                         <td>${m.fullName}</td>
+                                                        <td>${request.framework}</td>
                                                         <td>${request.price}₫</td>
                                                         <td>${request.startDate}</td>
                                                         <td>${request.endDate}</td>
