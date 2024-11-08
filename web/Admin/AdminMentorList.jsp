@@ -64,7 +64,7 @@
     <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
         <!-- header start -->
-          <jsp:include page="headerAdmin.jsp" />
+        <jsp:include page="headerAdmin.jsp" />
         <!-- Left sidebar menu end -->
 
         <!--Main container start -->
@@ -97,7 +97,6 @@
 
                             <div class="widget-inner">
                                 <table class="table-bordered">
-
                                     <tr>
                                         <th>STT</th>
                                         <th>ID</th>
@@ -112,8 +111,8 @@
                                     <c:set var="stt" value="${requestScope.stt}"/>
                                     <c:forEach items="${requestScope.listMent}" var="c">
                                         <form action="mentorListAdmin" method="post">
-                                            <input type="hidden" name="page" value="${requestScope.indexPage}">
-                                            <input type="hidden" name="numDis" value="${requestScope.numDis}">
+                                            <input type="hidden" id="page" name="page" value="${requestScope.indexPage}">
+                                            <input type="hidden" id="numDis" name="numDis" value="${requestScope.numDis}">
                                             <input type="hidden" name="mentorId" value="${c.mentorId}">
                                             <input type="hidden" name="status" value="${c.status}">
                                             <c:set value="${stt +1}" var="stt"/>
@@ -122,72 +121,20 @@
                                                 <td>${c.mentorId}</td>
                                                 <td>${c.fullName}</td>
                                                 <td>${c.username}</td>
-                                                <td>
-                                                    <c:forEach items="${requestScope.listCV}" var="cv">
-                                                        <c:if test="${cv.mentorId eq c.mentorId}">
-                                                            ${cv.jobProfession}
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </td>
-                                                <td>
-                                                    <c:set var="accepted" value="0" />
-                                                    <c:forEach items="${requestScope.requestAccList}" var="requestAcc">
-                                                        <c:if test="${c.mentorId eq requestAcc.mentorId}">
-                                                            <c:set value="${accepted + 1}" var="accepted" />
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    ${accepted}
-                                                </td>
-                                                <td>
-                                                    <c:set var="complete" value="0" />
-                                                    <c:forEach items="${requestScope.requestComList}" var="requestCom">
-                                                        <c:if test="${c.mentorId eq requestCom.mentorId}">
-                                                            <c:set value="${complete + 1}" var="complete" />
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:set var="allRequest" value="0" />
-                                                    <c:forEach items="${requestScope.requestList}" var="request">
-                                                        <c:if test="${c.mentorId eq request.mentorId}">
-                                                            <c:set value="${allRequest + 1}" var="allRequest" />
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:choose>
-                                                        <c:when test="${allRequest > 0}">
-                                                            <fmt:formatNumber value="${(complete * 100) / allRequest}" maxFractionDigits="2" />%
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            0%
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>
-                                                    <c:set var="countRate" value="0" />
-                                                    <c:set var="sumRate" value="0"/>
-                                                    <c:forEach items="${requestScope.listRate}" var="curRate">
-                                                        <c:if test="${c.mentorId eq curRate.mentorId}">
-                                                            <c:set value="${countRate + 1}" var="countRate" />
-                                                            <c:set value="${sumRate + curRate.rate}" var="sumRate"/>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                     <c:choose>
-                                                        <c:when test="${countRate > 0}">
-                                                            <fmt:formatNumber value="${sumRate/countRate}" maxFractionDigits="2" /><i class="fa fa-star">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            0/5<i class="fa fa-star ">
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
+                                                <td>${profess[stt-(indexPage-1)*numDis-1]}</td>
+                                                <td>${curRe[stt-(indexPage-1)*numDis-1]} </td>
+                                                <td>${percComplete[stt-(indexPage-1)*numDis-1]}%</td>
+                                                <td>${rate[stt-(indexPage-1)*numDis-1]}/5<i class="fa fa-star"></td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${c.status eq 'Active'}">
                                                             <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
-                                                                <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
+                                                                <button type="submit"   style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
                                                             </div>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <div class="btn-secondry add-item m-r5">
-                                                                <button type="submit" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;">${c.status}</button>
+                                                                <input type="button" onclick="updateStatus(${c.mentorId}, '${c.status}', ${validChange[stt-(indexPage-1)*numDis-1]})" style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" value="${c.status}" />
                                                             </div>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -244,6 +191,64 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/switcher/switcher.js'></script>
         <script>
+                                                    //Check status valid
+                                                    function updateStatus(mentorID, status, isValid) {
+                                                        // Log the parameters to ensure correct values
+                                                        console.log('mentorID:', mentorID);
+                                                        console.log('status:', status);
+                                                        console.log('isValid:', isValid);
+
+                                                        // Check if isValid is true or "true"
+                                                        if (isValid === "true" || isValid === true) {
+                                                            // Log if valid
+                                                            if (confirm("Are you sure want to active this person.")) {
+
+
+
+                                                                // Create a form dynamically
+                                                                let form = document.createElement('form');
+                                                                form.method = 'POST';
+                                                                form.action = 'mentorListAdmin';
+
+                                                                // Create hidden input fields for mentorID, status, page, and numDis
+                                                                let mentorIdInput = document.createElement('input');
+                                                                mentorIdInput.type = 'hidden';
+                                                                mentorIdInput.name = 'mentorId';
+                                                                mentorIdInput.value = mentorID;
+
+                                                                let statusInput = document.createElement('input');
+                                                                statusInput.type = 'hidden';
+                                                                statusInput.name = 'status';
+                                                                statusInput.value = status;
+
+                                                                let pageIndex = document.createElement('input');
+                                                                pageIndex.type = 'hidden';
+                                                                pageIndex.name = 'page';
+                                                                pageIndex.value = document.getElementById("page").value;
+
+                                                                let numDis = document.createElement('input');
+                                                                numDis.type = 'hidden';
+                                                                numDis.name = 'numDis';
+                                                                numDis.value = document.getElementById("numDis").value;
+
+                                                                // Append inputs to the form
+                                                                form.appendChild(mentorIdInput);
+                                                                form.appendChild(statusInput);
+                                                                form.appendChild(pageIndex);
+                                                                form.appendChild(numDis);
+
+                                                                // Append the form to the body (it needs to be in the DOM to submit)
+                                                                document.body.appendChild(form);
+
+                                                                // Submit the form
+                                                                form.submit();
+                                                            }
+                                                        } else {
+                                                            // If the user is not eligible, show the alert
+                                                            alert("User is not eligible for activation.");
+                                                        }
+                                                    }
+
                                                     // Pricing add
                                                     function newMenuItem() {
                                                         var newElem = $('tr.list-item').first().clone();
