@@ -80,8 +80,8 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
             List<Mentor> listMentor = cvd.getListofMentor();
 
             List<Slot> listActiveSlot = sld.getListofActiveSlotsByMentorId(id);
-            //System.out.println(listActiveSlot);
             List<Slot> listInactiveSlot = sld.getListofInactiveSlotsByMentorId(id);
+            
 
             //hien thi avata gan nhat
             List<CV> listActiveCV = cvd.getListofActiveCV();
@@ -109,7 +109,7 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
                 String startDate = convertDayInWeekToCurrentDate(mentorActivedSlot.get(i).getDayInWeek()) + "T" + mentorActivedSlot.get(i).getStartTime();
                 String endDate = convertDayInWeekToCurrentDate(mentorActivedSlot.get(i).getDayInWeek()) + "T" + mentorActivedSlot.get(i).getEndTime();
                 statusSlot.add(mentorActivedSlot.get(i).getStatus());
-                //System.out.println(startDate+", "+mentorSlot.get(i).getEndTime());
+//                System.out.println(startDate+", "+endDate);
                 dateConverted.add(startDate);
                 enddateConverted.add(endDate);
             }
@@ -139,7 +139,7 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
             //System.out.println(dateConverted);
             request.setAttribute("endTime2", new Gson().toJson(enddateConverted));
             request.getRequestDispatcher("managerCV.jsp").forward(request, response);
-        } catch (Exception e) {
+        } catch (ServletException | IOException | NumberFormatException e) {
             System.out.println(e);
         }
     }

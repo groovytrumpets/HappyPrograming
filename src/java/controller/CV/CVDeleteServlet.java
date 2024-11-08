@@ -68,10 +68,11 @@ public class CVDeleteServlet extends HttpServlet {
             SlotDAO sld = new SlotDAO();
             CVid = Integer.parseInt(id_raw);
             CV cv = cvd.getCVbyCVId(CVid);
-
+            
             //check if mentor have current request or not, if not deactive all slots
             if (cv.getStatus().equalsIgnoreCase("active")) {
                 System.out.println("active");
+                System.out.println(cv.getMentorId());
                 if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(cv.getMentorId()).isEmpty()) {
                     //setSlot to Inactive after delete cv
                     if (cvd.deleteCV(CVid)) {
@@ -82,13 +83,12 @@ public class CVDeleteServlet extends HttpServlet {
                     } else {
                         response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV. Please try again.");
                     }
-
                 }
-
-                response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&mess=Your CV has been deleted successfully!");
+                response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV, have current request!");
                 return;
             }
             if (cvd.deleteCV(CVid)) {
+                cvd.setStatusInactiveMentor(cv.getMentorId());
                 response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&mess=Your CV has been deleted successfully!");
             } else {
                 response.sendRedirect("cvlist?id=" + cv.getMentorId() + "&error=Unable to delete your CV. Please try again.");

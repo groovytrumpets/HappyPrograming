@@ -523,7 +523,7 @@
 
 
     </body>
-    
+    <script src="assets/js/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             var status1 = JSON.parse('${requestScope.status}');
@@ -668,7 +668,7 @@
         }
 
     </script>
-    <script src="assets/js/jquery.min.js"></script>
+    
     <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
     <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>

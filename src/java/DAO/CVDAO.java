@@ -1145,7 +1145,7 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofRequestbyStaus() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where Status not like 'open' and (Status not like 'reject' and Status not like 'Canceled' and Status not like 'Canceled') order by CreateDate desc";
+        String sql = "select * from Request where Status not like 'open' and Status not like 'reject' and Status not like 'paid' order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();

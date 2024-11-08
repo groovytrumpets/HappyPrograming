@@ -98,7 +98,7 @@ public class ActiveMentorCVServlet extends HttpServlet {
                 if (cv.getStatus().equalsIgnoreCase("active")) {
                     SlotDAO sld = new SlotDAO();
                 //check mentor have any current request if not, deactive slot
-                    if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(cv.getMentorId()).isEmpty()) {
+                    if (sld.getListofUnActiveSlotsJoinRequestSlotByMentorId(cv.getMentorId()).isEmpty()) {
                         cvd.setStatusInactiveCvId(cvid);
                         cvd.setStatusInactiveMentor(cv.getMentorId());
                         System.out.println("emty ne");
