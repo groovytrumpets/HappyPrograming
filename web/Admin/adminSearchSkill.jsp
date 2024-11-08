@@ -86,7 +86,7 @@
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
+                                        <input type="text" name="search" value="${search}" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>
@@ -118,7 +118,7 @@
                                             <tr>
                                                 <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
-                                                <td>${c.skillId}</td>
+                                                <td><a href="skillDetailAdmin?skillID=${c.skillId}">${c.skillId}</a></td>
                                             <input type="hidden" name="id" value="${c.skillId}">
                                             <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
                                             <td>${c.skillName}</td>

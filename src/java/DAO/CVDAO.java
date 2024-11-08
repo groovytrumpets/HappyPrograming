@@ -698,7 +698,7 @@ public class CVDAO extends DBContext {
 
     public static void main(String[] args) {
         CVDAO c = new CVDAO();
-        System.out.println(c.getSlotRequestbyMentorId(7));
+        System.out.println(c.getCVbyMentorId(2).getJobProfession());
     }
 
     public boolean deleteCV(int id) {

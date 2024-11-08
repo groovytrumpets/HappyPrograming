@@ -261,6 +261,26 @@ public class RequestDAO extends DBContext {
         return -1;
     }
 
+    public int countValidRequestMentorID(int mentorID) {
+        String sql1 = "Select count(RequestID) as count \n"
+                + "from Request \n"
+                + "where MentorID = ? and \n"
+                + "[Status] != 'Pending' and [Status] != 'Cancel'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql1);
+            st.setInt(1, mentorID);
+            ResultSet rs = st.executeQuery();
+            int lastRequestId = 0;
+            if (rs.next()) {
+                lastRequestId = rs.getInt("count");
+            }
+            return lastRequestId;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
     public List<Request> getAllRequestByStatus(String status) {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT*"
@@ -1339,7 +1359,7 @@ public class RequestDAO extends DBContext {
 
         return null;
     }
-    
+
     public List<SkillList> getSkillsForCompletedOrPaidRequests(int menteeId) {
         List<SkillList> skillsList = new ArrayList<>();
         String query = """
@@ -1351,7 +1371,7 @@ public class RequestDAO extends DBContext {
                        """;
 
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, menteeId);
             ResultSet rs = ps.executeQuery();
 
@@ -1396,8 +1416,51 @@ public class RequestDAO extends DBContext {
         }
         return attendancePercentage;
     }
-    
-    
+
+    public List<Request> getRequestsBySkillId(int skillId) {
+        // Query to fetch all requests of a particular mentee from the database
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                + "  Where SkillID = ?";
+
+        List<Request> requests = new ArrayList<>();
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, skillId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Request request = new Request();
+                request.setRequestId(rs.getInt("RequestID"));
+                request.setMentorId(rs.getInt("MentorID"));
+                request.setMenteeId(rs.getInt("MenteeID"));
+                request.setPrice(rs.getFloat("Price"));
+                request.setNote(rs.getString("Note"));
+                request.setCreateDate(rs.getDate("CreateDate").toLocalDate());
+                request.setStatus(rs.getString("Status"));
+                request.setTitle(rs.getString("Title"));
+                request.setFramework(rs.getString("Framework"));
+                request.setStartDate(rs.getDate("StartDate").toLocalDate());
+                request.setEndDate(rs.getDate("EndDate").toLocalDate());
+                request.setSkillId(rs.getInt("SkillID"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
 
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();

@@ -8,6 +8,7 @@ import DAO.CVDAO;
 import DAO.MentorDAO;
 import DAO.RateDAO;
 import DAO.RequestDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Rate;
@@ -19,6 +20,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -69,15 +72,16 @@ public class adminSearchMentorServlet extends HttpServlet {
         MentorDAO actMent = new MentorDAO();
         CVDAO actCV = new CVDAO();
         RateDAO actRate = new RateDAO();
+        SlotDAO actSlot = new SlotDAO();
         RequestDAO actRequest = new RequestDAO();
         String search = request.getParameter("search");
-        if (search == null) {
+        if (search == null || search.trim() == "") {
             response.sendRedirect("mentorListAdmin");
         }
         List<Mentor> mentorList = actMent.searchAllMentor(search);
+        //get pagination
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
-
         int page, numDis;
         if (page_raw != null) {
             page = Integer.parseInt(page_raw);
@@ -90,28 +94,95 @@ public class adminSearchMentorServlet extends HttpServlet {
             numDis = 10;
         }
         int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
         int numMent = mentorList.size();
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
+
+        //Set pagination
+        request.setAttribute("stt", stt);
         request.setAttribute("numOfPage", numOfPage);
-        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
-        request.setAttribute("search", search);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
-        request.setAttribute("listMent", mentorList);
+
+        //
+        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
+        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Rate> listAllRate = actRate.getAllRates();
+        //Create needed data
+        String[] listProfess = new String[mentorList.size()];
+        int[] curRequest = new int[mentorList.size()];
+        float[] percenComplete = new float[mentorList.size()];
+        float[] rate = new float[mentorList.size()];
+        boolean[] checkValidate = new boolean[mentorList.size()];
         List<CV> listCV = actCV.getMostEficientCV();
-        request.setAttribute("listCV", listCV);
-        //Manage request Accepted
-        List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
-        request.setAttribute("requestAccList", curAcceptRequestt);
-        List<Request> allRequest = actRequest.getAllRequest();
-        request.setAttribute("requestList", allRequest);
-        List<Request> curFinishRequest = actRequest.getAllRequestByStatus("Completed");
-        request.setAttribute("requestComList", curFinishRequest);
-        PrintWriter out = response.getWriter();
-        //Handle rate
-        List<Rate> listRate = actRate.getAllRate();
-        request.setAttribute("listRate", listRate);
+
+        //Loop all mentor list
+        for (int i = 0; i < mentorList.size(); i++) {
+            int mentorID = mentorList.get(i).getMentorId();
+            //Professtion
+            boolean availProfess = false;
+            for (int j = 0; j < listCV.size(); j++) {
+                if (mentorID == listCV.get(j).getMentorId()) {
+                    listProfess[i] = listCV.get(j).getJobProfession();
+                    availProfess = true;
+                    listCV.remove(j);
+                    j = listCV.size();
+                }
+            }
+            if (availProfess == false) {
+                listProfess[i] = "Not Available";
+            }
+            //Current request
+            int countRequest = 0;
+            for (int r = 0; r < curProcessRequestt.size(); r++) {
+                if (mentorID == curProcessRequestt.get(r).getMentorId()) {
+                    countRequest++;
+                    curProcessRequestt.remove(r);
+                }
+            }
+            curRequest[i] = countRequest;
+            //Percen complete
+            int countComplete = 0;
+            for (int j = 0; j < curComplete.size(); j++) {
+                if (mentorID == curComplete.get(j).getMentorId()) {
+                    countComplete++;
+                    curComplete.remove(j);
+                }
+            }
+            int countAllValid = actRequest.countValidRequestMentorID(mentorID);
+            if (countAllValid != 0) {
+                percenComplete[i] = (float) countComplete / countAllValid;
+                BigDecimal bd = new BigDecimal(percenComplete[i]);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                percenComplete[i] = bd.floatValue() * 100;
+            } else {
+                percenComplete[i] = 0;
+            }
+            //Rate
+            int sumRateMentor = actRate.sumRateMentor(mentorID);
+            int countRateMentor = actRate.CountRateMentor(mentorID);
+            if (countRateMentor != 0) {
+                rate[i] = (float) sumRateMentor / countRateMentor;
+                BigDecimal bd = new BigDecimal(rate[i]);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                rate[i] = bd.floatValue();
+            }
+            //Update status avalable
+            CV mentorCV = actCV.getCVbyMentorId(mentorID);
+            if (mentorCV == null) {
+                checkValidate[i] = false;
+            } else {
+                checkValidate[i] = (!actSlot.getListofActiveSlotsByMentorId(mentorID).isEmpty()) ? true : false;
+            }
+        }
+        //Set data
+        request.setAttribute("search", search);
+        request.setAttribute("listMent", mentorList);
+        request.setAttribute("profess", listProfess);
+        request.setAttribute("curRe", curRequest);
+        request.setAttribute("percComplete", percenComplete);
+        request.setAttribute("rate", rate);
+        request.setAttribute("validChange", checkValidate);
         request.getRequestDispatcher("/Admin/adminSearchMentor.jsp").forward(request, response);
     }
 
@@ -126,15 +197,18 @@ public class adminSearchMentorServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDAO actRequest = new RequestDAO();
-        RateDAO actRate = new RateDAO();
         MentorDAO actMent = new MentorDAO();
         CVDAO actCV = new CVDAO();
+        RateDAO actRate = new RateDAO();
+        SlotDAO actSlot = new SlotDAO();
+        RequestDAO actRequest = new RequestDAO();
         String search = request.getParameter("search");
-        if (search == null) {
+        if (search == null || search.trim() == "") {
             response.sendRedirect("mentorListAdmin");
+            return;
         }
         List<Mentor> mentorList = actMent.searchAllMentor(search);
+        //Update status
         String id_raw = request.getParameter("mentorId");
         int id = Integer.parseInt(id_raw);
         String status = request.getParameter("status");
@@ -147,6 +221,8 @@ public class adminSearchMentorServlet extends HttpServlet {
         } else {
             boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
         }
+
+        //get pagination
         String page_raw = request.getParameter("page");
         String numDis_raw = request.getParameter("numDis");
         int page, numDis;
@@ -160,30 +236,96 @@ public class adminSearchMentorServlet extends HttpServlet {
         } else {
             numDis = 10;
         }
-
         int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
         int numMent = mentorList.size();
         int numOfPage = (numMent % numDis == 0 ? numMent / numDis : (numMent / numDis + 1));
+
+        //Set pagination
+        request.setAttribute("stt", stt);
         request.setAttribute("numOfPage", numOfPage);
-        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
-        request.setAttribute("search", search);
         request.setAttribute("indexPage", page);
         request.setAttribute("numDis", numDis);
-        request.setAttribute("listMent", mentorList);
+
+        //
+        mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
+        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Rate> listAllRate = actRate.getAllRates();
+        //Create needed data
+        String[] listProfess = new String[mentorList.size()];
+        int[] curRequest = new int[mentorList.size()];
+        float[] percenComplete = new float[mentorList.size()];
+        float[] rate = new float[mentorList.size()];
+        boolean[] checkValidate = new boolean[mentorList.size()];
         List<CV> listCV = actCV.getMostEficientCV();
-        request.setAttribute("listCV", listCV);
-        //Manage request Accepted
-        List<Request> curAcceptRequestt = actRequest.getAllRequestByStatus("Accepted");
-        request.setAttribute("requestAccList", curAcceptRequestt);
-        List<Request> allRequest = actRequest.getAllRequest();
-        request.setAttribute("requestList", allRequest);
-        List<Request> curFinishRequest = actRequest.getAllRequestByStatus("Completed");
-        request.setAttribute("requestComList", curFinishRequest);
-        PrintWriter out = response.getWriter();
-        //Handle rate
-        List<Rate> listRate = actRate.getAllRate();
-        request.setAttribute("listRate", listRate);
+
+        //Loop all mentor list
+        for (int i = 0; i < mentorList.size(); i++) {
+            int mentorID = mentorList.get(i).getMentorId();
+            //Professtion
+            boolean availProfess = false;
+            for (int j = 0; j < listCV.size(); j++) {
+                if (mentorID == listCV.get(j).getMentorId()) {
+                    listProfess[i] = listCV.get(j).getJobProfession();
+                    availProfess = true;
+                    listCV.remove(j);
+                    j = listCV.size();
+                }
+            }
+            if (availProfess == false) {
+                listProfess[i] = "Not Available";
+            }
+            //Current request
+            int countRequest = 0;
+            for (int r = 0; r < curProcessRequestt.size(); r++) {
+                if (mentorID == curProcessRequestt.get(r).getMentorId()) {
+                    countRequest++;
+                    curProcessRequestt.remove(r);
+                }
+            }
+            curRequest[i] = countRequest;
+            //Percen complete
+            int countComplete = 0;
+            for (int j = 0; j < curComplete.size(); j++) {
+                if (mentorID == curComplete.get(j).getMentorId()) {
+                    countComplete++;
+                    curComplete.remove(j);
+                }
+            }
+            int countAllValid = actRequest.countValidRequestMentorID(mentorID);
+            if (countAllValid != 0) {
+                percenComplete[i] = (float) countComplete / countAllValid;
+                BigDecimal bd = new BigDecimal(percenComplete[i]);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                percenComplete[i] = bd.floatValue() * 100;
+            } else {
+                percenComplete[i] = 0;
+            }
+            //Rate
+            int sumRateMentor = actRate.sumRateMentor(mentorID);
+            int countRateMentor = actRate.CountRateMentor(mentorID);
+            if (countRateMentor != 0) {
+                rate[i] = (float) sumRateMentor / countRateMentor;
+                BigDecimal bd = new BigDecimal(rate[i]);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                rate[i] = bd.floatValue();
+            }
+            //Update status avalable
+            CV mentorCV = actCV.getCVbyMentorId(mentorID);
+            if (mentorCV == null) {
+                checkValidate[i] = false;
+            } else {
+                checkValidate[i] = (!actSlot.getListofActiveSlotsByMentorId(mentorID).isEmpty()) ? true : false;
+            }
+        }
+        //Set data
+        request.setAttribute("search", search);
+        request.setAttribute("listMent", mentorList);
+        request.setAttribute("profess", listProfess);
+        request.setAttribute("curRe", curRequest);
+        request.setAttribute("percComplete", percenComplete);
+        request.setAttribute("rate", rate);
+        request.setAttribute("validChange", checkValidate);
         request.getRequestDispatcher("/Admin/adminSearchMentor.jsp").forward(request, response);
     }
 

@@ -4,7 +4,11 @@
  */
 package controller.Admin;
 
+import DAO.MentorDAO;
+import DAO.RequestDAO;
 import DAO.SkillDAO;
+import Model.Mentor;
+import Model.Request;
 import Model.Skill;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,8 +23,8 @@ import java.util.List;
  *
  * @author tuong
  */
-@WebServlet(name = "SerchSkillServlet", urlPatterns = {"/adminSearchSkill"})
-public class SerchSkillServlet extends HttpServlet {
+@WebServlet(name = "SkillDetailAdminServlet", urlPatterns = {"/skillDetailAdmin"})
+public class SkillDetailAdminServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +43,10 @@ public class SerchSkillServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SerchSkillServlet</title>");
+            out.println("<title>Servlet SkillDetailAdminServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SerchSkillServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SkillDetailAdminServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,39 +64,34 @@ public class SerchSkillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        String page_raw = request.getParameter("page");
-        String numDis_raw = request.getParameter("numDis");
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
-        }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 5;
-        }
-        int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
+        SkillDAO actSkill = new SkillDAO();
+        RequestDAO actReq = new RequestDAO();
+        MentorDAO actMentor = new MentorDAO();
 
-        String searchName = request.getParameter("search");
-        if(searchName == null || searchName==""){
+        //Get parameteer
+        String skillId_raw = request.getParameter("skillID");
+        int skillId = 0;
+        if (skillId_raw != null && skillId_raw != "") {
+            try {
+                skillId = Integer.parseInt(skillId_raw);
+            } catch (NumberFormatException e) {
+                response.sendRedirect("SkillListAdmin");
+            }
+        } else {
             response.sendRedirect("SkillListAdmin");
             return;
         }
-        List<Skill> listAllSkill = act.getListOfSkillByName(searchName);
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
-        request.setAttribute("numOfPage", numOfPage);
-        request.setAttribute("indexPage", page);
-        request.setAttribute("numDis", numDis);
-        listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
-        request.setAttribute("search", searchName);
-        request.setAttribute("list", listAllSkill);
-        request.setAttribute("search", searchName);
-        request.getRequestDispatcher("/Admin/adminSearchSkill.jsp").forward(request, response);
+
+        //Set variable
+        Skill curSkill = actSkill.getSkillByID(skillId);
+        List<Request> listRequest = actReq.getRequestsBySkillId(skillId);
+        List<Mentor> listMentor = actMentor.getAllMentorHaveSkillId(skillId);
+        //Set variable value to page
+        request.setAttribute("curSkill", curSkill);
+        request.setAttribute("liReq", listRequest);
+        request.setAttribute("liMentor", listMentor);
+
+        request.getRequestDispatcher("/Admin/skillDetailAdmin.jsp").forward(request, response);
     }
 
     /**
@@ -106,47 +105,46 @@ public class SerchSkillServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO act = new SkillDAO();
-        String id_raw = request.getParameter("id");
-        int id = Integer.parseInt(id_raw);
-        Skill curSkill = act.getSkillById(id);
+        SkillDAO actSkill = new SkillDAO();
+        RequestDAO actReq = new RequestDAO();
+        MentorDAO actMentor = new MentorDAO();
+
+        //Get parameteer
+        String skillId_raw = request.getParameter("skillID");
+        int skillId = 0;
+        if (skillId_raw != null && skillId_raw != "") {
+            try {
+                skillId = Integer.parseInt(skillId_raw);
+            } catch (NumberFormatException e) {
+                response.sendRedirect("SkillListAdmin");
+            }
+        } else {
+            response.sendRedirect("SkillListAdmin");
+            return;
+        }
+
+        //Set variable
+        Skill curSkill = actSkill.getSkillByID(skillId);
+        List<Request> listRequest = actReq.getRequestsBySkillId(skillId);
+        List<Mentor> listMentor = actMentor.getAllMentorHaveSkillId(skillId);
+        //Update status
         String curStatus = curSkill.getStatus();
         if (curStatus.equalsIgnoreCase("active")) {
             curSkill.setStatus("Inactive");
         } else {
             curSkill.setStatus("Active");
         }
-        boolean checkUpdateSkill = act.updateSkillInfo(curSkill);
+        boolean checkUpdateSkill = actSkill.updateSkillInfo(curSkill);
         if (checkUpdateSkill == false) {
             response.sendRedirect("500.jsp");
             return;
         }
-        String page_raw = request.getParameter("page");
-        String numDis_raw = request.getParameter("numDis");
-        int page, numDis;
-        if (page_raw != null) {
-            page = Integer.parseInt(page_raw);
-        } else {
-            page = 1;
-        }
-        if (numDis_raw != null) {
-            numDis = Integer.parseInt(numDis_raw);
-        } else {
-            numDis = 5;
-        }
-        int stt = (page - 1) * numDis;
-        request.setAttribute("stt", stt);
-        String searchName = request.getParameter("search");
-        List<Skill> listAllSkill = act.getListOfSkillByName(searchName);
-        int numSkill = listAllSkill.size();
-        int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
-        request.setAttribute("numOfPage", numOfPage);
-        request.setAttribute("indexPage", page);
-        request.setAttribute("numDis", numDis);
-        listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
-        request.setAttribute("search", searchName);
-        request.setAttribute("list", listAllSkill);
-        request.getRequestDispatcher("/Admin/adminSearchSkill.jsp").forward(request, response);
+        //Set variable value to page
+        request.setAttribute("curSkill", curSkill);
+        request.setAttribute("liReq", listRequest);
+        request.setAttribute("liMentor", listMentor);
+
+        request.getRequestDispatcher("/Admin/skillDetailAdmin.jsp").forward(request, response);
     }
 
     /**

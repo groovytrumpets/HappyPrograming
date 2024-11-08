@@ -82,7 +82,7 @@ public class UpdateSkillServlet extends HttpServlet {
         request.setAttribute("createDate", curSkill.getCreateDate());
         request.setAttribute("status", curSkill.getStatus());
         request.setAttribute("description", curSkill.getDescription());
-        request.getRequestDispatcher("/Admin/updateSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("/Admin/updateSkillAdmin.jsp").forward(request, response);
     }
 
     /**
@@ -105,8 +105,8 @@ public class UpdateSkillServlet extends HttpServlet {
             String error = "You must not leave this field empty!";
             response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
             return;
-        } else if (name.length() > 50) {
-            String error = "Please enter name no longger than 50 character!";
+        } else if (name.length() > 20) {
+            String error = "Please enter name no longger than 20 character!";
             response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
             return;
         }

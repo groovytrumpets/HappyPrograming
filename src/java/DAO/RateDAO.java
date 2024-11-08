@@ -78,7 +78,7 @@ public class RateDAO extends DBContext {
         String query = "INSERT INTO Rate (MentorID, MenteeID, RequestID, Rate, Comment, CreateDate, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, mentorId);
             ps.setInt(2, menteeId);
             ps.setInt(3, requestId);
@@ -93,7 +93,7 @@ public class RateDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
     public void saveSkillRating(int skillId, int rate) {
         String query = """
                        UPDATE SkillList
@@ -102,7 +102,7 @@ public class RateDAO extends DBContext {
                        """;
 
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, rate);
             ps.setInt(2, skillId);
             ps.executeUpdate();
@@ -177,8 +177,47 @@ public class RateDAO extends DBContext {
         return false; // No existing rating found or query failed
     }
 
-    
-    
+    public int sumRateMentor(int mentorID) {
+        String sql = "select Sum(Rate) as sum from Rate \n"
+                + "where MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                int sum = rs.getInt("sum");
+                if (rs.wasNull()) {
+                    return 0; 
+                }
+                return sum;
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+     public int CountRateMentor(int mentorID) {
+        String sql = "select Count(RateID) as count from Rate \n"
+                + "where MentorID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                if (rs.wasNull()) {
+                    return 0; 
+                }
+                return count;
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         System.out.println(new RateDAO().getRatingForRequest(6, 7, 1));
     }
