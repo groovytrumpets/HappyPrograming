@@ -247,6 +247,7 @@
                                         <c:when test="${sessionScope.acc.roleId == 3}">
                                             <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
+                                                    <li><a href="admindashboard">Dashboard</a></li>
                                                     <li><a href="mentorListAdmin">Mentor List</a></li>
                                                     <li><a href="SkillListAdmin">Skill</a></li>
                                                     <li><a href="menteeListAdmin">Mentee List</a></li>
