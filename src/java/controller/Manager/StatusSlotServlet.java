@@ -70,8 +70,8 @@ public class StatusSlotServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             id = Integer.parseInt(id_raw);
             if (action.equalsIgnoreCase("active")) {
-                System.out.println("alo"+sld.getListofActiveSlotsJoinRequestSlotByMentorId(id));
-                if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()){
+                System.out.println("alo"+sld.getListofUnActiveSlotsJoinRequestSlotByMentorId(id));
+                if (sld.getListofUnActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()){
                 sld.deleteAllActiveSlot(id);
                 sld.setSlotInactiveToActivebyMentorId(id);
                     
@@ -92,7 +92,7 @@ public class StatusSlotServlet extends HttpServlet {
                 cvd.setStatusInactiveMentor(id);
                 
                 //check if any request that used that slot
-                if (sld.getListofActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()) {
+                if (sld.getListofUnActiveSlotsJoinRequestSlotByMentorId(id).isEmpty()) {
                 sld.deleteAllInactiveSlot(id);
                 sld.setSlotActiveToInctivebyMentorId(id);
                 }else{

@@ -177,7 +177,7 @@
                                         <div class="form-group col-2">
                                             <label class="col-form-label">Year of experience</label>
                                             <div>
-                                                <input class="form-control" type="number" step="1" max="90" name="year" required>
+                                                <input class="form-control" type="number" step="1" min="0" max="65" name="year" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">

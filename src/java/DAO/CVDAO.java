@@ -429,6 +429,23 @@ public class CVDAO extends DBContext {
         }
         return list;
     }
+    public List<Skill> getActiveCVSkillListByCVID(int id) {
+        List<Skill> list = new ArrayList<>();
+        String sql = "select s.* from Skill s join SkillList sl on s.SkillID=sl.SkillID where CVID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Skill skill = new Skill(rs.getInt("skillId"),
+                        rs.getString("skillName"));
+                list.add(skill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print the exception for debugging
+        }
+        return list;
+    }
 
     public List<Skill> getSkillList(int id) {
         List<Skill> list = new ArrayList<>();
@@ -1128,7 +1145,7 @@ public class CVDAO extends DBContext {
 
     public List<Request> getListofRequestbyStaus() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "select * from Request where Status not like 'open' and Status not like 'reject' order by RequestID desc";
+        String sql = "select * from Request where Status not like 'open' and Status not like 'reject' and Status not like 'paid' order by RequestID desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();

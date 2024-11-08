@@ -110,7 +110,7 @@ public class SlotDAO extends DBContext {
     }
 
     public void deleteSlot(int Id) {
-        String sql = "DELETE FROM [dbo].[Slot] WHERE SlotID=?";
+        String sql = "Update Slot set Status = 'deleted' where SlotID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, Id);
@@ -285,7 +285,33 @@ public class SlotDAO extends DBContext {
     }
     public List<Slot> getListofActiveSlotsJoinRequestSlotByMentorId(int id) {
         List<Slot> slots = new ArrayList<>();
-        String sql = "select s.* from Slot s join RequestSlotItem r on s.SlotID=r.SlotID where s.MentorID=? and s.Status = 'available'";
+        String sql = "select s.* from Slot s join RequestSlotItem r on s.SlotID=r.SlotID where s.MentorID=? and (s.Status = 'available' or s.Status = 'unavailable')";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int slotId = rs.getInt("SlotID");
+                int mentorId = rs.getInt("MentorID");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String dayInWeek = rs.getString("DayInWeek");
+                String status = rs.getString("Status");
+                int cvid = rs.getInt("CVID");
+
+                Slot slot = new Slot(slotId, mentorId, startTime, endTime, dayInWeek, status, cvid);
+                slots.add(slot);
+            }
+            return slots;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public List<Slot> getListofUnActiveSlotsJoinRequestSlotByMentorId(int id) {
+        List<Slot> slots = new ArrayList<>();
+        String sql = "select s.* from Slot s join RequestSlotItem r on s.SlotID=r.SlotID where s.MentorID=? and ( s.Status = 'unavailable')";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
@@ -441,7 +467,7 @@ public class SlotDAO extends DBContext {
     }
 
     public boolean deleteAllInactiveSlot(int mentorId) {
-        String sql = "DELETE FROM [dbo].[Slot] WHERE MentorID=? and Status='available'";
+        String sql = "Update [dbo].[Slot] set Status='deleted' WHERE MentorID=? and Status='inactive'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
@@ -454,7 +480,7 @@ public class SlotDAO extends DBContext {
     }
 
     public boolean deleteAllActiveSlot(int mentorId) {
-        String sql = "DELETE FROM [dbo].[Slot] WHERE MentorID=? and Status='available'";
+        String sql = "Update [dbo].[Slot] set Status='deleted' WHERE MentorID=? and Status='available'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);

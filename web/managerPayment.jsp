@@ -119,7 +119,7 @@
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">STT</th>
-                                                <th scope="col">Title</th>
+<!--                                                <th scope="col">Title</th>-->
                                                 <th scope="col">Mentee Uname</th>
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Start Time</th>
@@ -136,11 +136,11 @@
 
                                                 <tr>
                                                     <th class="align-middle" scope="row">${status.index + 1}</th>
-                                                    <td class="align-middle">${c.title}</td>
+<!--                                                    <td class="align-middle">${c.title}</td>-->
                                                     <c:forEach items="${requestScope.menteeList}" var="v">
                                                         <c:if test="${c.menteeId==v.menteeId}">
                                                             <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
-                                                            <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${v.email}</td>
+                                                            <td class="align-middle" style="max-width: 150px;word-wrap: break-word;">${v.email}</td>
                                                         </c:if>
                                                     </c:forEach>
 
@@ -151,15 +151,15 @@
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Processing')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="#" class="btn button-sm red">Processing</a>
+                                                                    <span href="#" class="text-red"><b>Processing</b></span>
                                                                     <a href="activementeerequest?id=${c.requestId}" class="btn button-sm orange"><i class="ti-check"></i></a>
                                                                 </span>
 
                                                             </c:when>
                                                             <c:when test="${c.status.equals('Studying')}">
                                                                 <span class="orders-btn">
-                                                                    <a href="#" class="btn button-sm orange">Studying</a>
-                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red"><i class="ti-close"></i></a>
+                                                                    <span href="#" class="text-orange"><b>Studying</b></span>
+<!--                                                                    <a href="activementeerequest?id=${c.requestId}" class="btn button-sm red"><i class="ti-close"></i></a>-->
 
                                                                 </span>
                                                             </c:when>
@@ -195,12 +195,11 @@
                                 <h4 class="wc-title">
                                     Wallet 
                                 </h4>
-                                <span class="wc-des">                                    
-                                    Wallet of Manager
+                                <span class="wc-item">                                    
+                                    <fmt:formatNumber value="${wallet.balance}" type="number" maxFractionDigits="2" /> VND
                                 </span>
-                                <span class="wc-stats">
-                                    <span class=""><fmt:formatNumber value="${wallet.balance}" type="number" maxFractionDigits="2" /> </span>₫
-                                </span>	
+                                
+                                
                             </div>				      
                         </div>
                         <div class="widget-box" style="height: auto">
@@ -219,10 +218,10 @@
                                                             <a href="#" class=""><b>${p.sender}</b></a>
                                                             to <a href="#" class="text-black-50"><b>You</b></a> <br/>
                                                             <span class="text-black"><b class="text-green">+<fmt:formatNumber value="${p.totalAmount}" type="number" maxFractionDigits="2" /> ₫ </b>
-                                                                at ${p.paymentDate}</span>
+                                                               <br/> ${p.formattedPaymentDate} at ${p.formattedPaymentTime} </span>
                                                         </span>
-                                                        <span class="orders-btn">
-                                                            <a href="#" class="btn button-sm green">Mentee Paid</a>
+                                                        <span class="orders-btn text-success">
+                                                            <b>Received</b>
                                                         </span>
                                                         <!--
                                                            
@@ -260,7 +259,7 @@
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">STT</th>
-                                                <th scope="col">Title</th>
+<!--                                                <th scope="col">Title</th>-->
                                                 <th scope="col">Mentor Uname</th>
                                                 <th scope="col">Email</th>
                                                 <th scope="col">End Time</th>
@@ -277,13 +276,13 @@
 
                                                 <tr>
                                                     <th class="align-middle" scope="row">${status.index + 1}</th>
-                                                    <td class="align-middle">${c.title}</td>
+<!--                                                    <td class="align-middle">${c.title}</td>-->
                                                     <c:forEach items="${requestScope.mentorList}" var="v">
                                                         <c:if test="${c.mentorId==v.mentorId}">
                                                             <td class="align-middle" style="max-width: 20px;word-wrap: break-word;"><a href="#" class="text-primary">${v.username}</a></td>
                                                                 <c:forEach items="${requestScope.listUser}" var="u">
                                                                     <c:if test="${v.username==u.username}">                                                                
-                                                                    <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${u.email}</td>
+                                                                    <td class="align-middle" style="max-width: 150px;word-wrap: break-word;">${u.email}</td>
                                                                 </c:if>
                                                             </c:forEach>
                                                         </c:if>
@@ -295,14 +294,10 @@
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">
                                                         <c:choose>
                                                             <c:when test="${c.status.equals('Completed')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="paymentmanagercate?id=${c.requestId}" class="btn button-sm green">Completed</a>
-                                                                </span>
+                                                                <span href="paymentmanagercate?id=${c.requestId}" class="text-success"><b>Completed</b></span>
                                                             </c:when>
                                                             <c:when test="${c.status.equals('Paid')}">
-                                                                <span class="orders-btn">
-                                                                    <a href="paymentmanagercate?id=${c.requestId}" class="btn button-sm purple">Paid</a>
-                                                                </span>
+                                                                <span href="paymentmanagercate?id=${c.requestId}" class="text-primary"><b>Paid</b></span>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 ${c.status}
@@ -355,7 +350,7 @@
                                                                             </span>
                                                                         </span>
                                                                         <span class="orders-btn">
-                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm">Make Payment</a>
+                                                                            <a href="paymentmanagerchange?id=${v.username}&ballance=${c.price}&requestId=${c.requestId}" class="btn button-sm">Confirm Payment</a>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>
@@ -383,8 +378,8 @@
                                                                             <span class="text-black"><b class="text-red">Total: -<fmt:formatNumber value="${c.price}" type="number" maxFractionDigits="2" /> ₫ </b>
                                                                             </span>
                                                                         </span>
-                                                                        <span class="orders-btn">
-                                                                            <a  href="#" class="btn button-sm purple">Paid</a>
+                                                                        <span class="orders-btn text-primary">
+                                                                            <b>Paid</b>
                                                                         </span>
                                                                     </li>
                                                                 </c:if>

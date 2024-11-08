@@ -213,7 +213,7 @@
                                             <ul>
                                                 <li><i class="ti-location-pin"></i>Km29 Đại lộ Thăng Long, H. Thạch Thất, TP. Hà Nội.</li>
                                                 <li><i class="ti-mobile"></i>+84 961316508(24/7 Support Line)</li>
-                                                <li><i class="ti-email"></i>anhnhhhe187162@fpt.edu.vn</li>
+                                                <li><i class="ti-email"></i>elearningfptedu@gmail.com</li>
                                             </ul>
                                         </div>
                                         <h5 class="m-t0 m-b20">Follow Us</h5>

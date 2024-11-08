@@ -74,7 +74,7 @@
                             <div class="topbar-left">
                                 <ul>
                                     <li><a href="faq.jsp"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>anhnhhhe187162@fpt.edu.vn</a></li>
+                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>elearningfptedu@gmail.com</a></li>
                                 </ul>
                             </div>
                             <div class="topbar-right">
@@ -193,11 +193,8 @@
                                     <a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt=""></a>
                                 </div>
                                 <ul class="nav navbar-nav">
-                                    <c:choose>
-                                        <c:when test="${sessionScope.acc.roleId == 4}">
-
-                                        </c:when>
-                                        <c:otherwise>
+                                    
+                                       
                                             <li class="active"><a href="home;">Home</a>
 
                                             </li>
@@ -234,8 +231,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                        </c:otherwise>
-                                    </c:choose>
+                                        
                                     <c:choose>
 
 
