@@ -708,6 +708,35 @@ public class SkillDAO extends DBContext {
         return null;
     }
 
+    public Skill getSkillByRequestID(int requestID) {
+        String sql = """
+                     select s.* from Skill s 
+                     join Request r on r.SkillID = s.SkillID
+                     where r.RequestID = ?
+                     """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestID);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id_raw = rs.getString("SkillID");
+                int id = Integer.parseInt(id_raw);
+                String name = rs.getString("SkillName");
+                String date_raw = rs.getString("CreateDate");
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formater.parse(date_raw);
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                byte[] img = rs.getBytes("img");
+                Skill curSkill = new Skill(id, name, date, description, status, img);
+                return curSkill;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public List<Skill> getListOfSkillByNamePagination(int page, int numShow, String skillName) {
         List<Skill> listSkill = new ArrayList<>();
         String sql = "SELECT [SkillID]\n"

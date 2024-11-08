@@ -218,6 +218,25 @@ public class RateDAO extends DBContext {
         return 0;
     }
 
+    public boolean hasRated(int menteeId, int mentorId, int requestId) {
+        String query = """
+                       SELECT RateID FROM Rate 
+                       WHERE MenteeID = ? AND MentorID = ? AND RequestID = ? AND Status IN ('Active', 'active');
+                       """;
+        try (
+            PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, menteeId);
+            ps.setInt(2, mentorId);
+            ps.setInt(3, requestId);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next(); // Trả về true nếu đã có đánh giá
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public static void main(String[] args) {
         System.out.println(new RateDAO().getRatingForRequest(6, 7, 1));
     }

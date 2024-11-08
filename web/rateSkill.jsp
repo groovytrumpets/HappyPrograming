@@ -20,11 +20,11 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
@@ -33,7 +33,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing : Rate Skill </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,12 +116,16 @@
                                                     <input type="hidden" name="requestId" value="${param.requestId}" />
 
                                                     <!-- Rating Section -->
-                                                    
-                                                        <div class="text-center">
-                                                            <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="rounded-circle" alt="${skill.skillName}" style="margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
-                                                        </div>
-                                                        <h5>Framework: ${skill.skillName}</h5>
-                                                    
+
+                                                    <div class="text-center">
+                                                        <img src="data:image/jpeg;base64,${skill.base64ImageFile}" class="rounded-circle" alt="${skill.skillName}" style="margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                                                    </div>
+                                                    <h5>Framework: ${skill.skillName}</h5>
+                                                    <c:forEach items="${requestScope.requestlist}" var="r">
+                                                        <c:if test="${r.requestId==param.requestId}">
+                                                            <span>Title: ${r.title}</span><br/>
+                                                        </c:if>
+                                                    </c:forEach>
 
                                                     <!-- Star Rating -->
                                                     <div class="star-rating">

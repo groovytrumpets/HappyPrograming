@@ -99,17 +99,20 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
             float totalHours = 0;
             int totalRequests = requestDAO.countTotalRequestsForMentee(menteeId);
             int totalMentors = requestDAO.countTotalMentorsForMentee(menteeId);
-            
+
             for (Request req : listRequests) {
                 float hoursForRequest = getTotalHourOfRequest(req); // tinh tong so gio cua moi request
                 hoursPerRequestList.add(hoursForRequest);  // them vao list
                 totalHours += hoursForRequest;  //tong so gio
             }
 
+            System.out.println("Hours Per Request List: " + hoursPerRequestList);
+
             // Round the total hours to 2 decimal places
             totalHours = (float) Math.round(totalHours * 100) / 100;
+            String formattedTotalHours = formatTotalHours(totalHours);
 
-            request.setAttribute("totalHours", totalHours);
+            request.setAttribute("formattedTotalHours", formattedTotalHours);
             request.setAttribute("listRequests", listRequests);
             request.setAttribute("hoursPerRequestList", hoursPerRequestList);
             request.setAttribute("totalRequests", totalRequests);
@@ -120,6 +123,13 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
         } else {
             response.sendRedirect("home");
         }
+    }
+
+    //chuyển đổi từ số thập phân giờ thành giờ và phút
+    private String formatTotalHours(float totalHours) {
+        int hours = (int) totalHours; //lấy phần nguyên của giờ
+        int minutes = Math.round((totalHours - hours) * 60); //chuyển phần thập phân thành phút
+        return hours + " hour " + minutes + " minute";
     }
 
     //tinh tong so gio cua 1 request

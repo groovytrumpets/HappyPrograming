@@ -8,6 +8,7 @@ import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RateDAO;
+import DAO.RequestDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
@@ -72,6 +73,7 @@ public class RateMentorSV extends HttpServlet {
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
         CVDAO cvdao = new CVDAO();
+        RequestDAO requestDAO = new RequestDAO();
 
         if (curUser == null) {
             response.sendRedirect("signin");
@@ -100,9 +102,12 @@ public class RateMentorSV extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mentor not found");
             return;
         }
+        int requestID = Integer.parseInt(request.getParameter("requestId"));
+        requestDAO.getRequestByID(requestID);
 
         request.setAttribute("cvmentor", cvdao.getCVbyMentorId(mentorId));
         request.setAttribute("mentor", mentor);
+        request.setAttribute("request", requestDAO.getRequestByID(requestID));
         request.getRequestDispatcher("rateMentor.jsp").forward(request, response);
     }
 

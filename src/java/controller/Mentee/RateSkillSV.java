@@ -8,10 +8,12 @@ import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RateDAO;
+import DAO.RequestDAO;
 import DAO.SkillDAO;
 import DAO.SkillListDAO;
 import Model.Mentee;
 import Model.Mentor;
+import Model.Request;
 import Model.Skill;
 import Model.SkillList;
 import Model.User;
@@ -23,6 +25,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
@@ -72,8 +75,8 @@ public class RateSkillSV extends HttpServlet {
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
         MenteeDAO actMentee = new MenteeDAO();
-        MentorDAO actMentor = new MentorDAO();
         SkillDAO actSkill = new SkillDAO();
+        RequestDAO requestdao = new RequestDAO();
         CVDAO cvdao = new CVDAO();
 
         if (curUser == null) {
@@ -89,22 +92,26 @@ public class RateSkillSV extends HttpServlet {
             response.sendRedirect("home");
             return;
         }
-        String skillid_raw = request.getParameter("skillId");
-        int skillId;
+        String requestid_raw = request.getParameter("requestId");
+        int requestId;
         try {
-            skillId = Integer.parseInt(skillid_raw);
+            requestId = Integer.parseInt(requestid_raw);
         } catch (NumberFormatException e) {
             System.out.println(e);
             return;
         }
 
-        Skill skill = actSkill.getSkillByID(skillId);
+        Skill skill = actSkill.getSkillByRequestID(requestId);
+        List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
+        List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
         if (skill == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Skill not found");
             return;
         }
 
         request.setAttribute("skill", skill);
+        request.setAttribute("requestlist", requestlist);
+        request.setAttribute("mentorlist", mentorlist);
         request.getRequestDispatcher("rateSkill.jsp").forward(request, response);
     }
 

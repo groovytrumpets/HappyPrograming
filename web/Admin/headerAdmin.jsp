@@ -255,7 +255,7 @@
 			<nav class="ttr-sidebar-navi">
 				<ul>
 					<li>
-						<a href="home" class="ttr-material-button">
+						<a href="admindashboard" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-home"></i></span>
 		                	<span class="ttr-label">Dashborad</span>
 		                </a>

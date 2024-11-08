@@ -136,9 +136,14 @@
                                                                  style="margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
                                                         </div>
                                                         <h3>Mentor: ${mentor.fullName}</h3>
-                                                        <h5>Education: ${cvmentor.education}</h5>
-                                                        <h5>Framework: ${cvmentor.framework}</h5>
+                                                        <c:if test="${request.mentorId==requestScope.mentor.mentorId}">
+                                                            <h5>Title: ${request.title}</h5>
+                                                            <h5>Framework: ${request.framework}</h5>
+                                                            <h5>Education: ${cvmentor.education}</h5>
+                                                        </c:if>
                                                     </c:if>
+
+
 
                                                     <!-- Star Rating -->
                                                     <div class="star-rating">
