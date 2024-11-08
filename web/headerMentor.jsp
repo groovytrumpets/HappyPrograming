@@ -263,7 +263,7 @@
                         <li>
                             <a href="home" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-home"></i></span>
-                                <span class="ttr-label">Dashboard</span>
+                                <span class="ttr-label">Home</span>
                             </a>
                         </li>
                         <li>

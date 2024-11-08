@@ -72,7 +72,7 @@
 			<!--logo start -->
 			<div class="ttr-logo-box">
 				<div>
-					<a href="loginAdmin" class="ttr-logo">
+					<a href="home" class="ttr-logo">
 						<img class="ttr-logo-mobile" alt="" src="assets/images/fptuLogo.png" width="30" height="30">
 						<img class="ttr-logo-desktop" alt="" src="assets/images/fptuLogo.png" width="160" height="27">
 					</a>
@@ -83,7 +83,7 @@
 				<!-- header left menu start -->
 				<ul class="ttr-header-navigation">
 					<li>
-						<a href="mentorListAdmin" class="ttr-material-button ttr-submenu-toggle">HOME</a>
+						<a href="home" class="ttr-material-button ttr-submenu-toggle">HOME</a>
 					</li>
 					<li>
 						<a href="#" class="ttr-material-button ttr-submenu-toggle">QUICK MENU <i class="fa fa-angle-down"></i></a>
@@ -181,10 +181,8 @@
 						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><img alt="" src="assets\images\userprofile.png" width="32" height="32"></span></a>
 						<div class="ttr-header-submenu">
 							<ul>
-								<li><a href="user-profile.html">My profile</a></li>
-								<li><a href="list-view-calendar.html">Activity</a></li>
 								<li><a href="changeloggingpassword">Change Pass</a></li>
-								<li><a href="logout">Logout</a></li>
+								<li><a href="loginAdmin">Logout</a></li>
 							</ul>
 						</div>
 					</li>
@@ -257,7 +255,7 @@
 					<li>
 						<a href="admindashboard" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-home"></i></span>
-		                	<span class="ttr-label">Dashborad</span>
+		                	<span class="ttr-label">Home</span>
 		                </a>
 		            </li>
 					<li>

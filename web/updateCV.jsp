@@ -187,7 +187,7 @@
                                         <div class="form-group col-2">
                                             <label class="col-form-label">Year of experience</label>
                                             <div>
-                                                <input class="form-control" type="number" step="1" name="year" max="90" value="${requestScope.cvFound.yearOfExperience}" required>
+                                                <input class="form-control" type="number" step="1" name="year" min="0" max="65" value="${requestScope.cvFound.yearOfExperience}" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
