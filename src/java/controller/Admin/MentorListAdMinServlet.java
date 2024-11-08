@@ -103,8 +103,8 @@ public class MentorListAdMinServlet extends HttpServlet {
 
         //
         mentorList = actMent.getListMentorPagiantion(page, numDis);
-        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
-        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Studying");
+        List<Request> curComplete = actRequest.getAllCompleteRequest();
         List<Rate> listAllRate = actRate.getAllRates();
         //Create needed data
         String[] listProfess = new String[mentorList.size()];
@@ -205,12 +205,12 @@ public class MentorListAdMinServlet extends HttpServlet {
         String status = request.getParameter("status");
         if (status != null) {
             if (status.equalsIgnoreCase("inactive")) {
-                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Active");
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "active");
             } else {
-                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "inactive");
             }
         } else {
-            boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+            boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "inactive");
         }
 
         //get pagination
@@ -239,8 +239,8 @@ public class MentorListAdMinServlet extends HttpServlet {
 
         //
         mentorList = actMent.getListMentorPagiantion(page, numDis);
-        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
-        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Processing");
+        List<Request> curComplete = actRequest.getAllCompleteRequest();
         List<Rate> listAllRate = actRate.getAllRates();
         //Create needed data
         String[] listProfess = new String[mentorList.size()];
