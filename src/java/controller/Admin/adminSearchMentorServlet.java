@@ -105,8 +105,8 @@ public class adminSearchMentorServlet extends HttpServlet {
 
         //
         mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
-        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
-        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Processing");
+        List<Request> curComplete = actRequest.getAllCompleteRequest();
         List<Rate> listAllRate = actRate.getAllRates();
         //Create needed data
         String[] listProfess = new String[mentorList.size()];
@@ -214,12 +214,12 @@ public class adminSearchMentorServlet extends HttpServlet {
         String status = request.getParameter("status");
         if (status != null) {
             if (status.equalsIgnoreCase("inactive")) {
-                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Active");
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "active");
             } else {
-                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+                boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "inactive");
             }
         } else {
-            boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "Inactive");
+            boolean checkUpdateStatus = actMent.changeStatusMentorById(id, "inactive");
         }
 
         //get pagination
@@ -248,8 +248,8 @@ public class adminSearchMentorServlet extends HttpServlet {
 
         //
         mentorList = actMent.searchListMentorPagiantion(search, page, numDis);
-        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Process");
-        List<Request> curComplete = actRequest.getAllRequestByStatus("Completed");
+        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Processing");
+        List<Request> curComplete = actRequest.getAllCompleteRequest();
         List<Rate> listAllRate = actRate.getAllRates();
         //Create needed data
         String[] listProfess = new String[mentorList.size()];

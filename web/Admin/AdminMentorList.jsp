@@ -127,7 +127,7 @@
                                                 <td>${rate[stt-(indexPage-1)*numDis-1]}/5<i class="fa fa-star"></td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${c.status eq 'Active'}">
+                                                        <c:when test="${c.status eq 'active'}">
                                                             <div class="btn-secondry add-item m-r5" style="background-color: #00a834">
                                                                 <button type="submit"   style="text-decoration: none; color: inherit; border: none; background: none; padding: 0; font: inherit; cursor: pointer;" >${c.status}</button>
                                                             </div>
