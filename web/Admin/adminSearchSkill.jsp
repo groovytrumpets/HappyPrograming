@@ -118,7 +118,7 @@
                                             <tr>
                                                 <c:set var="stt" value="${stt + 1}" />
                                                 <td>${stt}</td>
-                                                <td>${c.skillId}</td>
+                                                <td><a href="skillDetailAdmin?skillID=${c.skillId}">${c.skillId}</a></td>
                                             <input type="hidden" name="id" value="${c.skillId}">
                                             <td><img src="data:image/jpeg;base64,${c.base64ImageFile}" style="max-height: 100px; max-width: 100px"></td>
                                             <td>${c.skillName}</td>

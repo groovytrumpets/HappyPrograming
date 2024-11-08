@@ -1417,6 +1417,51 @@ public class RequestDAO extends DBContext {
         return attendancePercentage;
     }
 
+    public List<Request> getRequestsBySkillId(int skillId) {
+        // Query to fetch all requests of a particular mentee from the database
+        String sql = "SELECT [RequestID]\n"
+                + "      ,[MentorID]\n"
+                + "      ,[MenteeID]\n"
+                + "      ,[Price]\n"
+                + "      ,[Note]\n"
+                + "      ,[CreateDate]\n"
+                + "      ,[Status]\n"
+                + "      ,[Title]\n"
+                + "      ,[Framework]\n"
+                + "      ,[StartDate]\n"
+                + "      ,[EndDate]\n"
+                + "      ,[SkillID]\n"
+                + "  FROM [dbo].[Request]\n"
+                + "  Where SkillID = ?";
+
+        List<Request> requests = new ArrayList<>();
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, skillId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Request request = new Request();
+                request.setRequestId(rs.getInt("RequestID"));
+                request.setMentorId(rs.getInt("MentorID"));
+                request.setMenteeId(rs.getInt("MenteeID"));
+                request.setPrice(rs.getFloat("Price"));
+                request.setNote(rs.getString("Note"));
+                request.setCreateDate(rs.getDate("CreateDate").toLocalDate());
+                request.setStatus(rs.getString("Status"));
+                request.setTitle(rs.getString("Title"));
+                request.setFramework(rs.getString("Framework"));
+                request.setStartDate(rs.getDate("StartDate").toLocalDate());
+                request.setEndDate(rs.getDate("EndDate").toLocalDate());
+                request.setSkillId(rs.getInt("SkillID"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
     public static void main(String[] args) {
         RequestDAO act = new RequestDAO();
         LocalDate start = LocalDate.parse("2024-10-19");

@@ -162,7 +162,8 @@ public class MentorDAO extends DBContext {
                 mentor.setStatus(rs.getString("Status"));
                 listMentor.add(mentor);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return listMentor;
@@ -388,13 +389,54 @@ public class MentorDAO extends DBContext {
     public void updateStatus(int mentorId, String status) {
         String sql = "UPDATE Mentor SET Status = ? WHERE MentorID = ?";
         try (
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, status);
             pstmt.setInt(2, mentorId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Mentor> getAllMentorHaveSkillId(int skillId) {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT m.[MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,m.[CreateDate]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,m.[Status]\n"
+                + "  FROM [dbo].[Mentor] m\n"
+                + "  right join SkillList sl on m.MentorID = sl.MentorID\n"
+                + "  right join Skill s on s.SkillID = sl.SkillID\n"
+                + "  where s.SkillID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, skillId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listMentor;
     }
 
     public static void main(String[] args) {
