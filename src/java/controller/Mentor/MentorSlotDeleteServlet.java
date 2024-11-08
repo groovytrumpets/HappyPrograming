@@ -61,7 +61,8 @@ public class MentorSlotDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String slotId_raw = request.getParameter("requestid");
-        String all = request.getParameter("all");
+        System.out.println("Slot id: "+slotId_raw);
+//        String all = request.getParameter("all");
 //        if (all!=null && all.equalsIgnoreCase("all")) {
 //            String mentorid = request.getParameter("mentorid");
 //            System.out.println(mentorid);
@@ -78,7 +79,7 @@ public class MentorSlotDeleteServlet extends HttpServlet {
             SlotDAO sld = new SlotDAO();
             slotId = Integer.parseInt(slotId_raw);
             Slot slot = sld.getSlotsById2(slotId);
-            if (slot.getStatus().equalsIgnoreCase("active")) {
+            if (slot.getStatus().equalsIgnoreCase("available")) {
                 List<Slot> slotActive = sld.getListofActiveSlotsByMentorId(slot.getMentorID());
                 for (Slot slot1 : slotActive) {
                     //re-add another slot except slot wantto delet

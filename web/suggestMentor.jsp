@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Happy Programing </title>
+        <title>Suggest mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -182,7 +183,7 @@
                                                     </li>
                                                     <li class="card-courses-categories">
                                                         <h5>Price</h5>
-                                                        <h4>${mentors.cv.price}VND</h4>
+                                                        <h4><fmt:formatNumber value="${mentors.cv.price}" type="number" maxFractionDigits="2" /> VND</h4>
                                                     </li>
 
                                                     <!-- Mentor Account Username -->

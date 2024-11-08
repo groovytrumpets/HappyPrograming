@@ -100,14 +100,14 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
                                             <div>
-                                                <input class="form-control" type="file" name="img" required>
+                                                <input class="form-control" type="file" name="img" accept=".jpg, .jpeg, .png, .gif" required>
                                             </div>
                                         </div>
 
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Status</label>
                                             <div>
-                                                <input type="radio"name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
+                                                <input type="radio" name="status" value="Active" id="active" checked="checked"><label for="active">Active</label>&nbsp;&nbsp;
                                             </div>
                                         </div>
                                         <div class="seperator"></div>

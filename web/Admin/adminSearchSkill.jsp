@@ -86,7 +86,7 @@
                                 <div class="mail-search-bar col-md-4">
                                     <form method="get" action="adminSearchSkill" style="display: flex; align-items: center;">
                                         <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <input type="text" name="search" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
+                                        <input type="text" name="search" value="${search}" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
                                         <button type="submit" class="fa fa-search" style="padding: 10px;">
                                     </form>
                                 </div>

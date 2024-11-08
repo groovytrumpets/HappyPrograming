@@ -189,7 +189,7 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-12 col-sm-12 col-md-12 col-lg-2 col-form-label font-weight-bold">Statistic rating of each skill:</label>
-                                                            <div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                            <div class="col-12 col-sm-9 col-md-9 col-lg-7" class="table-vertical-scroll table-responsive" style="max-height: 400px; overflow-y: auto;">
                                                                 <c:forEach items="${requestScope.skillMentor}" var="c">
                                                                     <label class="col-form-label">
                                                                         <span class="font-weight-normal" style="margin-bottom: 0px">${c.skillName}</span>

@@ -78,12 +78,11 @@ public class ManagerSlotCatebyMentorServlet extends HttpServlet {
             CVDAO cvd = new CVDAO();
             SlotDAO sld = new SlotDAO();
             List<Mentor> listMentor = cvd.getListofMentor();
-            List<CV> listCV = cvd.getListofCVbyMentorId(id);
+
             List<Slot> listActiveSlot = sld.getListofActiveSlotsByMentorId(id);
             //System.out.println(listActiveSlot);
             List<Slot> listInactiveSlot = sld.getListofInactiveSlotsByMentorId(id);
-            List<Skill> listSkill = cvd.getListofSkill();
-            List<SkillList> listSkillList = cvd.getListofSkillList();
+
             //hien thi avata gan nhat
             List<CV> listActiveCV = cvd.getListofActiveCV();
 

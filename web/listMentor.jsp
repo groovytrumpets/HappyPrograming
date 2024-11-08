@@ -111,40 +111,7 @@
                                             </div>
                                         </c:forEach>                                      
                                     </ul>
-                                    <div class="container">
-                                        <ul class="list-inline">
-                                            <h3>Skill List</h3>
-                                        </ul>
-                                    </div>    
-                                    <ul class="ttr-gallery-listing magnific-image row">
-                                        <c:forEach items="${requestScope.skilllist}" var="sl">
-                                            <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
-                                                <div class="cours-bx">
-                                                    <div class="info-bx text-center">
-                                                        <div class="action-box" style="height: 250px">
-                                                            <c:forEach items="${requestScope.skill}" var="s">                                                            
-                                                                <c:if test="${s.skillId == sl.skillId}">
-                                                                    <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="${s.skillName}" style="width: 272px; height: 200px">
-                                                                </div>
-                                                                <div style="margin: 15px 0px">
-                                                                    <h5>${s.skillName}</h5>
-                                                                </div>
-                                                                <c:forEach items="${requestScope.requestdistinctlist}" var="r"> 
-                                                                    <c:if test="${r.skillId == sl.skillId}">
-                                                                        <a href="rateskill?skillId=${r.skillId}&requestId=${r.requestId}" class="review btn" style="display: flex; align-items: center; justify-content: center;">
-                                                                            Review
-                                                                        </a>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:if>
-
-                                                        </c:forEach>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>  
-                                    </ul>
+                                  
                                 </div>
                             </div>
                         </div>

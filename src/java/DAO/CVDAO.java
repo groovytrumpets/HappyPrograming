@@ -163,6 +163,32 @@ public class CVDAO extends DBContext {
 
         return null;
     }
+    
+    public CV getCVActivebyMentorId(int id) {
+        //lenh sql select * from categories cach 1:
+        String sql = "select*from CV where MentorID=? and Status like 'active';";
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                CV cv = new CV(rs.getInt("cvId"), rs.getInt("mentorId"),
+                        rs.getString("education"), rs.getString("experience"),
+                        rs.getString("activity"), rs.getString("professionIntroduction"),
+                        rs.getString("certificate"), rs.getDate("createDate"),
+                        rs.getString("jobProfession"), rs.getInt("yearOfExperience"),
+                        rs.getString("serviceDescription"), rs.getString("status"),
+                        rs.getString("framework"), rs.getBytes("avatar"), rs.getFloat("price"));
+                return cv;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
 
     public List<CV> getListofCVbyMentorId(int id) {
         List<CV> cvList = new ArrayList<>();
@@ -288,6 +314,7 @@ public class CVDAO extends DBContext {
                 + "      ,[Activity] = ?\n"
                 + "      ,[ProfessionIntroduction] = ?,[CreateDate] = GETDATE()\n"
                 + "      ,[JobProfession] = ?\n"
+                + "      ,[YearOfExperience] = ?\n"               
                 + "      ,[ServiceDescription] = ?\n"
                 + "      ,[Framework] = ?,[Avatar] =?, [Price] =?\n"
                 + " WHERE [CVID] = ?;SELECT SCOPE_IDENTITY();";
@@ -298,11 +325,13 @@ public class CVDAO extends DBContext {
             st.setString(3, c.getActivity());
             st.setString(4, c.getProfessionIntroduction());
             st.setString(5, c.getJobProfession());
-            st.setString(6, c.getServiceDescription());
-            st.setString(7, c.getFramework());
-            st.setBytes(8, c.getAvatar());
-            st.setFloat(9, c.getPrice());
-            st.setInt(10, cvid);
+            st.setInt(6, c.getYearOfExperience());
+            
+            st.setString(7, c.getServiceDescription());
+            st.setString(8, c.getFramework());
+            st.setBytes(9, c.getAvatar());
+            st.setFloat(10, c.getPrice());
+            st.setInt(11, cvid);
             int queryLine = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             
@@ -331,6 +360,24 @@ public class CVDAO extends DBContext {
     public List<StatisticSkills> getCVSkillList(int id) {
         List<StatisticSkills> list = new ArrayList<>();
         String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where CVID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                StatisticSkills skillStats = new StatisticSkills(rs.getInt("skillId"),
+                        rs.getString("skillName"), rs.getInt("rating"));
+                list.add(skillStats);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print the exception for debugging
+        }
+        return list;
+    }
+    
+    public List<StatisticSkills> getCVSkillListByMentor(int id) {
+        List<StatisticSkills> list = new ArrayList<>();
+        String sql = "select s.SkillID,s.SkillName,sl.Rating from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -485,7 +532,7 @@ public class CVDAO extends DBContext {
                 + "           ,[Experience]\n"
                 + "           ,[Activity]\n"
                 + "           ,[ProfessionIntroduction]\n"
-                + "           ,[Certificate]\n"
+                + "           ,[YearOfExperience]\n"
                 + "           ,[CreateDate]\n"
                 + "           ,[JobProfession]\n"
                 + "           ,[ServiceDescription]\n"
@@ -501,7 +548,7 @@ public class CVDAO extends DBContext {
             st.setString(3, cv.getExperience());
             st.setString(4, cv.getActivity());
             st.setString(5, cv.getProfessionIntroduction());
-            st.setString(6, cv.getCertificate());
+            st.setInt(6, cv.getYearOfExperience());
             st.setString(7, cv.getJobProfession());
             st.setString(8, cv.getServiceDescription());
             st.setString(9, cv.getFramework());
@@ -1488,6 +1535,50 @@ public class CVDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, mentorId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                SlotRequest sr = new SlotRequest();
+                sr.setSlotID(rs.getInt("slotID"));
+                sr.setStartTime(rs.getTime("startTime").toLocalTime());
+                sr.setEndTime(rs.getTime("endTime").toLocalTime());
+                sr.setDayInWeek(rs.getString("dayInWeek"));
+                sr.setRequestId(rs.getInt("RequestID"));
+                sr.setMentorId(rs.getInt("MentorID"));
+                sr.setMenteeId(rs.getInt("MenteeID"));
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setStatus(rs.getString("Status"));
+                sr.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                sr.setStartDate(start);
+                sr.setEndDate(end);
+                sr.setPrice(rs.getFloat("Price"));
+                sr.setFramework(rs.getString("Framework"));
+
+                //System.out.println(sr.getMenteeId());
+                srList.add(sr);
+            }
+            return srList;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+    
+    public List<SlotRequest> getSlotRequestbyRequestId(int requestId) {
+        List<SlotRequest> srList = new ArrayList<>();
+        String sql = """
+                     select s.SlotID,s.StartTime,s.EndTime,s.DayInWeek,
+                     r.RequestID,r.MentorID,r.MenteeID,r.Price,r.Status,r.Title,r.Framework,r.StartDate,r.EndDate
+                     from Slot s join RequestSlotItem rs on s.SlotID=rs.SlotID join Request r on rs.RequestID=r.RequestID
+                     where r.RequestID=? 
+                     """;
+        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 

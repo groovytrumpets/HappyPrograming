@@ -115,7 +115,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Skill Image</label>
                                             <div>
-                                                <input class="form-control" type="file" name="img" >
+                                                <input class="form-control" type="file" name="img" accept=".jpg, .jpeg, .png, .gif" >
                                             </div>
                                         </div>
 

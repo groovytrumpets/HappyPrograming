@@ -78,7 +78,7 @@ public class MentorSlotDraftServlet extends HttpServlet {
 
             mentorId = Integer.parseInt(mentorId_raw);
             Mentor mentor = cvd.getMentorByID(mentorId);
-            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(mentorId);
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillListByMentor(mentorId);
             List<Slot> activeSlotList = sld.getListofInactiveSlotsByMentorId(mentorId);
 
             request.setAttribute("skillMentor", mentorSkillList);

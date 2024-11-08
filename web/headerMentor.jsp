@@ -310,24 +310,11 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#" class="ttr-material-button">
+                            <a href="mentorSchedule" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-calendar"></i></span>
                                 <span class="ttr-label">Schedule</span>
-                                <span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
                             </a>
-                            <ul>
-                                <li>
-                                    <a href="mentorSchedule" class="ttr-material-button"><span class="ttr-label">Schedule</span></a>
-                                </li>
-                                <li>
-                                    <a href="createslot?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Set</span></a>
-                                </li>
-                                <li>
-                                    <a href="slotdraft?id=${sessionScope.mentor.mentorId}" class="ttr-material-button"><span class="ttr-label">Slot Draft</span></a>
-                                </li>
-                            </ul>
                         </li>
-                        
                         <li>
                             <a href="listrequestofmentor" class="ttr-material-button">
                                 <span class="ttr-icon"><i class="ti-exchange-vertical"></i></span>

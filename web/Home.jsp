@@ -169,7 +169,7 @@
                                                         <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
                                                     <div class="info-bx text-center" style="height: 130px">
-                                                        <h5><a href="#" style="display: inline-block; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                                        <h5><a href="#" "
                                                                >${s.skillName}</a></h5>
                                                         <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
                                                             ${s.description}</span>
@@ -474,10 +474,10 @@
     <script>
         window.embeddedChatbotConfig = {
             chatbotId: "u5Jo3ydYkfiHuR6MaNT93",
-            domain: "www.chatbase.co"
+            domain: "www.chatbase.co",
         }
     </script>
-    <script>
+    <script
         src="https://www.chatbase.co/embed.min.js"
         chatbotId="u5Jo3ydYkfiHuR6MaNT93"
         domain="www.chatbase.co"

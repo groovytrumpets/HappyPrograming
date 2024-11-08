@@ -78,11 +78,12 @@ public class ViewProfileCVServlet extends HttpServlet {
         SlotDAO sld = new SlotDAO();
         try {
             id = Integer.parseInt(id_raw);
+            System.out.println(id);
             Mentor mentor = cvd.getMentorByID(id);
             CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             //String email = cvd.getUserEmail(id);
             List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(id);
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillListByMentor(id);
             int rateAve = cvd.getAveRatebyId(id);
             HomeDAO hdao = new HomeDAO();
             List<Mentee> menteeList = hdao.getListofMentee();

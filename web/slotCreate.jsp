@@ -117,7 +117,6 @@
                                                 <th scope="col">End Time</th>
                                                 <th scope="col">Day In Week</th>
                                                 <th scope="col">Status</th>
-
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
@@ -279,7 +278,7 @@
                         <div class="widget-box">
                             <div class="widget-box">
                                 <div class="wc-title">
-                                    <h4>Basic Calendar</h4>
+                                    <h4>Schedule</h4>
                                 </div>
                                 <div class="widget-inner">
                                     <div id="calendar"></div>

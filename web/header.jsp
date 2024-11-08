@@ -74,7 +74,7 @@
                             <div class="topbar-left">
                                 <ul>
                                     <li><a href="faq.jsp"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
+                                    <li><a href="javascript:;"><i class="fa fa-envelope-o"></i>anhnhhhe187162@fpt.edu.vn</a></li>
                                 </ul>
                             </div>
                             <div class="topbar-right">
@@ -116,9 +116,9 @@
                                 <div class="secondary-inner">
                                     <ul>
                                         <c:if test="${sessionScope.acc == null}">
-                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
+<!--                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
                                             <li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+                                            <li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>-->
                                             <!-- Search Button ==== -->
                                             <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
                                                 </c:if>
@@ -185,48 +185,57 @@
                                 <span id="search-remove"><i class="ti-close"></i></span>
                             </div>
                             <!-- Navigation Menu ==== -->
+
+
+
                             <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
                                 <div class="menu-logo">
                                     <a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt=""></a>
                                 </div>
-                                <ul class="nav navbar-nav">	
-                                    <li class="active"><a href="home;">Home</a>
+                                <ul class="nav navbar-nav">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.acc.roleId == 4}">
 
-                                    </li>
-                                    <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="contact.jsp">About</a></li>
-                                            <li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="active"><a href="home;">Home</a>
+
+                                            </li>
+                                            <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="events.jsp">Event</a></li>
+                                                    <li><a href="contact.jsp">About</a></li>
+                                                    <li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
+                                                        <ul class="sub-menu">
+                                                            <li><a href="events.jsp">Event</a></li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li><a href="contact.jsp">Contact Us</a></li>
+                                                    <li><a href="faq.jsp">FAQ's</a></li>
                                                 </ul>
                                             </li>
+                                            <li class="add-mega-menu"><a href="javascript:;">Our Course <i class="fa fa-chevron-down"></i></a>
+                                                <ul class="sub-menu add-menu">
+                                                    <li class="add-menu-left">
+                                                        <h5 class="menu-adv-title">Our Courses</h5>
+                                                        <ul>
+                                                            <li><a href="skillhome">Courses </a></li>
+                                                                <c:if test="${sessionScope.acc.roleId == 2}">
 
-                                            <li><a href="contact.jsp">Contact Us</a></li>
-                                            <li><a href="faq.jsp">FAQ's</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="add-mega-menu"><a href="javascript:;">Our Course <i class="fa fa-chevron-down"></i></a>
-                                        <ul class="sub-menu add-menu">
-                                            <li class="add-menu-left">
-                                                <h5 class="menu-adv-title">Our Courses</h5>
-                                                <ul>
-                                                    <li><a href="skillhome">Courses </a></li>
-                                                        <c:if test="${sessionScope.acc.roleId == 2}">
+                                                                <li><a href="suggestMentor">Suggest mentor</a></li>
+                                                                </c:if>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="add-menu-right">
+                                                        <a href="https://daihoc.fpt.edu.vn/">
 
-                                                        <li><a href="suggestMentor">Suggest mentor</a></li>
-                                                        </c:if>
-                                                    <li><a href="#">Upcoming Event</a></li>
+                                                            <img src="assets\images\fptuavatar.jpg" alt=""/>
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </li>
-                                            <li class="add-menu-right">
-                                                <a href="https://daihoc.fpt.edu.vn/">
-
-                                                    <img src="assets\images\fptuavatar.jpg" alt=""/>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <c:choose>
 
 
@@ -268,11 +277,11 @@
 
                                                     <li><a href="updateProfile">View Profile</a></li>
                                                     <li><a href="updateProfile">Update Profile</a></li>
-                                                    
+
                                                     <!--                                                    <li><a href="#">Wishlist</a></li>-->
                                                     <li><a href="payment">Deposit</a></li>
 
-                                                    
+
                                                 </ul>
                                             </li>
                                         </c:when>

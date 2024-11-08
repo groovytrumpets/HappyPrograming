@@ -99,9 +99,9 @@ public class SkillHomeSV extends HttpServlet {
                 list = skillDAO.getListOfOldestSkills(index, 9);
                 break;
             case "":
-                list = skillDAO.getListOfSkillPaging(index, 9);
+                list = skillDAO.getListOfSkillPagings(index, 9);
             default:
-                list = skillDAO.getListOfSkillPaging(index, 9);
+                list = skillDAO.getListOfSkillPagings(index, 9);
                 break;
         }
 

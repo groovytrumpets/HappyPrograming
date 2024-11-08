@@ -78,6 +78,10 @@ public class SerchSkillServlet extends HttpServlet {
         request.setAttribute("stt", stt);
 
         String searchName = request.getParameter("search");
+        if(searchName == null || searchName==""){
+            response.sendRedirect("SkillListAdmin");
+            return;
+        }
         List<Skill> listAllSkill = act.getListOfSkillByName(searchName);
         int numSkill = listAllSkill.size();
         int numOfPage = (numSkill % numDis == 0 ? numSkill / numDis : (numSkill / numDis + 1));
@@ -87,6 +91,7 @@ public class SerchSkillServlet extends HttpServlet {
         listAllSkill = act.getListOfSkillByNamePagination(page, numDis, searchName);
         request.setAttribute("search", searchName);
         request.setAttribute("list", listAllSkill);
+        request.setAttribute("search", searchName);
         request.getRequestDispatcher("/Admin/adminSearchSkill.jsp").forward(request, response);
     }
 

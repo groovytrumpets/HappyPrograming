@@ -103,7 +103,7 @@
 
                     </div>
                     <div class="text-muted mt-3 text-center">
-                        <c:if test="${wallet.balance < cv.price || pay != null}">
+                        <c:if test="${wallet.balance < cv.price}">
                             <p style="color: red">Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
                                         </c:if>
                     </div>
@@ -115,7 +115,9 @@
                     <div class="widget-box">
                         <div class="wc-title">
                             <p style="color: red"> ${error}</p>
-                            <p style="color: red"> ${pay}</p>
+                            <c:if test="${pay != null}">
+                                <p style="color: red">Your balance is not enough, click <a href="payment" target="_blank" rel="noopener noreferrer"><strong><u>here</u></strong></a> to charge money</p>
+                            </c:if>
                             <p style="color: blue"> ${notify}</p>
                         </div>
                         <div class="widget-inner">
@@ -220,7 +222,7 @@
                                                             <c:forEach items="${selectedSlot}" var="sl">
                                                                 <c:if test="${s.slotID == sl.slotId}">
                                                                     <c:set var="isDisabled" value="true" />
-                                                                    <c:set var="isSelected" value="Selected" />
+                                                                    <c:set var="isSelected" value="selected" />
                                                                 </c:if>
                                                             </c:forEach>
 

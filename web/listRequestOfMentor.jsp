@@ -73,7 +73,7 @@
                         <div class="widget-box">
 
                             <div class="wc-title d-flex align-items-center">
-                                <h4 class="d-inline-block" >Mentee Request List</h4>
+                                <h4 class="d-inline-block" >List of Inviting Request</h4>
                             </div>
                             <div class="widget-inner">
                                 <div class="new-user-list" >

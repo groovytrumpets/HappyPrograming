@@ -168,10 +168,16 @@
                                                 <h3>2. CV detail</h3>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-4">
                                             <label class="col-form-label">Profession</label>
                                             <div>
                                                 <input class="form-control" type="text" name="profession" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-2">
+                                            <label class="col-form-label">Year of experience</label>
+                                            <div>
+                                                <input class="form-control" type="number" step="1" max="90" name="year" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -189,7 +195,7 @@
                                         <div class="form-group col-3">
                                             <label class="col-form-label">Price</label>
                                             <div>
-                                                <input class="form-control" type="number" step="0.0001" name="price" required>
+                                                <input class="form-control" type="number" min="1000" max="100000000" step="500" name="price" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -208,7 +214,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Service description</label>
                                             <div>
-                                                <textarea class="form-control" name="serviceDescription" required> </textarea>
+                                                <textarea class="form-control" name="serviceDescription" required></textarea>
                                             </div>
                                         </div>
 
@@ -232,7 +238,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Archivement description</label>
                                             <div>
-                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience} </textarea>
+                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience}</textarea>
                                             </div>
                                         </div>
 
