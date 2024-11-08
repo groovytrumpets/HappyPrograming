@@ -254,8 +254,8 @@
 				<ul>
 					<li>
 						<a href="admindashboard" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-home"></i></span>
-		                	<span class="ttr-label">Home</span>
+							<span class="ttr-icon"><i class="ti-bar-chart"></i></span>
+		                	<span class="ttr-label">Dashboard</span>
 		                </a>
 		            </li>
 					<li>

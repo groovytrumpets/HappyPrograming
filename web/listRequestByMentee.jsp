@@ -99,7 +99,7 @@
                                                 <tr>
                                                     <th class="align-middle" scope="row">${status.index + 1}</th>
                                                     <td class="align-middle">${r.title}</td>
-                                                    <td class="align-middle">${r.price}</td>
+                                                    <td class="align-middle">${r.price}₫</td>
 
                                                     <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${r.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>
