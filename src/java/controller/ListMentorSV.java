@@ -7,6 +7,7 @@ package controller;
 import DAO.CVDAO;
 import DAO.MenteeDAO;
 import DAO.MentorDAO;
+import DAO.RateDAO;
 import DAO.RequestDAO;
 import DAO.SkillDAO;
 import Model.CV;
@@ -24,7 +25,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -77,8 +80,8 @@ public class ListMentorSV extends HttpServlet {
             User curUser = (User) session.getAttribute("acc");
             Mentee curMentee = (Mentee) session.getAttribute("mentee");
             RequestDAO requestdao = new RequestDAO();
-            SkillDAO skilldao = new SkillDAO();
             CVDAO cvdao = new CVDAO();
+            RateDAO rateDAO = new RateDAO();
             if (curUser == null) {
                 response.sendRedirect("signin");
                 return;
@@ -89,16 +92,18 @@ public class ListMentorSV extends HttpServlet {
                 List<CV> cvlist = cvdao.getListofActiveCV();
                 List<Mentor> mentorlist = cvdao.getListofMentorByMenteeWithStatus(curUser.getUsername());
                 List<Request> requestlist = requestdao.getListofRequestByMenteeID(curMentee.getMenteeId());
-                List<Request> requestdistinctlist = requestdao.getListofRequestDistinctByMenteeID(curMentee.getMenteeId());
-                List<SkillList> skilllist = requestdao.getSkillsForCompletedOrPaidRequests(curMentee.getMenteeId());
-                List<Skill> skill = skilldao.getListOfAllSkill();
+
+                // tạo map để lưu trạng thái đã đánh giá cho từng mentor-request
+                Map<Integer, Boolean> ratedMap = new HashMap<>();
+                for (Request req : requestlist) {
+                    boolean hasRated = rateDAO.hasRated(curMentee.getMenteeId(), req.getMentorId(), req.getRequestId());
+                    ratedMap.put(req.getRequestId(), hasRated);
+                }
 
                 request.setAttribute("cvlist", cvlist);
                 request.setAttribute("mentorlist", mentorlist);
                 request.setAttribute("requestlist", requestlist);
-                request.setAttribute("requestdistinctlist", requestdistinctlist);
-                request.setAttribute("skilllist", skilllist);
-                request.setAttribute("skill", skill);
+                request.setAttribute("ratedMap", ratedMap);
             } else if (roleID == 1) {
                 response.sendRedirect("home");
                 return;

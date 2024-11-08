@@ -94,7 +94,7 @@
                                     Total Mentor
                                 </h4>
                                 <span class="wc-des">
-                                    All Customs Value
+                                    All registered Mentors
                                 </span>
                                 <span class="wc-stats">
                                     <span class="counter">${totalMentors}</span>
@@ -109,7 +109,7 @@
                                     Total Mentee
                                 </h4>
                                 <span class="wc-des">
-                                    Customer Review
+                                    All registered Mentees
                                 </span>
                                 <span class="wc-stats counter">
                                     ${totalMentees} 
@@ -179,7 +179,6 @@
         <script src="assets/js/admin.js"></script>
         <script src='assets/vendors/calendar/moment.min.js'></script>
         <script src='assets/vendors/calendar/fullcalendar.js'></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             // Parse the JSON data passed from the servlet

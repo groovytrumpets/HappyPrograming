@@ -104,7 +104,7 @@
                                                     <tr>
                                                         <td>${request.title}</td>
                                                         <td>${m.fullName}</td>
-                                                        <td>${request.price}</td>
+                                                        <td>${request.price}₫</td>
                                                         <td>${request.startDate}</td>
                                                         <td>${request.endDate}</td>
                                                         <td>${hoursPerRequestList[status.index]}</td>
