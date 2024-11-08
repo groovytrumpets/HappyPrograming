@@ -178,10 +178,16 @@
                                                 <h3>2. CV detail</h3>
                                             </div>
                                         </div>
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-4">
                                             <label class="col-form-label">Profession</label>
                                             <div>
                                                 <input class="form-control" type="text" name="profession" value="${requestScope.cvFound.jobProfession}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-2">
+                                            <label class="col-form-label">Year of experience</label>
+                                            <div>
+                                                <input class="form-control" type="number" step="1" name="year" max="90" value="${requestScope.cvFound.yearOfExperience}" required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -199,7 +205,7 @@
                                         <div class="form-group col-3">
                                             <label class="col-form-label">Price</label>
                                             <div>
-                                                <input class="form-control" type="number" name="price" step="0.0001" value="${requestScope.cvFound.price}"required>
+                                                <input class="form-control" type="number" name="price" min="1000" max="100000000" step="500" value="${requestScope.cvFound.price}"required>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
@@ -212,13 +218,13 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Profession Introduction</label>
                                             <div>
-                                                <textarea class="form-control" name="professionIntroduction" >${requestScope.cvFound.professionIntroduction} </textarea>
+                                                <textarea class="form-control" name="professionIntroduction" >${requestScope.cvFound.professionIntroduction}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Service description</label>
                                             <div>
-                                                <textarea class="form-control" name="serviceDescription">${requestScope.cvFound.serviceDescription} </textarea>
+                                                <textarea class="form-control" name="serviceDescription">${requestScope.cvFound.serviceDescription}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-3">
@@ -258,7 +264,7 @@
                                         <div class="form-group col-6">
                                             <label class="col-form-label">Archivement description</label>
                                             <div>
-                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience} </textarea>
+                                                <textarea class="form-control" name="experience">${requestScope.cvFound.experience}</textarea>
                                             </div>
                                         </div>
 

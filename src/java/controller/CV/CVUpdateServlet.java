@@ -133,6 +133,8 @@ public class CVUpdateServlet extends HttpServlet {
         String address = request.getParameter("address");
         //System.out.println(fullname);
         String profession = request.getParameter("profession");
+        String year_raw = request.getParameter("year");
+        
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
 
@@ -143,7 +145,7 @@ public class CVUpdateServlet extends HttpServlet {
         String price_raw = request.getParameter("price");
 
         Date dob;
-        int userid;
+        int userid,year;
         int cvId;
 
         float price;
@@ -157,7 +159,7 @@ public class CVUpdateServlet extends HttpServlet {
 
             userid = Integer.parseInt(userId_raw);
             cvId = Integer.parseInt(cvId_raw);
-
+            year = Integer.parseInt(year_raw);
             price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
@@ -190,7 +192,7 @@ public class CVUpdateServlet extends HttpServlet {
             Mentor newMentor = new Mentor(userid, username, phone, address,
                     dob, fullname, gender);
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession, serviceDescription, framework, avatar, price);
+                    professionIntroduction, profession,year, serviceDescription, framework, avatar, price);
             if (cv.getStatus().equalsIgnoreCase("inactive")) {
 
                 //System.out.println(nameId+" and "+email);
