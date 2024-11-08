@@ -163,11 +163,10 @@ public class CreateRequestSV extends HttpServlet {
             return;
         } 
         selectedSlot = request.getParameterValues("addSlot");
-        HttpSession session = request.getSession();
-        session.setAttribute("title", title);
-        session.setAttribute("content", content);
-        session.setAttribute("framework", framework);
-        session.setAttribute("skillId", selectedSkills);
+        request.setAttribute("title", title);
+        request.setAttribute("content", content);
+        request.setAttribute("framework", framework);
+        request.setAttribute("skillId", selectedSkills);
         try {
             int id = Integer.parseInt(id_raw);
             int skill = Integer.parseInt(selectedSkills);
@@ -176,8 +175,8 @@ public class CreateRequestSV extends HttpServlet {
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             LocalDate selectedStartDate = LocalDate.parse(start, dateFormatter);
             LocalDate selectedEndDate = LocalDate.parse(end, dateFormatter);
-            session.setAttribute("start", selectedStartDate);
-            session.setAttribute("end", selectedEndDate);
+            request.setAttribute("start", selectedStartDate);
+            request.setAttribute("end", selectedEndDate);
             LocalDateTime now = LocalDateTime.now();
             LocalDate creaDate = LocalDate.now();
              if (selectedStartDate.isBefore(creaDate)) {

@@ -188,11 +188,13 @@ public class UpdateRequestSV extends HttpServlet {
                 return;
             }
 
-            Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
+           
              if (totalP == 0) {
                 response.sendRedirect("updateRequest?id=" + id + "&error=You request must have at least 1 slot");
                 return;
-            }
+            } 
+             
+            Wallet wallet = walletDAO.getWalletByUsername(a.getUsername());
             if (wallet == null || wallet.getBalance() < totalP) {
                 response.sendRedirect("updateRequest?id=" + id + "&error=Your account doesn't have enough money&pay=oke");
                 return;

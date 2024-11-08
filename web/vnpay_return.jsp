@@ -14,12 +14,16 @@
         <header class="header rs-nav">
             <jsp:include page="header.jsp" />
         </header>
-
-        <!-- Display Transaction Result -->
-        <div class="container">
-            <div class="header clearfix">
-                <h3 class="text-muted">PAYMENT RESULT</h3>
+        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
+            <div class="container">
+                <div class="page-banner-entry">
+                    <h1 class="text-white">Payment Result</h1>
+                </div>
             </div>
+        </div>
+        <!-- Display Transaction Result -->
+        <div class="container" style="margin-top: 50px">
+      
 
             <div class="container">
                 <div class="header clearfix">
@@ -84,21 +88,12 @@
                         </label>
                     </div> 
                 </div>
-
-                <footer class="footer" style="text-align: center; margin-top: 20px;">
-                    <p>&copy; VNPAY 2024. All rights reserved.</p>
-                </footer>
             </div>
-
-            <footer class="footer">
-                <jsp:include  page="footer.jsp"/>
-            </footer>
             <script>
-                // Assuming wallet and amount are numbers
-                let amount = ${amount}; // Example transaction amount from backend
-                let wallet = ${newBalance}; // Example wallet amount from backend
 
-                // Format and display the amounts in VND
+                let amount = ${amount};
+                let wallet = ${newBalance};
+
                 document.getElementById("amountDisplay").innerText = amount.toLocaleString('vi-VN', {
                     style: 'currency',
                     currency: 'VND'
@@ -111,7 +106,7 @@
             </script>
             <script>
                 // Get the payment date from the label
-                const payDateString = "${vnp_PayDate}"; // This will be in the format yyyyMMddHHmmss
+                const payDateString = "${vnp_PayDate}";
 
                 // Function to format the date
                 function formatPaymentDate(payDateStr) {
@@ -119,7 +114,7 @@
                     if (payDateStr && payDateStr.length === 14) {
                         // Extract year, month, day, hour, minute, second
                         const year = payDateStr.substring(0, 4);
-                        const month = payDateStr.substring(4, 6) - 1; // Month is 0-indexed in JS
+                        const month = payDateStr.substring(4, 6) - 1;
                         const day = payDateStr.substring(6, 8);
                         const hour = payDateStr.substring(8, 10);
                         const minute = payDateStr.substring(10, 12);
@@ -145,5 +140,8 @@
                 document.getElementById("formattedPayDateLabel").innerText = formatPaymentDate(payDateString);
             </script>
         </div>
+        <footer class="footer" style="margin-top: 50px">
+            <jsp:include  page="footer.jsp"/>
+        </footer>
     </body>
 </html>
