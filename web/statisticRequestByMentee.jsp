@@ -109,7 +109,7 @@
                                                         <td>${request.price}₫</td>
                                                         <td>${request.startDate}</td>
                                                         <td>${request.endDate}</td>
-                                                        <td>${hoursPerRequestList[status.index]}</td>
+                                                        <td>${formattedHoursPerRequestList[status.index]}</td>
                                                     </tr> 
                                                 </c:if>
 

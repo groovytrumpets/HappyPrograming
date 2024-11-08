@@ -92,6 +92,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
             int menteeId = curMentee.getMenteeId();
 
             List<Request> listRequests = requestDAO.getRequestStatisticByMenteeID(menteeId);
+            List<String> formattedHoursPerRequestList = new ArrayList<>(); //danh sách định dạng giờ
             List<Float> hoursPerRequestList = new ArrayList<>();
             List<Mentor> mentorlist = mentorDAO.getAllMentor();
 
@@ -104,6 +105,10 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
                 float hoursForRequest = getTotalHourOfRequest(req); // tinh tong so gio cua moi request
                 hoursPerRequestList.add(hoursForRequest);  // them vao list
                 totalHours += hoursForRequest;  //tong so gio
+
+                //dịnh dạng giờ cho từng request
+                String formattedHours = formatTotalHours(hoursForRequest);
+                formattedHoursPerRequestList.add(formattedHours); //thêm vào danh sách
             }
 
             System.out.println("Hours Per Request List: " + hoursPerRequestList);
@@ -114,7 +119,7 @@ public class StatisticRequestByMenteeSV extends HttpServlet {
 
             request.setAttribute("formattedTotalHours", formattedTotalHours);
             request.setAttribute("listRequests", listRequests);
-            request.setAttribute("hoursPerRequestList", hoursPerRequestList);
+            request.setAttribute("formattedHoursPerRequestList", formattedHoursPerRequestList);
             request.setAttribute("totalRequests", totalRequests);
             request.setAttribute("totalMentors", totalMentors);
             request.setAttribute("mentorlist", mentorlist);

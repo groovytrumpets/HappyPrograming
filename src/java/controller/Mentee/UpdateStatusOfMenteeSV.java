@@ -4,7 +4,11 @@
  */
 package controller.Mentee;
 
+import DAO.MenteeDAO;
 import DAO.RequestDAO;
+import DAO.WalletDAO;
+import Model.Mentee;
+import Model.Request;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,6 +66,9 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User curUser = (User) session.getAttribute("acc");
+        RequestDAO requestDAO = new RequestDAO();
+        MenteeDAO menteeDAO = new MenteeDAO();
+        WalletDAO walletDAO = new WalletDAO();
 
         if (curUser == null) {
             response.sendRedirect("signin");
@@ -70,7 +77,8 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
 
         int roleID = curUser.getRoleId();
         int requestId = Integer.parseInt(request.getParameter("requestId"));
-        RequestDAO requestDAO = new RequestDAO();
+        Request requests = requestDAO.getRequestByID(requestId);
+        Mentee menteeName = menteeDAO.getMenteeByID(requests.getMenteeId());
 
         try {
             if (roleID == 2) {
@@ -84,7 +92,10 @@ public class UpdateStatusOfMenteeSV extends HttpServlet {
                         requestDAO.updateRequestStatus(requestId, "Completed");
                         break;
                     case "cancel":
+                        //Buoc 1: Huy course
                         requestDAO.updateRequestStatus(requestId, "Canceled");
+                        //Buoc 2: Update Hold
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
                         break;
                     default:
                         break;
