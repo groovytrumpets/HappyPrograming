@@ -8,6 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="Model.Request" %>
 <%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,7 +100,7 @@
                                                 <tr>
                                                     <th class="align-middle" scope="row">${status.index + 1}</th>
                                                     <td class="align-middle">${r.title}</td>
-                                                    <td class="align-middle">${r.price}₫</td>
+                                                    <td class="align-middle"><fmt:formatNumber value="${r.price}" type="number" maxFractionDigits="2" /> ₫</td>
 
                                                     <td class="align-middle" style="max-width: 20px;word-wrap: break-word;">${r.startDate}</td>
                                                     <td class="align-middle" style="max-width: 200px;word-wrap: break-word;">${r.endDate}</td>

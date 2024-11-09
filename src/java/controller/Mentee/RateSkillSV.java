@@ -150,12 +150,12 @@ public class RateSkillSV extends HttpServlet {
             Integer currentRating = actskilllist.getCurrentRating(skillId);
 
             if (currentRating == null || currentRating == 0) {
-                actskilllist.updateRating(skillId, rate);
+                //actskilllist.updateRating(skillId, rate);
                 response.sendRedirect("listmentor");
                 return;
             } else {
                 int newRating = (currentRating + rate) / 2;
-                actskilllist.updateRating(skillId, newRating);
+                //actskilllist.updateRating(skillId, newRating);
                 response.sendRedirect("listmentor");
                 return;
             }

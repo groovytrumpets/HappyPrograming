@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import Model.Mentee;
 import Model.User;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WalletDAO extends DBContext {
 
@@ -89,6 +91,64 @@ public class WalletDAO extends DBContext {
             System.out.println(e);
         }
         return false;
+    }
+    
+    public Map<String, Float> getHold(int requestId) {
+        Map<String, Float> map = new HashMap<>();
+        String sql = """
+                SELECT m.Username, r.Price 
+                FROM Request r
+                LEFT JOIN Mentee m ON r.MenteeID = m.MenteeID
+                WHERE r.RequestID IN (
+                    SELECT rsi.RequestID 
+                    FROM RequestSlotItem rsi 
+                    JOIN Slot s ON rsi.SlotID = s.SlotID 
+                    WHERE rsi.SlotID IN (
+                        SELECT SlotID 
+                        FROM RequestSlotItem  
+                        WHERE RequestID = ?) 
+                    AND rsi.RequestID <> ?)
+                AND r.Status = 'Open'
+                """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, requestId);
+            st.setInt(2, requestId);
+            ResultSet rs = st.executeQuery();
+
+            // Iterate through the result set and populate the map
+            while (rs.next()) {
+                String username = rs.getString("Username");
+                Float price = rs.getFloat("Price");
+
+                // Sum up the prices if the username already exists in the map
+                map.put(username, map.getOrDefault(username, 0f) + price);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return map;
+    }
+    public boolean updateHoldRejected(String username, float hold){
+        String sql = """
+                      Update Wallet 
+                      set Hold = (
+                      select Hold from Wallet where Username = ?
+                      )- ?
+                      where Username = ?
+                     """;
+         try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setFloat(2, hold);
+            st.setString(3, username);
+            st.executeUpdate();
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+         return true;
     }
 
     public static void main(String[] args) {
