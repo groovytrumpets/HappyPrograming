@@ -104,6 +104,13 @@ public class SignUpSV extends HttpServlet {
         String address = request.getParameter("address");
         String role_raw = request.getParameter("role");
 
+        request.setAttribute("username", username);
+        request.setAttribute("email", mail);
+        request.setAttribute("fullname", fname);
+        request.setAttribute("phone", phone);
+        request.setAttribute("dob", dob_raw);
+        request.setAttribute("address", address);
+
         try {
 
             LocalDate localDob = LocalDate.parse(dob_raw);
@@ -126,12 +133,17 @@ public class SignUpSV extends HttpServlet {
                 return;
             }
 
+            if (phone.length() < 10 || !phone.matches("\\d+")) {
+                request.setAttribute("pherror", "Phone number must contain only digits and has at least 10 digit.");
+                return;
+            }
+
             if ((age > 65 || age < 20) && role == 1) {
                 request.setAttribute("aerror", "Your age must be between 20 and 65 years old");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
             }
-            
-             if ((age > 65 || age < 10) && role == 2) {
+
+            if ((age > 65 || age < 10) && role == 2) {
                 request.setAttribute("aerror", "Your age must be between 10 and 65 years old");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
             }
@@ -156,21 +168,33 @@ public class SignUpSV extends HttpServlet {
                 }
 
                 String subject = "Confirm Your Signup";
-                String content = "Dear " + fname + ",\n\n"
-                        + "Thank you for signing up with us! We're excited to have you on board. Please review your information below and click the link to confirm your email address.\n\n"
-                        + "------------------------\n"
-                        + "Full Name: " + fname + "\n"
-                        + "Email: " + mail + "\n"
-                        + "Phone: " + phone + "\n"
-                        + "Date of Birth: " + dob_raw + "\n"
-                        + "Gender: " + sex + "\n"
-                        + "Address: " + address + "\n"
-                        + "------------------------\n\n"
-                        + "Please click the link below to confirm your email address:\n"
-                        + "http://localhost:9999/happy_programming/confirm?email=" + mail + "\n\n"
-                        + "If you did not sign up for this account, please disregard this email.\n\n"
-                        + "Best regards,\n"
-                        + "The Happy Programming Team";
+                String content = "<html>"
+                        + "<body style='font-family: Arial, sans-serif;'>"
+                        + "<div style='max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>"
+                        + "<h2 style='color: #007bff; text-align: center;'>Welcome to Happy Programming!</h2>"
+                        + "<p>Dear " + fname + ",</p>"
+                        + "<p>Thank you for signing up with us! We're thrilled to have you on board. Please review your information below and click the button to confirm your email address.</p>"
+                        + "<div style='background-color: #f9f9f9; padding: 15px; border-radius: 8px;'>"
+                        + "<p><strong>Full Name:</strong> " + fname + "</p>"
+                        + "<p><strong>Email:</strong> " + mail + "</p>"
+                        + "<p><strong>Phone:</strong> " + phone + "</p>"
+                        + "<p><strong>Date of Birth:</strong> " + dob_raw + "</p>"
+                        + "<p><strong>Gender:</strong> " + sex + "</p>"
+                        + "<p><strong>Address:</strong> " + address + "</p>"
+                        + "</div>"
+                        + "<p style='margin-top: 20px;'>Please click the button below to confirm your email address:</p>"
+                        + "<a href='http://localhost:9999/happy_programming/confirm?email=" + mail + "'"
+                        + " style='display: inline-block; background-color: #28a745; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 5px;'>Confirm Email</a>"
+                        + "<p style='margin-top: 20px;'>If you did not sign up for this account, please disregard this email.</p>"
+                        + "<hr style='border-top: 1px solid #ddd;' />"
+                        + "<p style='text-align: center; font-size: 12px; color: #777;'>© 2024 Happy Programming. All rights reserved.</p>"
+                        + "<p style='text-align: center; font-size: 12px;'>"
+                        + "<a href='#' style='text-decoration: none; color: #007bff;'>Unsubscribe</a> | "
+                        + "<a href='#' style='text-decoration: none; color: #007bff;'>Contact Us</a>"
+                        + "</p>"
+                        + "</div>"
+                        + "</body>"
+                        + "</html>";
 
                 Email.sendEmail(mail, subject, content);
 
@@ -193,7 +217,7 @@ public class SignUpSV extends HttpServlet {
         }
 
     }
-    
+
     private boolean checkValidPass(String pass, String repass) {
         boolean hasUpperCase = false;
         boolean hasNumber = false;

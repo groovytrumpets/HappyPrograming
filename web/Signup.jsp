@@ -77,7 +77,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label>Your username</label>
-                                            <input name="username" type="text" required="" class="form-control">
+                                            <input name="username" type="text" required="" class="form-control" value="${username}">
                                             <small style="color: red">${uerror}</small>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label for="user-mail">Email address</label>
-                                            <input name="email" type="email" id="user-mail" class="form-control"  required>
+                                            <input name="email" type="email" id="user-mail" class="form-control"  value="${email}" required>
                                             <small style="color: red">${eerror}</small>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Full name</label>
-                                            <input name="fullname" type="text" class="form-control" required="">
+                                            <input name="fullname" type="text" class="form-control" required="" value="${fullname}">
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,8 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Phone number</label>
-                                            <input name="phone" type="number" class="form-control" required="">
+                                            <input name="phone" type="text" class="form-control" required="" value="${phone}">
+                                            <small style="color: red">${pherror1}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +143,7 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Address</label>
-                                            <input name="address" type="text" class="form-control" required="">
+                                            <input name="address" type="text" class="form-control" required="" value="${address}">
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +151,7 @@
                                     <div class="form-group">
                                         Date of birth
                                         <div class="input-group">
-                                            <input name="dob" type="date" class="form-control" required="">
+                                            <input name="dob" type="date" class="form-control" required="" value="">
                                             <small style="color: red">${aerror}</small>
                                         </div>
                                     </div>
