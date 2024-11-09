@@ -117,7 +117,7 @@
                 <div class="section-area section-sp1">
                     <div class="container">
                         <div class="row d-flex flex-row-reverse">
-                            
+
 
                             <div class="col-lg-12 col-md-8 col-sm-12">
                                 <div class="courses-post">
@@ -142,56 +142,62 @@
                                         <p style="color : red">There are no mentors available with this skill</p>
                                     </c:if>
 
-                                    <div id="mentorCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <c:forEach items="${requestScope.mentor}" var="mentors" varStatus="loop">
-            <c:forEach items="${requestScope.cv}" var="cvs">
-                <c:if test="${mentors.mentorId == cvs.mentorId}">
-                    <c:if test="${loop.index % 2 == 0}">
-                        <div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
-                            <div class="row">
-                    </c:if>
-                    <div class="col-md-6">
-                        <div class="instructor-bx">
-                            <div class="instructor-author">
-                                <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100" style="height: 100%; object-fit: cover;">
-                            </div>
-                            <div class="instructor-info">
-                                <h6>${mentors.fullName}</h6>
-                                <p>Education: ${cvs.education}</p>
-                                <p>Description: ${cvs.professionIntroduction}</p>
-                                <p>Experience: ${cvs.yearOfExperience} years</p>
-                                <p>Price: <fmt:formatNumber value="${cvs.price}" type="number" maxFractionDigits="2" />₫ VND</p>
-                                <div style="margin-left: 60px">
-                                    <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
-                                    <c:if test="${acc.roleId == 2}">
-                                        <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <c:if test="${loop.index % 2 == 1 || loop.index == fn:length(requestScope.mentor) - 1}">
-                            </div> 
-                        </div>
-                    </c:if>
-                </c:if>
-            </c:forEach>
-        </c:forEach>
-    </div>
+                                    <div id="mentorCarousel" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner" >
 
-    <!-- Carousel controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#mentorCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#mentorCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+                                            <c:forEach items="${requestScope.mentor}" var="mentors" varStatus="loop">
 
+                                                <c:forEach items="${requestScope.cv}" var="cvs">
+                                                    <c:if test="${mentors.mentorId == cvs.mentorId}">
+                                                        <c:if test="${loop.index % 2 == 0}">
+                                                            <div class="carousel-item ${loop.index == 0 ? 'active' : ''}" >
+                                                                <div class="row">
+                                                                </c:if>
+                                                                <div class="col-md-6">
+                                                                    <div class="instructor-bx " >
+                                                                        <div class="instructor-author ">
+                                                                            <img src="getCVimage?id=${cvs.cvId}" alt="mentor image" class="d-block w-100" style="width: 100%; height: 100%; object-fit: cover;">
+                                                                        </div>
+                                                                        <div class="instructor-info">
+                                                                            <h6>${mentors.fullName}</h6>
+                                                                            <p class="m-b0">Education: ${cvs.education}</p>
+                                                                            <p class="m-b0">Description: ${cvs.professionIntroduction}</p>
+                                                                            <p class="m-b0">Year of experience: ${cvs.yearOfExperience} years</p>
+                                                                            <p class="m-b0">Price: <fmt:formatNumber value="${cvs.price}" type="number" maxFractionDigits="2" />₫ VND</p>
+                                                                            <div class="instructor-info" style="margin-left: 60px">
+                                                                                <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
+                                                                                <c:if test="${acc.roleId == 2}">  
+                                                                                    <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
+                                                                                </c:if>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <c:if test="${loop.index % 2 == 1 || loop.index == mentor.size() - 1}">
+                                                                </div> 
+                                                            </div> 
+                                                        </c:if>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:forEach>
+                                        </div>
+                                        <div class="custom-carousel-controls">
+                                            <a class="carousel-control-prev" href="#mentorCarousel" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#mentorCarousel" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
                                 </div>                   
+
+
 
                                 <div id="instructor">
                                     <h5 class="widget-title style-1">Other Skills</h5>
@@ -234,7 +240,7 @@
                                             </c:forEach>
                                         </div> <!-- Close carousel-inner -->
 
-                                         <div class="custom-carousel-controls">
+                                        <div class="custom-carousel-controls">
                                             <a class="carousel-control-prev" href="#recentCoursesCarousel" role="button" data-slide="prev">
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                 <span class="sr-only">Previous</span>
