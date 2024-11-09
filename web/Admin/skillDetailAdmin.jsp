@@ -75,7 +75,7 @@
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                         <li>User</li>
-                        <li>Mentee</li>
+                        <li>Skill</li>
 
                     </ul>
                 </div>	
@@ -83,21 +83,7 @@
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box" >
-                            <div class="wc-title" style="display: flex">
-                                <div class="col-md-4">
-                                    <h4>Mentee List</h4>
-                                </div>
-                                <div class="mail-search-bar col-md-4">
-
-                                    <form method="post" action="menteeListAdmin" style="display: flex; align-items: center;">
-                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <input type="text" name="search"value="${search}" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
-                                    </form>
-
-                                </div>
-                            </div>
-
+                            
                             <div class="widget-inner">
                                 <form method="post" action="skillDetailAdmin">
                                     <div class="row">

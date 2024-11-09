@@ -137,7 +137,7 @@
                                             </td>
                                             <td style="text-align: center">
                                                 <a href="updateSkillAdmin?updateId=${c.skillId}">Update</a>&nbsp;&nbsp;
-                                                <a href="#" onclick="doDelete('${c.skillId}')">Delete</a></td>
+                                               
                                             </tr>
                                         </form>
 

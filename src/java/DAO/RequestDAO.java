@@ -1453,7 +1453,7 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestsBySkillId(int skillId) {
         // Query to fetch all requests of a particular mentee from the database
-        String sql = "SELECT [RequestID]\n"
+        String sql = "SELECT distinct [RequestID]\n"
                 + "      ,[MentorID]\n"
                 + "      ,[MenteeID]\n"
                 + "      ,[Price]\n"
