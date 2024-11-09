@@ -400,7 +400,7 @@ public class MentorDAO extends DBContext {
 
     public List<Mentor> getAllMentorHaveSkillId(int skillId) {
         List<Mentor> listMentor = new ArrayList<>();
-        String sql = "SELECT m.[MentorID]\n"
+        String sql = "SELECT distinct m.[MentorID]\n"
                 + "      ,[RoleID]\n"
                 + "      ,[Username]\n"
                 + "      ,m.[CreateDate]\n"

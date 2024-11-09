@@ -20,21 +20,22 @@
         <meta name="author" content="" />
         <meta name="robots" content="" />
 
-        <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+         <!-- DESCRIPTION -->
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>EduChamp : Education HTML Template </title>
+        <title>Happy Programing </title>
+
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,7 +76,7 @@
                     <ul class="db-breadcrumb-list">
                         <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
                         <li>User</li>
-                        <li>Mentee</li>
+                        <li>Skill</li>
 
                     </ul>
                 </div>	
@@ -83,21 +84,7 @@
                     <!-- Your Profile Views Chart -->
                     <div class="col-lg-12 m-b30">
                         <div class="widget-box" >
-                            <div class="wc-title" style="display: flex">
-                                <div class="col-md-4">
-                                    <h4>Mentee List</h4>
-                                </div>
-                                <div class="mail-search-bar col-md-4">
-
-                                    <form method="post" action="menteeListAdmin" style="display: flex; align-items: center;">
-                                        <input type="hidden" name="numDis" value="${requestScope.numDis}">
-                                        <input type="text" name="search"value="${search}" placeholder="Search" class="form-control" style="flex: 1; margin-right: 10px;">
-                                        <button type="submit" class="fa fa-search" style="padding: 10px;">
-                                    </form>
-
-                                </div>
-                            </div>
-
+                            
                             <div class="widget-inner">
                                 <form method="post" action="skillDetailAdmin">
                                     <div class="row">

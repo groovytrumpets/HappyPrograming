@@ -115,7 +115,7 @@ public class UpdateSkillServlet extends HttpServlet {
         if (checkDup == true) {
             String error = "Skill name already exist!";
             request.setAttribute("error", "Skill name already exist!");
-            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            response.sendRedirect("updateSkillAdmin?updateId=" + id + "&error=" + error);
             return;
         }
         //Get image file
@@ -140,7 +140,7 @@ public class UpdateSkillServlet extends HttpServlet {
             response.sendRedirect("500.jsp");
             return;
         }
-        response.sendRedirect("updateSkill?updateId=" + id);
+        response.sendRedirect("updateSkillAdmin?updateId=" + id);
     }
 
     public boolean checkDupSkill(String skillName, int id) {
