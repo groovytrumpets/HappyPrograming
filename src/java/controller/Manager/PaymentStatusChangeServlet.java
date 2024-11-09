@@ -61,11 +61,11 @@ public class PaymentStatusChangeServlet extends HttpServlet {
         String price_raw = request.getParameter("ballance");
         String requestId_raw = request.getParameter("requestId");
         int requestId;
-        float price;
+        float price,origin;
         try {
            
             
-            price = Float.parseFloat(price_raw);
+            origin=price = Float.parseFloat(price_raw);
             requestId= Integer.parseInt(requestId_raw);
             price = price-(price*(20.0f/100));
             Math.round(price);
@@ -80,7 +80,7 @@ public class PaymentStatusChangeServlet extends HttpServlet {
             cvd.addPayment(payment);
             cvd.setWalletTransactionbyManager(price,mentorName);
             cvd.setStatusPaidRequestId(requestId);
-            response.sendRedirect("paymentmanagercate?id="+requestId);
+            response.sendRedirect("paymentmanagercate?id="+requestId+"&mess=Payment accepted! The you will receive a commission of "+(origin-price)+" VND!");
             
         } catch (Exception e) {
             System.out.println(e);
