@@ -316,14 +316,16 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
-   public List<Request> getAllCompleteRequest(){
+
+    public List<Request> getAllCurrentValidate() {
         List<Request> listRequest = new ArrayList<>();
-        String sql = "SELECT*"
-                + "  FROM [dbo].[Request]\n"
-                + "  Where Request.Status like 'Completed' or  Request.Status like 'Paid'";
+        String sql = """
+                  SELECT*  FROM [dbo].[Request] R
+                  Where r.status like 'Studying' or r.status like 'MentorAccept'
+                  """;
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-           
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request curRequest = new Request();
@@ -351,6 +353,43 @@ public class RequestDAO extends DBContext {
         return listRequest;
 
     }
+
+    public List<Request> getAllCompleteRequest() {
+        List<Request> listRequest = new ArrayList<>();
+        String sql = "SELECT*"
+                + "  FROM [dbo].[Request]\n"
+                + "  Where Request.Status like 'Completed' or  Request.Status like 'Paid'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Request curRequest = new Request();
+                curRequest.setRequestId(rs.getInt("RequestID"));
+                curRequest.setMentorId(rs.getInt("MentorID"));
+                curRequest.setMenteeId(rs.getInt("MenteeID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setNote(rs.getString("Note"));
+                LocalDate curCreaDate = rs.getDate("CreateDate").toLocalDate();
+                curRequest.setCreateDate(curCreaDate);
+                curRequest.setStatus(rs.getString("Status"));
+                curRequest.setTitle(rs.getString("Title"));
+                LocalDate start = rs.getDate("StartDate").toLocalDate();
+                LocalDate end = rs.getDate("EndDate").toLocalDate();
+                curRequest.setStartDate(start);
+                curRequest.setEndDate(end);
+                curRequest.setSkillId(rs.getInt("SkillID"));
+                curRequest.setPrice(rs.getFloat("Price"));
+                curRequest.setFramework(rs.getString("Framework"));
+                listRequest.add(curRequest);
+            }
+
+        } catch (Exception e) {
+        }
+        return listRequest;
+
+    }
+
     public List<Request> getAllRequest() {
         List<Request> listRequest = new ArrayList<>();
         String sql = "SELECT *"
@@ -428,9 +467,12 @@ public class RequestDAO extends DBContext {
 
     public int getNumOfValidMentorEachMentee(int menteeId) {
         int count = 0;
-        String sql = "select COUNT(DISTINCT MentorID) from Request \n"
-                + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
-                + "and MenteeID = ?";
+        String sql = """
+                     select COUNT(DISTINCT MentorID) from Request 
+                     where [Status] != 'Open' and [Status] != 'Processing' 
+                     and [Status] != 'Canceled'
+                     and MenteeID = ?
+                        """;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, menteeId);
@@ -446,9 +488,12 @@ public class RequestDAO extends DBContext {
 
     public int getNumOfValidSkillEachMentee(int menteeId) {
         int count = 0;
-        String sql = "select COUNT(DISTINCT SkillID) from Request \n"
-                + "where [Status] != 'Cancel' and [Status] != 'Pending'\n"
-                + "and MenteeID = ?";
+        String sql = """
+                select COUNT(DISTINCT SkillID) from Request 
+                where [Status] != 'Open' and [Status] != 'Processing' 
+                and [Status] != 'Canceled'
+                and MenteeID = ?
+                        """;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, menteeId);
