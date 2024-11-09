@@ -135,12 +135,14 @@ public class SignUpSV extends HttpServlet {
 
             if (phone.length() < 10 || !phone.matches("\\d+")) {
                 request.setAttribute("pherror", "Phone number must contain only digits and has at least 10 digit.");
+                request.getRequestDispatcher("Signup.jsp").forward(request, response);
                 return;
             }
 
             if ((age > 65 || age < 20) && role == 1) {
                 request.setAttribute("aerror", "Your age must be between 20 and 65 years old");
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
+                return;
             }
 
             if ((age > 65 || age < 10) && role == 2) {
