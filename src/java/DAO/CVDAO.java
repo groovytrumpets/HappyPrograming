@@ -90,7 +90,7 @@ public class CVDAO extends DBContext {
     public CV getCVbyMentorId(int id) {
         //lenh sql select * from categories cach 1:
         String sql = "select*from [dbo].[CV] where MentorID =? and Status='active';";
-        //cach 2: vao sql phai chuot vao bang chon scriptable as
+        //cach 2: vao sql phai chuot vao bang chon script"select*from [dbo].[CV] where MentorIDable as
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -396,7 +396,9 @@ public class CVDAO extends DBContext {
 
     public List<Skill> getMentorSkillListByMentorID(int id) {
         List<Skill> list = new ArrayList<>();
-        String sql = "select s.SkillID,s.SkillName from Skill s join SkillList sl on s.SkillID=sl.SkillID where MentorID=?";
+        String sql = "select distinct s.SkillID,s.SkillName from Skill s join \n"
+                + "SkillList sl on \n"
+                + "s.SkillID=sl.SkillID where MentorID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -429,6 +431,7 @@ public class CVDAO extends DBContext {
         }
         return list;
     }
+
     public List<Skill> getActiveCVSkillListByCVID(int id) {
         List<Skill> list = new ArrayList<>();
         String sql = "select s.* from Skill s join SkillList sl on s.SkillID=sl.SkillID where CVID=?";

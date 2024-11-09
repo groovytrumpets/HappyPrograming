@@ -9,9 +9,11 @@ import DAO.MenteeDAO;
 import DAO.MentorDAO;
 import DAO.RateDAO;
 import DAO.RequestDAO;
+import DAO.SkillListDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
+import Model.Request;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -127,6 +129,8 @@ public class RateMentorSV extends HttpServlet {
         MenteeDAO actMentee = new MenteeDAO();
         MentorDAO actMentor = new MentorDAO();
         RateDAO rateDAO = new RateDAO();
+        SkillListDAO actskilllist = new SkillListDAO();
+        RequestDAO requestDAO = new RequestDAO();
 
         if (curUser == null) {
             response.sendRedirect("signin");
@@ -150,12 +154,24 @@ public class RateMentorSV extends HttpServlet {
             rate = Integer.parseInt(request.getParameter("rating"));
             requestId = Integer.parseInt(request.getParameter("requestId"));
             comment = request.getParameter("comment");
+            Request req = requestDAO.getRequestByID(requestId);
 
             // Check for existing rating for this specific request
             if (rateDAO.checkExistingRating(menteeId, mentorId, requestId)) {
                 // Redirect to the profile with an error indicating a rating already exists
                 response.sendRedirect("viewprofilecv?id=" + mentorId + "&error=alreadyRated");
                 return;
+            }
+            
+            Integer currentRating = actskilllist.getCurrentRating(req.getSkillId());
+
+            if (currentRating == null || currentRating == 0) {
+                actskilllist.updateRating(req.getSkillId(), rate, mentorId);
+                response.sendRedirect("listmentor");
+            } else {
+                int newRating = (currentRating + rate) / 2;
+                actskilllist.updateRating(req.getSkillId(), newRating, mentorId);
+                response.sendRedirect("listmentor");
             }
 
             // Save the new rating if no existing rating is found

@@ -26,7 +26,13 @@ public class SkillListDAO extends DBContext {
 
     public List<Mentor> getMentorBySkill(int id) {
         List<Mentor> list = new ArrayList<>();
-        String sql = "select DISTINCT m.* from mentor m join SkillList s on m.MentorID = s.MentorID where SkillID = ? and m.Status like 'active';";
+        String sql = "SELECT DISTINCT m.* \n"
+                + "FROM mentor m\n"
+                + "JOIN SkillList s ON m.MentorID = s.MentorID\n"
+                + "LEFT JOIN CV cv ON s.CVID = cv.CVID\n"
+                + "WHERE s.SkillID = ? \n"
+                + "  AND m.Status = 'active'\n"
+                + "  AND (cv.Status = 'active');";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -87,7 +93,7 @@ public class SkillListDAO extends DBContext {
                        WHERE SkillID = ?
                        """;
         try (
-            PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, skillId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -99,18 +105,19 @@ public class SkillListDAO extends DBContext {
         return null;
     }
 
-    public void updateRating(int skillId, int rating) {
-        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? ";
+    public void updateRating(int skillId, int rating, int mentorId) {
+        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? AND MentorID = ?";
         try (
-            PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+                PreparedStatement ps = connection.prepareStatement(updateQuery)) {
             ps.setInt(1, rating);
             ps.setInt(2, skillId);
+            ps.setInt(3, mentorId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void main(String[] args) {
         SkillListDAO s = new SkillListDAO();
         List<CV> list = s.getCVbySkill(1);
