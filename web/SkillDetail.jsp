@@ -166,7 +166,7 @@
                                                                             <p class="m-b0">Price: <fmt:formatNumber value="${cvs.price}" type="number" maxFractionDigits="2" />₫ VND</p>
                                                                             <div class="instructor-info" style="margin-left: 60px">
                                                                                 <a href="viewprofilecv?id=${mentors.mentorId}" class="btn green radius-xl outline">View CV</a>
-                                                                                <c:if test="${acc.roleId == 2}">  
+                                                                                <c:if test="${acc.roleId != 1}">  
                                                                                     <a href="createrequest?id=${mentors.mentorId}" class="btn red outline radius-xl">Rent mentor</a>
                                                                                 </c:if>
 
