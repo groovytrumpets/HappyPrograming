@@ -166,11 +166,11 @@ public class RateMentorSV extends HttpServlet {
             Integer currentRating = actskilllist.getCurrentRating(req.getSkillId());
 
             if (currentRating == null || currentRating == 0) {
-                actskilllist.updateRating(req.getSkillId(), rate);
+                actskilllist.updateRating(req.getSkillId(), rate, mentorId);
                 response.sendRedirect("listmentor");
             } else {
                 int newRating = (currentRating + rate) / 2;
-                actskilllist.updateRating(req.getSkillId(), newRating);
+                actskilllist.updateRating(req.getSkillId(), newRating, mentorId);
                 response.sendRedirect("listmentor");
             }
 

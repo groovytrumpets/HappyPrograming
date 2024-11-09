@@ -99,12 +99,13 @@ public class SkillListDAO extends DBContext {
         return null;
     }
 
-    public void updateRating(int skillId, int rating) {
-        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? ";
+    public void updateRating(int skillId, int rating, int mentorId) {
+        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? AND MentorID = ?";
         try (
             PreparedStatement ps = connection.prepareStatement(updateQuery)) {
             ps.setInt(1, rating);
             ps.setInt(2, skillId);
+            ps.setInt(3, mentorId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
