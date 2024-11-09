@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -106,9 +107,16 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                         //Buoc 4: update payment
                         paymentDAO.updatePaymentStatus(requestId, "2");
                         //Buoc 5: Update Hold
-                        walletDAO.updateHoldByUsername(menteeName.getUsername(),walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
-                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(),-requests.getPrice());
+                        walletDAO.updateHoldByUsername(menteeName.getUsername(), walletDAO.getWalletByUsername(menteeName.getUsername()).getHold() - requests.getPrice());
+                        walletDAO.updateWalletAddMoneyBalanceByUsername(menteeName.getUsername(), -requests.getPrice());
                         walletDAO.updateWalletAddMoneyBalanceByUsername("manager", requests.getPrice());
+                        //Update wallet the rejected
+                        Map<String, Float> listRejected = walletDAO.getHold(requestId);
+                        listRejected.forEach((username, holdAmount) -> {
+                            System.out.println("Username: " + username + ", Hold Amount: " + holdAmount);
+                            boolean updated = walletDAO.updateHoldRejected(username, holdAmount);
+                            
+                        });
                         response.sendRedirect("listrequestofmentor");
                         break;
                     case "reject":
@@ -131,7 +139,6 @@ public class UpdateStatusByMentorSV extends HttpServlet {
                 response.sendRedirect("home");
                 return;
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
