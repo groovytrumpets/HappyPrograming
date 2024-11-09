@@ -103,7 +103,7 @@ public class MentorListAdMinServlet extends HttpServlet {
 
         //
         mentorList = actMent.getListMentorPagiantion(page, numDis);
-        List<Request> curProcessRequestt = actRequest.getAllRequestByStatus("Studying");
+        List<Request> curProcessRequest = actRequest.getAllCurrentValidate();
         List<Request> curComplete = actRequest.getAllCompleteRequest();
         List<Rate> listAllRate = actRate.getAllRates();
         //Create needed data
@@ -132,10 +132,10 @@ public class MentorListAdMinServlet extends HttpServlet {
             }
             //Current request
             int countRequest = 0;
-            for (int r = 0; r < curProcessRequestt.size(); r++) {
-                if (mentorID == curProcessRequestt.get(r).getMentorId()) {
+            for (int r = 0; r < curProcessRequest.size(); r++) {
+                if (mentorID == curProcessRequest.get(r).getMentorId()) {
                     countRequest++;
-                    curProcessRequestt.remove(r);
+                    curProcessRequest.remove(r);
                 }
             }
             curRequest[i] = countRequest;
