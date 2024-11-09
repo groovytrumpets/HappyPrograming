@@ -103,11 +103,11 @@ public class UpdateSkillServlet extends HttpServlet {
         String name = request.getParameter("name");
         if (name.trim().isEmpty() || name.isEmpty()) {
             String error = "You must not leave this field empty!";
-            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            response.sendRedirect("updateSkillAdmin?updateId=" + id + "&error=" + error);
             return;
         } else if (name.length() > 20) {
             String error = "Please enter name no longger than 20 character!";
-            response.sendRedirect("updateSkill?updateId=" + id + "&error=" + error);
+            response.sendRedirect("updateSkillAdmin?updateId=" + id + "&error=" + error);
             return;
         }
 
