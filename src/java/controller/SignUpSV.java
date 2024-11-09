@@ -121,54 +121,70 @@ public class SignUpSV extends HttpServlet {
 
             int role = Integer.parseInt(role_raw);
 
-            if (!pass.equals(repass)) {
-                request.setAttribute("perror1", "Passwords do not match.");
+            boolean errorUser = true;
+
+            if (userDAO.findUserByUsername(username) != null) {
+                request.setAttribute("uerror", "User already exists.");
+                errorUser = false;
+            }
+
+            if (userDAO.findUserByEmail(mail) != null) {
+                request.setAttribute("eerror", "Email already exists.");
+                errorUser = false;
+            }
+            if (errorUser == false) {
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
                 return;
             }
 
-            if (!checkValidPass(pass, repass)) {
-                request.setAttribute("perror1", "Password do not meet requirement");
-                request.getRequestDispatcher("Signup.jsp").forward(request, response);
-                return;
+            boolean error = true;
+            if (!pass.equals(repass)) {
+                request.setAttribute("perror1", "Passwords do not match.");
+                error = false;
+            }
+
+            if (!checkValidPass(pass)) {
+                request.setAttribute("perror1", "Password does not meet requirements.");
+                error = false;
             }
 
             if (phone.length() < 10 || !phone.matches("\\d+")) {
-                request.setAttribute("pherror", "Phone number must contain only digits and has at least 10 digit.");
+                request.setAttribute("pherror", "Phone number must contain only digits and have at least 10 digits.");
+                error = false;
+            }
+
+            if ((role == 1 && (age < 20 || age > 65)) || (role == 2 && (age < 10 || age > 65))) {
+                request.setAttribute("aerror", role == 1
+                        ? "Your age must be between 20 and 65 years old for mentors."
+                        : "Your age must be between 10 and 65 years old for mentees.");
+                error = false;
+
+            }
+
+            User newUser = new User();
+            newUser.setUsername(username);
+            String enpass = encrypt(pass);
+            newUser.setPassword(enpass);
+            newUser.setEmail(mail);
+            newUser.setRoleId(role);
+            newUser.setCreateDate(new Date());
+            newUser.setStatus("inactive");
+            userDAO.insertUser(newUser);
+
+            if (role == 1) {
+                mentorDAO.insertMentor(role, username, dob, phone, address, dob, fname, sex, "inactive");
+                walletDAO.addNewWallet(username);
+            } else {
+                menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");
+                walletDAO.addNewWallet(username);
+            }
+
+            if (error == false) {
                 request.getRequestDispatcher("Signup.jsp").forward(request, response);
                 return;
             }
 
-            if ((age > 65 || age < 20) && role == 1) {
-                request.setAttribute("aerror", "Your age must be between 20 and 65 years old");
-                request.getRequestDispatcher("Signup.jsp").forward(request, response);
-                return;
-            }
-
-            if ((age > 65 || age < 10) && role == 2) {
-                request.setAttribute("aerror", "Your age must be between 10 and 65 years old");
-                request.getRequestDispatcher("Signup.jsp").forward(request, response);
-            }
-
-            if (userDAO.findUserByUsername(username) == null && userDAO.findUserByEmail(mail) == null) {
-                User newUser = new User();
-                newUser.setUsername(username);
-                String enpass = encrypt(pass);
-                newUser.setPassword(enpass);
-                newUser.setEmail(mail);
-                newUser.setRoleId(role);
-                newUser.setCreateDate(new Date());
-                newUser.setStatus("inactive");
-                userDAO.insertUser(newUser);
-
-                if (role == 1) {
-                    mentorDAO.insertMentor(role, username, dob, phone, address, dob, fname, sex, "inactive");
-                    walletDAO.addNewWallet(username);
-                } else {
-                    menteeDAO.insertMentee(role, null, username, dob, mail, phone, address, dob, fname, sex, "inactive");
-                    walletDAO.addNewWallet(username);
-                }
-
+            if (error == true && errorUser == true) {
                 String subject = "Confirm Your Signup";
                 String content = "<html>"
                         + "<body style='font-family: Arial, sans-serif;'>"
@@ -201,17 +217,7 @@ public class SignUpSV extends HttpServlet {
                 Email.sendEmail(mail, subject, content);
 
                 request.getRequestDispatcher("success.jsp").forward(request, response);
-
-            } else {
-                if (userDAO.findUserByUsername(username) != null) {
-                    request.setAttribute("uerror", "User already exists.");
-                }
-                if (userDAO.findUserByEmail(mail) != null) {
-                    request.setAttribute("eerror", "Email already exists.");
-                }
-                request.getRequestDispatcher("Signup.jsp").forward(request, response);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("notify", e);
@@ -220,7 +226,7 @@ public class SignUpSV extends HttpServlet {
 
     }
 
-    private boolean checkValidPass(String pass, String repass) {
+    private boolean checkValidPass(String pass) {
         boolean hasUpperCase = false;
         boolean hasNumber = false;
         if (pass.length() < 6 || pass.length() > 18) {
