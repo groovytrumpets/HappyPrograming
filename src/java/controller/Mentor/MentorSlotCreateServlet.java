@@ -177,6 +177,7 @@ public class MentorSlotCreateServlet extends HttpServlet {
             CV activeCv = cvd.getCVActivebyMentorId(mentorId);
             if (activeCv==null) {
                 response.sendRedirect("slotdraft?id=" + mentorId_raw + "&error=Unable to create the slot because your CV has not been activated. Please wait for the manager to approve your CV!");
+                return;
             }
             List<Slot> listDraftSlot = sld.getListofInactiveSlotsByMentorId(mentorId);
             Slot slot = new Slot();
