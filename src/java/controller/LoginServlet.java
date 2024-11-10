@@ -91,6 +91,10 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("loginAd.jsp").forward(request, response);
             } else {
                 if (a != null) {
+                    if (a.getRoleId() != 3 || a.getRoleId() != 4) {
+                        request.setAttribute("notify", "Only admin and manager can log in here ");
+                        request.getRequestDispatcher("loginAd.jsp").forward(request, response);
+                    }
                     HttpSession session = request.getSession();
                     session.setAttribute("acc", a);
                     if (rememberMe != null) {  // Checkbox was checked
@@ -116,12 +120,14 @@ public class LoginServlet extends HttpServlet {
                         response.addCookie(usernameCookie);
                         response.addCookie(passwordCookie);
                     }
-                    if(a.getRoleId() == 3)
-                    response.sendRedirect("admindashboard");
-                    if(a.getRoleId() == 4)
-                    response.sendRedirect("cvmanager");
-                } 
-                
+                    if (a.getRoleId() == 3) {
+                        response.sendRedirect("admindashboard");
+                    }
+                    if (a.getRoleId() == 4) {
+                        response.sendRedirect("cvmanager");
+                    }
+                }
+
             }
         } catch (Exception e) {
             request.setAttribute("notify", "Error occured ");
