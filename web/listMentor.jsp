@@ -110,7 +110,7 @@
                                                         <div class="action-box">
                                                             <c:forEach items="${requestScope.cvlist}" var="c"> 
                                                                 <c:if test="${c.mentorId==m.mentorId}">
-                                                                    <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                                    <img src="getCVimage?id=${c.cvId}" alt="${cv.fullName}" style="width: 100%; height: 250px; object-fit: cover;">
                                                                 </div>
                                                                 <div style="margin: 15px 0px">
                                                                     <h5>${m.fullName}</h5>
