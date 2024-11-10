@@ -220,7 +220,7 @@ public class AdminFilter implements Filter {
     // Boolean function to check if the URL is for mentor
     private boolean isUrlMentor(String url) {
         return url.contains("slotmentor") || url.contains("mentorStatisticRequest")
-                || url.contains("slotview") || url.contains("cvdelete")
+                || url.contains("cvdelete")
                 || url.contains("cvlist") || url.contains("cvupdate")
                 || url.contains("updatestatusbymentor");
     }
@@ -232,7 +232,8 @@ public class AdminFilter implements Filter {
                 || url.contains("ratementor") || url.contains("statisticrequestbymentee")
                 || url.contains("statisticrequest") || url.contains("updateProfile")
                 || url.contains("updateRequest") || url.equals("payment")
-                || url.contains("updatestatusofmentee") || url.contains("slotmentee");
+                || url.contains("updatestatusofmentee") || url.contains("slotmentee")
+                || url.contains("slotview"); 
 
     }
 
