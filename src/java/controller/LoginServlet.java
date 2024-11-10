@@ -117,7 +117,7 @@ public class LoginServlet extends HttpServlet {
                         response.addCookie(passwordCookie);
                     }
                     if(a.getRoleId() == 3)
-                    response.sendRedirect("mentorListAdmin");
+                    response.sendRedirect("admindashboard");
                     if(a.getRoleId() == 4)
                     response.sendRedirect("cvmanager");
                 } 

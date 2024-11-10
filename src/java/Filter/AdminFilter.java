@@ -109,7 +109,9 @@ public class AdminFilter implements Filter {
         String url = httpRequest.getServletPath();
         HttpSession session = httpRequest.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("acc") : null;
-        if (isJspPage(url)) {
+        if(jspPageNotBlock(url)){
+        
+        }else if (isJspPage(url)) {
             httpResponse.sendRedirect("home");
             return;
         }
@@ -194,6 +196,11 @@ public class AdminFilter implements Filter {
             }
             sendProcessingError(problem, response);
         }
+    }
+    private boolean jspPageNotBlock(String url) {
+        return url.contains("contact.jsp")||url.contains("404.jsp")
+                ||url.contains("500.jsp")||url.contains("faq.jsp")
+                ||url.contains("event.jsp");
     }
 
     private boolean isJspPage(String url) {
