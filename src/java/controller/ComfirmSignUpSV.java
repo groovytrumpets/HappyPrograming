@@ -17,9 +17,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -91,6 +88,7 @@ public class ComfirmSignUpSV extends HttpServlet {
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *

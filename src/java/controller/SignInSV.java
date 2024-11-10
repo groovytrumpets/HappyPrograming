@@ -108,6 +108,7 @@ public class SignInSV extends HttpServlet {
         String pass = request.getParameter("pass");
         String rememberMe = request.getParameter("rememberMe");
         String enpass = encrypt(pass);
+        HttpSession session = request.getSession();
         UserDAO u = new UserDAO();
         User a = u.findUserPass(username, enpass);
         try {
@@ -117,13 +118,15 @@ public class SignInSV extends HttpServlet {
                 request.getRequestDispatcher("SignIn.jsp").forward(request, response);
             } else {
                 if (a != null && a.getStatus().equalsIgnoreCase("active")) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("acc", a);
-                    //mentor avatar process
-           
+
+                    if (a.getRoleId() == 3 || a.getRoleId() == 4) {
+                        request.setAttribute("notify", "Admin and manager can't login here");
+                        request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+                    }
                     if (a.getRoleId() == 1) {
                         CVDAO cvd = new CVDAO();
                         WalletDAO wld = new WalletDAO();
+                        session.setAttribute("acc", a);
                         Mentor mentor = cvd.getMentorByUsername(a.getUsername());
                         if (mentor.getStatus().equalsIgnoreCase("active"));
                         {
@@ -139,10 +142,9 @@ public class SignInSV extends HttpServlet {
                     if (a.getRoleId() == 2) {
                         MenteeDAO mtd = new MenteeDAO();
                         WalletDAO wld = new WalletDAO();
-                        //System.out.println(a.getUsername());
+                        session.setAttribute("acc", a);
                         Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
                         Wallet wallet = wld.getWalletByUsername(a.getUsername());
-                        //System.out.println(mentee.getFullName());
 
                         session.setAttribute("wallet", wallet);
                         session.setAttribute("mentee", mentee);
@@ -176,13 +178,13 @@ public class SignInSV extends HttpServlet {
                     request.getRequestDispatcher("SignIn.jsp").forward(request, response);
                 }
             }
+
         } catch (Exception e) {
             System.out.println(e);
             request.setAttribute("notify", "Error occured ");
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }
-    
 
     public static String encrypt(String pass) {
         String digest = null;
