@@ -44,7 +44,7 @@ The following documents are available in the `/docs` folder:
 - [Final Release Document](./docs/SE1878_JS(IT)_G3_Final%20Release%20Document.docx)  or [Google Doc](https://docs.google.com/document/d/1XndCucQQx0H1XGRRG80zG4vLh9Bgf74L/edit?usp=sharing&ouid=117129001821004771013&rtpof=true&sd=true) 
 - [Product Backlog](./docs/SE1878_JS(IT)_G3_Product%20Backlog.xlsx) or [Google Doc](https://docs.google.com/spreadsheets/d/1ft8YvFoC7AbrLPoivDLLA8gfMOz-GG_U/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true) 
 - [Project Tracking](./docs/SE1878_JS(IT)_G3_HP_Project%20Tracking.xlsx)  or [Google Doc](https://docs.google.com/spreadsheets/d/1fcqYXpjlmq6VAzKOW0-f2kgFogSW5oFX/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true) 
-- [Database Schema (SQL)](./docs/DB_Final.sql)  
+- [Database Schema (SQL)](./docs/HPS.sql)  
 ## 🛠️ Setup Guide
 
 #### (A) Install NetBeans 17
