@@ -41,11 +41,10 @@ This system replaces manual processes of coordinating mentorship and learning ac
 The following documents are available in the `/docs` folder:
 
 - [RDS Document](./docs/SE1878_JS(IT)_G3_RDS%20Document.docx)  or [Google Doc](https://docs.google.com/document/d/1eMxb17JljTpi5qU-Z_ZMiUs_WeRUZtOi/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true) 
-- [Final Release Document](./docs/SE1878_JS(IT)_G3_Final%20Release%20Document.docx)  or [Google Doc]([https://docs.google.com/document/d/1eMxb17JljTpi5qU-Z_ZMiUs_WeRUZtOi/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true](https://docs.google.com/document/d/1XndCucQQx0H1XGRRG80zG4vLh9Bgf74L/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true)) 
-- [Product Backlog](./docs/SE1878_JS(IT)_G3_Product%20Backlog.xlsx)  
-- [Project Tracking](./docs/SE1878_JS(IT)_G3_HP_Project%20Tracking.xlsx)  
+- [Final Release Document](./docs/SE1878_JS(IT)_G3_Final%20Release%20Document.docx)  or [Google Doc](https://docs.google.com/document/d/1XndCucQQx0H1XGRRG80zG4vLh9Bgf74L/edit?usp=sharing&ouid=117129001821004771013&rtpof=true&sd=true) 
+- [Product Backlog](./docs/SE1878_JS(IT)_G3_Product%20Backlog.xlsx) or [Google Doc](https://docs.google.com/spreadsheets/d/1ft8YvFoC7AbrLPoivDLLA8gfMOz-GG_U/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true) 
+- [Project Tracking](./docs/SE1878_JS(IT)_G3_HP_Project%20Tracking.xlsx)  or [Google Doc](https://docs.google.com/spreadsheets/d/1fcqYXpjlmq6VAzKOW0-f2kgFogSW5oFX/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true) 
 - [Database Schema (SQL)](./docs/DB_Final.sql)  
-- [Final Presentation Slides](./docs/FinalProjectPresentation.pptx)  
 ## 🛠️ Setup Guide
 
 #### (A) Install NetBeans 17
