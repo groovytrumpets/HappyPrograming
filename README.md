@@ -12,7 +12,8 @@ This system replaces manual processes of coordinating mentorship and learning ac
 - **Language:** Java 17  
 - **Framework:** Servlet/JSP, JSTL  
 - **Database:** Microsoft SQL Server  
-- **Frontend:** HTML5, CSS3, JavaScript (Bootstrap)  
+- **Frontend:** HTML5, CSS3, JavaScript (Bootstrap)
+- **Server / Deployment:** Apache Tomcat
 - **Project Management:** Scrum (Iterations, Backlog, Project Tracking) 
 
 ---
