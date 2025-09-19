@@ -40,8 +40,8 @@ This system replaces manual processes of coordinating mentorship and learning ac
 ## 📑 Documentation
 The following documents are available in the `/docs` folder:
 
-- [RDS Document](./docs/SE1878_JS(IT)_G3_RDS%20Document.docx)  or [RDS Document]([./docs/SE1878_JS(IT)_G3_RDS%20Document.docx](https://docs.google.com/document/d/1eMxb17JljTpi5qU-Z_ZMiUs_WeRUZtOi/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true)) 
-- [Final Release Document](./docs/SE1878_JS(IT)_G3_Final%20Release%20Document.docx)  
+- [RDS Document](./docs/SE1878_JS(IT)_G3_RDS%20Document.docx)  or [Google Doc]((https://docs.google.com/document/d/1eMxb17JljTpi5qU-Z_ZMiUs_WeRUZtOi/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true)) 
+- [Final Release Document](./docs/SE1878_JS(IT)_G3_Final%20Release%20Document.docx)  or [Google Doc]([(https://docs.google.com/document/d/1eMxb17JljTpi5qU-Z_ZMiUs_WeRUZtOi/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true)](https://docs.google.com/document/d/1XndCucQQx0H1XGRRG80zG4vLh9Bgf74L/edit?usp=sharing&ouid=112876355383685662482&rtpof=true&sd=true))  
 - [Product Backlog](./docs/SE1878_JS(IT)_G3_Product%20Backlog.xlsx)  
 - [Project Tracking](./docs/SE1878_JS(IT)_G3_HP_Project%20Tracking.xlsx)  
 - [Database Schema (SQL)](./docs/DB_Final.sql)  
