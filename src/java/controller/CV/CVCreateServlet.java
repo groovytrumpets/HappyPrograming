@@ -5,6 +5,7 @@
 package controller.CV;
 
 import DAO.CVDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentor;
 import Model.Skill;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 
 /**
  *
@@ -28,8 +30,8 @@ import java.util.List;
  */
 @WebServlet(name = "CVCreateServlet", urlPatterns = {"/cvcreate"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
-    maxFileSize = 1024 * 1024 * 5,   // 5 MB
-    maxRequestSize = 1024 * 1024 * 10 // 10 MB
+        maxFileSize = 1024 * 1024 * 300, // 5 MB
+        maxRequestSize = 1024 * 1024 * 1000 // 10 MB
 )
 
 public class CVCreateServlet extends HttpServlet {
@@ -79,7 +81,7 @@ public class CVCreateServlet extends HttpServlet {
         CVDAO cvd = new CVDAO();
         try {
             id = Integer.parseInt(id_raw);
-            List<Skill> skillList = cvd.getSkillList(id);
+            List<Skill> skillList = cvd.getListofSkill();
             request.setAttribute("skillList", skillList);
             Mentor mentor = cvd.getMentorByID(id);
             //check cv exist
@@ -110,43 +112,58 @@ public class CVCreateServlet extends HttpServlet {
         String userId_raw = request.getParameter("mentorId");
 
         String profession = request.getParameter("profession");
+        String year_raw = request.getParameter("year");
+        
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
-        
+
         String activity = request.getParameter("activity");
         String professionIntroduction = request.getParameter("professionIntroduction");
         String serviceDescription = request.getParameter("serviceDescription");
         String experience = request.getParameter("experience");
-        Part filePart = request.getPart("avatar");
+        Part filePart = null;
+        if (request.getPart("avatar").getSize()< (1024 * 1024 * 5)) {
+            System.out.println("nahnha");
+            filePart = request.getPart("avatar");
+        }
         String price_raw = request.getParameter("price");
 
-        int userid;
+        int userid,year;
         float price;
-                
+
         try {
             userid = Integer.parseInt(userId_raw);
-            price = Integer.parseInt(price_raw);
-
+            price = Float.parseFloat(price_raw);
+            year = Integer.parseInt(year_raw);
+            System.out.println(year);
             //img processing
             InputStream fileRead = filePart.getInputStream();
             byte[] avatar = fileRead.readAllBytes();
-            System.out.println(avatar);
-            System.out.println(fileRead);
+            //System.out.println(avatar);
+            //System.out.println(fileRead);
 
             CVDAO cvdao = new CVDAO();
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession, serviceDescription, framework, avatar,price);
-            cvdao.createCV(newCv);
-
+                    professionIntroduction, profession,year, serviceDescription, framework, avatar, price);
+            int cvId = cvdao.createCV(newCv);
+            //System.out.println(cvId);
             //add skills
             if (addSkills != null) {
-                cvdao.insertMentorSkills(userid, addSkills);
+                cvdao.insertMentorSkills(userid, addSkills, cvId);
                 //System.out.println("Add !null");
             }
-            response.sendRedirect("cvlist?id=" + userid);
+            if (cvId == -1) {
+                response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to create your CV. Please try again.");
+
+            }
+            SlotDAO sld = new SlotDAO();
+            System.out.println(sld.getListofSlotsByMentorId(newCv.getMentorId()));
+            response.sendRedirect("cvlist?id=" + userid + "&mess=Your CV has been created successfully!");
+        } catch (NullPointerException e) {
+            response.sendRedirect("cvcreate?id=" + userId_raw + "&error=File size exceeds the 5 MB limit. Please upload a smaller file.");
         } catch (Exception e) {
             System.out.println(e);
-
+            response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to update your CV. Please try again.");
         }
 
     }
@@ -161,6 +178,4 @@ public class CVCreateServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-
 }
-

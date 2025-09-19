@@ -23,14 +23,14 @@
         <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>Happy Programing </title>
@@ -69,6 +69,7 @@
             <header class="header rs-nav">
                 <jsp:include page="header.jsp" />
             </header>
+
             <!-- Header Top END ==== -->
             <!-- Content -->
             <div class="page-content bg-white" style="overflow: visible;">
@@ -138,17 +139,17 @@
                                 </div>
                                 <div class="col-md-4 feature-filters style1 ml-auto" style="text-align: center;align-self: end">
                                     <ul class="filters" data-toggle="buttons">
-                                        <li data-filter="" class="btn active">
+                                        <li data-filter="toprate" class="btn active">
                                             <input type="radio">
                                             <a href="#"><span>Top Rate</span></a> 
                                         </li>
                                         <li data-filter="publish" class="btn">
                                             <input type="radio">
-                                            <a href="#"><span>Cheapest</span></a> 
+                                            <a href="#"><span>Newest</span></a> 
                                         </li>
                                         <li data-filter="pending" class="btn">
                                             <input type="radio">
-                                            <a href="#"><span>Newest</span></a> 
+                                            <a href="#"><span>Most Learn</span></a> 
                                         </li>
                                     </ul>
                                 </div>
@@ -161,35 +162,55 @@
                                         <c:forEach items="${requestScope.skill}" var="s"  >
 
 
-                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 pending">
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 toprate">
                                                 <div class="cours-bx">
                                                     <div class="action-box">
                                                         <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
                                                         <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
                                                     <div class="info-bx text-center" style="height: 130px">
+                                                        <h5><a href="#" "
+                                                               >${s.skillName}</a></h5>
+                                                        <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
+                                                            ${s.description}</span>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                        <c:forEach items="${requestScope.skillListNewest}" var="s"  >
+
+
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 publish">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
+                                                        <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
+                                                    </div>
+                                                    <div class="info-bx text-center" style="height: 140px">
                                                         <h5><a href="#">${s.skillName}</a></h5>
                                                         <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
                                                             ${s.description}</span>
                                                     </div>
-                                                    <div class="cours-more-info">
-                                                        <div  class="review"style=" display: flex; align-items: center; justify-content: center ">
 
-                                                            <ul class="cours-star">
-                                                                <c:forEach var="i" begin="1" end="${s.rating}">
-                                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                                    </c:forEach>
-                                                                    <c:forEach var="j" begin="1" end="${5-s.rating}">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    </c:forEach>
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                        <c:forEach items="${requestScope.skillListMostLearn}" var="s"  >
 
-                                                            </ul>
-                                                        </div>
-                                                        <div class="price">
-                                                            <del>$190</del>
-                                                            <h5>$120</h5>
-                                                        </div>
+
+                                            <li class="action-card col-xl-3 col-lg-6 col-md-12 col-sm-6 pending">
+                                                <div class="cours-bx">
+                                                    <div class="action-box">
+                                                        <img src="data:image/jpeg;base64,${s.base64ImageFile}" alt="" style="height: 300px;object-fit: cover;object-position: left;">
+                                                        <a href="skilldetail?id=${s.skillId}&name=${s.skillName}" class="btn">Read More</a>
                                                     </div>
+                                                    <div class="info-bx text-center" style="height: 140px">
+                                                        <h5><a href="#">${s.skillName}</a></h5>
+                                                        <span class="description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 4.5em;  line-height: 1.5em; height: 4.5em;">
+                                                            ${s.description}</span>
+                                                    </div>
+
                                                 </div>
                                             </li>
                                         </c:forEach>
@@ -286,7 +307,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 m-b30">
                                     <div class="counter-style-1">
                                         <div class="text-white">
-                                            <span class="counter">3000</span><span>+</span>
+                                            <span class="counter">${requestScope.completeRequestCount}</span><span>+</span>
                                         </div>
                                         <span class="counter-text">Completed Request</span>
                                     </div>
@@ -302,7 +323,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 m-b30">
                                     <div class="counter-style-1">
                                         <div class="text-white">
-                                            <span class="counter">1500</span><span>+</span>
+                                            <span class="counter">${requestScope.rateCount}</span><span>+</span>
                                         </div>
                                         <span class="counter-text">Questions Answered</span>
                                     </div>
@@ -312,7 +333,7 @@
                                         <div class="text-white">
                                             <span class="counter">${requestScope.requestCount}</span><span>+</span>
                                         </div>
-                                        <span class="counter-text">Ordered Coffee's</span>
+                                        <span class="counter-text">Request Total</span>
                                     </div>
                                 </div>
                             </div>
@@ -320,6 +341,7 @@
                     </div>
                     <!-- Testimonials END -->
                     <!-- Testimonials ==== -->
+
                     <div class="section-area section-sp2">
                         <div class="container">
                             <div class="row">
@@ -329,161 +351,71 @@
                                 </div>
                             </div>
                             <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">
-                                <c:forEach items="${requestScope.rate}" var="r">
+                                <c:if test="${not empty requestScope.rate}">
+                                    <c:forEach items="${requestScope.rate}" var="r">
 
-                                    <a href="viewprofilecv?id=${r.mentorId}">
-                                        <div class="item">
+                                        <a href="viewprofilecv?id=${r.mentorId}">
+                                            <div class="item">
 
-                                            <div class="testimonial-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic1.jpg" alt="">
-                                                </div>
-                                                <div class="testimonial-info">
-                                                    <c:forEach items="${requestScope.menteeList}" var="c">
-                                                        <c:if test="${c.menteeId==r.menteeId}">
+                                                <div class="testimonial-bx">
+                                                    <div class="testimonial-thumb">
+                                                        <c:forEach items="${requestScope.menteeList}" var="m">
+                                                            <c:if test="${r.menteeId==m.menteeId}">
 
-                                                            <h5 class="name">${c.username}</h5>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <c:forEach items="${requestScope.mentorList}" var="c">
-                                                        <c:if test="${c.mentorId==r.mentorId}">
+                                                                <c:if test="${m.base64FileImage!=null}">
+                                                                    <img src="data:image/jpeg;base64,${m.base64FileImage}" alt="" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
+                                                                </c:if>
+                                                                <c:if test="${m.base64FileImage==null}">
+                                                                    <img src="assets/images/userprofile.png" alt="">
+                                                                </c:if>
 
-                                                            <p>Rating: ${c.username}</p>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <ul class="cours-star">
-                                                        <c:forEach var="i" begin="1" end="${r.rate}">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            </c:forEach>
-                                                            <c:forEach var="j" begin="1" end="${5-r.rate}">
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            </c:forEach>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                    <div class="testimonial-info">
+                                                        <c:forEach items="${requestScope.menteeList}" var="c">
+                                                            <c:if test="${c.menteeId==r.menteeId}">
 
-                                                    </ul>
-                                                </div>
-                                                <div class="testimonial-content" style="height: 130px">
-                                                    <p>${r.comment}</p>
+                                                                <h5 class="name">${c.username}</h5>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <c:forEach items="${requestScope.mentorList}" var="c">
+                                                            <c:if test="${c.mentorId==r.mentorId}">
+
+                                                                <p>Rating: ${c.username}</p>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <ul class="cours-star">
+                                                            <c:forEach var="i" begin="1" end="${r.rate}">
+                                                                <li class="active"><i class="fa fa-star"></i></li>
+                                                                </c:forEach>
+                                                                <c:forEach var="j" begin="1" end="${5-r.rate}">
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                </c:forEach>
+
+                                                        </ul>
+                                                    </div>
+                                                    <div class="testimonial-content" style="height: 130px">
+                                                        <p>${r.comment}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-
+                                        </a>
+                                    </c:forEach>
+                                </c:if>
                             </div>
                         </div>
                     </div>
+
                     <!-- Testimonials END ==== -->
                 </div>
                 <!-- contact area END -->
             </div>
             <!-- Content END-->
             <!-- Footer ==== -->
-            <footer>
-                <div class="footer-top">
-                    <div class="pt-exebar">
-                        <div class="container">
-                            <div class="d-flex align-items-stretch">
-                                <div class="pt-logo mr-auto" style="width: 200px">
-                                    <a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt=""/></a>
-                                </div>
-                                <div class="pt-social-link">
-                                    <ul class="list-inline m-a0">
-                                        <li><a href="#" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#" class="btn-link"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="pt-btn-join">
-                                    <a href="skillhome" class="btn ">Join Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-12 col-sm-12 footer-col-4">
-                                <div class="widget">
-                                    <h5 class="footer-title">Sign Up For A Newsletter</h5>
-                                    <p class="text-capitalize m-b20">Weekly Breaking news analysis and cutting edge advices on job searching.</p>
-                                    <div class="subscribe-form m-b20">
-                                        <form class="subscription-form" action="http://educhamp.themetrades.com/demo/assets/script/mailchamp.php" method="post">
-                                            <div class="ajax-message"></div>
-                                            <div class="input-group">
-                                                <input name="email" required="required"  class="form-control" placeholder="Your Email Address" type="email">
-                                                <span class="input-group-btn">
-                                                    <button name="submit" value="Submit" type="submit" class="btn"><i class="fa fa-arrow-right"></i></button>
-                                                </span> 
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-5 col-md-7 col-sm-12">
-                                <div class="row">
-                                    <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                        <div class="widget footer_widget">
-                                            <h5 class="footer-title">Company</h5>
-                                            <ul>
-                                                <li><a href="index.html">Home</a></li>
-                                                <li><a href="about-1.html">About</a></li>
-                                                <li><a href="faq-1.html">FAQs</a></li>
-                                                <li><a href="contact.jsp">Contact</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                        <div class="widget footer_widget">
-                                            <h5 class="footer-title">Get In Touch</h5>
-                                            <ul>
-                                                <li><a href="http://educhamp.themetrades.com/admin/index.html">Dashboard</a></li>
-                                                <li><a href="blog-classic-grid.html">Blog</a></li>
-                                                <li><a href="portfolio.html">Portfolio</a></li>
-                                                <li><a href="event.html">Event</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 col-lg-4 col-md-4 col-sm-4">
-                                        <div class="widget footer_widget">
-                                            <h5 class="footer-title">Courses</h5>
-                                            <ul>
-                                                <li><a href="courses.html">Courses</a></li>
-                                                <li><a href="courses-details.html">Details</a></li>
-                                                <li><a href="membership.html">Membership</a></li>
-                                                <li><a href="profile.html">Profile</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-3 col-md-5 col-sm-12 footer-col-4">
-                                <div class="widget widget_gallery gallery-grid-4">
-                                    <h5 class="footer-title">Our Gallery</h5>
-                                    <ul class="magnific-image">
-                                        <li><a href="assets/images/gallery/pic1.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic1.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic2.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic2.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic3.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic3.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic4.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic4.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic5.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic5.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic6.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic6.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic7.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic7.jpg" alt=""></a></li>
-                                        <li><a href="assets/images/gallery/pic8.jpg" class="magnific-anchor"><img src="assets/images/gallery/pic8.jpg" alt=""></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 text-center"><a target="_blank" href="home">© 2024 HappyPrograming. All Rights Reserved.</a></div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <jsp:include page="footer.jsp" />
             <!-- Footer END ==== -->
-            <button class="back-to-top fa fa-chevron-up" ></button>
+            <button class="back-to-top fa fa-chevron-up"  ></button>
         </div>
 
         <!-- External JavaScripts -->
@@ -504,6 +436,53 @@
         <script src="assets/js/contact.js"></script>
         <!-- comment <script src='assets/vendors/switcher/switcher.js'></script>-->
     </body>
+    <script>
+        $(document).ready(function () {
+            // Kích hoạt masonry cho phần tử có id 'masonry'
+            var $masonryContainer = $('#masonry').masonry({
+                itemSelector: '.action-card',
+                percentPosition: true,
+                columnWidth: '.action-card'
+            });
+
+            // Thiết lập bộ lọc ban đầu (toprate)
+            $masonryContainer.masonryFilter({
+                filter: function () {
+                    return $(this).hasClass('toprate');
+                }
+            });
+
+            // Xử lý khi người dùng nhấn vào các bộ lọc
+            $('.filters li').on('click', function () {
+                // Xóa class 'active' và thêm cho phần tử hiện tại
+                $('.filters li').removeClass('active');
+                $(this).addClass('active');
+
+                // Lấy giá trị filter từ 'data-filter'
+                var filterValue = $(this).data('filter');
+
+                // Cập nhật bộ lọc cho Masonry
+                $masonryContainer.masonryFilter({
+                    filter: function () {
+                        return $(this).hasClass(filterValue);
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        window.embeddedChatbotConfig = {
+            chatbotId: "u5Jo3ydYkfiHuR6MaNT93",
+            domain: "www.chatbase.co",
+        }
+    </script>
+    <script
+        src="https://www.chatbase.co/embed.min.js"
+        chatbotId="u5Jo3ydYkfiHuR6MaNT93"
+        domain="www.chatbase.co"
+        defer>
+    </script>
 
 </html>
 

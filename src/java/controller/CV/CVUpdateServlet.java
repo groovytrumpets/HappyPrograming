@@ -33,8 +33,8 @@ import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
  */
 @WebServlet(name = "CVUpdateServlet", urlPatterns = {"/cvupdate"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
-        maxFileSize = 1024 * 1024 * 5, // 5 MB
-        maxRequestSize = 1024 * 1024 * 10 // 10 MB
+        maxFileSize = 1024 * 1024 * 300, // 5 MB
+        maxRequestSize = 1024 * 1024 * 1000 // 10 MB
 )
 public class CVUpdateServlet extends HttpServlet {
 
@@ -85,15 +85,15 @@ public class CVUpdateServlet extends HttpServlet {
             cvId = Integer.parseInt(cvId_raw);
 
             CV cv = cvd.getCVbyCVId(cvId);
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(cv.getMentorId());
-            List<Skill> skillList = cvd.getSkillList(cv.getMentorId());
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(cvId);
+            List<Skill> skillList = cvd.getSkillList(cv.getCvId());
             //System.out.println(mentorSkillList.get(0).getSkillName());
             request.setAttribute("skillMentor", mentorSkillList);
             request.setAttribute("skillList", skillList);
 
             Mentor mentor = cvd.getMentorByID(cv.getMentorId());
             String email = cvd.getUserEmail(cv.getMentorId());
-            
+
             request.setAttribute("error", error);
             request.setAttribute("email", email);
             request.setAttribute("uFound", mentor);
@@ -122,7 +122,7 @@ public class CVUpdateServlet extends HttpServlet {
         //getParameterValues khac getParameter
         String[] deleteSkills = request.getParameterValues("deleteSkills");
         String[] addSkills = request.getParameterValues("addSkills");
-        String cvId_raw=request.getParameter("cvId");
+        String cvId_raw = request.getParameter("cvId");
         String userId_raw = request.getParameter("mentorId");
         String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
@@ -133,6 +133,8 @@ public class CVUpdateServlet extends HttpServlet {
         String address = request.getParameter("address");
         //System.out.println(fullname);
         String profession = request.getParameter("profession");
+        String year_raw = request.getParameter("year");
+        
         String framework = request.getParameter("framework");
         String education = request.getParameter("education");
 
@@ -143,33 +145,25 @@ public class CVUpdateServlet extends HttpServlet {
         String price_raw = request.getParameter("price");
 
         Date dob;
-        int userid;
+        int userid,year;
         int cvId;
-        
+
         float price;
         Part filePart = null;
-        try {
+        if (request.getPart("avatar").getSize()< (1024 * 1024 * 5)) {
+            System.out.println("nahnha");
             filePart = request.getPart("avatar");
-        } catch (Exception e) {
-            System.out.println("big");
-            userid = Integer.parseInt(userId_raw);
-            response.sendRedirect("cvupdate?id=15&errorMessage=File%20too%20large");
-            return;
         }
 
         try {
 
             userid = Integer.parseInt(userId_raw);
             cvId = Integer.parseInt(cvId_raw);
-            
+            year = Integer.parseInt(year_raw);
             price = Float.parseFloat(price_raw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dob = dateFormat.parse(dob_raw);
-            if (filePart.getSize() > 1024 * 1024 * 5) {
-                System.out.println("big");
-                response.sendRedirect("cvupdate?id=" + userid + "&error2=file_toobig");
-                return;
-            }
+            
 
             CVDAO cvdao = new CVDAO();
             String nameId = cvdao.getMentorByID(userid).getUsername();
@@ -198,28 +192,50 @@ public class CVUpdateServlet extends HttpServlet {
             Mentor newMentor = new Mentor(userid, username, phone, address,
                     dob, fullname, gender);
             CV newCv = new CV(userid, education, experience, activity,
-                    professionIntroduction, profession, serviceDescription, framework, avatar, price);
-            //System.out.println(nameId+" and "+email);
-            cvdao.updateUser(nameId, username, email);
-            //System.out.println(newCv.getMentorId());
-            cvdao.updateMentor(newMentor);
-            cvdao.updateCV(newCv,cvId);
+                    professionIntroduction, profession,year, serviceDescription, framework, avatar, price);
+            if (cv.getStatus().equalsIgnoreCase("inactive")) {
 
-            if (deleteSkills != null) {
-                cvdao.deleteMentorSkills(userid, deleteSkills);
-                //System.out.println("Del !null");
+                //System.out.println(nameId+" and "+email);
+                cvdao.updateUser(nameId, username, email);
+                //System.out.println(newCv.getMentorId());
+                cvdao.updateMentor(newMentor);
+
+                if (deleteSkills != null) {
+                    cvdao.deleteMentorSkills(cvId, deleteSkills);
+                    //System.out.println("Del !null");
+                }
+
+                if (addSkills != null) {
+                    cvdao.insertMentorSkills(userid, addSkills, cvId);
+                    //System.out.println("Add !null");
+                }
+                if (cvdao.updateCV(newCv, cvId)) {
+                    response.sendRedirect("cvlist?id=" + newCv.getMentorId() + "&mess=Your CV has been updated successfully!");
+                } else {
+                    response.sendRedirect("cvlist?id=" + newCv.getMentorId() + "&error=Unable to update your CV. Please try again.");
+                }
             }
+            if (cv.getStatus().equalsIgnoreCase("active")) {
+                System.out.println("nah");
+                int newcvId = cvdao.createCV(newCv);
+                //System.out.println(cvId);
+                //add skills
+                if (addSkills != null) {
+                    cvdao.insertMentorSkills(userid, addSkills, newcvId);
+                    //System.out.println("Add !null");
+                }
+                if (cvId == -1) {
+                    response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to update your CV. Please try again.");
 
-            if (addSkills != null) {
-                cvdao.insertMentorSkills(userid, addSkills);
-                //System.out.println("Add !null");
+                }
+                response.sendRedirect("cvlist?id=" + userid + "&mess=Your active CV has been updated and successfully saved as a draft!");
             }
-
-            //DEMO URL!
-            response.sendRedirect("cvlist?id=" + newCv.getMentorId());
-        } catch (Exception e) {
+        }catch (NullPointerException e) {
             System.out.println(e);
-
+            response.sendRedirect("cvlist?id=" + userId_raw + "&error=File size exceeds the 5 MB limit. Please upload a smaller file.");
+        }catch (Exception e) {
+            System.out.println(e);
+            response.sendRedirect("cvlist?id=" + userId_raw + "&error=Unable to update your CV. Please try again.");
         }
 
     }

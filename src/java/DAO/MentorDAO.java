@@ -12,23 +12,21 @@ import java.util.List;
 
 public class MentorDAO extends DBContext {
 
-    public void insertMentor(int roleId, String username, Date createDate, String email, String phone, String address,
+    public void insertMentor(int roleId, String username, Date createDate, String phone, String address,
             Date dateOfBirth, String fullName, String gender, String status) {
-        String sql = "INSERT INTO Mentor (RoleID, Username, CreateDate, Email, Phone, Address, DateOfBirth, FullName, Gender, Status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Mentor (RoleID, Username, CreateDate, Phone, Address, DateOfBirth, FullName, Gender, Status) "
+                + "VALUES (?, ?, GETDATE(), ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, roleId);
             st.setString(2, username);
-            st.setDate(3, new java.sql.Date(createDate.getTime()));
-            st.setString(4, email);
-            st.setString(5, phone);
-            st.setString(6, address);
-            st.setDate(7, new java.sql.Date(dateOfBirth.getTime()));
-            st.setString(8, fullName);
-            st.setString(9, gender);
-            st.setString(10, status);
+            st.setString(3, phone);
+            st.setString(4, address);
+            st.setDate(5, new java.sql.Date(dateOfBirth.getTime()));
+            st.setString(6, fullName);
+            st.setString(7, gender);
+            st.setString(8, status);
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -36,7 +34,7 @@ public class MentorDAO extends DBContext {
     }
 
     public void updateMentor(Mentor mentor) {
-        String sql = "UPDATE Mentor SET RoleID = ?, Username = ?, CreateDate = ?, Email = ?, "
+        String sql = "UPDATE Mentor SET RoleID = ?, Username = ?, CreateDate = ?, "
                 + "Phone = ?, Address = ?, DateOfBirth = ?, FullName = ?, Gender = ?, "
                 + "Status = ? WHERE Username = ?";
 
@@ -44,13 +42,13 @@ public class MentorDAO extends DBContext {
             st.setInt(1, mentor.getRoleId());
             st.setString(2, mentor.getUsername());
             st.setDate(3, new java.sql.Date(mentor.getCreateDate().getTime()));
+            st.setString(4, mentor.getPhone());
             st.setString(5, mentor.getPhone());
-            st.setString(6, mentor.getPhone());
-            st.setDate(7, new java.sql.Date(mentor.getDateOfBirth().getTime()));
-            st.setString(8, mentor.getFullName());
-            st.setString(9, mentor.getGender());
-            st.setString(10, mentor.getStatus());
-            st.setString(11, mentor.getUsername());
+            st.setDate(6, new java.sql.Date(mentor.getDateOfBirth().getTime()));
+            st.setString(7, mentor.getFullName());
+            st.setString(8, mentor.getGender());
+            st.setString(9, mentor.getStatus());
+            st.setString(10, mentor.getUsername());
 
             st.executeUpdate();
 
@@ -87,6 +85,7 @@ public class MentorDAO extends DBContext {
                 mentor.setFullName(rs.getString("FullName"));
                 mentor.setGender(rs.getString("Gender"));
                 mentor.setStatus(rs.getString("Status"));
+                mentor.setMentorId(rs.getInt("MentorID"));
             }
         } catch (SQLException e) {
 
@@ -163,7 +162,8 @@ public class MentorDAO extends DBContext {
                 mentor.setStatus(rs.getString("Status"));
                 listMentor.add(mentor);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return listMentor;
@@ -298,7 +298,6 @@ public class MentorDAO extends DBContext {
                 + "       [RoleID],\n"
                 + "       [Username],\n"
                 + "       Mentor.[CreateDate],\n"
-
                 + "       [Phone],\n"
                 + "       [Address],\n"
                 + "       [DateOfBirth],\n"
@@ -369,10 +368,80 @@ public class MentorDAO extends DBContext {
         return mentor;
     }
 
+    public int getTotalMentors() {
+        int count = 0;
+        String query = """
+                       SELECT COUNT(*) AS TotalMentors
+                       FROM Mentor;
+                       """;
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("TotalMentors");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public void updateStatus(int mentorId, String status) {
+        String sql = "UPDATE Mentor SET Status = ? WHERE MentorID = ?";
+        try (
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setInt(2, mentorId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Mentor> getAllMentorHaveSkillId(int skillId) {
+        List<Mentor> listMentor = new ArrayList<>();
+        String sql = "SELECT distinct m.[MentorID]\n"
+                + "      ,[RoleID]\n"
+                + "      ,[Username]\n"
+                + "      ,m.[CreateDate]\n"
+                + "      ,[Phone]\n"
+                + "      ,[Address]\n"
+                + "      ,[DateOfBirth]\n"
+                + "      ,[FullName]\n"
+                + "      ,[Gender]\n"
+                + "      ,m.[Status]\n"
+                + "  FROM [dbo].[Mentor] m\n"
+                + "  right join SkillList sl on m.MentorID = sl.MentorID\n"
+                + "  right join Skill s on s.SkillID = sl.SkillID\n"
+                + "  where s.SkillID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, skillId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Mentor mentor = new Mentor();
+                mentor.setMentorId(rs.getInt("MentorID"));
+                mentor.setRoleId(rs.getInt("RoleID"));
+                mentor.setUsername(rs.getString("Username"));
+                mentor.setCreateDate(rs.getDate("CreateDate"));
+                mentor.setPhone(rs.getString("Phone"));
+                mentor.setAddress(rs.getString("Address"));
+                mentor.setDateOfBirth(rs.getDate("DateOfBirth"));
+                mentor.setFullName(rs.getString("FullName"));
+                mentor.setGender(rs.getString("Gender"));
+                mentor.setStatus(rs.getString("Status"));
+                listMentor.add(mentor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listMentor;
+    }
+
     public static void main(String[] args) {
         MentorDAO act = new MentorDAO();
-        List<Mentor> listMentor = act.getListMentorPagiantion(1, 5);
-        System.out.println(listMentor.get(0).getUsername());
-
+        //act.insertMentor(2, "hoanganhgp234", new Date(2004, 12, 11), "0961316508", "VN", new Date(2004, 12, 11), "Hoang Anh", "Male", "active");
+        System.out.println(act.getTotalMentors());
     }
 }

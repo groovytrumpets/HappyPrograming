@@ -14,6 +14,8 @@ public class SkillList {
     private int skillId;
     private int mentorId;
     private int rating;
+    private int cvId;
+    
 
     public SkillList() {
     }
@@ -23,6 +25,22 @@ public class SkillList {
         this.skillId = skillId;
         this.mentorId = mentorId;
         this.rating = rating;
+    }
+
+    public SkillList(int id, int skillId, int mentorId, int rating, int cvId) {
+        this.id = id;
+        this.skillId = skillId;
+        this.mentorId = mentorId;
+        this.rating = rating;
+        this.cvId = cvId;
+    }
+
+    public int getCvId() {
+        return cvId;
+    }
+
+    public void setCvId(int cvId) {
+        this.cvId = cvId;
     }
 
     public int getId() {

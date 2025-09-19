@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,35 +63,64 @@ public class SkillHomeSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String index_raw = request.getParameter("index");
+        String filter = request.getParameter("filter");
         SkillListDAO skilllistDAO = new SkillListDAO();
         SkillDAO skillDAO = new SkillDAO();
-        List<Skill> listSkill = skillDAO.getListOfAllSkill();
-        int index = 1;
-        int totalSkill = listSkill.size();
-        int page;
-        if (totalSkill / 9 == 0) {
-            page = totalSkill / 9;
-        } else {
-            page = totalSkill / 9 + 1;
+
+        if (filter == null) {
+            filter = "";
         }
+        int index = 1;
         try {
             index = Integer.parseInt(index_raw);
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid index parameter, defaulting to 1.");
         }
 
-        List<Skill> list = skillDAO.getListOfSkillPaging(index, 9);
+        int totalSkill = 0;
+        List<Skill> list = new ArrayList<>();
+        switch (filter) {
+            case "mostRequests":
+                list = skillDAO.getListOfSkillByMostRequested(index, 9);
+                break;
+            case "leastRequests":
+                list = skillDAO.getListOfSkillByLeastRequested(index, 9);
+                break;
+            case "mostMentors":
+                list = skillDAO.getListOfSkillByMostMentors(index, 9);
+                break;
+            case "leastMentors":
+                list = skillDAO.getListOfSkillByLeastMentors(index, 9);
+                break;
+            case "newestSkill":
+                list = skillDAO.getListOfNewestSkills(index, 9);
+                break;
+            case "oldestSkill":
+                list = skillDAO.getListOfOldestSkills(index, 9);
+                break;
+            case "":
+                list = skillDAO.getListOfSkillPagings(index, 9);
+            default:
+                list = skillDAO.getListOfSkillPagings(index, 9);
+                break;
+        }
+
+        int page = (totalSkill + 8) / 9;
+
         List<Skill> list2 = skillDAO.getListOfSkillByDate();
-        int number[] = new int[10];
+        int[] number = new int[list.size()];
+
         for (int i = 0; i < list.size(); i++) {
             number[i] = skilllistDAO.getMentorBySkill(list.get(i).getSkillId()).size();
         }
+
         request.setAttribute("number", number);
-         request.setAttribute("list2", list2);
+        request.setAttribute("list2", list2);
         request.setAttribute("pageIndex", index);
         request.setAttribute("endP", page);
         request.setAttribute("list", list);
         request.getRequestDispatcher("SkillList.jsp").forward(request, response);
+
     }
 
     /**

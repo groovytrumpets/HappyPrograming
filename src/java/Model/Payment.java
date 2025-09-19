@@ -10,80 +10,65 @@ package Model;
  */
 import java.util.Date;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Payment {
-
-    private int paymentID;
-    private int requestID;
-    private Date createDate;
-    private Double totalAmount;
-    private Date paymentDate;
+    private int paymentId;
+    private int requestId;
+    private LocalDateTime paymentDate;
+    private double totalAmount;
     private String status;
-    private Double balance;
-    private int mentorID;
-    private int menteeID;
+    private String sender;
+    private String receiver;
 
-    // Default constructor
+    // No-argument constructor
     public Payment() {
     }
 
     // Parameterized constructor
-    public Payment(int paymentID, int requestID, Date createDate, Double totalAmount,
-            Date paymentDate, String status, Double balance, int mentorID, int menteeID) {
-        this.paymentID = paymentID;
-        this.requestID = requestID;
-        this.createDate = createDate;
-        this.totalAmount = totalAmount;
+    public Payment(int paymentId, int requestId, LocalDateTime paymentDate, double totalAmount, 
+                   String status, String sender, String receiver) {
+        this.paymentId = paymentId;
+        this.requestId = requestId;
         this.paymentDate = paymentDate;
+        this.totalAmount = totalAmount;
         this.status = status;
-        this.balance = balance;
-        this.mentorID = mentorID;
-        this.menteeID = menteeID;
-    }
-
-    @Override
-    public String toString() {
-        return "Payment{" + "paymentID=" + paymentID + ", requestID=" + requestID + ", createDate=" + createDate + ", totalAmount=" + totalAmount + ", paymentDate=" + paymentDate + ", status=" + status + ", balance=" + balance + ", mentorID=" + mentorID + ", menteeID=" + menteeID + '}';
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
     // Getters and Setters
-    public int getPaymentID() {
-        return paymentID;
+    public int getPaymentId() {
+        return paymentId;
     }
 
-    public void setPaymentID(int paymentID) {
-        this.paymentID = paymentID;
+    public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public int getRequestID() {
-        return requestID;
+    public int getRequestId() {
+        return requestId;
     }
 
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public Date getPaymentDate() {
+    public LocalDateTime getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public String getStatus() {
@@ -94,27 +79,41 @@ public class Payment {
         this.status = status;
     }
 
-    public Double getBalance() {
-        return balance;
+    public String getSender() {
+        return sender;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public int getMentorID() {
-        return mentorID;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setMentorID(int mentorID) {
-        this.mentorID = mentorID;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
-
-    public int getMenteeID() {
-        return menteeID;
+    
+    public String getFormattedPaymentDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return paymentDate.format(formatter);
     }
-
-    public void setMenteeID(int menteeID) {
-        this.menteeID = menteeID;
+    public String getFormattedPaymentTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return paymentDate.format(formatter);
+    }
+    // Optional: toString method for debugging
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", requestId=" + requestId +
+                ", paymentDate=" + paymentDate +
+                ", totalAmount=" + totalAmount +
+                ", status='" + status + '\'' +
+                ", sender='" + sender + '\'' +
+                ", receiver='" + receiver + '\'' +
+                '}';
     }
 }

@@ -59,15 +59,21 @@ public class CVListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("id");
+        String error = request.getParameter("error");
+        String mess = request.getParameter("mess");
+        
+        
         int id;
         try {
             CVDAO cvd = new CVDAO();
             id = Integer.parseInt(id_raw);
             List<CV> listcv = cvd.getListofCVbyMentorId(id);
             
+            
             request.setAttribute("listcv", listcv);
             request.setAttribute("id", id);
-            
+            request.setAttribute("error", error);
+            request.setAttribute("mess", mess);
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -19,17 +19,17 @@
 	<meta name="robots" content="" />
 	
 	<!-- DESCRIPTION -->
-	<meta name="description" content="EduChamp : Education HTML Template" />
+	<meta name="description" content="Happy Programing" />
 	
 	<!-- OG -->
-	<meta property="og:title" content="EduChamp : Education HTML Template" />
-	<meta property="og:description" content="EduChamp : Education HTML Template" />
-	<meta property="og:image" content="" />
-	<meta name="format-detection" content="telephone=no">
+	<meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:image" content="" />
+        <meta name="format-detection" content="telephone=no">
 	
 	<!-- FAVICONS ICON ============================================= -->
-	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+	<link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 	
 	<!-- PAGE TITLE HERE ============================================= -->
 	<title>Happy Programming</title>
@@ -60,14 +60,15 @@
 <div class="page-wraper">
 	<div id="loading-icon-bx"></div>
 	<div class="account-form">
-		<div class="account-head" style="background-image:url(assets/images/background/bg2.jpg);">
-			<a href="home"><img src="assets/images/logo-white-2.png" alt=""></a>
+		<div class="account-head" style="background-image:url(https://hanoi.fpt.edu.vn/wp-content/uploads/2024/10/STA02949-scaled.jpg);">
+			<a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt="" style="width: 50%"></a>
 		</div>
 		<div class="account-form-inner">
 			<div class="account-container">
 				<div class="heading-bx left">
 					<h2 class="title-head">Login to your <span>Account</span></h2>
 					<p>Don't have an account? <a href="signup">Create one here</a></p>
+<!--                                        <p>Login for admin, manager <a href="loginAdmin">here</a></p>-->
                                         <p style="color: green">${message}<p>
 				</div>	
                             <form class="contact-bx" action="signin" method="post">
@@ -77,7 +78,7 @@
                                                             <small style="color:  red">${notify}</small>
 								<div class="input-group">
 									<label>Your username</label>
-									<input name="username" type="text" required="" class="form-control">
+                                                                        <input name="username" type="text" required="" class="form-control" value="${username}">
 								</div>
 							</div>
 						</div>
@@ -85,7 +86,7 @@
 							<div class="form-group">
 								<div class="input-group"> 
 									<label>Your Password</label>
-									<input name="pass" type="password" class="form-control" required="">
+                                                                        <input name="pass" type="password" class="form-control" required="" value="${password}">
 								</div>
 							</div>
 						</div>
@@ -125,7 +126,7 @@
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
-<script src='assets/vendors/switcher/switcher.js'></script>
+
 </body>
 
 </html>

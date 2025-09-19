@@ -8,13 +8,37 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
         <!-- META ============================================= -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="" />
+        <meta name="author" content="" />
+        <meta name="robots" content="" />
+
+        <!-- DESCRIPTION -->
+        <meta name="description" content="Happy Programing" />
+
+        <!-- OG -->
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
+        <meta property="og:image" content="" />
+        <meta name="format-detection" content="telephone=no">
+
+        <!-- FAVICONS ICON ============================================= -->
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
         <title>Request Password Reset</title>
+
+        <!-- MOBILE SPECIFIC ============================================= -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
@@ -41,24 +65,29 @@
                     <div class="account-container">
                         <div class="heading-bx left">
                             <h2 class="title-head">Reset <span>Password</span></h2>
-                            <p>If you've forgotten your password, enter your account and email below</p>
-                        </div>
+                            <p>If you've forgotten your password, enter your account and email below</p>                           
+                        </div>                       
                         <form class="contact-bx" action="passwordreset" method="post">
                             <div class="row placeani">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="accountName">Account Name:</label>
-                                        <input name="account" type="text" id="accountName" required="" class="form-control">
+                                        <div class="input-group">
+                                            <label for="accountName">Account Name:</label>
+                                            <input name="account" type="text" id="accountName" required="" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="email">Email:</label>
-                                        <input name="email" type="email" id="email" required="" class="form-control">
+                                        <div class="input-group">
+                                            <label for="email">Email:</label>
+                                            <input name="email" type="email" id="email" required="" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 m-b30">
                                     <button name="submit" type="submit" value="Submit" class="btn button-md">Submit</button>
+                                    <a href="signin" style="text-decoration: underline; margin-left: 20px;">Back to Signin</a>
                                 </div>
                             </div>
                         </form>

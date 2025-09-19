@@ -19,20 +19,20 @@
         <meta name="robots" content="" />
 
         <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
+        <meta name="description" content="Happy Programing" />
 
         <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+        <meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>View profile-cv of mentor</title>
+        <title>Happy Programing: CV of Mentor</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,7 +44,7 @@
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
-
+        <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
         <!-- TYPOGRAPHY ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
 
@@ -55,17 +55,20 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body id="bg">
         <div class="page-wraper">
             <div id="loading-icon-bx"></div>
             <!-- Header Top ==== -->
-            <jsp:include page="header.jsp" />
+            <header class="header rs-nav">
+                <jsp:include page="header.jsp" />
+            </header>
             <!-- header END ==== -->
             <!-- Content -->
             <div class="page-content bg-white">
                 <!-- inner page banner -->
-                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner1.jpg);">
+                <div class="page-banner ovbl-dark" style="background-image:url(https://daihoc.fpt.edu.vn/templates/fpt-university/images/header.jpg);">
                     <div class="container">
                         <div class="page-banner-entry">
                             <h1 class="text-white">Profile</h1>
@@ -91,7 +94,12 @@
                                 <div class="col-lg-3 col-md-4 col-sm-12 m-b30">
                                     <div class="profile-bx text-center">
                                         <div class="user-profile-thumb">
-                                            <img src="getCVimage?id=${requestScope.uFound.mentorId}" alt=""/>
+                                            <c:if test="${requestScope.cvFound.cvId==null}">
+                                                <img src="assets\images\userprofile.png" class="rounded-circle" alt="" style=" width: 100%;height: 100%;object-fit: cover;"/>
+                                            </c:if>
+                                            <c:if test="${requestScope.cvFound.cvId!=null}">
+                                                <img src="getCVimage?id=${requestScope.cvFound.cvId}" class="rounded-circle" alt="" style=" width: 100%;height: 100%;object-fit: cover;"/>
+                                            </c:if>
                                         </div>
                                         <div class="profile-info">
 
@@ -181,7 +189,7 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-12 col-sm-12 col-md-12 col-lg-2 col-form-label font-weight-bold">Statistic rating of each skill:</label>
-                                                            <div class="col-12 col-sm-9 col-md-9 col-lg-7">
+                                                            <div class="col-12 col-sm-9 col-md-9 col-lg-7" class="table-vertical-scroll table-responsive" style="max-height: 400px; overflow-y: auto;">
                                                                 <c:forEach items="${requestScope.skillMentor}" var="c">
                                                                     <label class="col-form-label">
                                                                         <span class="font-weight-normal" style="margin-bottom: 0px">${c.skillName}</span>
@@ -213,50 +221,75 @@
                     </div>
                 </div>
 
+                <div class="col-lg-8 col-md-12 col-sm-12 m-b30" style="margin: 0 auto;">
+                    <div class="widget-box">
+                        <div class="wc-title">
+                            <h4>Avaiable Slot</h4>
+                        </div>
+                        <div class="widget-inner">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div class="section-area section-sp2">
                     <div class="container">
                         <div class="row">
                             <c:if test="${!empty requestScope.rate}">
-                            <div class="col-md-12 heading-bx left">
-                                <h2 class="title-head text-uppercase">Rating & comment</h2>
-                            </div>
-                        </div>
-
-                        <div class="" id="instructor">
-                            
-                                
-                            <c:forEach items="${requestScope.rate}" var="c">
-
-                                <div class="instructor-bx">
-                                    <div class="instructor-author">
-                                        <img src="assets/images/testimonials/pic1.jpg" alt="">
-                                    </div>
-                                    <div class="instructor-info">
-                                        <c:forEach items="${requestScope.menteeList}" var="r">
-                                            <c:if test="${c.menteeId==r.menteeId}">
-                                                
-                                        <h6>${r.username}</h6>
-                                            </c:if>
-                                        </c:forEach>
-                                        <span>${c.createDate}</span>
-                                        <ul class="cours-star">
-                                            <c:forEach var="i" begin="1" end="${c.rate}">
-                                                <li class="active"><i class="fa fa-star"></i></li>
-                                                </c:forEach>
-                                                <c:forEach var="j" begin="1" end="${5-c.rate}">
-                                                <li><i class="fa fa-star"></i></li>
-                                                </c:forEach>
-
-                                        </ul>
-                                        <p class="m-b0">${c.comment}</p>
-                                    </div>
+                                <div class="col-md-12 heading-bx left">
+                                    <h2 class="title-head text-uppercase">Rating & comment</h2>
                                 </div>
-                            </c:forEach>
+                            </div>
+
+                            <div class="" id="instructor">
+
+
+                                <c:forEach items="${requestScope.rate}" var="c">
+
+                                    <div class="instructor-bx">
+                                        <div class="instructor-author">
+                                            <c:forEach items="${requestScope.menteeList}" var="m">
+                                                <c:if test="${c.menteeId==m.menteeId}">
+
+                                                    <c:if test="${m.base64FileImage!=null}">
+                                                        <img src="data:image/jpeg;base64,${m.base64FileImage}" alt="" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
+                                                    </c:if>
+                                                    <c:if test="${m.base64FileImage==null}">
+                                                        <img src="assets/images/userprofile.png" alt="">
+                                                    </c:if>
+
+                                                </c:if>
+                                            </c:forEach>
+                                            
+                                        </div>
+                                        <div class="instructor-info">
+                                            <c:forEach items="${requestScope.menteeList}" var="r">
+                                                <c:if test="${c.menteeId==r.menteeId}">
+
+                                                    <h6>${r.username}</h6>
+                                                </c:if>
+                                            </c:forEach>
+                                            <span>${c.createDate}</span>
+                                            <ul class="cours-star">
+                                                <c:forEach var="i" begin="1" end="${c.rate}">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    </c:forEach>
+                                                    <c:forEach var="j" begin="1" end="${5-c.rate}">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    </c:forEach>
+
+                                            </ul>
+                                            <p class="m-b0">${c.comment}</p>
+                                        </div>
+                                    </div>
+                                </c:forEach>
                             </c:if>
                             <c:if test="${empty requestScope.rate}">
-                                
+
                             </c:if>
-                           
+
                         </div>
 
 
@@ -390,7 +423,57 @@
         <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
+        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
+        <script src="assets/js/functions.js"></script>
+        <script src="assets/vendors/chart/chart.min.js"></script>
+        <script src="assets/js/admin.js"></script>
+        <script src='assets/vendors/calendar/moment.min.js'></script>
+        <script src='assets/vendors/calendar/fullcalendar.js'></script>
+        <script>
+            $(document).ready(function () {
+                var titleClass = JSON.parse('${requestScope.status}');
+                var start = JSON.parse('${requestScope.values}');
+                var end = JSON.parse('${requestScope.endValues}');
+                var eventsArray = [];
+                for (var i = 0; i < start.length; i++) {
+                    var eventColor = '';
+                    if (titleClass[i].toLowerCase() === 'inavaiable') {
+                        eventColor = '#c22d2d';
+                    } else {
+                        eventColor = '#2dc22d';
+                    }
+                    console.log(titleClass[i]);
+                    console.log(titleClass[i].toLowerCase() === 'inactive');
+                    eventsArray.push({
+                        title: titleClass[i],
+                        start: start[i],
+                        end: end[i],
+                        color: eventColor
+                    });
+                }
+                $('#calendar').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'agendaWeek,listWeek,agendaDay'
+                    },
+
+                    defaultView: 'agendaWeek',
+                    navLinks: true, // can click day/week names to navigate views
+
+                    weekNumbers: true,
+                    weekNumbersWithinDays: true,
+                    weekNumberCalculation: 'ISO',
+
+                    editable: true,
+                    eventLimit: true, // allow "more" link when too many events
+                    events: eventsArray,
+                    height: 500
+                });
+
+            });
+
+        </script>
     </body>
 
 </html>

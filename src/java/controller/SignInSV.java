@@ -4,8 +4,15 @@
  */
 package controller;
 
+import DAO.CVDAO;
+import DAO.MenteeDAO;
 import DAO.UserDAO;
+import DAO.WalletDAO;
+import Model.CV;
+import Model.Mentee;
+import Model.Mentor;
 import Model.User;
+import Model.Wallet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +22,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -61,6 +71,25 @@ public class SignInSV extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String username = null;
+        String password = null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                } else if ("pass".equals(cookie.getName())) {
+                    password = cookie.getValue();
+                }
+            }
+        }
+
+        // Set username and password as request attributes
+        request.setAttribute("username", username);
+        request.setAttribute("password", password);
+
+        // Forward to the JSP page
         request.getRequestDispatcher("SignIn.jsp").forward(request, response);
     }
 
@@ -79,6 +108,7 @@ public class SignInSV extends HttpServlet {
         String pass = request.getParameter("pass");
         String rememberMe = request.getParameter("rememberMe");
         String enpass = encrypt(pass);
+        HttpSession session = request.getSession();
         UserDAO u = new UserDAO();
         User a = u.findUserPass(username, enpass);
         try {
@@ -87,9 +117,38 @@ public class SignInSV extends HttpServlet {
                 request.setAttribute("notify", "Wrong username or password");
                 request.getRequestDispatcher("SignIn.jsp").forward(request, response);
             } else {
-                if (a != null && a.getStatus().equals("active")) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("acc", a);
+                if (a != null && a.getStatus().equalsIgnoreCase("active")) {
+
+                    if (a.getRoleId() == 3 || a.getRoleId() == 4) {
+                        request.setAttribute("notify", "Admin and manager can't login here");
+                        request.getRequestDispatcher("SignIn.jsp").forward(request, response);
+                    }
+                    if (a.getRoleId() == 1) {
+                        CVDAO cvd = new CVDAO();
+                        WalletDAO wld = new WalletDAO();
+                        session.setAttribute("acc", a);
+                        Mentor mentor = cvd.getMentorByUsername(a.getUsername());
+                        if (mentor.getStatus().equalsIgnoreCase("active"));
+                        {
+                            CV cvactive = cvd.getCVbyMentorId(mentor.getMentorId());
+                            session.setAttribute("cvactive", cvactive);
+                        }
+                        Wallet wallet = wld.getWalletByUsername(a.getUsername());
+                        session.setAttribute("wallet", wallet);
+                        session.setAttribute("mentor", mentor);
+
+                    }//mentee avatar process
+
+                    if (a.getRoleId() == 2) {
+                        MenteeDAO mtd = new MenteeDAO();
+                        WalletDAO wld = new WalletDAO();
+                        session.setAttribute("acc", a);
+                        Mentee mentee = mtd.findMenteeByUsername(a.getUsername());
+                        Wallet wallet = wld.getWalletByUsername(a.getUsername());
+
+                        session.setAttribute("wallet", wallet);
+                        session.setAttribute("mentee", mentee);
+                    }
                     if (rememberMe != null) {  // Checkbox was checked
                         Cookie usernameCookie = new Cookie("username", username);
                         Cookie passwordCookie = new Cookie("pass", pass);
@@ -114,26 +173,35 @@ public class SignInSV extends HttpServlet {
                         response.addCookie(passwordCookie);
                     }
                     response.sendRedirect("home");
-                } else if (a != null && a.getStatus().equals("inactive")) {
+                } else if (a != null && a.getStatus().equalsIgnoreCase("inactive")) {
                     request.setAttribute("notify", "Your account is not active, please active by link in your email");
                     request.getRequestDispatcher("SignIn.jsp").forward(request, response);
                 }
             }
+
         } catch (Exception e) {
+            System.out.println(e);
             request.setAttribute("notify", "Error occured ");
             request.getRequestDispatcher("SignIn.jsp").forward(request, response);
         }
     }
 
-    private String encrypt(String password) {
-        StringBuilder encrypted = new StringBuilder();
-
-        for (int i = 0; i < password.length(); i++) {
-            char c = password.charAt(i);
-            encrypted.append((char) (c + 5)); // Shift character by key
+    public static String encrypt(String pass) {
+        String digest = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(pass.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            digest = sb.toString();
+        } catch (UnsupportedEncodingException ex) {
+            digest = "";
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
         }
-
-        return encrypted.toString();
+        return digest;
     }
 
     /**

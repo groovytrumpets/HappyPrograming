@@ -11,16 +11,11 @@ import java.util.Date;
  * @author ADMIN
  */
 public class Rate {
-    /*[MentorID] [int] NULL,
-	[MenteeID] [int] NULL,
-	[CreateDate] [date] NULL,
-	[status] [nvarchar](20) NULL,
-	[Comment] [varchar](max) NULL,
-	[Rate] [int] NULL*/
     private int mentorId,menteeId;
     private Date createDate;
     private String status,comment;
     private int rate;
+    private int requestId, rateId;
 
     public Rate() {
     }
@@ -32,6 +27,33 @@ public class Rate {
         this.status = Status;
         this.comment = comment;
         this.rate = rate;
+    }
+
+    public Rate(int mentorId, int menteeId, Date createDate, String status, String comment, int rate, int requestId, int rateId) {
+        this.mentorId = mentorId;
+        this.menteeId = menteeId;
+        this.createDate = createDate;
+        this.status = status;
+        this.comment = comment;
+        this.rate = rate;
+        this.requestId = requestId;
+        this.rateId = rateId;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public int getRateId() {
+        return rateId;
+    }
+
+    public void setRateId(int rateId) {
+        this.rateId = rateId;
     }
 
     public int getMentorId() {
@@ -81,6 +103,10 @@ public class Rate {
     public void setRate(int rate) {
         this.rate = rate;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Rate{" + "mentorId=" + mentorId + ", menteeId=" + menteeId + ", createDate=" + createDate + ", status=" + status + ", comment=" + comment + ", rate=" + rate + '}';
+    }
     
 }

@@ -14,24 +14,25 @@ import java.time.LocalTime;
 public class Request {
 
     private int requestId;
-    private Integer mentorId;
-    private Integer menteeId;
-    private Float price;
+    private int mentorId;
+    private int menteeId;
+    private float price;
     private String note;
     private LocalDate createDate;
     private String status;
     private String title;
-    private LocalTime deadlineHour;
-    private LocalDate deadlineDate;
     private LocalDate startDate;
-    private LocalDate endDate; 
+    private LocalDate endDate;
     private String framework;
+    private double attendancePercentage;
+    private int skillId;
+
 
     public Request() {
     }
 
-    public Request(int requestId, Integer mentorId, Integer menteeId, Float price, String note, LocalDate createDate,
-            String status, String title, LocalTime deadlineHour, LocalDate deadlineDate, String framework, LocalDate startDate, LocalDate endDate) {
+    public Request(int requestId, int mentorId, int menteeId, float price, String note, LocalDate createDate,
+            String status, String title, String framework, LocalDate startDate, LocalDate endDate, int skillId) {
         this.requestId = requestId;
         this.mentorId = mentorId;
         this.menteeId = menteeId;
@@ -40,11 +41,43 @@ public class Request {
         this.createDate = createDate;
         this.status = status;
         this.title = title;
-        this.deadlineHour = deadlineHour;
-        this.deadlineDate = deadlineDate;
         this.framework = framework;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.skillId = skillId;
+    }
+
+    public Request(int requestId, int mentorId, int menteeId, float price, String note, LocalDate createDate, String status, String title, LocalDate startDate, LocalDate endDate, String framework, double attendancePercentage, int skillId) {
+        this.requestId = requestId;
+        this.mentorId = mentorId;
+        this.menteeId = menteeId;
+        this.price = price;
+        this.note = note;
+        this.createDate = createDate;
+        this.status = status;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.framework = framework;
+        this.attendancePercentage = attendancePercentage;
+        this.skillId = skillId;
+    }
+
+    public double getAttendancePercentage() {
+        return attendancePercentage;
+    }
+
+    public void setAttendancePercentage(double attendancePercentage) {
+        this.attendancePercentage = attendancePercentage;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", framework=" + framework + ", skillId=" + skillId + '}';
+    }
+
+    public int getSkillId() {
+        return skillId;
     }
 
     public LocalDate getStartDate() {
@@ -55,6 +88,14 @@ public class Request {
         return endDate;
     }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setSkillId(int skillId) {
+        this.skillId = skillId;
+    }
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
@@ -63,37 +104,31 @@ public class Request {
         this.endDate = endDate;
     }
 
-
     public int getRequestId() {
         return requestId;
-    }
-
-    @Override
-    public String toString() {
-        return "Request{" + "requestId=" + requestId + ", mentorId=" + mentorId + ", menteeId=" + menteeId + ", price=" + price + ", note=" + note + ", createDate=" + createDate + ", status=" + status + ", title=" + title + ", deadlineHour=" + deadlineHour + ", deadlineDate=" + deadlineDate + ", startDate=" + startDate + ", endDate=" + endDate + ", framework=" + framework + '}';
     }
 
     public void setRequestId(int requestId) {
         this.requestId = requestId;
     }
 
-    public Integer getMentorId() {
+    public int getMentorId() {
         return mentorId;
     }
 
-    public void setMentorId(Integer mentorId) {
+    public void setMentorId(int mentorId) {
         this.mentorId = mentorId;
     }
 
-    public Integer getMenteeId() {
+    public int getMenteeId() {
         return menteeId;
     }
 
-    public void setMenteeId(Integer menteeId) {
+    public void setMenteeId(int menteeId) {
         this.menteeId = menteeId;
     }
 
-    public Float getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -133,22 +168,6 @@ public class Request {
         this.title = title;
     }
 
-    public LocalTime getDeadlineHour() {
-        return deadlineHour;
-    }
-
-    public void setDeadlineHour(LocalTime deadlineHour) {
-        this.deadlineHour = deadlineHour;
-    }
-
-    public LocalDate getDeadlineDate() {
-        return deadlineDate;
-    }
-
-    public void setDeadlineDate(LocalDate deadlineDate) {
-        this.deadlineDate = deadlineDate;
-    }
-
     public String getFramework() {
         return framework;
     }
@@ -157,5 +176,3 @@ public class Request {
         this.framework = framework;
     }
 }
-
-

@@ -1,27 +1,16 @@
 <%-- 
-    Document   : rateMentor
-    Created on : Oct 6, 2024, 8:01:59 AM
-    Author     : asus
+    Document   : SkillList
+    Created on : Oct 1, 2024, 3:12:48 PM
+    Author     : nhhag
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="Model.Mentor" %>
-<%@ page import="DAO.MentorDAO" %>
-<%
-    int mentorId = Integer.parseInt(request.getParameter("mentorId"));
-    MentorDAO mentorDAO = new MentorDAO();
-    Mentor mentor = mentorDAO.getMentorById(mentorId); // Assuming you have this method
-
-    // Retrieve menteeId from request attribute
-    int menteeId = (int) request.getAttribute("menteeId");
-%>
-
 <!DOCTYPE html>
 <html lang="en">
-    <!-- Mirrored from educhamp.themetrades.com/demo/admin/teacher-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+
+
     <head>
-        <title>Rate Mentor</title>
 
         <!-- META ============================================= -->
         <meta charset="utf-8">
@@ -40,11 +29,11 @@
         <meta name="format-detection" content="telephone=no">
 
         <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="../error-404.html" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+        <link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
 
         <!-- PAGE TITLE HERE ============================================= -->
-        <title>Create CV of mentor</title>
+        <title>EduChamp : Education HTML Template </title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,7 +45,6 @@
 
         <!-- All PLUGINS CSS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/assets.css">
-        <link rel="stylesheet" type="text/css" href="assets/vendors/calendar/fullcalendar.css">
 
         <!-- TYPOGRAPHY ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/typography.css">
@@ -66,10 +54,8 @@
 
         <!-- STYLESHEETS ============================================= -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
         <link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-        <!-- Star Rating CSS -->
         <style>
             .star-rating {
                 direction: rtl;
@@ -93,99 +79,115 @@
             }
         </style>
     </head>
+    <body id="bg">
+        <div class="page-wraper">
+            <div id="loading-icon-bx"></div>
 
-    <body class="ttr-opened-sidebar ttr-pinned-sidebar">
-        <!-- Header Menu Start -->
-        <header class="ttr-header">
-            <div class="ttr-header-wrapper">
-                <div class="ttr-toggle-sidebar ttr-material-button">
-                    <i class="ti-close ttr-open-icon"></i>
-                    <i class="ti-menu ttr-close-icon"></i>
-                </div>
-                <div class="ttr-logo-box">
-                    <div>
-                        <a href="index.html" class="ttr-logo">
-                            <img alt="" class="ttr-logo-mobile" src="assets/images/logo-mobile.png" width="30" height="30">
-                            <img alt="" class="ttr-logo-desktop" src="assets/images/logo-white.png" width="160" height="27">
-                        </a>
+            <!-- Header Top ==== -->
+            <header class="header rs-nav">
+                <jsp:include page="header.jsp" />
+            </header>
+            <!-- header END ==== -->
+            <!-- Content -->
+            <div class="page-content bg-white">
+                <!-- inner page banner -->
+                <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
+                    <div class="container">
+                        <div class="page-banner-entry">
+                            <h1 class="text-white">Rate Mentor</h1>
+                        </div>
                     </div>
                 </div>
-                <div class="ttr-header-menu">
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="index.html" class="ttr-material-button">HOME</a>
-                        </li>
-                        <li>
-                            <a href="#" class="ttr-material-button">QUICK MENU <i class="fa fa-angle-down"></i></a>
-                            <div class="ttr-header-submenu">
-                                <ul>
-                                    <li><a href="courses.html">Our Courses</a></li>
-                                    <li><a href="event.html">New Event</a></li>
-                                    <li><a href="membership.html">Membership</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="ttr-header-right">
-                    <ul class="ttr-header-navigation">
-                        <li>
-                            <a href="#" class="ttr-material-button"><i class="fa fa-search"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <!-- Header Menu End -->
+                <!-- inner page banner END -->
+                <div class="content-block">
+                    <!-- About Us -->
+                    <div class="section-area section-sp1 align-items-center justify-content-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="db-breadcrumb col-lg-4">
+                                </div>  
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-20 m-b30">
+                                        <div class="widget-box p-4 shadow">
+                                            <div class="widget-inner text-center">
+                                                <c:choose>
+                                                    <c:when test="${param.error == 'alreadyRated'}">
+                                                        <div style="color: red;">
+                                                            You have already rated this mentor for this request.
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${param.success == 'ratingSaved'}">
+                                                        <div style="color: green;">
+                                                            Your rating has been successfully saved!
+                                                        </div>
+                                                    </c:when>
+                                                </c:choose>
 
-        <!--Main container start-->
-        <main class="ttr-wrapper">
-            <div class="container-fluid">
-                <div class="db-breadcrumb">
-                    <h4 class="breadcrumb-title">Rate Mentor</h4>
-                    <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>Rate Mentor</li>
-                    </ul>
-                </div>	
-                <div class="row">
-                    <div class="col-lg-12 m-b30">
-                        <div class="widget-box">
-                            <div class="widget-inner">
-                                <form action="ratementor" method="POST">
-                                    <input type="hidden" name="menteeId" value="<%= menteeId %>" />
-                                    <input type="hidden" name="mentorId" value="<%= mentorId %>" />
+                                                <form action="ratementor" method="POST">
+                                                    <input type="hidden" name="menteeId" value="${mentee.menteeId}" />
+                                                    <input type="hidden" name="mentorId" value="${mentor.mentorId}" />
+                                                    <input type="hidden" name="requestId" value="${param.requestId}" />
 
-                                    <!-- Rating Section -->
-                                    <h3><%= mentor.getFullName() %></h3>
-                                    <h4>FPT University</h4>
-                                    
-                                    <div class="star-rating">
-                                        
-                                        <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
-                                        <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
-                                        <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
-                                        <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
-                                        <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+                                                    <!-- Rating Section -->
+                                                    <c:if test="${requestScope.mentor.mentorId==requestScope.cvmentor.mentorId}">
+                                                        <div class="text-center">
+                                                            <img id="userAvatar" src="getCVimage?id=${requestScope.cvmentor.cvId}" 
+                                                                 class="rounded-circle" alt="" 
+                                                                 style="margin: 50px 10px;width: 150px;height: 150px;object-fit: cover;">
+                                                        </div>
+                                                        <h3>Mentor: ${mentor.fullName}</h3>
+                                                        <c:if test="${request.mentorId==requestScope.mentor.mentorId}">
+                                                            <h5>Title: ${request.title}</h5>
+                                                            <h5>Framework: ${request.framework}</h5>
+                                                            <h5>Education: ${cvmentor.education}</h5>
+                                                        </c:if>
+                                                    </c:if>
+
+
+
+                                                    <!-- Star Rating -->
+                                                    <div class="star-rating">
+                                                        <input type="radio" id="5-stars" name="rating" value="5" required><label for="5-stars">★</label>
+                                                        <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
+                                                        <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
+                                                        <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
+                                                        <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+                                                    </div>
+
+                                                    <!-- Comment Section -->
+                                                    <h5>Comment:</h5>
+                                                    <textarea name="comment" rows="5" cols="40" placeholder="Leave your comment here..." required></textarea><br>
+
+                                                    <input type="submit" class="btn button-m green" value="Submit Rating">
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <!-- Comment Section -->
-                                    <h3>Comment:</h3>
-                                    <textarea name="comment" rows="4" cols="50" placeholder="Leave your comment here..."></textarea><br>
-
-                                    <input type="submit" value="Submit Rating">
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-        <!--Main container end-->
+        </div>
+        <!-- contact area END -->
+        <!-- Content END-->
+        <!-- Footer ==== -->
 
-        <div class="ttr-overlay"></div>
+        <jsp:include page="footer.jsp" />
 
+        <!-- Footer END ==== -->
+        <button class="back-to-top fa fa-chevron-up" ></button>
         <!-- External JavaScripts -->
+        <script>
+            document.querySelectorAll('.description').forEach(function (element) {
+                let maxLength = 50; // Set the character limit
+                let text = element.innerText;
+                if (text.length > maxLength) {
+                    element.innerText = text.substring(0, maxLength) + '...';
+                }
+            });
+        </script>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
         <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
@@ -198,9 +200,8 @@
         <script src="assets/vendors/masonry/masonry.js"></script>
         <script src="assets/vendors/masonry/filter.js"></script>
         <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
-        <script src='assets/vendors/scroll/scrollbar.min.js'></script>
         <script src="assets/js/functions.js"></script>
-        <script src="assets/vendors/chart/chart.min.js"></script>
-        <script src="assets/js/admin.js"></script>
+        <script src="assets/js/contact.js"></script>
     </body>
+
 </html>

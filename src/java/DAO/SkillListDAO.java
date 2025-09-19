@@ -6,6 +6,7 @@ package DAO;
 
 import Model.CV;
 import Model.Mentor;
+import Model.SkillList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -25,9 +26,13 @@ public class SkillListDAO extends DBContext {
 
     public List<Mentor> getMentorBySkill(int id) {
         List<Mentor> list = new ArrayList<>();
-        String sql = "select * from mentor m\n"
-                + "join SkillList s on m.MentorID = s.MentorID\n"
-                + "where SkillID = ?";
+        String sql = "SELECT DISTINCT m.* \n"
+                + "FROM mentor m\n"
+                + "JOIN SkillList s ON m.MentorID = s.MentorID\n"
+                + "LEFT JOIN CV cv ON s.CVID = cv.CVID\n"
+                + "WHERE s.SkillID = ? \n"
+                + "  AND m.Status = 'active'\n"
+                + "  AND (cv.Status = 'active');";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -54,11 +59,11 @@ public class SkillListDAO extends DBContext {
 
     public List<CV> getCVbySkill(int id) {
         List<CV> list = new ArrayList<>();
-        String sql = "select * \n"
-                + "from CV\n"
-                + "join SkillList s on CV.MentorID = s.MentorID\n"
-                + "where s.SkillID =?";
-
+        String sql = "select DISTINCT CV.* \n"
+                + "from CV \n"
+                + "join SkillList s on CV.MentorID = s.MentorID \n"
+                + "join Mentor m on cv.MentorID = m.MentorID\n"
+                + "where s.SkillID =? and cv.Status like 'active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -79,6 +84,38 @@ public class SkillListDAO extends DBContext {
         }
 
         return list;
+    }
+
+    public Integer getCurrentRating(int skillId) {
+        String query = """
+                       SELECT *
+                       FROM SkillList 
+                       WHERE SkillID = ?
+                       """;
+        try (
+                PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, skillId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Rating");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateRating(int skillId, int rating, int mentorId) {
+        String updateQuery = "UPDATE SkillList SET Rating = ? WHERE SkillID = ? AND MentorID = ?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+            ps.setInt(1, rating);
+            ps.setInt(2, skillId);
+            ps.setInt(3, mentorId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

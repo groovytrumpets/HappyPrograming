@@ -17,21 +17,21 @@
         <meta name="author" content="" />
         <meta name="robots" content="" />
 
-        <!-- DESCRIPTION -->
-        <meta name="description" content="EduChamp : Education HTML Template" />
-
-        <!-- OG -->
-        <meta property="og:title" content="EduChamp : Education HTML Template" />
-        <meta property="og:description" content="EduChamp : Education HTML Template" />
+       <!-- DESCRIPTION -->
+	<meta name="description" content="Happy Programing" />
+	
+	<!-- OG -->
+	<meta property="og:title" content="Happy Programing" />
+        <meta property="og:description" content="Happy Programing" />
         <meta property="og:image" content="" />
         <meta name="format-detection" content="telephone=no">
-
-        <!-- FAVICONS ICON ============================================= -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-
-        <!-- PAGE TITLE HERE ============================================= -->
-        <title>Happy Programming</title>
+	
+	<!-- FAVICONS ICON ============================================= -->
+	<link rel="icon" href="assets/images/faviconV2.png" type="image/x-icon" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/faviconV2.png" />
+	
+	<!-- PAGE TITLE HERE ============================================= -->
+	<title>Happy Programming</title>
 
         <!-- MOBILE SPECIFIC ============================================= -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,11 +59,11 @@
         <div class="page-wraper">
             <div id="loading-icon-bx"></div>
             <div class="account-form">
-                <div class="account-head" style="background-image:url(assets/images/background/bg2.jpg);">
-                    <a href="signin"><img src="assets/images/logo-white-2.png" alt=""></a>
-                </div>
+                <div class="account-head" style="background-image:url(https://hanoi.fpt.edu.vn/wp-content/uploads/2024/10/STA02949-scaled.jpg);">
+			<a href="home"><img src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/04/cropped-cropped-2021-FPTU-Long.png" alt="" style="width: 50%"></a>
+		</div>
                 <div class="account-form-inner">
-                    <div class="account-container">
+                    <div class="account-container" >
 
                         <div class="heading-bx left">
                             <h2 class="title-head">Sign Up <span>Now</span></h2> 
@@ -77,7 +77,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label>Your username</label>
-                                            <input name="username" type="text" required="" class="form-control">
+                                            <input name="username" type="text" required="" class="form-control" value="${username}">
                                             <small style="color: red">${uerror}</small>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label for="user-mail">Email address</label>
-                                            <input name="email" type="email" id="user-mail" class="form-control"  required>
+                                            <input name="email" type="email" id="user-mail" class="form-control"  value="${email}" required>
                                             <small style="color: red">${eerror}</small>
                                         </div>
                                     </div>
@@ -95,7 +95,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label for="user-pass">Password</label>
-                                            <input name="pass" type="password" class="form-control" required>
+                                            <input name="pass" type="password" class="form-control" required>                                         
                                             <small>Password requirements (6-18 characters, containing a number, uppercase letter)</small>
                                             <small style="color: red">${perror1}</small>
                                             
@@ -115,7 +115,7 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Full name</label>
-                                            <input name="fullname" type="text" class="form-control" required="">
+                                            <input name="fullname" type="text" class="form-control" required="" value="${fullname}">
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,8 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Phone number</label>
-                                            <input name="phone" type="number" class="form-control" required="">
+                                            <input name="phone" type="text" class="form-control" required="" value="${phone}">
+                                            <small style="color: red">${pherror1}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +143,7 @@
                                     <div class="form-group">
                                         <div class="input-group"> 
                                             <label>Address</label>
-                                            <input name="address" type="text" class="form-control" required="">
+                                            <input name="address" type="text" class="form-control" required="" value="${address}">
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +151,8 @@
                                     <div class="form-group">
                                         Date of birth
                                         <div class="input-group">
-                                            <input name="dob" type="date" class="form-control" required="">
+                                            <input name="dob" type="date" class="form-control" required="" value="">
+                                            <small style="color: red">${aerror}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +197,7 @@
         <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/contact.js"></script>
-        <script src='assets/vendors/switcher/switcher.js'></script>
+
     </body>
 
 </html>

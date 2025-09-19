@@ -67,7 +67,7 @@ public class ImageCVServlet extends HttpServlet {
             CV cv = cvd.getCVbyCVId(id);
             byte[] imgData = cv.getAvatar();
 
-            if (imgData.length > 0) {
+            if (imgData!=null && imgData.length>0) {
                 response.setContentType("image/jpeg");  // Đặt loại MIME tương ứng
                 OutputStream out = response.getOutputStream();
                 out.write(imgData);

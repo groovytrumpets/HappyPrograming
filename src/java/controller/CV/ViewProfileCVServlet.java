@@ -7,12 +7,16 @@ package controller.CV;
 
 import DAO.CVDAO;
 import DAO.HomeDAO;
+import DAO.SlotDAO;
 import Model.CV;
 import Model.Mentee;
 import Model.Mentor;
 import Model.Rate;
 import Model.Skill;
+import Model.Slot;
 import Model.StatisticSkills;
+import com.google.gson.Gson;
+import static controller.Mentee.SlotViewServlet.convertDayInWeekToCurrentDate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +24,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,13 +75,15 @@ public class ViewProfileCVServlet extends HttpServlet {
         
         int id;
         CVDAO cvd = new CVDAO();
+        SlotDAO sld = new SlotDAO();
         try {
             id = Integer.parseInt(id_raw);
+            System.out.println(id);
             Mentor mentor = cvd.getMentorByID(id);
             CV cv = cvd.getCVbyMentorId(mentor.getMentorId());
             //String email = cvd.getUserEmail(id);
             List<Rate> rateList = cvd.getMentorRateList(id);
-            List<StatisticSkills> mentorSkillList = cvd.getMentorSkillList(id);
+            List<StatisticSkills> mentorSkillList = cvd.getCVSkillList(cv.getCvId());
             int rateAve = cvd.getAveRatebyId(id);
             HomeDAO hdao = new HomeDAO();
             List<Mentee> menteeList = hdao.getListofMentee();
@@ -93,6 +100,26 @@ public class ViewProfileCVServlet extends HttpServlet {
             request.setAttribute("rate", rateList);
             request.setAttribute("menteeList", menteeList);
             request.setAttribute("rateAve", rateAve);
+            
+            
+            //slot view
+            List<String> dateConverted = new ArrayList<>();
+            List<String> enddateConverted = new ArrayList<>();
+            List<String> statusSlot = new ArrayList<>();
+            List<Slot> mentorSlot = sld.getListofActiveSlotsByMentorId(id);
+            //System.out.println(mentorSlot.get(0).getDayInWeek());
+            for (int i = 0; i < mentorSlot.size(); i++) {
+                String startDate = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getStartTime();
+                String endDate = convertDayInWeekToCurrentDate(mentorSlot.get(i).getDayInWeek())+"T"+mentorSlot.get(i).getEndTime();
+                statusSlot.add(mentorSlot.get(i).getStatus());
+                //System.out.println(startDate+", "+mentorSlot.get(i).getEndTime());
+                dateConverted.add(startDate);
+                enddateConverted.add(endDate);
+            }
+
+            request.setAttribute("status", new Gson().toJson(statusSlot));
+            request.setAttribute("values", new Gson().toJson(dateConverted));
+            request.setAttribute("endValues", new Gson().toJson(enddateConverted));
             
             
             request.getRequestDispatcher("viewProfile-CV.jsp").forward(request, response);
