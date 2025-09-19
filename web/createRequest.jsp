@@ -73,11 +73,11 @@
                         <!-- User Balance Section -->
                         <div class="balance-box border border-primary rounded p-2" style="max-width: 150px;">
                             <h6 class="text-primary mb-1">Your Balance</h6>
-                            <p id="userBalance" class="text-success mb-0"></p> <!-- Replace with dynamic balance -->
+                            <p id="userBalance" class="text-success mb-0"></p>
                         </div>
                         <div class="balance-box border border-primary rounded p-2" style="max-width: 150px; margin-left: 50px">
                             <h6 class="text-primary mb-1">Your Hold</h6>
-                            <p id="userHold" class="text-red mb-0"></p> <!-- Replace with dynamic balance -->
+                            <p id="userHold" class="text-red mb-0"></p> 
                         </div>
                     </div>
                 </div>
@@ -323,11 +323,11 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <script>
-            // JavaScript to format numbers as VND
-            const price = ${cv.price}; // Example: Replace with `cv.price` value
-            const balance = ${wallet.balance}; // Example: Replace with `wallet.balance` value
+     
+            const price = ${cv.price}; 
+            const balance = ${wallet.balance};
             const hold = ${wallet.hold};
-            // Function to format as VND with commas
+
             function formatVND(value) {
                 return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(value);
             }
@@ -359,9 +359,9 @@
             }
         </script>
         <script>
-            // Price per selected day (for example purposes, let's assume each selected day costs $10)
+            // Price per selected day 
             document.addEventListener('DOMContentLoaded', function () {
-                // Price per selected day (make sure this variable is set correctly in your backend)
+                // Price per selected day
                 const pricePerDay = ${cv.price};
 
                 // Function to calculate the price based on selected days and date range

@@ -73,12 +73,7 @@
             <div class="container-fluid">
                 <div class="db-breadcrumb">
                     <h4 class="breadcrumb-title">User</h4>
-                    <ul class="db-breadcrumb-list">
-                        <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-                        <li>User</li>
-                        <li>Mentor</li>
-
-                    </ul>
+                    
                 </div>	
                 <div class="row">
                     <!-- Your Profile Views Chart -->

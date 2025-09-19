@@ -190,7 +190,7 @@
                                     </c:if>
                             <div class="ttr-header-submenu">
                                 <ul>
-                                    <li><a href="user-profile.html">My profile</a></li>
+                                    <li><a href="updateProfile">My profile</a></li>
                                     <li><a href="statisticrequestbymentee">Activity</a></li>
                                     <li><a href="changeloggingpassword">Change Pass</a></li>
                                     <li><a href="logout">Logout</a></li>

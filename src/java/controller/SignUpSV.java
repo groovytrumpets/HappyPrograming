@@ -201,7 +201,7 @@ public class SignUpSV extends HttpServlet {
                         + "<p><strong>Address:</strong> " + address + "</p>"
                         + "</div>"
                         + "<p style='margin-top: 20px;'>Please click the button below to confirm your email address:</p>"
-                        + "<a href='http://localhost:9999/happy_programming/confirm?email=" + mail + "'"
+                        + "<a href='http://khanhnnhe181337.id.vn/happy_programming/confirm?email=" + mail + "'"
                         + " style='display: inline-block; background-color: #28a745; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 5px;'>Confirm Email</a>"
                         + "<p style='margin-top: 20px;'>If you did not sign up for this account, please disregard this email.</p>"
                         + "<hr style='border-top: 1px solid #ddd;' />"

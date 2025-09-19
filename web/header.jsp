@@ -271,8 +271,6 @@
                                                 <ul class="sub-menu">
                                                     <li><a href="statisticrequestbymentee">Statistic Request</a></li>
                                                     <li><a href="listrequestbymentee">List Request</a></li>
-
-                                                    <li><a href="updateProfile">View Profile</a></li>
                                                     <li><a href="updateProfile">Update Profile</a></li>
 
                                                     <!--                                                    <li><a href="#">Wishlist</a></li>-->

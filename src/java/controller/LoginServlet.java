@@ -91,8 +91,8 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("loginAd.jsp").forward(request, response);
             } else {
                 if (a != null) {
-                    if (a.getRoleId() != 3 || a.getRoleId() != 4) {
-                        request.setAttribute("notify", "Only admin and manager can log in here ");
+                    if (a.getRoleId() != 3 && a.getRoleId() != 4) {
+                        request.setAttribute("notify", "Only admin and manager can log in here "+a.getRoleId());
                         request.getRequestDispatcher("loginAd.jsp").forward(request, response);
                     }
                     HttpSession session = request.getSession();
