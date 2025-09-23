@@ -2,7 +2,7 @@
 
 ## 📌 Introduction
 This project is the final assignment of **Team G3** for the course *(SE1878)*.  
-The **Happy Programming System**,is a software platform designed to facilitate online connections between mentors, mentees, and other actors involved in programming education.
+The **Happy Programming System**, is a software platform designed to facilitate online connections between mentors, mentees, and other actors involved in programming education.
 
 This system replaces manual processes of coordinating mentorship and learning activities. Over time, it is envisioned to evolve into a robust ecosystem, integrating with online learning platforms, programming resources, and potentially third-party educational tools.
 
@@ -78,6 +78,6 @@ The following documents are available in the `/docs` folder:
 ---
 
 ### 3. Database Setup
-1. Open `docs/DB_Final.sql` in SQL Server Management Studio (SSMS).  
+1. Open `docs/HPS.sql` in SQL Server Management Studio (SSMS).  
 2. Execute the script to create the schema and insert sample data.  
 3. Verify the database `HappyProgramming` has been created successfully.  
