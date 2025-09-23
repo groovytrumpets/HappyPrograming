@@ -1,7 +1,7 @@
 # Happy Programming System
 
 ## 📌 Introduction
-This project is the final assignment of **Team G3** for the course *Java Servlet (SE1878)*.  
+This project is the final assignment of **Team G3** for the course *(SE1878)*.  
 The **Happy Programming System**,is a software platform designed to facilitate online connections between mentors, mentees, and other actors involved in programming education.
 
 This system replaces manual processes of coordinating mentorship and learning activities. Over time, it is envisioned to evolve into a robust ecosystem, integrating with online learning platforms, programming resources, and potentially third-party educational tools.
